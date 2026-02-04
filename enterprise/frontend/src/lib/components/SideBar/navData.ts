@@ -293,6 +293,13 @@ export const navData = {
 					permissions: ['view_riskmatrix']
 				},
 				{
+					name: 'customMethod',
+					fa_icon: 'fa-solid fa-table-list',
+					href: '/custom-method',
+					permissions: ['view_riskassessment'] // ou autre permission que ton user a
+
+					},
+				{
 					name: 'vulnerabilities',
 					// What is the best icon between "fa-triangle-exclamation" and "fa-skull-crossbones" for a vulnerability ?
 					fa_icon: 'fa-solid fa-triangle-exclamation',

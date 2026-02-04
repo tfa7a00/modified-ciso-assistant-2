@@ -26,7 +26,7 @@
 						user?.permissions && Object.hasOwn(user.permissions, `view_${model.name}`);
 					return canViewObject;
 				}
-				return false;
+				return true;
 			});
 
 			return {
