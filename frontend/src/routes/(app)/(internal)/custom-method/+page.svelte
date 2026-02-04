@@ -132,8 +132,8 @@
 		<h1 class="text-2xl font-bold text-gray-900">Méthode personnalisée</h1>
 		<p class="text-gray-600 max-w-3xl">
 			Cette page regroupe tes tables de référence (périodicité, complexité, type d’action, priorité)
-			en français. Elle ne modifie pas le moteur de scoring standard de CISO Assistant, mais te sert
-			de guide pour ta propre méthode.
+			en français. Elle ne modifie pas le moteur de scoring standard de CISO Assistant, mais sert
+			de guide pour la méthode de NearSecure.
 		</p>
 	</section>
 
