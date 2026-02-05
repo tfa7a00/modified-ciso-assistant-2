@@ -240,7 +240,7 @@
 		}
 	];
 
-	const frequenceRisqueRows: Row[] = [
+	let frequenceRisqueRows: Row[] = [
 		{ echelle: '1', definition: 'Risque Faible', signification: '[1 – 20[' },
 		{ echelle: '2', definition: 'Risque Modéré', signification: '[20 – 36[' },
 		{ echelle: '3', definition: 'Risque Elevé', signification: '[36 – 64[' },
@@ -249,7 +249,7 @@
 
 	type MatriceRow = { libelle: string; valeurs: number[] };
 
-	const matriceRisqueRows: MatriceRow[] = [
+	let matriceRisqueRows: MatriceRow[] = [
 		{ libelle: '4×1', valeurs: [4, 8, 12, 16, 20] },
 		{ libelle: '4×2', valeurs: [8, 16, 24, 32, 40] },
 		{ libelle: '4×3', valeurs: [12, 24, 36, 48, 60] },
@@ -469,40 +469,24 @@
 							{#each probaRows as row}
 								<tr class="border border-black">
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<input
-											class="w-16 border border-gray-300 rounded px-1 py-0.5 text-sm"
-											type="text"
-											bind:value={row.echelle}
-										/>
+										{row.echelle}
 									</td>
 									<td
 										class={`px-4 py-2 border border-black ${getProbaDefBg(row.definition)}`}
 									>
-										<input
-											class="w-full border border-transparent bg-transparent font-semibold"
-											type="text"
-											bind:value={row.definition}
-										/>
+										<span class="font-semibold">{row.definition}</span>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
 										<p class="text-xs">
 											<span class="font-semibold">Fréquence :</span>
 										</p>
-										<textarea
-											class="mt-1 w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
-											rows="2"
-											bind:value={row.frequence}
-										/>
+										<p class="mt-1 text-xs">{row.frequence}</p>
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white">
+									<td class="px-4 py-2 text-black border border-black bg-white align-top">
 										<p class="text-xs">
 											<span class="font-semibold">Historique :</span>
 										</p>
-										<textarea
-											class="mt-1 w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
-											rows="2"
-											bind:value={row.historique}
-										/>
+										<p class="mt-1 text-xs">{row.historique}</p>
 									</td>
 								</tr>
 							{/each}
@@ -554,60 +538,36 @@
 							{#each impactRows as row}
 								<tr class="border border-black">
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<input
-											class="w-16 border border-gray-300 rounded px-1 py-0.5 text-sm"
-											type="text"
-											bind:value={row.echelle}
-										/>
+										{row.echelle}
 									</td>
 									<td
 										class={`px-4 py-2 border border-black ${getImpactDefBg(row.definition)}`}
 									>
-										<input
-											class="w-full border border-transparent bg-transparent font-semibold"
-											type="text"
-											bind:value={row.definition}
-										/>
+										<span class="font-semibold">{row.definition}</span>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
 										<p class="text-xs">
 											<span class="font-semibold">Financier :</span>
 										</p>
-										<textarea
-											class="mt-1 w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
-											rows="2"
-											bind:value={row.financier}
-										/>
+										<p class="mt-1 text-xs">{row.financier}</p>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
 										<p class="text-xs">
 											<span class="font-semibold">Réputation :</span>
 										</p>
-										<textarea
-											class="mt-1 w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
-											rows="2"
-											bind:value={row.reputation}
-										/>
+										<p class="mt-1 text-xs">{row.reputation}</p>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
 										<p class="text-xs">
 											<span class="font-semibold">Parties prenantes :</span>
 										</p>
-										<textarea
-											class="mt-1 w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
-											rows="2"
-											bind:value={row.parties_prenantes}
-										/>
+										<p class="mt-1 text-xs">{row.parties_prenantes}</p>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
 										<p class="text-xs">
 											<span class="font-semibold">Réglementaire :</span>
 										</p>
-										<textarea
-											class="mt-1 w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
-											rows="2"
-											bind:value={row.reglementaire}
-										/>
+										<p class="mt-1 text-xs">{row.reglementaire}</p>
 									</td>
 								</tr>
 							{/each}
@@ -656,18 +616,30 @@
 							</tr>
 						</thead>
 						<tbody>
-							{#each frequenceRisqueRows as row}
+							{#each frequenceRisqueRows as row, i}
 								<tr class="border border-black">
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										{row.echelle}
+										<input
+											class="w-16 border border-gray-300 rounded px-1 py-0.5 text-sm"
+											type="text"
+											bind:value={frequenceRisqueRows[i].echelle}
+										/>
 									</td>
 									<td
 										class={`px-4 py-2 border border-black ${getFrequenceDefBg(row.definition)}`}
 									>
-										{row.definition}
+										<input
+											class="w-full border border-transparent bg-transparent font-semibold"
+											type="text"
+											bind:value={frequenceRisqueRows[i].definition}
+										/>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										{row.signification}
+										<input
+											class="w-full border border-gray-300 rounded px-1 py-0.5 text-sm"
+											type="text"
+											bind:value={frequenceRisqueRows[i].signification}
+										/>
 									</td>
 								</tr>
 							{/each}
@@ -698,12 +670,24 @@
 							</tr>
 						</thead>
 						<tbody>
-							{#each matriceRisqueRows as row}
+							{#each matriceRisqueRows as row, i}
 								<tr class="border border-black">
-									<td class="px-2 py-2 text-sm border border-black bg-white">{row.libelle}</td>
-									{#each row.valeurs as v}
-										<td class={`px-2 py-2 text-xs text-center border border-black ${getMatriceCellBg(v)}`}>
-											{v}
+									<td class="px-2 py-2 text-sm border border-black bg-white">
+										<input
+											class="w-20 border border-gray-300 rounded px-1 py-0.5 text-sm"
+											type="text"
+											bind:value={matriceRisqueRows[i].libelle}
+										/>
+									</td>
+									{#each row.valeurs as v, j}
+										<td
+											class={`px-2 py-2 text-xs text-center border border-black ${getMatriceCellBg(v)}`}
+										>
+											<input
+												class="w-16 text-center border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent"
+												type="number"
+												bind:value={matriceRisqueRows[i].valeurs[j]}
+											/>
 										</td>
 									{/each}
 								</tr>
