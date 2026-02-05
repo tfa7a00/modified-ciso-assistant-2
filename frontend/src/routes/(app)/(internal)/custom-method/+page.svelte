@@ -139,75 +139,104 @@
 
 	// --- Aide-Risque : tableaux probabilité / impact / fréquence / matrice ---
 
-	const probaRows: Row[] = [
+	type ProbaRow = {
+		echelle: string;
+		definition: string;
+		frequence: string;
+		historique: string;
+	};
+
+	let probaRows: ProbaRow[] = [
 		{
 			echelle: '1',
 			definition: 'Très faible',
-			designation:
-				'Fréquence : Pas de chance que le scénario se réalise avec succès. Historique : Une fois tous les 10 ans.'
+			frequence: 'Pas de chance que le scénario se réalise avec succès.',
+			historique: 'Une fois tous les 10 ans.'
 		},
 		{
 			echelle: '2',
 			definition: 'Faible',
-			designation:
-				'Fréquence : Très peu de chance que le scénario se réalise avec succès. Historique : Une fois tous les 3 ans.'
+			frequence: 'Très peu de chance que le scénario se réalise avec succès.',
+			historique: 'Une fois tous les 3 ans.'
 		},
 		{
 			echelle: '3',
 			definition: 'Moyen',
-			designation:
-				'Fréquence : Peu de chance que le scénario se réalise avec succès. Historique : Une à plusieurs fois par an.'
+			frequence: 'Peu de chance que le scénario se réalise avec succès.',
+			historique: 'Une à plusieurs fois par an.'
 		},
 		{
 			echelle: '4',
 			definition: 'Forte',
-			designation:
-				'Fréquence : Fortes chances que le scénario se réalise avec succès à moyen terme. Historique : Une à plusieurs fois par mois.'
+			frequence: 'Fortes chances que le scénario se réalise avec succès à moyen terme.',
+			historique: 'Une à plusieurs fois par mois.'
 		},
 		{
 			echelle: '5',
 			definition: 'Très forte',
-			designation:
-				'Fréquence : Le scénario se réalise fréquemment avec succès à court terme. Historique : Une à plusieurs fois par semaine.'
+			frequence: 'Le scénario se réalise fréquemment avec succès à court terme.',
+			historique: 'Une à plusieurs fois par semaine.'
 		}
 	];
 
-	const impactRows: Row[] = [
+	type ImpactRow = {
+		echelle: string;
+		definition: string;
+		financier: string;
+		reputation: string;
+		parties_prenantes: string;
+		reglementaire: string;
+	};
+
+	let impactRows: ImpactRow[] = [
 		{
 			echelle: '1',
 			definition: 'Très faible',
-			designation:
-				'Financier : Inférieur à 2 KDH. Réputation : Aucun impact. Parties prenantes : Aucun impact. Réglementaire : Aucun impact.'
+			financier: 'Inférieur à 2 KDH.',
+			reputation: 'Aucun impact.',
+			parties_prenantes: 'Aucun impact.',
+			reglementaire: 'Aucun impact.'
 		},
 		{
 			echelle: '2',
 			definition: 'Faible',
-			designation:
-				'Financier : Entre 2 et 20 KDH. Réputation : Impact visible mais médiatisation limitée. Parties prenantes : Impact limité. Réglementaire : non‑conformité mineure, sanctions < 20 KDH.'
+			financier: 'Entre 2 et 20 KDH.',
+			reputation: 'Impact visible mais médiatisation limitée.',
+			parties_prenantes: 'Impact limité.',
+			reglementaire: 'Non‑conformité mineure, sanctions < 20 KDH.'
 		},
 		{
 			echelle: '3',
 			definition: 'Moyen',
-			designation:
-				'Financier : Entre 20 et 200 KDH. Réputation : Couverture médiatique modérée. Parties prenantes : Impact modéré / réclamations récurrentes. Réglementaire : non‑conformité modérée, sanctions 20–200 KDH.'
+			financier: 'Entre 20 et 200 KDH.',
+			reputation: 'Couverture médiatique modérée.',
+			parties_prenantes: 'Impact modéré / réclamations récurrentes.',
+			reglementaire: 'Non‑conformité modérée, sanctions 20–200 KDH.'
 		},
 		{
 			echelle: '4',
 			definition: 'Fort',
-			designation:
-				'Financier : Entre 200 K et 2 MDH. Réputation : Large couverture médiatique. Parties prenantes : Impact significatif / réclamations graves et nombreuses. Réglementaire : non‑conformité majeure, sanctions 200 K–2 MDH.'
+			financier: 'Entre 200 K et 2 MDH.',
+			reputation: 'Large couverture médiatique.',
+			parties_prenantes: 'Impact significatif / réclamations graves et nombreuses.',
+			reglementaire: 'Non‑conformité majeure, sanctions 200 K–2 MDH.'
 		},
 		{
 			echelle: '5',
 			definition: 'Très fort',
-			designation:
-				'Financier : Entre 2 MDH et 20 MDH. Réputation : Couverture négative prolongée. Parties prenantes : Perte de confiance. Réglementaire : non‑conformité catastrophique, sanctions > 2 MDH.'
+			financier: 'Entre 2 MDH et 20 MDH.',
+			reputation: 'Couverture négative prolongée.',
+			parties_prenantes: 'Perte de confiance.',
+			reglementaire: 'Non‑conformité catastrophique, sanctions > 2 MDH.'
 		},
 		{
 			echelle: '6',
 			definition: 'Critique',
-			designation:
-				'Financier : Supérieur à 20 MDH. Autres impacts potentiellement catastrophiques pour la continuité de l’organisation.'
+			financier: 'Supérieur à 20 MDH.',
+			reputation: 'Impact très important et durable sur l’image.',
+			parties_prenantes: 'Conséquences potentiellement catastrophiques pour les parties prenantes.',
+			reglementaire:
+				'Non‑conformité critique, sanctions majeures et risque sur la continuité de l’organisation.'
 		}
 	];
 
@@ -427,6 +456,11 @@
 								<th
 									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
 								>
+									Fréquence
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
 									Désignation de la probabilité
 								</th>
 							</tr>
@@ -435,15 +469,40 @@
 							{#each probaRows as row}
 								<tr class="border border-black">
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										{row.echelle}
+										<input
+											class="w-16 border border-gray-300 rounded px-1 py-0.5 text-sm"
+											type="text"
+											bind:value={row.echelle}
+										/>
 									</td>
 									<td
 										class={`px-4 py-2 border border-black ${getProbaDefBg(row.definition)}`}
 									>
-										{row.definition}
+										<input
+											class="w-full border border-transparent bg-transparent font-semibold"
+											type="text"
+											bind:value={row.definition}
+										/>
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top">
+										<p class="text-xs">
+											<span class="font-semibold">Fréquence :</span>
+										</p>
+										<textarea
+											class="mt-1 w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
+											rows="2"
+											bind:value={row.frequence}
+										/>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										{row.designation}
+										<p class="text-xs">
+											<span class="font-semibold">Historique :</span>
+										</p>
+										<textarea
+											class="mt-1 w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
+											rows="2"
+											bind:value={row.historique}
+										/>
 									</td>
 								</tr>
 							{/each}
@@ -472,7 +531,22 @@
 								<th
 									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
 								>
-									Désignation de l’impact
+									Financier
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Réputation
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Parties prenantes
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Réglementaire
 								</th>
 							</tr>
 						</thead>
@@ -480,15 +554,60 @@
 							{#each impactRows as row}
 								<tr class="border border-black">
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										{row.echelle}
+										<input
+											class="w-16 border border-gray-300 rounded px-1 py-0.5 text-sm"
+											type="text"
+											bind:value={row.echelle}
+										/>
 									</td>
 									<td
 										class={`px-4 py-2 border border-black ${getImpactDefBg(row.definition)}`}
 									>
-										{row.definition}
+										<input
+											class="w-full border border-transparent bg-transparent font-semibold"
+											type="text"
+											bind:value={row.definition}
+										/>
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white">
-										{row.designation}
+									<td class="px-4 py-2 text-black border border-black bg-white align-top">
+										<p class="text-xs">
+											<span class="font-semibold">Financier :</span>
+										</p>
+										<textarea
+											class="mt-1 w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
+											rows="2"
+											bind:value={row.financier}
+										/>
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top">
+										<p class="text-xs">
+											<span class="font-semibold">Réputation :</span>
+										</p>
+										<textarea
+											class="mt-1 w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
+											rows="2"
+											bind:value={row.reputation}
+										/>
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top">
+										<p class="text-xs">
+											<span class="font-semibold">Parties prenantes :</span>
+										</p>
+										<textarea
+											class="mt-1 w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
+											rows="2"
+											bind:value={row.parties_prenantes}
+										/>
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top">
+										<p class="text-xs">
+											<span class="font-semibold">Réglementaire :</span>
+										</p>
+										<textarea
+											class="mt-1 w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
+											rows="2"
+											bind:value={row.reglementaire}
+										/>
 									</td>
 								</tr>
 							{/each}
