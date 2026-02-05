@@ -136,6 +136,162 @@
 				return 'bg-white text-black';
 		}
 	}
+
+	// --- Aide-Risque : tableaux probabilité / impact / fréquence / matrice ---
+
+	const probaRows: Row[] = [
+		{
+			echelle: '1',
+			definition: 'Très faible',
+			designation:
+				'Fréquence : Pas de chance que le scénario se réalise avec succès. Historique : Une fois tous les 10 ans.'
+		},
+		{
+			echelle: '2',
+			definition: 'Faible',
+			designation:
+				'Fréquence : Très peu de chance que le scénario se réalise avec succès. Historique : Une fois tous les 3 ans.'
+		},
+		{
+			echelle: '3',
+			definition: 'Moyen',
+			designation:
+				'Fréquence : Peu de chance que le scénario se réalise avec succès. Historique : Une à plusieurs fois par an.'
+		},
+		{
+			echelle: '4',
+			definition: 'Forte',
+			designation:
+				'Fréquence : Fortes chances que le scénario se réalise avec succès à moyen terme. Historique : Une à plusieurs fois par mois.'
+		},
+		{
+			echelle: '5',
+			definition: 'Très forte',
+			designation:
+				'Fréquence : Le scénario se réalise fréquemment avec succès à court terme. Historique : Une à plusieurs fois par semaine.'
+		}
+	];
+
+	const impactRows: Row[] = [
+		{
+			echelle: '1',
+			definition: 'Très faible',
+			designation:
+				'Financier : Inférieur à 2 KDH. Réputation : Aucun impact. Parties prenantes : Aucun impact. Réglementaire : Aucun impact.'
+		},
+		{
+			echelle: '2',
+			definition: 'Faible',
+			designation:
+				'Financier : Entre 2 et 20 KDH. Réputation : Impact visible mais médiatisation limitée. Parties prenantes : Impact limité. Réglementaire : non‑conformité mineure, sanctions < 20 KDH.'
+		},
+		{
+			echelle: '3',
+			definition: 'Moyen',
+			designation:
+				'Financier : Entre 20 et 200 KDH. Réputation : Couverture médiatique modérée. Parties prenantes : Impact modéré / réclamations récurrentes. Réglementaire : non‑conformité modérée, sanctions 20–200 KDH.'
+		},
+		{
+			echelle: '4',
+			definition: 'Fort',
+			designation:
+				'Financier : Entre 200 K et 2 MDH. Réputation : Large couverture médiatique. Parties prenantes : Impact significatif / réclamations graves et nombreuses. Réglementaire : non‑conformité majeure, sanctions 200 K–2 MDH.'
+		},
+		{
+			echelle: '5',
+			definition: 'Très fort',
+			designation:
+				'Financier : Entre 2 MDH et 20 MDH. Réputation : Couverture négative prolongée. Parties prenantes : Perte de confiance. Réglementaire : non‑conformité catastrophique, sanctions > 2 MDH.'
+		},
+		{
+			echelle: '6',
+			definition: 'Critique',
+			designation:
+				'Financier : Supérieur à 20 MDH. Autres impacts potentiellement catastrophiques pour la continuité de l’organisation.'
+		}
+	];
+
+	const frequenceRisqueRows: Row[] = [
+		{ echelle: '1', definition: 'Risque Faible', signification: '[1 – 20[' },
+		{ echelle: '2', definition: 'Risque Modéré', signification: '[20 – 36[' },
+		{ echelle: '3', definition: 'Risque Elevé', signification: '[36 – 64[' },
+		{ echelle: '4', definition: 'Risque Extrême', signification: '[64 – 120]' }
+	];
+
+	type MatriceRow = { libelle: string; valeurs: number[] };
+
+	const matriceRisqueRows: MatriceRow[] = [
+		{ libelle: '4×1', valeurs: [4, 8, 12, 16, 20] },
+		{ libelle: '4×2', valeurs: [8, 16, 24, 32, 40] },
+		{ libelle: '4×3', valeurs: [12, 24, 36, 48, 60] },
+		{ libelle: '4×4', valeurs: [16, 32, 48, 64, 80] },
+		{ libelle: '4×5', valeurs: [20, 40, 60, 80, 100] },
+		{ libelle: '4×6', valeurs: [24, 48, 72, 96, 120] }
+	];
+
+	function getProbaDefBg(definition: string): string {
+		switch (definition) {
+			case 'Très faible':
+				return 'bg-green-400 text-black';
+			case 'Faible':
+				return 'bg-yellow-300 text-black';
+			case 'Moyen':
+				return 'bg-orange-400 text-black';
+			case 'Forte':
+				return 'bg-red-500 text-black';
+			case 'Très forte':
+				return 'bg-red-700 text-black';
+			default:
+				return 'bg-white text-black';
+		}
+	}
+
+	function getImpactDefBg(definition: string): string {
+		switch (definition) {
+			case 'Très faible':
+				return 'bg-green-400 text-black';
+			case 'Faible':
+				return 'bg-yellow-300 text-black';
+			case 'Moyen':
+				return 'bg-orange-400 text-black';
+			case 'Fort':
+				return 'bg-red-500 text-black';
+			case 'Très fort':
+				return 'bg-red-700 text-black';
+			case 'Critique':
+				return 'bg-red-900 text-white';
+			default:
+				return 'bg-white text-black';
+		}
+	}
+
+	function getFrequenceDefBg(definition: string): string {
+		switch (definition) {
+			case 'Risque Faible':
+				return 'bg-green-400 text-black';
+			case 'Risque Modéré':
+				return 'bg-yellow-300 text-black';
+			case 'Risque Elevé':
+				return 'bg-orange-400 text-black';
+			case 'Risque Extrême':
+				return 'bg-red-500 text-black';
+			default:
+				return 'bg-white text-black';
+		}
+	}
+
+	function getMatriceCellBg(valeur: number): string {
+		if (valeur < 20) {
+			return 'bg-green-400 text-black'; // zone verte [1–20[
+		}
+		if (valeur >= 20 && valeur < 36) {
+			return 'bg-yellow-300 text-black'; // zone jaune [20–36[
+		}
+		if (valeur >= 36 && valeur < 64) {
+			return 'bg-orange-400 text-black'; // zone orange [36–64[
+		}
+		return 'bg-red-500 text-black'; // zone rouge [64–120]
+	}
 </script>
 
 <main class="p-6 space-y-8">
@@ -246,12 +402,201 @@
 			</p>
 		</section>
 	{:else if activeSection === 'aide-risque'}
-		<section class="space-y-4">
+		<section class="space-y-8">
 			<h2 class="text-xl font-semibold text-gray-900">Aide-Risque</h2>
-			<p class="text-gray-700">
-				Contenu d’aide à l’évaluation des risques à insérer ici. Envoie-moi le détail pour que je
-				le mette en forme.
-			</p>
+
+			<!-- Tableau 1 – Échelle de probabilité / fréquence -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">
+					Tableau 1&nbsp;: Échelle de probabilité / fréquence
+				</h3>
+				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+					<table class="min-w-full text-sm border-collapse border border-black">
+						<thead>
+							<tr>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Échelle
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Définition
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Désignation de la probabilité
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each probaRows as row}
+								<tr class="border border-black">
+									<td class="px-4 py-2 text-black border border-black bg-white">
+										{row.echelle}
+									</td>
+									<td
+										class={`px-4 py-2 border border-black ${getProbaDefBg(row.definition)}`}
+									>
+										{row.definition}
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white">
+										{row.designation}
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<!-- Tableau 2 – Échelle d’impact -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">Tableau 2&nbsp;: Échelle d’impact</h3>
+				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+					<table class="min-w-full text-sm border-collapse border border-black">
+						<thead>
+							<tr>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Échelle
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Définition
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Désignation de l’impact
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each impactRows as row}
+								<tr class="border border-black">
+									<td class="px-4 py-2 text-black border border-black bg-white">
+										{row.echelle}
+									</td>
+									<td
+										class={`px-4 py-2 border border-black ${getImpactDefBg(row.definition)}`}
+									>
+										{row.definition}
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white">
+										{row.designation}
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+				<p class="text-xs text-gray-600">
+					Les mots‑clés <strong>Financier</strong>, <strong>Réputation</strong>,
+					<strong>Parties prenantes</strong> et <strong>Réglementaire</strong> doivent être
+					considérés comme des axes d’analyse principaux.
+				</p>
+			</section>
+
+			<!-- Tableau 3.1 – Fréquence / probabilité d’occurrence (échelle de risque) -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">
+					Tableau 3.1&nbsp;: Fréquence / probabilité d’occurrence (échelle de risque)
+				</h3>
+				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+					<table class="min-w-full text-sm border-collapse border border-black">
+						<thead>
+							<tr>
+								<th
+									colspan="3"
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Fréquence / Probabilité d’occurrence
+								</th>
+							</tr>
+							<tr>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black"
+								>
+									Échelle
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black"
+								>
+									Définition
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black"
+								>
+									Signification
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each frequenceRisqueRows as row}
+								<tr class="border border-black">
+									<td class="px-4 py-2 text-black border border-black bg-white">
+										{row.echelle}
+									</td>
+									<td
+										class={`px-4 py-2 border border-black ${getFrequenceDefBg(row.definition)}`}
+									>
+										{row.definition}
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white">
+										{row.signification}
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<!-- Tableau 3.2 – Matrice de vraisemblance du risque -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">
+					Tableau 3.2&nbsp;: Matrice de vraisemblance du risque
+				</h3>
+				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+					<table class="min-w-full text-sm border-collapse border border-black">
+						<thead>
+							<tr>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Impact du risque × Criticité de l’actif \ Vraisemblance du risque
+								</th>
+								{#each [1, 2, 3, 4, 5] as col}
+									<th class="px-4 py-2 text-sm font-semibold border border-black bg-gray-100">
+										{col}
+									</th>
+								{/each}
+							</tr>
+						</thead>
+						<tbody>
+							{#each matriceRisqueRows as row}
+								<tr class="border border-black">
+									<td class="px-2 py-2 text-sm border border-black bg-white">{row.libelle}</td>
+									{#each row.valeurs as v}
+										<td class={`px-2 py-2 text-xs text-center border border-black ${getMatriceCellBg(v)}`}>
+											{v}
+										</td>
+									{/each}
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+				<p class="text-xs text-gray-600">
+					Les zones vertes correspondent à la plage [1–20[ (Risque Faible), les zones jaunes à
+					[20–36[, les zones orange à [36–64[ et les zones rouges à [64–120] (Risque Extrême).
+				</p>
+			</section>
 		</section>
 	{:else if activeSection === 'ptr'}
 		<section class="space-y-4">
