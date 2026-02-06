@@ -79,6 +79,90 @@
 		}
 	];
 
+	// --- Aide-Classification: Tableaux DIC ---
+
+	type DICCriteriaRow = {
+		critere: string;
+		definition: string;
+		bgColor: string;
+	};
+
+	const dicCriteriaRows: DICCriteriaRow[] = [
+		{
+			critere: 'Disponibilité',
+			definition:
+				'Les utilisateurs autorisés ont accès à l'information et aux actifs correspondants quand ils en ont besoin.',
+			bgColor: 'bg-green-600'
+		},
+		{
+			critere: 'Intégrité',
+			definition: 'Garantir l'exactitude, la précision et l'intégralité de l'information.',
+			bgColor: 'bg-green-400'
+		},
+		{
+			critere: 'Confidentialité',
+			definition: 'L'information n'est accessible qu'aux personnes autorisées.',
+			bgColor: 'bg-blue-600'
+		}
+	];
+
+	type DICNiveauRow = {
+		valeur: string;
+		disponibilite: string;
+		integrite: string;
+		confidentialite: string;
+	};
+
+	const dicNiveauxRows: DICNiveauRow[] = [
+		{
+			valeur: 'Faible',
+			disponibilite:
+				"Tolérance à l'indisponibilité **entre 48h et une semaine**. Si ce besoin n'est pas respecté, l'organisation court un **impact mineur** sur les activités.",
+			integrite:
+				"**La perte d'intégrité momentanée** des informations est acceptée, sous réserve qu'elle soit signalée et ne remette pas en cause le service fourni.",
+			confidentialite:
+				"**Public** : Information qui peut être rendue publique sans implication pour l'entité ou pour l'organisation."
+		},
+		{
+			valeur: 'Moyen',
+			disponibilite:
+				"Tolérance à l'indisponibilité **entre 24h et 48h**. Si ce besoin n'est pas respecté, l'organisation court un **impact modéré**.",
+			integrite:
+				'**La perte d'intégrité tolérée si signalée** dans un délai suffisant pour ne pas avoir de conséquence grave sur le service fourni.',
+			confidentialite:
+				"**Interne** : Information ayant vocation à demeurer au sein de l'organisation. Sa communication à l'extérieur de l'organisation ne peut se faire que sur autorisation."
+		},
+		{
+			valeur: 'Élevé',
+			disponibilite:
+				"Tolérance à l'indisponibilité **entre 4h et 24h**. Si ce besoin n'est pas respecté, l'organisation court un **impact significatif**.",
+			integrite:
+				'Les informations **doivent rester intègres pendant la période d'utilisation** ; toute perte en dehors de cette période doit être signalée et justifiée.',
+			confidentialite:
+				"**Restreint** : Information qui aurait un impact dommageable sur l'organisation si elle était communiquée à des personnes non habilitées. Elle nécessite un accès limité à des personnes ou à un groupe d'utilisateurs bien défini."
+		},
+		{
+			valeur: 'Très élevé',
+			disponibilite:
+				"Tolérance à l'indisponibilité **inférieure à 4 heures**. Si ce besoin n'est pas respecté, l'organisation court un **impact exceptionnellement majeur**.",
+			integrite:
+				'Les informations sont **certifiées intègres** pendant toute leur période de validité.',
+			confidentialite:
+				'**Confidentiel** : La divulgation de l'information aurait un impact majeur sur la SOCIETE si elle était communiquée à des personnes nommément désignées pour en connaître. Le circuit de l'information obéit à des règles très strictes.'
+		}
+	];
+
+	const categoriesActifsRows: string[] = [
+		'Matériel informatique',
+		'Application',
+		'Equipements sécurité',
+		'Equipements réseaux',
+		'Ressources humaines',
+		'Document',
+		'Données',
+		'Site'
+	];
+
 	function getPeriodiciteBg(periodicite: string): string {
 		switch (periodicite) {
 			case 'QuickWin':
@@ -134,6 +218,21 @@
 				return 'bg-red-500 text-black';
 			default:
 				return 'bg-white text-black';
+		}
+	}
+
+	function getValeurBg(valeur: string): string {
+		switch (valeur) {
+			case 'Faible':
+				return 'bg-orange-400';
+			case 'Moyen':
+				return 'bg-orange-500';
+			case 'Élevé':
+				return 'bg-orange-600';
+			case 'Très élevé':
+				return 'bg-orange-700';
+			default:
+				return 'bg-orange-500';
 		}
 	}
 
@@ -233,10 +332,10 @@
 			echelle: '6',
 			definition: 'Critique',
 			financier: 'Supérieur à 20 MDH.',
-			reputation: 'Impact très important et durable sur l’image.',
+			reputation: 'Impact très important et durable sur l'image.',
 			parties_prenantes: 'Conséquences potentiellement catastrophiques pour les parties prenantes.',
 			reglementaire:
-				'Non‑conformité critique, sanctions majeures et risque sur la continuité de l’organisation.'
+				'Non‑conformité critique, sanctions majeures et risque sur la continuité de l'organisation.'
 		}
 	];
 
@@ -415,12 +514,167 @@
 			</p>
 		</section>
 	{:else if activeSection === 'aide-classification'}
-		<section class="space-y-4">
+		<section class="space-y-8">
 			<h2 class="text-xl font-semibold text-gray-900">Aide-Classification</h2>
-			<p class="text-gray-700">
-				Contenu de l’aide à la classification à insérer ici. Tu peux me transmettre les éléments
-				restants pour que je complète cette partie.
-			</p>
+
+			<!-- Tableau 1 – Définitions générales D/I/C -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">
+					Tableau 1 – Disponibilité, Intégrité, Confidentialité (définitions générales)
+				</h3>
+				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+					<table class="min-w-full text-sm border-collapse border border-black">
+						<thead>
+							<tr>
+								{#each dicCriteriaRows as criteria}
+									<th
+										class={`px-4 py-2 text-left font-semibold text-white border border-black ${criteria.bgColor}`}
+									>
+										{criteria.critere}
+									</th>
+								{/each}
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="border border-black">
+								{#each dicCriteriaRows as criteria}
+									<td class="px-4 py-2 text-black border border-black bg-white align-top">
+										{criteria.definition}
+									</td>
+								{/each}
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<!-- Tableau 1.2 – Niveaux de valeur par critère (D / I / C) -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">
+					Tableau 1.2 – Niveaux de valeur par critère (D / I / C)
+				</h3>
+				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+					<table class="min-w-full text-sm border-collapse border border-black">
+						<thead>
+							<tr>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-orange-500 border border-black"
+								>
+									Valeur
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-green-600 border border-black"
+								>
+									Disponibilité (D)
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-green-400 border border-black"
+								>
+									Intégrité (I)
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-blue-600 border border-black"
+								>
+									Confidentialité (C)
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each dicNiveauxRows as row}
+								<tr class="border border-black">
+									<td
+										class={`px-4 py-2 font-semibold text-white border border-black ${getValeurBg(row.valeur)}`}
+									>
+										{row.valeur}
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs">
+										{@html row.disponibilite.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs">
+										{@html row.integrite.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs">
+										{@html row.confidentialite.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+				<div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm">
+					<p class="font-semibold text-blue-900 mb-2">Notes sur les couleurs :</p>
+					<ul class="list-disc list-inside text-blue-800 space-y-1">
+						<li>
+							Bandes de titre "Disponibilité / Intégrité / Confidentialité" : fond vert pour
+							Disponibilité, vert clair pour Intégrité, bleu pour Confidentialité, texte blanc.
+						</li>
+						<li>En‑tête "Valeur" : fond orange, texte blanc.</li>
+						<li>
+							Mots clés dans les descriptions (délais, niveaux) sont mis en <strong>gras</strong>.
+						</li>
+						<li>
+							Dans la colonne Confidentialité, les niveaux <strong class="text-red-600"
+								>Public, Interne, Restreint, Confidentiel</strong
+							> sont marqués en rouge dans le modèle original.
+						</li>
+					</ul>
+				</div>
+			</section>
+
+			<!-- Tableau 2 – Catégories d'actifs -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">Tableau 2 – Catégories d'actifs</h3>
+				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+					<table class="min-w-full text-sm border-collapse border border-black">
+						<thead>
+							<tr>
+								<th
+									class="px-4 py-3 text-center font-semibold text-black bg-sky-200 border border-black"
+								>
+									Catégories d'actifs
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each categoriesActifsRows as categorie}
+								<tr class="border border-black">
+									<td class="px-4 py-2 text-black border border-black bg-white text-center">
+										{categorie}
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<!-- Tableau 3 – Propriétaires des actifs -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">Tableau 3 – Propriétaires des actifs</h3>
+				<div
+					class="rounded-lg border-2 border-green-600 bg-green-50 p-4 shadow-sm flex gap-4 items-start"
+				>
+					<div class="bg-white px-4 py-2 rounded border border-green-400 flex-shrink-0">
+						<p class="font-semibold text-gray-900">Propriétaires des actifs</p>
+					</div>
+					<div class="flex-1">
+						<p class="text-sm text-gray-800">
+							Chaque actif informationnel doit être attribué formellement à un propriétaire qui a
+							la responsabilité de la gestion des actifs informationnels qui lui sont attribués
+							(inventaire, classification, protection, destruction, réforme …) tout au long de
+							leurs cycles de vie.
+						</p>
+					</div>
+				</div>
+				<div class="bg-green-50 border-l-4 border-green-600 p-3 text-sm">
+					<p class="font-semibold text-green-900 mb-1">Notes sur les couleurs :</p>
+					<p class="text-green-800">
+						Le bloc complet est sur un fond vert très clair / pastel, encadré d'une bordure verte
+						plus foncée. La petite bande à gauche avec "Propriétaires des actifs" a un fond
+						légèrement plus clair ou blanc cassé pour distinguer le titre du texte explicatif.
+					</p>
+				</div>
+			</section>
 		</section>
 	{:else if activeSection === 'cartographie-risques'}
 		<section class="space-y-4">
@@ -495,9 +749,9 @@
 				</div>
 			</section>
 
-			<!-- Tableau 2 – Échelle d’impact -->
+			<!-- Tableau 2 – Échelle d'impact -->
 			<section class="space-y-3">
-				<h3 class="text-lg font-semibold text-gray-900">Tableau 2&nbsp;: Échelle d’impact</h3>
+				<h3 class="text-lg font-semibold text-gray-900">Tableau 2&nbsp;: Échelle d'impact</h3>
 				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
 					<table class="min-w-full text-sm border-collapse border border-black">
 						<thead>
@@ -577,14 +831,14 @@
 				<p class="text-xs text-gray-600">
 					Les mots‑clés <strong>Financier</strong>, <strong>Réputation</strong>,
 					<strong>Parties prenantes</strong> et <strong>Réglementaire</strong> doivent être
-					considérés comme des axes d’analyse principaux.
+					considérés comme des axes d'analyse principaux.
 				</p>
 			</section>
 
-			<!-- Tableau 3.1 – Fréquence / probabilité d’occurrence (échelle de risque) -->
+			<!-- Tableau 3.1 – Fréquence / probabilité d'occurrence (échelle de risque) -->
 			<section class="space-y-3">
 				<h3 class="text-lg font-semibold text-gray-900">
-					Tableau 3.1&nbsp;: Fréquence / probabilité d’occurrence (échelle de risque)
+					Tableau 3.1&nbsp;: Fréquence / probabilité d'occurrence (échelle de risque)
 				</h3>
 				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
 					<table class="min-w-full text-sm border-collapse border border-black">
@@ -594,7 +848,7 @@
 									colspan="3"
 									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
 								>
-									Fréquence / Probabilité d’occurrence
+									Fréquence / Probabilité d'occurrence
 								</th>
 							</tr>
 							<tr>
@@ -660,7 +914,7 @@
 								<th
 									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
 								>
-									Impact du risque × Criticité de l’actif \ Vraisemblance du risque
+									Impact du risque × Criticité de l'actif \ Vraisemblance du risque
 								</th>
 								{#each [1, 2, 3, 4, 5] as col}
 									<th class="px-4 py-2 text-sm font-semibold border border-black bg-gray-100">
@@ -706,7 +960,7 @@
 			<h2 class="text-xl font-semibold text-gray-900">PTR</h2>
 			<p class="text-gray-700">
 				Section dédiée au PTR (Plan de Traitement des Risques ou autre signification selon ta
-				méthode). Cette partie sera complétée avec le contenu que tu vas m’envoyer.
+				méthode). Cette partie sera complétée avec le contenu que tu vas m'envoyer.
 			</p>
 		</section>
 	{:else if activeSection === 'echelle-ptr'}
@@ -787,7 +1041,7 @@
 			</section>
 
 			<section class="space-y-4">
-				<h3 class="text-lg font-semibold text-gray-900">Table 3&nbsp;: Type de l’action</h3>
+				<h3 class="text-lg font-semibold text-gray-900">Table 3&nbsp;: Type de l'action</h3>
 				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
 					<table class="min-w-full text-sm align-top border-collapse border border-black">
 						<thead>
@@ -795,7 +1049,7 @@
 								<th
 									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
 								>
-									Type de l’action
+									Type de l'action
 								</th>
 								<th
 									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
@@ -823,7 +1077,7 @@
 			</section>
 
 			<section class="space-y-4">
-				<h3 class="text-lg font-semibold text-gray-900">Table 4&nbsp;: Priorité de l’action</h3>
+				<h3 class="text-lg font-semibold text-gray-900">Table 4&nbsp;: Priorité de l'action</h3>
 				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
 					<table class="min-w-full text-sm border-collapse border border-black">
 						<thead>
@@ -876,4 +1130,3 @@
 		</section>
 	{/if}
 </main>
-
