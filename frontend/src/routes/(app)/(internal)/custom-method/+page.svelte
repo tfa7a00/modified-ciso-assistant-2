@@ -91,17 +91,17 @@
 		{
 			critere: 'Disponibilité',
 			definition:
-				'Les utilisateurs autorisés ont accès à l'information et aux actifs correspondants quand ils en ont besoin.',
+				"Les utilisateurs autorisés ont accès à l'information et aux actifs correspondants quand ils en ont besoin.",
 			bgColor: 'bg-green-600'
 		},
 		{
 			critere: 'Intégrité',
-			definition: 'Garantir l'exactitude, la précision et l'intégralité de l'information.',
+			definition: "Garantir l'exactitude, la précision et l'intégralité de l'information.",
 			bgColor: 'bg-green-400'
 		},
 		{
 			critere: 'Confidentialité',
-			definition: 'L'information n'est accessible qu'aux personnes autorisées.',
+			definition: "L'information n'est accessible qu'aux personnes autorisées.",
 			bgColor: 'bg-blue-600'
 		}
 	];
@@ -128,7 +128,7 @@
 			disponibilite:
 				"Tolérance à l'indisponibilité **entre 24h et 48h**. Si ce besoin n'est pas respecté, l'organisation court un **impact modéré**.",
 			integrite:
-				'**La perte d'intégrité tolérée si signalée** dans un délai suffisant pour ne pas avoir de conséquence grave sur le service fourni.',
+				"**La perte d'intégrité tolérée si signalée** dans un délai suffisant pour ne pas avoir de conséquence grave sur le service fourni.",
 			confidentialite:
 				"**Interne** : Information ayant vocation à demeurer au sein de l'organisation. Sa communication à l'extérieur de l'organisation ne peut se faire que sur autorisation."
 		},
@@ -137,7 +137,7 @@
 			disponibilite:
 				"Tolérance à l'indisponibilité **entre 4h et 24h**. Si ce besoin n'est pas respecté, l'organisation court un **impact significatif**.",
 			integrite:
-				'Les informations **doivent rester intègres pendant la période d'utilisation** ; toute perte en dehors de cette période doit être signalée et justifiée.',
+				"Les informations **doivent rester intègres pendant la période d'utilisation** ; toute perte en dehors de cette période doit être signalée et justifiée.",
 			confidentialite:
 				"**Restreint** : Information qui aurait un impact dommageable sur l'organisation si elle était communiquée à des personnes non habilitées. Elle nécessite un accès limité à des personnes ou à un groupe d'utilisateurs bien défini."
 		},
@@ -148,7 +148,7 @@
 			integrite:
 				'Les informations sont **certifiées intègres** pendant toute leur période de validité.',
 			confidentialite:
-				'**Confidentiel** : La divulgation de l'information aurait un impact majeur sur la SOCIETE si elle était communiquée à des personnes nommément désignées pour en connaître. Le circuit de l'information obéit à des règles très strictes.'
+				"**Confidentiel** : La divulgation de l'information aurait un impact majeur sur la SOCIETE si elle était communiquée à des personnes nommément désignées pour en connaître. Le circuit de l'information obéit à des règles très strictes."
 		}
 	];
 
@@ -332,10 +332,10 @@
 			echelle: '6',
 			definition: 'Critique',
 			financier: 'Supérieur à 20 MDH.',
-			reputation: 'Impact très important et durable sur l'image.',
+			reputation: "Impact très important et durable sur l'image.",
 			parties_prenantes: 'Conséquences potentiellement catastrophiques pour les parties prenantes.',
 			reglementaire:
-				'Non‑conformité critique, sanctions majeures et risque sur la continuité de l'organisation.'
+				"Non‑conformité critique, sanctions majeures et risque sur la continuité de l'organisation."
 		}
 	];
 
