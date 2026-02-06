@@ -224,13 +224,13 @@
 	function getValeurBg(valeur: string): string {
 		switch (valeur) {
 			case 'Faible':
-				return 'bg-orange-400';
+				return 'bg-green-500';
 			case 'Moyen':
 				return 'bg-orange-500';
 			case 'Élevé':
-				return 'bg-orange-600';
+				return 'bg-red-500';
 			case 'Très élevé':
-				return 'bg-orange-700';
+				return 'bg-rose-900';
 			default:
 				return 'bg-orange-500';
 		}
