@@ -117,38 +117,38 @@
 		{
 			valeur: 'Faible',
 			disponibilite:
-				"Tolérance à l'indisponibilité **entre 48h et une semaine**. Si ce besoin n'est pas respecté, l'organisation court un **impact mineur** sur les activités.",
+				"Tolérance à l'indisponibilité <span class='font-bold text-green-700'>entre 48h et une semaine</span>. Si ce besoin n'est pas respecté, l'organisation court un **impact mineur** sur les activités.",
 			integrite:
-				"**La perte d'intégrité momentanée** des informations est acceptée, sous réserve qu'elle soit signalée et ne remette pas en cause le service fourni.",
+				"<span class='font-bold text-green-700'>La perte d'intégrité momentanée</span> des informations est acceptée, sous réserve qu'elle soit signalée et ne remette pas en cause le service fourni.",
 			confidentialite:
-				"**Public** : Information qui peut être rendue publique sans implication pour l'entité ou pour l'organisation."
+				"<span class='font-bold text-green-700'>Public</span> : Information qui peut être rendue publique sans implication pour l'entité ou pour l'organisation."
 		},
 		{
 			valeur: 'Moyen',
 			disponibilite:
-				"Tolérance à l'indisponibilité **entre 24h et 48h**. Si ce besoin n'est pas respecté, l'organisation court un **impact modéré**.",
+				"Tolérance à l'indisponibilité <span class='font-bold text-orange-700'>entre 24h et 48h</span>. Si ce besoin n'est pas respecté, l'organisation court un **impact modéré**.",
 			integrite:
-				"**La perte d'intégrité tolérée si signalée** dans un délai suffisant pour ne pas avoir de conséquence grave sur le service fourni.",
+				"<span class='font-bold text-orange-700'>La perte d'intégrité tolérée si signalée</span> dans un délai suffisant pour ne pas avoir de conséquence grave sur le service fourni.",
 			confidentialite:
-				"**Interne** : Information ayant vocation à demeurer au sein de l'organisation. Sa communication à l'extérieur de l'organisation ne peut se faire que sur autorisation."
+				"<span class='font-bold text-orange-700'>Interne</span> : Information ayant vocation à demeurer au sein de l'organisation. Sa communication à l'extérieur de l'organisation ne peut se faire que sur autorisation."
 		},
 		{
 			valeur: 'Élevé',
 			disponibilite:
-				"Tolérance à l'indisponibilité **entre 4h et 24h**. Si ce besoin n'est pas respecté, l'organisation court un **impact significatif**.",
+				"Tolérance à l'indisponibilité <span class='font-bold text-red-700'>entre 4h et 24h</span>. Si ce besoin n'est pas respecté, l'organisation court un **impact significatif**.",
 			integrite:
-				"Les informations **doivent rester intègres pendant la période d'utilisation** ; toute perte en dehors de cette période doit être signalée et justifiée.",
+				"Les informations <span class='font-bold text-red-700'>doivent rester intègres pendant la période d'utilisation</span> ; toute perte en dehors de cette période doit être signalée et justifiée.",
 			confidentialite:
-				"**Restreint** : Information qui aurait un impact dommageable sur l'organisation si elle était communiquée à des personnes non habilitées. Elle nécessite un accès limité à des personnes ou à un groupe d'utilisateurs bien défini."
+				"<span class='font-bold text-red-700'>Restreint</span> : Information qui aurait un impact dommageable sur l'organisation si elle était communiquée à des personnes non habilitées. Elle nécessite un accès limité à des personnes ou à un groupe d'utilisateurs bien défini."
 		},
 		{
 			valeur: 'Très élevé',
 			disponibilite:
-				"Tolérance à l'indisponibilité **inférieure à 4 heures**. Si ce besoin n'est pas respecté, l'organisation court un **impact exceptionnellement majeur**.",
+				"Tolérance à l'indisponibilité <span class='font-bold text-rose-900'>inférieure à 4 heures</span>. Si ce besoin n'est pas respecté, l'organisation court un **impact exceptionnellement majeur**.",
 			integrite:
-				'Les informations sont **certifiées intègres** pendant toute leur période de validité.',
+				"Les informations sont <span class='font-bold text-rose-900'>certifiées intègres</span> pendant toute leur période de validité.",
 			confidentialite:
-				"**Confidentiel** : La divulgation de l'information aurait un impact majeur sur la SOCIETE si elle était communiquée à des personnes nommément désignées pour en connaître. Le circuit de l'information obéit à des règles très strictes."
+				"<span class='font-bold text-rose-900'>Confidentiel</span> : La divulgation de l'information aurait un impact majeur sur la SOCIETE si elle était communiquée à des personnes nommément désignées pour en connaître. Le circuit de l'information obéit à des règles très strictes."
 		}
 	];
 
@@ -528,7 +528,7 @@
 							<tr>
 								{#each dicCriteriaRows as criteria}
 									<th
-										class={`px-4 py-2 text-left font-semibold text-white border border-black ${criteria.bgColor}`}
+										class="px-4 py-2 text-left font-semibold text-black border border-black bg-sky-200"
 									>
 										{criteria.critere}
 									</th>
@@ -558,22 +558,22 @@
 						<thead>
 							<tr>
 								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-orange-500 border border-black"
+									class="px-4 py-2 text-left font-semibold text-black bg-sky-200 border border-black"
 								>
 									Valeur
 								</th>
 								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-green-600 border border-black"
+									class="px-4 py-2 text-left font-semibold text-black bg-sky-200 border border-black"
 								>
 									Disponibilité (D)
 								</th>
 								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-green-400 border border-black"
+									class="px-4 py-2 text-left font-semibold text-black bg-sky-200 border border-black"
 								>
 									Intégrité (I)
 								</th>
 								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-blue-600 border border-black"
+									class="px-4 py-2 text-left font-semibold text-black bg-sky-200 border border-black"
 								>
 									Confidentialité (C)
 								</th>
