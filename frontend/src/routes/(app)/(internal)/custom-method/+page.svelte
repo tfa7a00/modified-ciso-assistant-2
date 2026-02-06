@@ -601,24 +601,6 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm">
-					<p class="font-semibold text-blue-900 mb-2">Notes sur les couleurs :</p>
-					<ul class="list-disc list-inside text-blue-800 space-y-1">
-						<li>
-							Bandes de titre "Disponibilité / Intégrité / Confidentialité" : fond vert pour
-							Disponibilité, vert clair pour Intégrité, bleu pour Confidentialité, texte blanc.
-						</li>
-						<li>En‑tête "Valeur" : fond orange, texte blanc.</li>
-						<li>
-							Mots clés dans les descriptions (délais, niveaux) sont mis en <strong>gras</strong>.
-						</li>
-						<li>
-							Dans la colonne Confidentialité, les niveaux <strong class="text-red-600"
-								>Public, Interne, Restreint, Confidentiel</strong
-							> sont marqués en rouge dans le modèle original.
-						</li>
-					</ul>
-				</div>
 			</section>
 
 			<!-- Tableau 2 – Catégories d'actifs -->
@@ -665,14 +647,6 @@
 							leurs cycles de vie.
 						</p>
 					</div>
-				</div>
-				<div class="bg-green-50 border-l-4 border-green-600 p-3 text-sm">
-					<p class="font-semibold text-green-900 mb-1">Notes sur les couleurs :</p>
-					<p class="text-green-800">
-						Le bloc complet est sur un fond vert très clair / pastel, encadré d'une bordure verte
-						plus foncée. La petite bande à gauche avec "Propriétaires des actifs" a un fond
-						légèrement plus clair ou blanc cassé pour distinguer le titre du texte explicatif.
-					</p>
 				</div>
 			</section>
 		</section>
