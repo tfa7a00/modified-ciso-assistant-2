@@ -1155,23 +1155,7 @@
 				</table>
 			</div>
 
-			<div class="text-xs text-gray-600 space-y-2">
-				<p><strong>Notes :</strong></p>
-				<ul class="list-disc list-inside space-y-1">
-					<li>Les colonnes avec fond <span class="inline-block px-2 py-0.5 bg-yellow-400 text-black rounded">jaune vif</span> correspondent aux grandes étapes du registre (1 à 6).</li>
-					<li>Les sous-titres sont affichés avec un fond <span class="inline-block px-2 py-0.5 bg-yellow-300 text-black rounded">jaune clair</span> :
-						<ul class="list-circle list-inside ml-4 mt-1">
-							<li><strong>Section 1</strong> : Processus métier</li>
-							<li><strong>Section 2</strong> : Activité/Sous-processus</li>
-							<li><strong>Section 5</strong> : Propriétaire de l'actif (champ texte libre)</li>
-							<li><strong>Section 6</strong> : Besoins en Disponibilité, Intégrité, Confidentialité et Sensibilité</li>
-						</ul>
-					</li>
-					<li>Les besoins en <strong>Disponibilité</strong>, <strong>Intégrité</strong> et <strong>Confidentialité</strong> (section 6) sont à choisir parmi : <span class="font-semibold">Faible</span>, <span class="font-semibold">Moyen</span>, <span class="font-semibold">Élevé</span>, <span class="font-semibold">Très élevé</span>.</li>
-					<li>La <span class="font-semibold">Sensibilité de l'actif</span> (section 6) est <strong>calculée automatiquement</strong> comme la moyenne des 3 critères (Disponibilité, Intégrité, Confidentialité).</li>
-					<li>Codes couleur pour les niveaux : <span class="inline-block px-2 py-0.5 bg-green-500 text-white rounded text-xs">Faible</span>, <span class="inline-block px-2 py-0.5 bg-yellow-400 text-black rounded text-xs">Moyen</span>, <span class="inline-block px-2 py-0.5 bg-orange-500 text-white rounded text-xs">Élevé</span>, <span class="inline-block px-2 py-0.5 bg-red-600 text-white rounded text-xs">Très élevé</span>.</li>
-				</ul>
-			</div>
+			
 		</section>
 	{:else if activeSection === 'aide-classification'}
 		<section class="space-y-8">
