@@ -711,7 +711,6 @@
 			<h2 class="text-xl font-semibold text-gray-900">Contrôle du document</h2>
 			
 			<div class="space-y-2">
-				<h3 class="text-lg font-semibold text-gray-800">Titre du document</h3>
 				<div class="p-4 bg-blue-50 border-l-4 border-blue-600">
 					<p class="font-bold text-gray-900">REGISTRE DE CLASSIFICATION DES ACTIFS INFORMATIONNELS</p>
 					<p class="font-bold text-gray-900">CARTOGRAPHIE D'ANALYSE DES RISQUES DE SÉCURITÉ SI</p>
