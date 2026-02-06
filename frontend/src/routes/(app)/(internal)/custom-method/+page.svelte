@@ -56,6 +56,44 @@
 		{ version: '', date: '', modification: '' }
 	];
 
+	// --- Données pour Registre de classification ---
+	type RegistreRow = {
+		id: string;
+		id_ps: string;
+		processus_metier: string;
+		activite_sous_processus: string;
+		designation_actif: string;
+		description_actif: string;
+		categorie_actif: string;
+		type_actif: string;
+		proprietaire_actif: string;
+		disponibilite: string;
+		integrite: string;
+		confidentialite: string;
+		sensibilite: string;
+		commentaire: string;
+	};
+
+	let registreRows: RegistreRow[] = [
+		{
+			id: '',
+			id_ps: '',
+			processus_metier: '',
+			activite_sous_processus: '',
+			designation_actif: '',
+			description_actif: '',
+			categorie_actif: '',
+			type_actif: '',
+			proprietaire_actif: '',
+			disponibilite: '',
+			integrite: '',
+			confidentialite: '',
+			sensibilite: '',
+			commentaire: ''
+		}
+	];
+
+
 	let periodiciteRows: Row[] = [
 		{ periodicite: 'QuickWin', duree: '0 – 3 mois' },
 		{ periodicite: 'Court terme', duree: '3 – 12 mois' },
@@ -486,6 +524,92 @@
 	function supprimerCategorieActif(index: number) {
 		categoriesActifsRows = categoriesActifsRows.filter((_, i) => i !== index);
 	}
+
+	// Fonctions pour le registre de classification
+	function ajouterLigneRegistre() {
+		registreRows = [
+			...registreRows,
+			{
+				id: '',
+				id_ps: '',
+				processus_metier: '',
+				activite_sous_processus: '',
+				designation_actif: '',
+				description_actif: '',
+				categorie_actif: '',
+				type_actif: '',
+				proprietaire_actif: '',
+				disponibilite: '',
+				integrite: '',
+				confidentialite: '',
+				sensibilite: '',
+				commentaire: ''
+			}
+		];
+	}
+
+	function supprimerLigneRegistre(index: number) {
+		registreRows = registreRows.filter((_, i) => i !== index);
+	}
+
+	function getNiveauBesoinBg(niveau: string): string {
+		switch (niveau) {
+			case 'Faible':
+				return 'bg-green-500 text-white';
+			case 'Moyen':
+				return 'bg-yellow-400 text-black';
+			case 'Élevé':
+				return 'bg-orange-500 text-white';
+			case 'Très élevé':
+				return 'bg-red-600 text-white';
+			default:
+				return 'bg-white text-black';
+		}
+	}
+
+	function calculerSensibilite(index: number) {
+		const row = registreRows[index];
+		const niveaux = [row.disponibilite, row.integrite, row.confidentialite];
+		
+		// Convertir les niveaux en valeurs numériques
+		const valeurs = niveaux.map((n) => {
+			switch (n) {
+				case 'Faible':
+					return 1;
+				case 'Moyen':
+					return 2;
+				case 'Élevé':
+					return 3;
+				case 'Très élevé':
+					return 4;
+				default:
+					return 0;
+			}
+		});
+
+		// Filtrer les valeurs non nulles
+		const valeursValides = valeurs.filter((v) => v > 0);
+		
+		if (valeursValides.length === 0) {
+			registreRows[index].sensibilite = '';
+			return;
+		}
+
+		// Calculer la moyenne
+		const moyenne = valeursValides.reduce((acc, val) => acc + val, 0) / valeursValides.length;
+
+		// Convertir la moyenne en niveau
+		if (moyenne <= 1.5) {
+			registreRows[index].sensibilite = 'Faible';
+		} else if (moyenne <= 2.5) {
+			registreRows[index].sensibilite = 'Moyen';
+		} else if (moyenne <= 3.5) {
+			registreRows[index].sensibilite = 'Élevé';
+		} else {
+			registreRows[index].sensibilite = 'Très élevé';
+		}
+	}
+
 </script>
 
 <main class="p-6 space-y-8">
@@ -799,12 +923,245 @@
 			</section>
 		</section>
 	{:else if activeSection === 'registre-classification'}
-		<section class="space-y-4">
-			<h2 class="text-xl font-semibold text-gray-900">Registre de classification</h2>
+		<section class="space-y-6">
+			<h2 class="text-xl font-semibold text-gray-900">Registre de classification des actifs informationnels</h2>
+			
 			<p class="text-gray-700">
-				Contenu du registre de classification à insérer ici. Envoie-moi le texte / tableaux et je
-				les intégrerai dans cette section.
+				Ligne de saisie pour le registre de classification des actifs informationnels.
 			</p>
+
+			<!-- Boutons pour ajouter/supprimer des lignes -->
+			<div class="flex gap-2">
+				<button
+					type="button"
+					class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700"
+					on:click={ajouterLigneRegistre}
+				>
+					+ Ajouter une ligne
+				</button>
+				{#if registreRows.length > 1}
+					<button
+						type="button"
+						class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700"
+						on:click={() => supprimerLigneRegistre(registreRows.length - 1)}
+					>
+						- Supprimer la dernière ligne
+					</button>
+				{/if}
+			</div>
+
+			<!-- Tableau principal du registre -->
+			<div class="overflow-x-auto rounded-lg border border-black bg-white shadow-sm">
+				<table class="min-w-full text-xs border-collapse border border-black">
+					<thead>
+						<!-- Ligne des titres principaux (1 à 6) -->
+						<tr>
+							<th rowspan="2" class="px-2 py-2 text-center font-semibold text-black bg-yellow-400 border border-black min-w-[50px]">
+								ID
+							</th>
+							<th rowspan="2" class="px-2 py-2 text-center font-semibold text-black bg-yellow-400 border border-black min-w-[50px]">
+								ID PS
+							</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-semibold text-black bg-yellow-400 border border-black min-w-[150px]">
+								1 – Identification du processus métier
+							</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-semibold text-black bg-yellow-400 border border-black min-w-[150px]">
+								2 – Identification de l'activité / Sous‑processus
+							</th>
+							<th colspan="2" class="px-2 py-2 text-center font-semibold text-black bg-yellow-400 border border-black">
+								3 - Identification des actifs et leurs catégorie
+							</th>
+							<th colspan="2" class="px-2 py-2 text-center font-semibold text-black bg-yellow-400 border border-black">
+								4 - Identification du type d'actif
+							</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-semibold text-black bg-yellow-400 border border-black min-w-[120px]">
+								5 - Identification du propriétaire de l'actif
+							</th>
+							<th colspan="4" class="px-2 py-2 text-center font-semibold text-black bg-yellow-400 border border-black">
+								6 - Classification des actifs sur la base d'une échelle d'impacts fixée
+							</th>
+							<th rowspan="2" class="px-2 py-2 text-center font-semibold text-white bg-blue-400 border border-black min-w-[150px]">
+								Commentaire
+							</th>
+						</tr>
+						<!-- Ligne des sous-titres -->
+						<tr>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-300 border border-black min-w-[150px]">
+								Désignation de l'actif informationnel
+							</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-300 border border-black min-w-[150px]">
+								Description de l'actif
+							</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-300 border border-black min-w-[120px]">
+								Catégorie de l'actif
+							</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-300 border border-black min-w-[120px]">
+								Type de l'actif
+							</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-300 border border-black min-w-[100px]">
+								Propriétaire de l'actif
+							</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-300 border border-black min-w-[100px]">
+								Besoin en terme de Disponibilité
+							</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-300 border border-black min-w-[100px]">
+								Besoin en terme d'Intégrité
+							</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-300 border border-black min-w-[100px]">
+								Besoin en terme de Confidentialité
+							</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-300 border border-black min-w-[100px]">
+								Sensibilité de l'actif°
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each registreRows as row, i}
+							<tr class="border border-black">
+								<!-- ID -->
+								<td class="px-2 py-1 text-center border border-black bg-white">
+									<input
+										class="w-full text-center border border-gray-300 rounded px-1 py-0.5 text-xs"
+										type="text"
+										bind:value={registreRows[i].id}
+									/>
+								</td>
+								<!-- ID PS -->
+								<td class="px-2 py-1 text-center border border-black bg-white">
+									<input
+										class="w-full text-center border border-gray-300 rounded px-1 py-0.5 text-xs"
+										type="text"
+										bind:value={registreRows[i].id_ps}
+									/>
+								</td>
+								<!-- Processus métier -->
+								<td class="px-2 py-1 border border-black bg-white">
+									<input
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
+										type="text"
+										bind:value={registreRows[i].processus_metier}
+									/>
+								</td>
+								<!-- Activité/Sous-processus -->
+								<td class="px-2 py-1 border border-black bg-white">
+									<input
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
+										type="text"
+										bind:value={registreRows[i].activite_sous_processus}
+									/>
+								</td>
+								<!-- Désignation de l'actif -->
+								<td class="px-2 py-1 border border-black bg-white">
+									<input
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
+										type="text"
+										bind:value={registreRows[i].designation_actif}
+									/>
+								</td>
+								<!-- Description de l'actif -->
+								<td class="px-2 py-1 border border-black bg-white">
+									<textarea
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs min-h-[40px]"
+										bind:value={registreRows[i].description_actif}
+									></textarea>
+								</td>
+								<!-- Catégorie de l'actif -->
+								<td class="px-2 py-1 border border-black bg-white">
+									<input
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
+										type="text"
+										bind:value={registreRows[i].categorie_actif}
+									/>
+								</td>
+								<!-- Type de l'actif -->
+								<td class="px-2 py-1 border border-black bg-white">
+									<input
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
+										type="text"
+										bind:value={registreRows[i].type_actif}
+									/>
+								</td>
+								<!-- Propriétaire de l'actif -->
+								<td class="px-2 py-1 border border-black bg-white">
+									<input
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
+										type="text"
+										bind:value={registreRows[i].proprietaire_actif}
+									/>
+								</td>
+								<!-- Disponibilité -->
+								<td class={`px-2 py-1 border border-black ${getNiveauBesoinBg(row.disponibilite)}`}>
+									<select
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent"
+										bind:value={registreRows[i].disponibilite}
+										on:change={() => calculerSensibilite(i)}
+									>
+										<option value="">--</option>
+										<option value="Faible">Faible</option>
+										<option value="Moyen">Moyen</option>
+										<option value="Élevé">Élevé</option>
+										<option value="Très élevé">Très élevé</option>
+									</select>
+								</td>
+								<!-- Intégrité -->
+								<td class={`px-2 py-1 border border-black ${getNiveauBesoinBg(row.integrite)}`}>
+									<select
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent"
+										bind:value={registreRows[i].integrite}
+										on:change={() => calculerSensibilite(i)}
+									>
+										<option value="">--</option>
+										<option value="Faible">Faible</option>
+										<option value="Moyen">Moyen</option>
+										<option value="Élevé">Élevé</option>
+										<option value="Très élevé">Très élevé</option>
+									</select>
+								</td>
+								<!-- Confidentialité -->
+								<td class={`px-2 py-1 border border-black ${getNiveauBesoinBg(row.confidentialite)}`}>
+									<select
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent"
+										bind:value={registreRows[i].confidentialite}
+										on:change={() => calculerSensibilite(i)}
+									>
+										<option value="">--</option>
+										<option value="Faible">Faible</option>
+										<option value="Moyen">Moyen</option>
+										<option value="Élevé">Élevé</option>
+										<option value="Très élevé">Très élevé</option>
+									</select>
+								</td>
+								<!-- Sensibilité (calculée automatiquement) -->
+								<td class={`px-2 py-1 text-center border border-black ${getNiveauBesoinBg(row.sensibilite)}`}>
+									<input
+										class="w-full text-center border border-transparent bg-transparent text-xs font-semibold"
+										type="text"
+										value={row.sensibilite}
+										readonly
+									/>
+								</td>
+								<!-- Commentaire -->
+								<td class="px-2 py-1 border border-black bg-white">
+									<textarea
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs min-h-[40px]"
+										bind:value={registreRows[i].commentaire}
+									></textarea>
+								</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</div>
+
+			<div class="text-xs text-gray-600 space-y-1">
+				<p><strong>Notes :</strong></p>
+				<ul class="list-disc list-inside space-y-1">
+					<li>Les colonnes avec fond <span class="inline-block px-2 py-0.5 bg-yellow-400 text-black rounded">jaune</span> correspondent aux grandes étapes du registre (1 à 6).</li>
+					<li>Les besoins en Disponibilité, Intégrité et Confidentialité sont à choisir parmi : <span class="font-semibold">Faible</span>, <span class="font-semibold">Moyen</span>, <span class="font-semibold">Élevé</span>, <span class="font-semibold">Très élevé</span>.</li>
+					<li>La <span class="font-semibold">Sensibilité de l'actif</span> est calculée automatiquement comme la moyenne des 3 critères (Disponibilité, Intégrité, Confidentialité).</li>
+					<li>Codes couleur pour les niveaux : <span class="inline-block px-2 py-0.5 bg-green-500 text-white rounded text-xs">Faible</span>, <span class="inline-block px-2 py-0.5 bg-yellow-400 text-black rounded text-xs">Moyen</span>, <span class="inline-block px-2 py-0.5 bg-orange-500 text-white rounded text-xs">Élevé</span>, <span class="inline-block px-2 py-0.5 bg-red-600 text-white rounded text-xs">Très élevé</span>.</li>
+				</ul>
+			</div>
 		</section>
 	{:else if activeSection === 'aide-classification'}
 		<section class="space-y-8">
