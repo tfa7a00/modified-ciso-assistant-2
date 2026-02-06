@@ -962,10 +962,10 @@
 							<th rowspan="2" class="px-2 py-2 text-center font-semibold text-black bg-yellow-400 border border-black min-w-[50px]">
 								ID PS
 							</th>
-							<th rowspan="2" class="px-2 py-3 text-center font-semibold text-black bg-yellow-400 border border-black min-w-[150px]">
+							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-400 border border-black min-w-[150px]">
 								1 – Identification du processus métier
 							</th>
-							<th rowspan="2" class="px-2 py-3 text-center font-semibold text-black bg-yellow-400 border border-black min-w-[150px]">
+							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-400 border border-black min-w-[150px]">
 								2 – Identification de l'activité / Sous‑processus
 							</th>
 							<th colspan="2" class="px-2 py-2 text-center font-semibold text-black bg-yellow-400 border border-black">
@@ -974,7 +974,7 @@
 							<th colspan="2" class="px-2 py-2 text-center font-semibold text-black bg-yellow-400 border border-black">
 								4 - Identification du type d'actif
 							</th>
-							<th rowspan="2" class="px-2 py-3 text-center font-semibold text-black bg-yellow-400 border border-black min-w-[120px]">
+							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-400 border border-black min-w-[120px]">
 								5 - Identification du propriétaire de l'actif
 							</th>
 							<th colspan="4" class="px-2 py-2 text-center font-semibold text-black bg-yellow-400 border border-black">
@@ -987,6 +987,12 @@
 						<!-- Ligne des sous-titres -->
 						<tr>
 							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-300 border border-black min-w-[150px]">
+								Processus métier
+							</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-300 border border-black min-w-[150px]">
+								Activité/Sous‑processus
+							</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-300 border border-black min-w-[150px]">
 								Désignation de l'actif informationnel
 							</th>
 							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-300 border border-black min-w-[150px]">
@@ -998,7 +1004,7 @@
 							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-300 border border-black min-w-[120px]">
 								Type de l'actif
 							</th>
-							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-300 border border-black min-w-[100px]">
+							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-300 border border-black min-w-[120px]">
 								Propriétaire de l'actif
 							</th>
 							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-300 border border-black min-w-[100px]">
@@ -1081,15 +1087,16 @@
 										bind:value={registreRows[i].type_actif}
 									/>
 								</td>
-								<!-- Propriétaire de l'actif -->
+								<!-- Propriétaire de l'actif (Section 5) -->
 								<td class="px-2 py-1 border border-black bg-white">
 									<input
 										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
 										type="text"
 										bind:value={registreRows[i].proprietaire_actif}
+										placeholder="Nom du propriétaire"
 									/>
 								</td>
-								<!-- Disponibilité -->
+								<!-- Disponibilité (Section 6) -->
 								<td class={`px-2 py-1 border border-black ${getNiveauBesoinBg(row.disponibilite)}`}>
 									<select
 										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent"
@@ -1103,7 +1110,7 @@
 										<option value="Très élevé">Très élevé</option>
 									</select>
 								</td>
-								<!-- Intégrité -->
+								<!-- Intégrité (Section 6) -->
 								<td class={`px-2 py-1 border border-black ${getNiveauBesoinBg(row.integrite)}`}>
 									<select
 										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent"
@@ -1117,7 +1124,7 @@
 										<option value="Très élevé">Très élevé</option>
 									</select>
 								</td>
-								<!-- Confidentialité -->
+								<!-- Confidentialité (Section 6) -->
 								<td class={`px-2 py-1 border border-black ${getNiveauBesoinBg(row.confidentialite)}`}>
 									<select
 										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent"
@@ -1131,14 +1138,9 @@
 										<option value="Très élevé">Très élevé</option>
 									</select>
 								</td>
-								<!-- Sensibilité (calculée automatiquement) -->
+								<!-- Sensibilité de l'actif (Section 6 - Calculée automatiquement comme moyenne de D/I/C) -->
 								<td class={`px-2 py-1 text-center border border-black ${getNiveauBesoinBg(row.sensibilite)}`}>
-									<input
-										class="w-full text-center border border-transparent bg-transparent text-xs font-semibold"
-										type="text"
-										value={row.sensibilite}
-										readonly
-									/>
+									<span class="text-xs font-semibold">{row.sensibilite || '--'}</span>
 								</td>
 								<!-- Commentaire -->
 								<td class="px-2 py-1 border border-black bg-white">
@@ -1153,12 +1155,20 @@
 				</table>
 			</div>
 
-			<div class="text-xs text-gray-600 space-y-1">
+			<div class="text-xs text-gray-600 space-y-2">
 				<p><strong>Notes :</strong></p>
 				<ul class="list-disc list-inside space-y-1">
-					<li>Les colonnes avec fond <span class="inline-block px-2 py-0.5 bg-yellow-400 text-black rounded">jaune</span> correspondent aux grandes étapes du registre (1 à 6).</li>
-					<li>Les besoins en Disponibilité, Intégrité et Confidentialité sont à choisir parmi : <span class="font-semibold">Faible</span>, <span class="font-semibold">Moyen</span>, <span class="font-semibold">Élevé</span>, <span class="font-semibold">Très élevé</span>.</li>
-					<li>La <span class="font-semibold">Sensibilité de l'actif</span> est calculée automatiquement comme la moyenne des 3 critères (Disponibilité, Intégrité, Confidentialité).</li>
+					<li>Les colonnes avec fond <span class="inline-block px-2 py-0.5 bg-yellow-400 text-black rounded">jaune vif</span> correspondent aux grandes étapes du registre (1 à 6).</li>
+					<li>Les sous-titres sont affichés avec un fond <span class="inline-block px-2 py-0.5 bg-yellow-300 text-black rounded">jaune clair</span> :
+						<ul class="list-circle list-inside ml-4 mt-1">
+							<li><strong>Section 1</strong> : Processus métier</li>
+							<li><strong>Section 2</strong> : Activité/Sous-processus</li>
+							<li><strong>Section 5</strong> : Propriétaire de l'actif (champ texte libre)</li>
+							<li><strong>Section 6</strong> : Besoins en Disponibilité, Intégrité, Confidentialité et Sensibilité</li>
+						</ul>
+					</li>
+					<li>Les besoins en <strong>Disponibilité</strong>, <strong>Intégrité</strong> et <strong>Confidentialité</strong> (section 6) sont à choisir parmi : <span class="font-semibold">Faible</span>, <span class="font-semibold">Moyen</span>, <span class="font-semibold">Élevé</span>, <span class="font-semibold">Très élevé</span>.</li>
+					<li>La <span class="font-semibold">Sensibilité de l'actif</span> (section 6) est <strong>calculée automatiquement</strong> comme la moyenne des 3 critères (Disponibilité, Intégrité, Confidentialité).</li>
 					<li>Codes couleur pour les niveaux : <span class="inline-block px-2 py-0.5 bg-green-500 text-white rounded text-xs">Faible</span>, <span class="inline-block px-2 py-0.5 bg-yellow-400 text-black rounded text-xs">Moyen</span>, <span class="inline-block px-2 py-0.5 bg-orange-500 text-white rounded text-xs">Élevé</span>, <span class="inline-block px-2 py-0.5 bg-red-600 text-white rounded text-xs">Très élevé</span>.</li>
 				</ul>
 			</div>
