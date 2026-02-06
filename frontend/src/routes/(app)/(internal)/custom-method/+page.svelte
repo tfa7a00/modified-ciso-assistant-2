@@ -4,8 +4,9 @@
 
 	type Row = Record<string, string>;
 
-	// Gestion des 6 sous-parties de la méthode personnalisée
+	// Gestion des 7 sous-parties de la méthode personnalisée (ajout de controle-document)
 	type SectionId =
+		| 'controle-document'
 		| 'registre-classification'
 		| 'aide-classification'
 		| 'cartographie-risques'
@@ -13,9 +14,49 @@
 		| 'ptr'
 		| 'echelle-ptr';
 
-	let activeSection: SectionId = 'registre-classification';
+	let activeSection: SectionId = 'controle-document';
 
-	const periodiciteRows: Row[] = [
+	// --- Données pour Contrôle du document ---
+	type RedactionRow = {
+		role: string;
+		nom: string;
+		fonction: string;
+		date: string;
+	};
+
+	let redactionRows: RedactionRow[] = [
+		{ role: 'Écrit par :', nom: 'Consultants SSI', fonction: 'NEARSECURE', date: '' },
+		{ role: 'Relu par :', nom: '', fonction: '', date: '' },
+		{ role: 'Approuvé par :', nom: '', fonction: '', date: '' }
+	];
+
+	type DiffusionRow = {
+		nom: string;
+		entite_fonction: string;
+		date: string;
+	};
+
+	let diffusionRows: DiffusionRow[] = [
+		{ nom: '', entite_fonction: '', date: '' },
+		{ nom: '', entite_fonction: '', date: '' },
+		{ nom: '', entite_fonction: '', date: '' },
+		{ nom: '', entite_fonction: '', date: '' }
+	];
+
+	type VersionRow = {
+		version: string;
+		date: string;
+		modification: string;
+	};
+
+	let versionRows: VersionRow[] = [
+		{ version: '', date: '', modification: '' },
+		{ version: '', date: '', modification: '' },
+		{ version: '', date: '', modification: '' },
+		{ version: '', date: '', modification: '' }
+	];
+
+	let periodiciteRows: Row[] = [
 		{ periodicite: 'QuickWin', duree: '0 – 3 mois' },
 		{ periodicite: 'Court terme', duree: '3 – 12 mois' },
 		{ periodicite: 'Moyen terme', duree: '12 – 18 mois' },
@@ -23,7 +64,7 @@
 		{ periodicite: 'Périodique', duree: 'Périodiquement' }
 	];
 
-	const complexiteRows: Row[] = [
+	let complexiteRows: Row[] = [
 		{
 			complexite: 'Important',
 			definition:
@@ -41,7 +82,7 @@
 		}
 	];
 
-	const typeActionRows: Row[] = [
+	let typeActionRows: Row[] = [
 		{
 			type_action: 'Action Organisationnelle',
 			description: 'Action visant à modifier les processus ou politiques internes de la SOCIÉTÉ.'
@@ -56,7 +97,7 @@
 		}
 	];
 
-	const prioriteRows: Row[] = [
+	let prioriteRows: Row[] = [
 		{
 			echelle: 'Priorité 4',
 			definition: 'Risque Faible',
@@ -87,7 +128,7 @@
 		bgColor: string;
 	};
 
-	const dicCriteriaRows: DICCriteriaRow[] = [
+	let dicCriteriaRows: DICCriteriaRow[] = [
 		{
 			critere: 'Disponibilité',
 			definition:
@@ -113,7 +154,7 @@
 		confidentialite: string;
 	};
 
-	const dicNiveauxRows: DICNiveauRow[] = [
+	let dicNiveauxRows: DICNiveauRow[] = [
 		{
 			valeur: 'Faible',
 			disponibilite:
@@ -152,7 +193,7 @@
 		}
 	];
 
-	const categoriesActifsRows: string[] = [
+	let categoriesActifsRows: string[] = [
 		'Matériel informatique',
 		'Application',
 		'Equipements sécurité',
@@ -410,15 +451,40 @@
 
 	function getMatriceCellBg(valeur: number): string {
 		if (valeur < 20) {
-			return 'bg-green-400 text-black'; // zone verte [1–20[
+			return 'bg-green-400 text-black';
 		}
 		if (valeur >= 20 && valeur < 36) {
-			return 'bg-yellow-300 text-black'; // zone jaune [20–36[
+			return 'bg-yellow-300 text-black';
 		}
 		if (valeur >= 36 && valeur < 64) {
-			return 'bg-orange-400 text-black'; // zone orange [36–64[
+			return 'bg-orange-400 text-black';
 		}
-		return 'bg-red-500 text-black'; // zone rouge [64–120]
+		return 'bg-red-500 text-black';
+	}
+
+	// Fonctions pour ajouter/supprimer des lignes
+	function ajouterLigneDiffusion() {
+		diffusionRows = [...diffusionRows, { nom: '', entite_fonction: '', date: '' }];
+	}
+
+	function supprimerLigneDiffusion(index: number) {
+		diffusionRows = diffusionRows.filter((_, i) => i !== index);
+	}
+
+	function ajouterLigneVersion() {
+		versionRows = [...versionRows, { version: '', date: '', modification: '' }];
+	}
+
+	function supprimerLigneVersion(index: number) {
+		versionRows = versionRows.filter((_, i) => i !== index);
+	}
+
+	function ajouterCategorieActif() {
+		categoriesActifsRows = [...categoriesActifsRows, ''];
+	}
+
+	function supprimerCategorieActif(index: number) {
+		categoriesActifsRows = categoriesActifsRows.filter((_, i) => i !== index);
 	}
 </script>
 
@@ -426,15 +492,26 @@
 	<section class="space-y-2">
 		<h1 class="text-2xl font-bold text-gray-900">Méthode personnalisée</h1>
 		<p class="text-gray-600 max-w-3xl">
-			Cette page regroupe les éléments de ta méthode personnalisée (registre de classification,
+			Cette page regroupe les éléments de ta méthode personnalisée (contrôle du document, registre de classification,
 			aides, cartographie des risques, PTR et échelle PTR). Les sections ci-dessous ne modifient
 			pas le moteur de scoring standard de CISO Assistant, mais servent de guide pour la méthode de
 			NearSecure.
 		</p>
 	</section>
 
-	<!-- Navigation entre les 6 sous-parties -->
+	<!-- Navigation entre les 7 sous-parties -->
 	<nav class="flex flex-wrap gap-2 border-b border-gray-200 pb-2">
+		<button
+			type="button"
+			class={`px-3 py-1.5 text-sm rounded-md border ${
+				activeSection === 'controle-document'
+					? 'bg-sky-600 text-white border-sky-600'
+					: 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+			}`}
+			on:click={() => (activeSection = 'controle-document')}
+		>
+			Contrôle du document
+		</button>
 		<button
 			type="button"
 			class={`px-3 py-1.5 text-sm rounded-md border ${
@@ -503,9 +580,225 @@
 		</button>
 	</nav>
 
-	<!-- Contenu : 6 sous-parties -->
+	<!-- Contenu : 7 sous-parties -->
 
-	{#if activeSection === 'registre-classification'}
+	{#if activeSection === 'controle-document'}
+		<section class="space-y-8">
+			<h2 class="text-xl font-semibold text-gray-900">Contrôle du document</h2>
+			
+			<div class="space-y-2">
+				<h3 class="text-lg font-semibold text-gray-800">Titre du document</h3>
+				<div class="p-4 bg-blue-50 border-l-4 border-blue-600">
+					<p class="font-bold text-gray-900">REGISTRE DE CLASSIFICATION DES ACTIFS INFORMATIONNELS</p>
+					<p class="font-bold text-gray-900">CARTOGRAPHIE D'ANALYSE DES RISQUES DE SÉCURITÉ SI</p>
+				</div>
+			</div>
+
+			<!-- Tableau 1: Rédaction du document -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">1. Rédaction du document</h3>
+				<div class="overflow-hidden rounded-lg border border-gray-700 bg-white shadow-sm">
+					<table class="min-w-full text-sm border-collapse border border-gray-700">
+						<thead>
+							<tr>
+								<th colspan="4" class="px-4 py-3 text-left font-semibold text-white bg-slate-900 border border-gray-700">
+									RÉDACTION DU DOCUMENT
+								</th>
+							</tr>
+							<tr>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700 w-32">
+									Rôle
+								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
+									Nom
+								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
+									Fonction
+								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
+									Date
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each redactionRows as row, i}
+								<tr class="border border-gray-700">
+									<td class="px-4 py-2 font-semibold text-white bg-gray-600 border border-gray-700">
+										{row.role}
+									</td>
+									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={redactionRows[i].nom}
+										/>
+									</td>
+									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={redactionRows[i].fonction}
+										/>
+									</td>
+									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={redactionRows[i].date}
+										/>
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<!-- Tableau 2: Diffusion du document -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">2. Diffusion du document</h3>
+				<div class="overflow-hidden rounded-lg border border-gray-700 bg-white shadow-sm">
+					<table class="min-w-full text-sm border-collapse border border-gray-700">
+						<thead>
+							<tr>
+								<th colspan="3" class="px-4 py-3 text-left font-semibold text-white bg-slate-900 border border-gray-700">
+									DIFFUSION DU DOCUMENT
+								</th>
+							</tr>
+							<tr>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
+									Nom
+								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
+									Entité / Fonction
+								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
+									Date
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each diffusionRows as row, i}
+								<tr class="border border-gray-700">
+									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={diffusionRows[i].nom}
+										/>
+									</td>
+									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={diffusionRows[i].entite_fonction}
+										/>
+									</td>
+									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={diffusionRows[i].date}
+										/>
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+				<div class="flex gap-2">
+					<button
+						type="button"
+						class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700"
+						on:click={ajouterLigneDiffusion}
+					>
+						+ Ajouter une ligne
+					</button>
+					{#if diffusionRows.length > 1}
+						<button
+							type="button"
+							class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700"
+							on:click={() => supprimerLigneDiffusion(diffusionRows.length - 1)}
+						>
+							- Supprimer la dernière ligne
+						</button>
+					{/if}
+				</div>
+			</section>
+
+			<!-- Tableau 3: Contrôle des versions -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">3. Contrôle des versions du document</h3>
+				<div class="overflow-hidden rounded-lg border border-gray-700 bg-white shadow-sm">
+					<table class="min-w-full text-sm border-collapse border border-gray-700">
+						<thead>
+							<tr>
+								<th colspan="3" class="px-4 py-3 text-left font-semibold text-white bg-slate-900 border border-gray-700">
+									CONTRÔLE DES VERSIONS DU DOCUMENT
+								</th>
+							</tr>
+							<tr>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
+									Version
+								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
+									Date
+								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
+									Modification
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each versionRows as row, i}
+								<tr class="border border-gray-700">
+									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={versionRows[i].version}
+										/>
+									</td>
+									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={versionRows[i].date}
+										/>
+									</td>
+									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={versionRows[i].modification}
+										/>
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+				<div class="flex gap-2">
+					<button
+						type="button"
+						class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700"
+						on:click={ajouterLigneVersion}
+					>
+						+ Ajouter une ligne
+					</button>
+					{#if versionRows.length > 1}
+						<button
+							type="button"
+							class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700"
+							on:click={() => supprimerLigneVersion(versionRows.length - 1)}
+						>
+							- Supprimer la dernière ligne
+						</button>
+					{/if}
+				</div>
+			</section>
+		</section>
+	{:else if activeSection === 'registre-classification'}
 		<section class="space-y-4">
 			<h2 class="text-xl font-semibold text-gray-900">Registre de classification</h2>
 			<p class="text-gray-700">
@@ -526,20 +819,27 @@
 					<table class="min-w-full text-sm border-collapse border border-black">
 						<thead>
 							<tr>
-								{#each dicCriteriaRows as criteria}
+								{#each dicCriteriaRows as criteria, i}
 									<th
 										class="px-4 py-2 text-left font-semibold text-black border border-black bg-sky-200"
 									>
-										{criteria.critere}
+										<input
+											class="w-full border border-transparent bg-transparent font-semibold"
+											type="text"
+											bind:value={dicCriteriaRows[i].critere}
+										/>
 									</th>
 								{/each}
 							</tr>
 						</thead>
 						<tbody>
 							<tr class="border border-black">
-								{#each dicCriteriaRows as criteria}
+								{#each dicCriteriaRows as criteria, i}
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
-										{criteria.definition}
+										<textarea
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[80px]"
+											bind:value={dicCriteriaRows[i].definition}
+										></textarea>
 									</td>
 								{/each}
 							</tr>
@@ -580,21 +880,34 @@
 							</tr>
 						</thead>
 						<tbody>
-							{#each dicNiveauxRows as row}
+							{#each dicNiveauxRows as row, i}
 								<tr class="border border-black">
 									<td
 										class={`px-4 py-2 font-semibold text-white border border-black ${getValeurBg(row.valeur)}`}
 									>
-										{row.valeur}
+										<input
+											class="w-full border border-transparent bg-transparent font-semibold text-white"
+											type="text"
+											bind:value={dicNiveauxRows[i].valeur}
+										/>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs">
-										{@html row.disponibilite.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}
+										<textarea
+											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[100px]"
+											bind:value={dicNiveauxRows[i].disponibilite}
+										></textarea>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs">
-										{@html row.integrite.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}
+										<textarea
+											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[100px]"
+											bind:value={dicNiveauxRows[i].integrite}
+										></textarea>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs">
-										{@html row.confidentialite.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}
+										<textarea
+											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[100px]"
+											bind:value={dicNiveauxRows[i].confidentialite}
+										></textarea>
 									</td>
 								</tr>
 							{/each}
@@ -618,15 +931,37 @@
 							</tr>
 						</thead>
 						<tbody>
-							{#each categoriesActifsRows as categorie}
+							{#each categoriesActifsRows as categorie, i}
 								<tr class="border border-black">
 									<td class="px-4 py-2 text-black border border-black bg-white text-center">
-										{categorie}
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm text-center"
+											type="text"
+											bind:value={categoriesActifsRows[i]}
+										/>
 									</td>
 								</tr>
 							{/each}
 						</tbody>
 					</table>
+				</div>
+				<div class="flex gap-2">
+					<button
+						type="button"
+						class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700"
+						on:click={ajouterCategorieActif}
+					>
+						+ Ajouter une catégorie
+					</button>
+					{#if categoriesActifsRows.length > 1}
+						<button
+							type="button"
+							class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700"
+							on:click={() => supprimerCategorieActif(categoriesActifsRows.length - 1)}
+						>
+							- Supprimer la dernière catégorie
+						</button>
+					{/if}
 				</div>
 			</section>
 
@@ -694,27 +1029,35 @@
 							</tr>
 						</thead>
 						<tbody>
-							{#each probaRows as row}
+							{#each probaRows as row, i}
 								<tr class="border border-black">
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										{row.echelle}
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={probaRows[i].echelle}
+										/>
 									</td>
 									<td
 										class={`px-4 py-2 border border-black ${getProbaDefBg(row.definition)}`}
 									>
-										<span class="font-semibold">{row.definition}</span>
+										<input
+											class="w-full border border-transparent bg-transparent font-semibold"
+											type="text"
+											bind:value={probaRows[i].definition}
+										/>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
-										<p class="text-xs">
-											<span class="font-semibold">Fréquence :</span>
-										</p>
-										<p class="mt-1 text-xs">{row.frequence}</p>
+										<textarea
+											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]"
+											bind:value={probaRows[i].frequence}
+										></textarea>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
-										<p class="text-xs">
-											<span class="font-semibold">Historique :</span>
-										</p>
-										<p class="mt-1 text-xs">{row.historique}</p>
+										<textarea
+											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]"
+											bind:value={probaRows[i].historique}
+										></textarea>
 									</td>
 								</tr>
 							{/each}
@@ -763,39 +1106,47 @@
 							</tr>
 						</thead>
 						<tbody>
-							{#each impactRows as row}
+							{#each impactRows as row, i}
 								<tr class="border border-black">
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										{row.echelle}
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={impactRows[i].echelle}
+										/>
 									</td>
 									<td
 										class={`px-4 py-2 border border-black ${getImpactDefBg(row.definition)}`}
 									>
-										<span class="font-semibold">{row.definition}</span>
+										<input
+											class="w-full border border-transparent bg-transparent font-semibold"
+											type="text"
+											bind:value={impactRows[i].definition}
+										/>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
-										<p class="text-xs">
-											<span class="font-semibold">Financier :</span>
-										</p>
-										<p class="mt-1 text-xs">{row.financier}</p>
+										<textarea
+											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]"
+											bind:value={impactRows[i].financier}
+										></textarea>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
-										<p class="text-xs">
-											<span class="font-semibold">Réputation :</span>
-										</p>
-										<p class="mt-1 text-xs">{row.reputation}</p>
+										<textarea
+											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]"
+											bind:value={impactRows[i].reputation}
+										></textarea>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
-										<p class="text-xs">
-											<span class="font-semibold">Parties prenantes :</span>
-										</p>
-										<p class="mt-1 text-xs">{row.parties_prenantes}</p>
+										<textarea
+											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]"
+											bind:value={impactRows[i].parties_prenantes}
+										></textarea>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
-										<p class="text-xs">
-											<span class="font-semibold">Réglementaire :</span>
-										</p>
-										<p class="mt-1 text-xs">{row.reglementaire}</p>
+										<textarea
+											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]"
+											bind:value={impactRows[i].reglementaire}
+										></textarea>
 									</td>
 								</tr>
 							{/each}
@@ -818,10 +1169,7 @@
 					<table class="min-w-full text-sm border-collapse border border-black">
 						<thead>
 							<tr>
-								<th
-									colspan="3"
-									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
-								>
+								<th colspan="3" class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">
 									Fréquence / Probabilité d'occurrence
 								</th>
 							</tr>
@@ -848,7 +1196,7 @@
 								<tr class="border border-black">
 									<td class="px-4 py-2 text-black border border-black bg-white">
 										<input
-											class="w-16 border border-gray-300 rounded px-1 py-0.5 text-sm"
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
 											type="text"
 											bind:value={frequenceRisqueRows[i].echelle}
 										/>
@@ -864,7 +1212,7 @@
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
 										<input
-											class="w-full border border-gray-300 rounded px-1 py-0.5 text-sm"
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
 											type="text"
 											bind:value={frequenceRisqueRows[i].signification}
 										/>
@@ -961,15 +1309,23 @@
 							</tr>
 						</thead>
 						<tbody>
-							{#each periodiciteRows as row}
+							{#each periodiciteRows as row, i}
 								<tr class="border border-black">
 									<td
 										class={`px-4 py-2 text-black border border-black ${getPeriodiciteBg(row.periodicite)}`}
 									>
-										{row.periodicite}
+										<input
+											class="w-full border border-transparent bg-transparent"
+											type="text"
+											bind:value={periodiciteRows[i].periodicite}
+										/>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										{row.duree}
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={periodiciteRows[i].duree}
+										/>
 									</td>
 								</tr>
 							{/each}
@@ -997,15 +1353,22 @@
 							</tr>
 						</thead>
 						<tbody>
-							{#each complexiteRows as row}
+							{#each complexiteRows as row, i}
 								<tr class="border border-black">
 									<td
 										class={`px-4 py-2 font-medium border border-black ${getComplexiteBg(row.complexite)}`}
 									>
-										{row.complexite}
+										<input
+											class="w-full border border-transparent bg-transparent font-medium"
+											type="text"
+											bind:value={complexiteRows[i].complexite}
+										/>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										{row.definition}
+										<textarea
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[80px]"
+											bind:value={complexiteRows[i].definition}
+										></textarea>
 									</td>
 								</tr>
 							{/each}
@@ -1033,15 +1396,22 @@
 							</tr>
 						</thead>
 						<tbody>
-							{#each typeActionRows as row}
+							{#each typeActionRows as row, i}
 								<tr class="border border-black">
 									<td
 										class={`px-4 py-2 font-medium border border-black ${getTypeActionBg(row.type_action)}`}
 									>
-										{row.type_action}
+										<input
+											class="w-full border border-transparent bg-transparent font-medium"
+											type="text"
+											bind:value={typeActionRows[i].type_action}
+										/>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										{row.description}
+										<textarea
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[60px]"
+											bind:value={typeActionRows[i].description}
+										></textarea>
 									</td>
 								</tr>
 							{/each}
@@ -1082,18 +1452,30 @@
 							</tr>
 						</thead>
 						<tbody>
-							{#each prioriteRows as row}
+							{#each prioriteRows as row, i}
 								<tr class="border border-black">
 									<td class="px-4 py-2 font-medium text-black border border-black bg-white">
-										{row.echelle}
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={prioriteRows[i].echelle}
+										/>
 									</td>
 									<td
 										class={`px-4 py-2 border border-black ${getPrioriteDefinitionBg(row.echelle)}`}
 									>
-										{row.definition}
+										<input
+											class="w-full border border-transparent bg-transparent"
+											type="text"
+											bind:value={prioriteRows[i].definition}
+										/>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										{row.signification}
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={prioriteRows[i].signification}
+										/>
 									</td>
 								</tr>
 							{/each}
