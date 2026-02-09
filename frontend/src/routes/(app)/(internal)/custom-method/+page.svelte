@@ -16,6 +16,9 @@
 
 	let activeSection: SectionId = 'controle-document';
 
+	// Vue pour la cartographie: identification / risque brut / risque net / PTR+résiduel
+	let cartoView: 'all' | 'identification' | 'brut' | 'net' | 'ptr' = 'identification';
+
 	// --- Données pour Contrôle du document ---
 	type RedactionRow = {
 		role: string;
@@ -668,6 +671,38 @@
 	}
 
 </script>
+
+<style>
+	/* Table column group visibility for cartographie views */
+	.view-identification .col-brut,
+	.view-identification .col-net,
+	.view-identification .col-ptr {
+ 		display: none;
+ 	}
+
+	.view-brut .col-identification,
+	.view-brut .col-net,
+	.view-brut .col-ptr {
+ 		display: none;
+ 	}
+
+	.view-net .col-identification,
+	.view-net .col-brut,
+	.view-net .col-ptr {
+ 		display: none;
+ 	}
+
+	.view-ptr .col-identification,
+	.view-ptr .col-brut,
+	.view-ptr .col-net {
+ 		display: none;
+ 	}
+
+	/* Keep table layout predictable */
+	table {
+		table-layout: fixed;
+	}
+</style>
 
 <main class="p-6 space-y-8">
 	<section class="space-y-2">
@@ -1414,8 +1449,72 @@
 		<h2 class="text-xl font-semibold text-gray-900">Cartographie des risques</h2>
 
 		<!-- Tableau de cartographie - Flexible avec hauteur augmentée -->
-		<div class="overflow-x-auto rounded-lg border border-black bg-white shadow-sm">
-			<table class="min-w-full text-xs border-collapse border border-black">
+			<!-- Toolbar: switchable sub-views for cartographie -->
+			<div class="flex items-center justify-between mb-2">
+				<div class="flex gap-2">
+					<button type="button" class={`px-3 py-1 text-sm rounded-md border ${cartoView==='identification' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`} on:click={() => (cartoView='identification')}>Identification</button>
+					<button type="button" class={`px-3 py-1 text-sm rounded-md border ${cartoView==='brut' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`} on:click={() => (cartoView='brut')}>Risque Brut</button>
+					<button type="button" class={`px-3 py-1 text-sm rounded-md border ${cartoView==='net' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`} on:click={() => (cartoView='net')}>Degré & Risque Net</button>
+					<button type="button" class={`px-3 py-1 text-sm rounded-md border ${cartoView==='ptr' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`} on:click={() => (cartoView='ptr')}>PTR + Résiduel</button>
+					<button type="button" class={`px-3 py-1 text-sm rounded-md border ${cartoView==='all' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`} on:click={() => (cartoView='all')}>Tout</button>
+				</div>
+				<p class="text-xs text-gray-500">Affiche uniquement la sous-partie sélectionnée pour une meilleure lisibilité.</p>
+			</div>
+
+			<div class="overflow-x-auto rounded-lg border border-black bg-white shadow-sm" class:view-all={cartoView==='all'} class:view-identification={cartoView==='identification'} class:view-brut={cartoView==='brut'} class:view-net={cartoView==='net'} class:view-ptr={cartoView==='ptr'}>
+				<table class="min-w-full text-xs border-collapse border border-black">
+					<!-- Colgroup: 47 colonnes, classes par groupe pour masquage via CSS -->
+					<colgroup>
+						<!-- cols 1-22 : identification -->
+						<col class="col-identification" />
+						<col class="col-identification" />
+						<col class="col-identification" />
+						<col class="col-identification" />
+						<col class="col-identification" />
+						<col class="col-identification" />
+						<col class="col-identification" />
+						<col class="col-identification" />
+						<col class="col-identification" />
+						<col class="col-identification" />
+						<col class="col-identification" />
+						<col class="col-identification" />
+						<col class="col-identification" />
+						<col class="col-identification" />
+						<col class="col-identification" />
+						<col class="col-identification" />
+						<col class="col-identification" />
+						<col class="col-identification" />
+						<col class="col-identification" />
+						<col class="col-identification" />
+						<col class="col-identification" />
+						<!-- cols 23-34 : risque brut -->
+						<col class="col-brut" />
+						<col class="col-brut" />
+						<col class="col-brut" />
+						<col class="col-brut" />
+						<col class="col-brut" />
+						<col class="col-brut" />
+						<col class="col-brut" />
+						<col class="col-brut" />
+						<col class="col-brut" />
+						<col class="col-brut" />
+						<col class="col-brut" />
+						<!-- cols 35-40 : degré + risque net -->
+						<col class="col-net" />
+						<col class="col-net" />
+						<col class="col-net" />
+						<col class="col-net" />
+						<col class="col-net" />
+						<col class="col-net" />
+						<!-- cols 41-47 : PTR + risque résiduel -->
+						<col class="col-ptr" />
+						<col class="col-ptr" />
+						<col class="col-ptr" />
+						<col class="col-ptr" />
+						<col class="col-ptr" />
+						<col class="col-ptr" />
+						<col class="col-ptr" />
+					</colgroup>
 				<thead>
 					<!-- Ligne 1: Titre principal -->
 					<tr>
@@ -9528,6 +9627,9 @@ Externe</textarea>
 			</ul>
 		</div>
 	</section>
+
+
+	
 
 
 
