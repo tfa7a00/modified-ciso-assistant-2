@@ -9824,18 +9824,10 @@ Externe</textarea>
 			</section>
 		</section>
 
-			
-			
 
-
-
-
-
-
-
-{#if activeSection === 'ptr'}
-	<section class="space-y-4">
-		<h2 class="text-xl font-semibold text-gray-900">PTR</h2>
+		
+	{:else if activeSection === 'ptr'}
+		
 		<p class="text-gray-700 mb-4">
 			Plan de traitement des risques (PTR)
 		</p>
