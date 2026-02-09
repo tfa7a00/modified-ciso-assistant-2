@@ -883,29 +883,32 @@
 <style>
     /* Hide/show table cells (only tbody td/data cells, NOT headers).
        Keep all <thead> cells visible so headers display correctly for each view.
-       Columns 1-2 (Code Risques, F.R) always stay visible in ALL views.
-       Views: identification (1-22), brut (23-34), net (35-40), ptr (41-47).
+       Columns 4-5 (Description, Code Risque) always stay visible in ALL views.
+       Views: identification (1-20), brut (21-32), net (33-38), ptr (39-45).
     */
 
-    /* Identification view: hide data columns 23-47 */
-    .view-identification tbody tr td:nth-child(n+23) {
+    /* Identification view: hide data columns 21 and beyond */
+    .view-identification tbody tr td:nth-child(n+21) {
         display: none;
     }
 
-    /* Risque Brut view: show cols 1-2 + 23-34, hide 3-22 and 35-47 */
-    .view-brut tbody tr td:nth-child(n+3):nth-child(-n+22),
-    .view-brut tbody tr td:nth-child(n+35) {
+    /* Risque Brut view: show cols 4-5 (Description, Code Risque) + 21-32 (brut), hide 1-3 and 6-20 and 33+ */
+    .view-brut tbody tr td:nth-child(n+1):nth-child(-n+3),
+    .view-brut tbody tr td:nth-child(n+6):nth-child(-n+20),
+    .view-brut tbody tr td:nth-child(n+33) {
         display: none;
     }
 
-    /* Degré + Risque Net view: show cols 1-2 + 35-40, hide 3-34 and 41-47 */
-    .view-net tbody tr td:nth-child(n+3):nth-child(-n+34),
-    .view-net tbody tr td:nth-child(n+41) {
+    /* Degré + Risque Net view: show cols 4-5 (Description, Code Risque) + 33-38 (net), hide 1-3 and 6-32 and 39+ */
+    .view-net tbody tr td:nth-child(n+1):nth-child(-n+3),
+    .view-net tbody tr td:nth-child(n+6):nth-child(-n+32),
+    .view-net tbody tr td:nth-child(n+39) {
         display: none;
     }
 
-    /* PTR + Résiduel view: show cols 1-2 + 41-47, hide 3-40 */
-    .view-ptr tbody tr td:nth-child(n+3):nth-child(-n+40) {
+    /* PTR + Résiduel view: show cols 4-5 (Description, Code Risque) + 39-45 (ptr), hide 1-3 and 6-38 */
+    .view-ptr tbody tr td:nth-child(n+1):nth-child(-n+3),
+    .view-ptr tbody tr td:nth-child(n+6):nth-child(-n+38) {
         display: none;
     }
 
@@ -1787,9 +1790,9 @@
 
 			<div class="overflow-x-auto rounded-lg border border-black bg-white shadow-sm" class:view-all={cartoView==='all'} class:view-identification={cartoView==='identification'} class:view-brut={cartoView==='brut'} class:view-net={cartoView==='net'} class:view-ptr={cartoView==='ptr'}>
 				<table class="min-w-full text-xs border-collapse border border-black">
-					<!-- Colgroup: 47 colonnes, classes par groupe pour masquage via CSS -->
+					<!-- Colgroup: 45 colonnes (removed empty Code Risques & F.R), classes par groupe pour masquage via CSS -->
 					<colgroup>
-						<!-- cols 1-22 : identification -->
+						<!-- cols 1-20 : identification (removed 2 empty cols, was 3-22) -->
 						<col class="col-identification" />
 						<col class="col-identification" />
 						<col class="col-identification" />
@@ -1810,9 +1813,7 @@
 						<col class="col-identification" />
 						<col class="col-identification" />
 						<col class="col-identification" />
-						<col class="col-identification" />
-						<col class="col-identification" />
-						<!-- cols 23-34 : risque brut -->
+						<!-- cols 21-32 : risque brut (was 23-34) -->
 						<col class="col-brut" />
 						<col class="col-brut" />
 						<col class="col-brut" />
@@ -1825,14 +1826,14 @@
 						<col class="col-brut" />
 						<col class="col-brut" />
 						<col class="col-brut" />
-						<!-- cols 35-40 : degré + risque net -->
+						<!-- cols 33-38 : degré + risque net (was 35-40) -->
 						<col class="col-net" />
 						<col class="col-net" />
 						<col class="col-net" />
 						<col class="col-net" />
 						<col class="col-net" />
 						<col class="col-net" />
-						<!-- cols 41-47 : PTR + risque résiduel -->
+						<!-- cols 39-45 : PTR + risque résiduel (was 41-47) -->
 						<col class="col-ptr" />
 						<col class="col-ptr" />
 						<col class="col-ptr" />
@@ -1846,13 +1847,11 @@
 					{#if cartoView === 'identification'}
 						<thead>
 							<tr>
-								<th colspan="22" class="px-4 py-3 text-center font-bold text-lg text-white bg-teal-700 border border-black">
+								<th colspan="20" class="px-4 py-3 text-center font-bold text-lg text-white bg-teal-700 border border-black">
 									IDENTIFICATION DES RISQUES
 								</th>
 							</tr>
 							<tr>
-								<th class="px-2 py-3 text-center font-bold text-black bg-white border border-black">Code Risques</th>
-								<th class="px-2 py-3 text-center font-bold text-black bg-white border border-black">F.R</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Entité</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Domaine / Processus</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Activités</th>
@@ -1883,8 +1882,8 @@
 								</th>
 							</tr>
 							<tr>
-								<th class="px-2 py-3 text-center font-bold text-black bg-white border border-black">Code Risques</th>
-								<th class="px-2 py-3 text-center font-bold text-black bg-white border border-black">F.R</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Description du scénario</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Code Risque</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact disponibilité</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact intégrité </th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact confidentialité</th>
@@ -1907,8 +1906,8 @@
 								</th>
 							</tr>
 							<tr>
-								<th class="px-2 py-3 text-center font-bold text-black bg-white border border-black">Code Risques</th>
-								<th class="px-2 py-3 text-center font-bold text-black bg-white border border-black">F.R</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Description du scénario</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Code Risque</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Dispositif de Maîtrise</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Criticité actif</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Gravité des impacts</th>
@@ -1925,8 +1924,8 @@
 								</th>
 							</tr>
 							<tr>
-								<th class="px-2 py-3 text-center font-bold text-black bg-white border border-black">Code Risques</th>
-								<th class="px-2 py-3 text-center font-bold text-black bg-white border border-black">F.R</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Description du scénario</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Code Risque</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Action PTR</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Décision</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Criticité actif</th>
@@ -2168,46 +2167,36 @@
 				<tbody>
 					<!-- Ligne séparateur famille de risques -->
 					<tr class="bg-teal-700">
-						<td colspan="47" class="px-3 py-3 font-bold text-white border border-black">
-							1- Sinistres physiques / Evènements naturels / Perturbations dues aux rayonnements
-						</td>
-					</tr>
-					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
-						</td>
-						
-						<!-- Domaine / Processus -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="4">Systèmes d'Information</textarea>
-						</td>
-						
-						<!-- Activités -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="4">Gestion de l'infrastructure IT & Réseau</textarea>
-						</td>
-						
-						<!-- Description du scénario -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="6">Dégâts au niveau des infrastructures et installations informatiques au niveau de la salle des machines à cause de catastrophes naturelles (Montée d'eau, inondations, incendie, etc…).</textarea>
-						</td>
-						
-						<!-- Code Risque -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI-R-SP-001</textarea>
-						</td>
+				<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">
+					1- Sinistres physiques / Evènements naturels / Perturbations dues aux rayonnements
+				</td>
+			</tr>
+			
+			<tr class="hover:bg-gray-50">
+				<!-- Entité -->
+				<td class="px-2 py-2 border border-black bg-white align-top">
+					<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
+				</td>
+				
+				<!-- Domaine / Processus -->
+				<td class="px-2 py-2 border border-black bg-white align-top">
+					<textarea class="w-full text-xs p-1 resize-none" rows="4">Systèmes d'Information</textarea>
+				</td>
+				
+				<!-- Activités -->
+				<td class="px-2 py-2 border border-black bg-white align-top">
+					<textarea class="w-full text-xs p-1 resize-none" rows="4">Gestion de l'infrastructure IT & Réseau</textarea>
+				</td>
+				
+				<!-- Description du scénario -->
+				<td class="px-2 py-2 border border-black bg-white align-top">
+					<textarea class="w-full text-xs p-1 resize-none" rows="6">Dégâts au niveau des infrastructures et installations informatiques au niveau de la salle des machines à cause de catastrophes naturelles (Montée d'eau, inondations, incendie, etc…).</textarea>
+				</td>
+				
+				<!-- Code Risque -->
+				<td class="px-2 py-2 border border-black bg-white align-top">
+					<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI-R-SP-001</textarea>
+				</td>
 						
 						<!-- Mesure ISO27001 -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
