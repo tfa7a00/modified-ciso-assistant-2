@@ -1350,6 +1350,8 @@
 
 
 
+
+
 {:else if activeSection === 'cartographie-risques'}
 	<section class="space-y-6">
 		<h2 class="text-xl font-semibold text-gray-900">Cartographie des risques</h2>
@@ -1576,7 +1578,7 @@
 					<!-- Ligne séparateur famille de risques -->
 					<tr class="bg-teal-700">
 						<td colspan="47" class="px-3 py-3 font-bold text-white border border-black">
-							1- Sinistres physiques / Evènements naturels / Perturbations
+							1- Sinistres physiques / Evènements naturels / Perturbations dues aux rayonnements
 						</td>
 					</tr>
 					
@@ -3545,6 +3547,13 @@
 						
 						<!-- Risque Résiduel - Niveau -->
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
+					</tr>
+					
+					<!-- Ligne séparateur famille de risques -->
+					<tr class="bg-teal-700">
+						<td colspan="47" class="px-3 py-3 font-bold text-white border border-black">
+							3 - Compromission des informations
+						</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50">
@@ -6036,6 +6045,13 @@
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
+					<!-- Ligne séparateur famille de risques -->
+					<tr class="bg-teal-700">
+						<td colspan="47" class="px-3 py-3 font-bold text-white border border-black">
+							4 - Compromission des fonctions
+						</td>
+					</tr>
+					
 					<tr class="hover:bg-gray-50">
 						<!-- Code Risques - PETIT -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -7281,6 +7297,13 @@ Externe</textarea>
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
+					<!-- Ligne séparateur famille de risques -->
+					<tr class="bg-teal-700">
+						<td colspan="47" class="px-3 py-3 font-bold text-white border border-black">
+							5 - Acte illicite
+						</td>
+					</tr>
+					
 					<tr class="hover:bg-gray-50">
 						<!-- Code Risques - PETIT -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -7811,6 +7834,13 @@ Externe</textarea>
 						
 						<!-- Risque Résiduel - Niveau -->
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
+					</tr>
+					
+					<!-- Ligne séparateur famille de risques -->
+					<tr class="bg-teal-700">
+						<td colspan="47" class="px-3 py-3 font-bold text-white border border-black">
+							6 - Mise en production non maitrisée
+						</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50">
@@ -8346,6 +8376,13 @@ Externe</textarea>
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
+					<!-- Ligne séparateur famille de risques -->
+					<tr class="bg-teal-700">
+						<td colspan="47" class="px-3 py-3 font-bold text-white border border-black">
+							7 - Conformité légale et réglementaire
+						</td>
+					</tr>
+					
 					<tr class="hover:bg-gray-50">
 						<!-- Code Risques - PETIT -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -8698,6 +8735,13 @@ Externe</textarea>
 						
 						<!-- Risque Résiduel - Niveau -->
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
+					</tr>
+					
+					<!-- Ligne séparateur famille de risques -->
+					<tr class="bg-teal-700">
+						<td colspan="47" class="px-3 py-3 font-bold text-white border border-black">
+							8 - Tiers
+						</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50">
