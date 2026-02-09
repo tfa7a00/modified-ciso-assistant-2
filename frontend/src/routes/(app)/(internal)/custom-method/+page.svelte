@@ -1962,7 +1962,7 @@
 						<th colspan="3" class="px-2 py-3 text-center font-bold text-black bg-white border border-black">
 							Cartographie des Processus
 						</th>
-						<th colspan="17" class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">
+						<th colspan="15" class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">
 							Identification des risques inhérents
 						</th>
 						<th colspan="12" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">
