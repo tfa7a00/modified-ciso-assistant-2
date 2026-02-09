@@ -553,6 +553,23 @@
 		versionRows = insererLigneApres(versionRows, index, { version: '', date: '', modification: '' });
 	}
 
+	// Fonctions pour tableau Rédaction (Contrôle du document)
+	function ajouterLigneRedaction() {
+		redactionRows = [...redactionRows, { role: '', nom: '', fonction: '', date: '' }];
+	}
+
+	function supprimerLigneRedaction(index: number) {
+		redactionRows = redactionRows.filter((_, i) => i !== index);
+	}
+
+	function insererLigneRedactionAvant(index: number) {
+		redactionRows = insererLigneAvant(redactionRows, index, { role: '', nom: '', fonction: '', date: '' });
+	}
+
+	function insererLigneRedactionApres(index: number) {
+		redactionRows = insererLigneApres(redactionRows, index, { role: '', nom: '', fonction: '', date: '' });
+	}
+
 	function ajouterCategorieActif() {
 		categoriesActifsRows = [...categoriesActifsRows, ''];
 	}
@@ -580,6 +597,11 @@
 		probaRows = insererLigneApres(probaRows, index, defaultProba);
 	}
 
+	function ajouterProba() {
+		const defaultProba: ProbaRow = { echelle: '', definition: '', frequence: '', historique: '' };
+		probaRows = [...probaRows, defaultProba];
+	}
+
 	function supprimerProba(index: number) {
 		probaRows = supprimerLigneAt(probaRows, index);
 	}
@@ -592,6 +614,77 @@
 	function insererImpactApres(index: number) {
 		const defaultImpact: ImpactRow = { echelle: '', definition: '', financier: '', reputation: '', parties_prenantes: '', reglementaire: '' };
 		impactRows = insererLigneApres(impactRows, index, defaultImpact);
+	}
+
+	function ajouterImpact() {
+		const defaultImpact: ImpactRow = { echelle: '', definition: '', financier: '', reputation: '', parties_prenantes: '', reglementaire: '' };
+		impactRows = [...impactRows, defaultImpact];
+	}
+
+	// Fonctions pour Échelle-PTR (Periodicité / Complexité / TypeAction / Priorité)
+
+	function ajouterPeriodicite() {
+		periodiciteRows = [...periodiciteRows, { periodicite: '', duree: '' }];
+	}
+
+	function supprimerPeriodicite(index: number) {
+		periodiciteRows = periodiciteRows.filter((_, i) => i !== index);
+	}
+
+	function insererPeriodiciteAvant(index: number) {
+		periodiciteRows = insererLigneAvant(periodiciteRows, index, { periodicite: '', duree: '' });
+	}
+
+	function insererPeriodiciteApres(index: number) {
+		periodiciteRows = insererLigneApres(periodiciteRows, index, { periodicite: '', duree: '' });
+	}
+
+	function ajouterComplexite() {
+		complexiteRows = [...complexiteRows, { complexite: '', definition: '' }];
+	}
+
+	function supprimerComplexite(index: number) {
+		complexiteRows = complexiteRows.filter((_, i) => i !== index);
+	}
+
+	function insererComplexiteAvant(index: number) {
+		complexiteRows = insererLigneAvant(complexiteRows, index, { complexite: '', definition: '' });
+	}
+
+	function insererComplexiteApres(index: number) {
+		complexiteRows = insererLigneApres(complexiteRows, index, { complexite: '', definition: '' });
+	}
+
+	function ajouterTypeAction() {
+		typeActionRows = [...typeActionRows, { type_action: '', description: '' }];
+	}
+
+	function supprimerTypeAction(index: number) {
+		typeActionRows = typeActionRows.filter((_, i) => i !== index);
+	}
+
+	function insererTypeActionAvant(index: number) {
+		typeActionRows = insererLigneAvant(typeActionRows, index, { type_action: '', description: '' });
+	}
+
+	function insererTypeActionApres(index: number) {
+		typeActionRows = insererLigneApres(typeActionRows, index, { type_action: '', description: '' });
+	}
+
+	function ajouterPriorite() {
+		prioriteRows = [...prioriteRows, { echelle: '', definition: '', signification: '' }];
+	}
+
+	function supprimerPriorite(index: number) {
+		prioriteRows = prioriteRows.filter((_, i) => i !== index);
+	}
+
+	function insererPrioriteAvant(index: number) {
+		prioriteRows = insererLigneAvant(prioriteRows, index, { echelle: '', definition: '', signification: '' });
+	}
+
+	function insererPrioriteApres(index: number) {
+		prioriteRows = insererLigneApres(prioriteRows, index, { echelle: '', definition: '', signification: '' });
 	}
 
 	function supprimerImpact(index: number) {
@@ -951,6 +1044,9 @@
 								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
 									Date
 								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
+									Actions
+								</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -980,11 +1076,58 @@
 											bind:value={redactionRows[i].date}
 										/>
 									</td>
+									<td class="px-4 py-2 border border-gray-700 bg-gray-100">
+										<div class="flex gap-1">
+											<button
+												type="button"
+												class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+												on:click={() => insererLigneRedactionAvant(i)}
+												title="Ajouter avant"
+											>
+												↑+
+											</button>
+											<button
+												type="button"
+												class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+												on:click={() => insererLigneRedactionApres(i)}
+												title="Ajouter après"
+											>
+												↓+
+											</button>
+											<button
+												type="button"
+												class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700"
+												on:click={() => supprimerLigneRedaction(i)}
+												title="Supprimer"
+											>
+												✕
+											</button>
+										</div>
+									</td>
 								</tr>
 							{/each}
 						</tbody>
 					</table>
-				</div>
+					</div>
+					<div class="flex gap-2 mt-2">
+						<button
+							type="button"
+							class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700"
+							on:click={ajouterLigneRedaction}
+						>
+							+ Ajouter une ligne
+						</button>
+						{#if redactionRows.length > 1}
+							<button
+								type="button"
+								class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700"
+								on:click={() => supprimerLigneRedaction(redactionRows.length - 1)}
+							>
+								- Supprimer la dernière ligne
+							</button>
+						{/if}
+					</div>
+
 			</section>
 
 			<!-- Tableau 2: Diffusion du document -->
@@ -1518,10 +1661,11 @@
 						<thead>
 							<tr>
 								<th
-									class="px-4 py-3 text-center font-semibold text-black bg-sky-200 border border-black"
+									class="px-4 py-3 text-left font-semibold text-black bg-sky-200 border border-black"
 								>
 									Catégories d'actifs
 								</th>
+								<th class="px-4 py-3 text-left font-semibold text-black bg-sky-200 border border-black">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -1533,6 +1677,34 @@
 											type="text"
 											bind:value={categoriesActifsRows[i]}
 										/>
+									</td>
+									<td class="px-4 py-2 border border-black bg-gray-100">
+										<div class="flex gap-1 justify-center">
+											<button
+												type="button"
+												class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+												on:click={() => insererCategorieActifAvant(i)}
+												title="Ajouter avant"
+											>
+												↑+
+											</button>
+											<button
+												type="button"
+												class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+												on:click={() => insererCategorieActifApres(i)}
+												title="Ajouter après"
+											>
+												↓+
+											</button>
+											<button
+												type="button"
+												class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700"
+												on:click={() => supprimerCategorieActif(i)}
+												title="Supprimer"
+											>
+												✕
+											</button>
+										</div>
 									</td>
 								</tr>
 							{/each}
@@ -9937,6 +10109,7 @@ Externe</textarea>
 								>
 									Désignation de la probabilité
 								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -9970,11 +10143,45 @@ Externe</textarea>
 											bind:value={probaRows[i].historique}
 										></textarea>
 									</td>
+									<td class="px-4 py-2 border border-black bg-gray-100 text-center">
+										<div class="flex gap-1 justify-center">
+											<button
+												type="button"
+												class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+												on:click={() => insererProbaAvant(i)}
+												title="Ajouter avant"
+											>
+												↑+
+											</button>
+											<button
+												type="button"
+												class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+												on:click={() => insererProbaApres(i)}
+												title="Ajouter après"
+											>
+												↓+
+											</button>
+											<button
+												type="button"
+												class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700"
+												on:click={() => supprimerProba(i)}
+												title="Supprimer"
+											>
+												✕
+											</button>
+										</div>
+									</td>
 								</tr>
 							{/each}
 						</tbody>
 					</table>
 				</div>
+					<div class="flex gap-2 mt-2">
+						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterProba}>+ Ajouter une ligne</button>
+						{#if probaRows.length > 1}
+							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerProba(probaRows.length - 1)}>- Supprimer la dernière ligne</button>
+						{/if}
+					</div>
 			</section>
 
 			<!-- Tableau 2 – Échelle d'impact -->
@@ -10014,6 +10221,7 @@ Externe</textarea>
 								>
 									Réglementaire
 								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -10413,13 +10621,29 @@ Externe</textarea>
 								</select>
 							</td>
 							<td class="px-2 py-2 border border-gray-300 text-center">
-								<button
-									on:click={() => deleteRow(index)}
-									class="px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors"
-									title="Supprimer cette ligne"
-								>
-									✕
-								</button>
+								<div class="flex gap-1 justify-center">
+									<button
+										on:click={() => insererPtrAvant(index)}
+										class="px-2 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600"
+										title="Ajouter avant"
+									>
+										↑+
+									</button>
+									<button
+										on:click={() => insererPtrApres(index)}
+										class="px-2 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600"
+										title="Ajouter après"
+									>
+										↓+
+									</button>
+									<button
+										on:click={() => deleteRow(index)}
+										class="px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors"
+										title="Supprimer cette ligne"
+									>
+										✕
+									</button>
+								</div>
 							</td>
 						</tr>
 					{/each}
@@ -10537,11 +10761,24 @@ Externe</textarea>
 											bind:value={periodiciteRows[i].duree}
 										/>
 									</td>
+									<td class="px-4 py-2 border border-black bg-gray-100 text-center">
+										<div class="flex gap-1 justify-center">
+											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererPeriodiciteAvant(i)} title="Ajouter avant">↑+</button>
+											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererPeriodiciteApres(i)} title="Ajouter après">↓+</button>
+											<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerPeriodicite(i)} title="Supprimer">✕</button>
+										</div>
+									</td>
 								</tr>
 							{/each}
 						</tbody>
 					</table>
 				</div>
+					<div class="flex gap-2 mt-2">
+						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterPeriodicite}>+ Ajouter une ligne</button>
+						{#if periodiciteRows.length > 1}
+							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerPeriodicite(periodiciteRows.length - 1)}>- Supprimer la dernière ligne</button>
+						{/if}
+					</div>
 			</section>
 
 			<section class="space-y-4">
@@ -10580,11 +10817,24 @@ Externe</textarea>
 											bind:value={complexiteRows[i].definition}
 										></textarea>
 									</td>
+									<td class="px-4 py-2 border border-black bg-gray-100 text-center">
+										<div class="flex gap-1 justify-center">
+											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererComplexiteAvant(i)} title="Ajouter avant">↑+</button>
+											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererComplexiteApres(i)} title="Ajouter après">↓+</button>
+											<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerComplexite(i)} title="Supprimer">✕</button>
+										</div>
+									</td>
 								</tr>
 							{/each}
 						</tbody>
 					</table>
 				</div>
+					<div class="flex gap-2 mt-2">
+						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterImpact}>+ Ajouter une ligne</button>
+						{#if impactRows.length > 1}
+							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerImpact(impactRows.length - 1)}>- Supprimer la dernière ligne</button>
+						{/if}
+					</div>
 			</section>
 
 			<section class="space-y-4">
@@ -10623,10 +10873,23 @@ Externe</textarea>
 											bind:value={typeActionRows[i].description}
 										></textarea>
 									</td>
+									<td class="px-4 py-2 border border-black bg-gray-100 text-center">
+										<div class="flex gap-1 justify-center">
+											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererTypeActionAvant(i)} title="Ajouter avant">↑+</button>
+											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererTypeActionApres(i)} title="Ajouter après">↓+</button>
+											<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerTypeAction(i)} title="Supprimer">✕</button>
+										</div>
+									</td>
 								</tr>
 							{/each}
 						</tbody>
 					</table>
+				</div>
+				<div class="flex gap-2 mt-2">
+					<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterTypeAction}>+ Ajouter une ligne</button>
+					{#if typeActionRows.length > 1}
+						<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerTypeAction(typeActionRows.length - 1)}>- Supprimer la dernière ligne</button>
+					{/if}
 				</div>
 			</section>
 
@@ -10687,11 +10950,24 @@ Externe</textarea>
 											bind:value={prioriteRows[i].signification}
 										/>
 									</td>
+									<td class="px-4 py-2 border border-black bg-gray-100 text-center">
+										<div class="flex gap-1 justify-center">
+											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererPrioriteAvant(i)} title="Ajouter avant">↑+</button>
+											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererPrioriteApres(i)} title="Ajouter après">↓+</button>
+											<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerPriorite(i)} title="Supprimer">✕</button>
+										</div>
+									</td>
 								</tr>
 							{/each}
 						</tbody>
 					</table>
 				</div>
+					<div class="flex gap-2 mt-2">
+						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterPriorite}>+ Ajouter une ligne</button>
+						{#if prioriteRows.length > 1}
+							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerPriorite(prioriteRows.length - 1)}>- Supprimer la dernière ligne</button>
+						{/if}
+					</div>
 			</section>
 		</section>
 	{/if}
