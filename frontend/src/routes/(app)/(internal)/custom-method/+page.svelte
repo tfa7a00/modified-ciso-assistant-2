@@ -673,41 +673,42 @@
 </script>
 
 <style>
-	/* Hide/show columns by index so each cartographie sub-view shows only its columns.
-	   Table has 47 logical columns: identification 1-22, brut 23-34, net 35-40, ptr 41-47. */
+	/* Use the <colgroup> classes added earlier to hide/show entire columns
+	   so headers and body stay aligned. The table's <colgroup> contains 47
+	   <col> elements grouped by purpose (identification / brut / net / ptr).
+	*/
 
-	/* Identification: show cols 1-22 only */
-	.view-identification table th:nth-child(n+23),
-	.view-identification table td:nth-child(n+23) {
+	/* Identification: hide brut/net/ptr columns */
+	.view-identification col.col-brut,
+	.view-identification col.col-net,
+	.view-identification col.col-ptr {
 		display: none;
 	}
 
-	/* Risque Brut: show cols 23-34 only (hide 1-22 and 35-47) */
-	.view-brut table th:nth-child(-n+22),
-	.view-brut table td:nth-child(-n+22),
-	.view-brut table th:nth-child(n+35),
-	.view-brut table td:nth-child(n+35) {
+	/* Risque Brut: hide identification/net/ptr columns */
+	.view-brut col.col-identification,
+	.view-brut col.col-net,
+	.view-brut col.col-ptr {
 		display: none;
 	}
 
-	/* Degré + Risque Net: show cols 35-40 only (hide 1-34 and 41-47) */
-	.view-net table th:nth-child(-n+34),
-	.view-net table td:nth-child(-n+34),
-	.view-net table th:nth-child(n+41),
-	.view-net table td:nth-child(n+41) {
+	/* Degré + Risque Net: hide identification/brut/ptr columns */
+	.view-net col.col-identification,
+	.view-net col.col-brut,
+	.view-net col.col-ptr {
 		display: none;
 	}
 
-	/* PTR + Risque Résiduel: show cols 41-47 only (hide 1-40) */
-	.view-ptr table th:nth-child(-n+40),
-	.view-ptr table td:nth-child(-n+40) {
+	/* PTR + Résiduel: hide identification/brut/net columns */
+	.view-ptr col.col-identification,
+	.view-ptr col.col-brut,
+	.view-ptr col.col-net {
 		display: none;
 	}
 
-	/* Tout: ensure all cells are visible */
-	.view-all table th,
-	.view-all table td {
-		display: table-cell;
+	/* Tout: show all columns */
+	.view-all col {
+		display: table-column;
 	}
 
 	/* Keep table layout predictable */
