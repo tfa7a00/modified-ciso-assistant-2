@@ -504,12 +504,37 @@
 	}
 
 	// Fonctions pour ajouter/supprimer des lignes
+	// Fonctions génériques pour ajouter/supprimer des lignes à n'importe quelle position
+	function insererLigneAvant(array: any[], index: number, nouvelleValeur: any) {
+		const result = [...array];
+		result.splice(index, 0, nouvelleValeur);
+		return result;
+	}
+
+	function insererLigneApres(array: any[], index: number, nouvelleValeur: any) {
+		const result = [...array];
+		result.splice(index + 1, 0, nouvelleValeur);
+		return result;
+	}
+
+	function supprimerLigneAt(array: any[], index: number) {
+		return array.filter((_, i) => i !== index);
+	}
+
 	function ajouterLigneDiffusion() {
 		diffusionRows = [...diffusionRows, { nom: '', entite_fonction: '', date: '' }];
 	}
 
 	function supprimerLigneDiffusion(index: number) {
 		diffusionRows = diffusionRows.filter((_, i) => i !== index);
+	}
+
+	function insererLigneDiffusionAvant(index: number) {
+		diffusionRows = insererLigneAvant(diffusionRows, index, { nom: '', entite_fonction: '', date: '' });
+	}
+
+	function insererLigneDiffusionApres(index: number) {
+		diffusionRows = insererLigneApres(diffusionRows, index, { nom: '', entite_fonction: '', date: '' });
 	}
 
 	function ajouterLigneVersion() {
@@ -520,12 +545,102 @@
 		versionRows = versionRows.filter((_, i) => i !== index);
 	}
 
+	function insererLigneVersionAvant(index: number) {
+		versionRows = insererLigneAvant(versionRows, index, { version: '', date: '', modification: '' });
+	}
+
+	function insererLigneVersionApres(index: number) {
+		versionRows = insererLigneApres(versionRows, index, { version: '', date: '', modification: '' });
+	}
+
 	function ajouterCategorieActif() {
 		categoriesActifsRows = [...categoriesActifsRows, ''];
 	}
 
 	function supprimerCategorieActif(index: number) {
 		categoriesActifsRows = categoriesActifsRows.filter((_, i) => i !== index);
+	}
+
+	function insererCategorieActifAvant(index: number) {
+		categoriesActifsRows = insererLigneAvant(categoriesActifsRows, index, '');
+	}
+
+	function insererCategorieActifApres(index: number) {
+		categoriesActifsRows = insererLigneApres(categoriesActifsRows, index, '');
+	}
+
+	// Fonctions pour tableaux Aide-Risque (Probabilité, Impact)
+	function insererProbaAvant(index: number) {
+		const defaultProba: ProbaRow = { echelle: '', definition: '', frequence: '', historique: '' };
+		probaRows = insererLigneAvant(probaRows, index, defaultProba);
+	}
+
+	function insererProbaApres(index: number) {
+		const defaultProba: ProbaRow = { echelle: '', definition: '', frequence: '', historique: '' };
+		probaRows = insererLigneApres(probaRows, index, defaultProba);
+	}
+
+	function supprimerProba(index: number) {
+		probaRows = supprimerLigneAt(probaRows, index);
+	}
+
+	function insererImpactAvant(index: number) {
+		const defaultImpact: ImpactRow = { echelle: '', definition: '', financier: '', reputation: '', parties_prenantes: '', reglementaire: '' };
+		impactRows = insererLigneAvant(impactRows, index, defaultImpact);
+	}
+
+	function insererImpactApres(index: number) {
+		const defaultImpact: ImpactRow = { echelle: '', definition: '', financier: '', reputation: '', parties_prenantes: '', reglementaire: '' };
+		impactRows = insererLigneApres(impactRows, index, defaultImpact);
+	}
+
+	function supprimerImpact(index: number) {
+		impactRows = supprimerLigneAt(impactRows, index);
+	}
+
+	// Fonctions pour PTR (addRow/deleteRow existantes, mais ajouter les variantes)
+	function insererPtrAvant(index: number) {
+		const newRow = {
+			id: ptrData.length + 1,
+			refRisque: '',
+			correspISO: '',
+			proprietaire: '',
+			niveauRisque: '',
+			decision: '',
+			idPTR: '',
+			action: '',
+			typeAction: '',
+			porteur: '',
+			priorite: '',
+			periodicite: '',
+			complexite: '',
+			echeance: '',
+			etatAvancement: ''
+		};
+		ptrData = insererLigneAvant(ptrData, index, newRow);
+		ptrData = ptrData.map((row, i) => ({ ...row, id: i + 1 }));
+	}
+
+	function insererPtrApres(index: number) {
+		const newRow = {
+			id: ptrData.length + 1,
+			refRisque: '',
+			correspISO: '',
+			proprietaire: '',
+			niveauRisque: '',
+			decision: '',
+			idPTR: '',
+			action: '',
+			typeAction: '',
+			porteur: '',
+			priorite: '',
+			periodicite: '',
+			complexite: '',
+			echeance: '',
+			etatAvancement: ''
+		};
+		ptrData = insererLigneApres(ptrData, index, newRow);
+		ptrData = ptrData.map((row, i) => ({ ...row, id: i + 1 }));
 	}
 
 	// Fonctions pour le registre de classification
@@ -893,6 +1008,9 @@
 								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
 									Date
 								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
+									Actions
+								</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -918,6 +1036,34 @@
 											type="text"
 											bind:value={diffusionRows[i].date}
 										/>
+									</td>
+									<td class="px-4 py-2 border border-gray-700 bg-gray-100">
+										<div class="flex gap-1">
+											<button
+												type="button"
+												class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+												on:click={() => insererLigneDiffusionAvant(i)}
+												title="Ajouter avant"
+											>
+												↑+
+											</button>
+											<button
+												type="button"
+												class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+												on:click={() => insererLigneDiffusionApres(i)}
+												title="Ajouter après"
+											>
+												↓+
+											</button>
+											<button
+												type="button"
+												class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700"
+												on:click={() => supprimerLigneDiffusion(i)}
+												title="Supprimer"
+											>
+												✕
+											</button>
+										</div>
 									</td>
 								</tr>
 							{/each}
@@ -964,6 +1110,9 @@
 								</th>
 								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
 									Modification
+								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
+									Actions
 								</th>
 							</tr>
 						</thead>
