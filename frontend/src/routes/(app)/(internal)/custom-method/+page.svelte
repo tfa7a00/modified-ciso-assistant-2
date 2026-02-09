@@ -1341,13 +1341,16 @@
 
 
 
+
+
+
 {:else if activeSection === 'cartographie-risques'}
 	<section class="space-y-6">
 		<h2 class="text-xl font-semibold text-gray-900">Cartographie des risques</h2>
 
-		<!-- Tableau de cartographie - Copie identique Excel -->
+		<!-- Tableau de cartographie - Flexible -->
 		<div class="overflow-x-auto rounded-lg border border-black bg-white shadow-sm">
-			<table class="min-w-full text-xs border-collapse border border-black table-auto">
+			<table class="text-xs border-collapse border border-black w-auto">
 				<thead>
 					<!-- Ligne 1: Titre principal -->
 					<tr>
@@ -1384,42 +1387,42 @@
 					
 					<!-- Ligne 6-7: Headers détaillés -->
 					<tr>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-black bg-white border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-black bg-white border border-black">
 							Code<br/>Risques
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-black bg-white border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-black bg-white border border-black">
 							F.R
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-white bg-gray-600 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-white bg-gray-600 border border-black">
 							Entité
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-white bg-gray-600 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-white bg-gray-600 border border-black">
 							Domaine / Processus
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-white bg-gray-600 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-white bg-gray-600 border border-black">
 							Activités
 						</th>
 						
 						<!-- Identification risques -->
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-white bg-teal-700 border border-black">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-white bg-teal-700 border border-black">
 							Description du scénario du Risque
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-white bg-teal-700 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-white bg-teal-700 border border-black">
 							Code<br/>Risque
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-white bg-teal-700 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-white bg-teal-700 border border-black">
 							Mesure ISO27001, annexe A
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-white bg-teal-700 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-white bg-teal-700 border border-black">
 							Famille<br/>de risque
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-white bg-teal-700 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-white bg-teal-700 border border-black">
 							Source
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-white bg-teal-700 border border-black">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-white bg-teal-700 border border-black">
 							Famille de causes
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-white bg-teal-700 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-white bg-teal-700 border border-black">
 							Propriétaire<br/>du risque
 						</th>
 						
@@ -1438,78 +1441,78 @@
 							Impact DIC
 						</th>
 						
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-black bg-yellow-400 border border-black">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-black bg-yellow-400 border border-black">
 							Criticité de l'actif - Besoin de SOCIETE en SSI
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-white bg-orange-600 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-white bg-orange-600 border border-black">
 							Impact Financier
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-white bg-orange-600 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-white bg-orange-600 border border-black">
 							Impact Parties prenantes
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-white bg-orange-600 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-white bg-orange-600 border border-black">
 							Impact sur la Réputation
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-white bg-orange-600 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-white bg-orange-600 border border-black">
 							Impacts Réglementaire
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-black bg-yellow-400 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-black bg-yellow-400 border border-black">
 							Gravité des impacts
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-black bg-yellow-400 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-black bg-yellow-400 border border-black">
 							Probabilité d'Occurrence
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-black bg-yellow-400 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-black bg-yellow-400 border border-black">
 							I*P*C
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-black bg-yellow-400 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-black bg-yellow-400 border border-black">
 							Signification du risque brut
 						</th>
 						
 						<!-- Dispositif -->
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-white bg-teal-700 border border-black">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-white bg-teal-700 border border-black">
 							Description du Dispositif de Maitrise des Risques
 						</th>
 						
 						<!-- Risque Net -->
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-black bg-yellow-400 border border-black">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-black bg-yellow-400 border border-black">
 							Criticité de l'actif - Besoin de SOCIETE en SSI
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-black bg-yellow-400 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-black bg-yellow-400 border border-black">
 							Gravité des impacts
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-black bg-yellow-400 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-black bg-yellow-400 border border-black">
 							Probabilité<br/>d'Occurrence
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-black bg-yellow-400 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-black bg-yellow-400 border border-black">
 							I*P*C
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-black bg-yellow-400 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-black bg-yellow-400 border border-black">
 							Signification du risque net
 						</th>
 						
 						<!-- PTR -->
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-white bg-gray-600 border border-black">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-white bg-gray-600 border border-black">
 							Action à mettre en place
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-white bg-gray-600 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-white bg-gray-600 border border-black">
 							Décision
 						</th>
 						
 						<!-- Risque Résiduel -->
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-black bg-yellow-400 border border-black">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-black bg-yellow-400 border border-black">
 							Criticité de l'actif - Besoin de SOCIETE en SSI
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-black bg-yellow-400 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-black bg-yellow-400 border border-black">
 							Impact
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-black bg-yellow-400 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-black bg-yellow-400 border border-black">
 							Vraissemblance
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-black bg-yellow-400 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-black bg-yellow-400 border border-black">
 							I*P*C
 						</th>
-						<th rowspan="2" class="px-2 py-2 text-center font-bold text-black bg-yellow-400 border border-black whitespace-nowrap">
+						<th rowspan="2" class="px-3 py-2 text-center font-bold text-black bg-yellow-400 border border-black">
 							Niveau du risque résiduel
 						</th>
 					</tr>
@@ -1517,47 +1520,47 @@
 					<!-- Ligne 7: Sous-headers catégories actifs + DIC -->
 					<tr>
 						<!-- Catégories actifs -->
-						<th class="px-2 py-2 text-center font-bold text-white bg-cyan-600 border border-black whitespace-nowrap">
+						<th class="px-3 py-2 text-center font-bold text-white bg-cyan-600 border border-black">
 							Matériel informatique
 						</th>
-						<th class="px-2 py-2 text-center font-bold text-white bg-cyan-600 border border-black whitespace-nowrap">
+						<th class="px-3 py-2 text-center font-bold text-white bg-cyan-600 border border-black">
 							Application
 						</th>
-						<th class="px-2 py-2 text-center font-bold text-white bg-cyan-600 border border-black whitespace-nowrap">
+						<th class="px-3 py-2 text-center font-bold text-white bg-cyan-600 border border-black">
 							Equipements sécurité
 						</th>
-						<th class="px-2 py-2 text-center font-bold text-white bg-cyan-600 border border-black whitespace-nowrap">
+						<th class="px-3 py-2 text-center font-bold text-white bg-cyan-600 border border-black">
 							Equipements réseaux
 						</th>
-						<th class="px-2 py-2 text-center font-bold text-white bg-cyan-600 border border-black whitespace-nowrap">
+						<th class="px-3 py-2 text-center font-bold text-white bg-cyan-600 border border-black">
 							Ressources humaines
 						</th>
-						<th class="px-2 py-2 text-center font-bold text-white bg-cyan-600 border border-black whitespace-nowrap">
+						<th class="px-3 py-2 text-center font-bold text-white bg-cyan-600 border border-black">
 							Document
 						</th>
-						<th class="px-2 py-2 text-center font-bold text-white bg-cyan-600 border border-black whitespace-nowrap">
+						<th class="px-3 py-2 text-center font-bold text-white bg-cyan-600 border border-black">
 							Données
 						</th>
 						
 						<!-- Critères impact -->
-						<th class="px-2 py-2 text-center font-bold text-white bg-green-600 border border-black whitespace-nowrap">
+						<th class="px-3 py-2 text-center font-bold text-white bg-green-600 border border-black">
 							D
 						</th>
-						<th class="px-2 py-2 text-center font-bold text-white bg-green-600 border border-black whitespace-nowrap">
+						<th class="px-3 py-2 text-center font-bold text-white bg-green-600 border border-black">
 							I
 						</th>
-						<th class="px-2 py-2 text-center font-bold text-white bg-green-600 border border-black whitespace-nowrap">
+						<th class="px-3 py-2 text-center font-bold text-white bg-green-600 border border-black">
 							C
 						</th>
 						
 						<!-- Impact DIC -->
-						<th class="px-2 py-2 text-center font-bold text-white bg-orange-600 border border-black whitespace-nowrap">
+						<th class="px-3 py-2 text-center font-bold text-white bg-orange-600 border border-black">
 							D
 						</th>
-						<th class="px-2 py-2 text-center font-bold text-white bg-orange-600 border border-black whitespace-nowrap">
+						<th class="px-3 py-2 text-center font-bold text-white bg-orange-600 border border-black">
 							I
 						</th>
-						<th class="px-2 py-2 text-center font-bold text-white bg-orange-600 border border-black whitespace-nowrap">
+						<th class="px-3 py-2 text-center font-bold text-white bg-orange-600 border border-black">
 							C
 						</th>
 					</tr>
@@ -1573,83 +1576,83 @@
 					
 					<!-- Ligne de données exemple (Row 9) -->
 					<tr class="hover:bg-gray-50">
-						<td class="px-2 py-1 border border-black bg-white"><input type="text" class="w-full text-xs p-1" /></td>
-						<td class="px-2 py-1 border border-black bg-white"><input type="text" class="w-full text-xs p-1" /></td>
-						<td class="px-2 py-1 border border-black bg-white"><input type="text" class="w-full text-xs p-1 font-bold" value="DSI" /></td>
-						<td class="px-2 py-1 border border-black bg-white"><input type="text" class="w-full text-xs p-1" value="Systèmes d'Information" /></td>
-						<td class="px-2 py-1 border border-black bg-white"><input type="text" class="w-full text-xs p-1" value="Gestion de l'infrastructure IT & Réseau" /></td>
-						<td class="px-2 py-1 border border-black bg-white"><textarea class="w-full text-xs p-1 resize-none" rows="3" placeholder="Description du scénario..."></textarea></td>
-						<td class="px-2 py-1 border border-black bg-white"><input type="text" class="w-full text-xs p-1" placeholder="DSI-R-SP-001" /></td>
-						<td class="px-2 py-1 border border-black bg-white"><textarea class="w-full text-xs p-1 font-bold resize-none" rows="2" placeholder="7.3&#10;7.13"></textarea></td>
-						<td class="px-2 py-1 border border-black bg-white"><input type="text" class="w-full text-xs p-1" placeholder="Sinistres physiques..." /></td>
-						<td class="px-2 py-1 border border-black bg-white"><input type="text" class="w-full text-xs p-1" placeholder="Externe" /></td>
-						<td class="px-2 py-1 border border-black bg-white"><input type="text" class="w-full text-xs p-1" placeholder="Catastrophes..." /></td>
-						<td class="px-2 py-1 border border-black bg-white"><input type="text" class="w-full text-xs p-1 font-bold" value="DSI" /></td>
+						<td class="px-3 py-2 border border-black bg-white"><input type="text" class="w-auto text-xs p-1" style="min-width: 80px;" /></td>
+						<td class="px-3 py-2 border border-black bg-white"><input type="text" class="w-auto text-xs p-1" style="min-width: 60px;" /></td>
+						<td class="px-3 py-2 border border-black bg-white"><input type="text" class="w-auto text-xs p-1 font-bold" value="DSI" style="min-width: 80px;" /></td>
+						<td class="px-3 py-2 border border-black bg-white"><input type="text" class="w-auto text-xs p-1" value="Systèmes d'Information" style="min-width: 150px;" /></td>
+						<td class="px-3 py-2 border border-black bg-white"><input type="text" class="w-auto text-xs p-1" value="Gestion de l'infrastructure IT & Réseau" style="min-width: 200px;" /></td>
+						<td class="px-3 py-2 border border-black bg-white"><textarea class="w-auto text-xs p-2" style="min-width: 250px; min-height: 80px;" placeholder="Description du scénario..."></textarea></td>
+						<td class="px-3 py-2 border border-black bg-white"><input type="text" class="w-auto text-xs p-1" placeholder="DSI-R-SP-001" style="min-width: 120px;" /></td>
+						<td class="px-3 py-2 border border-black bg-white"><textarea class="w-auto text-xs p-2 font-bold" style="min-width: 100px; min-height: 60px;" placeholder="7.3&#10;7.13"></textarea></td>
+						<td class="px-3 py-2 border border-black bg-white"><input type="text" class="w-auto text-xs p-1" placeholder="Sinistres physiques..." style="min-width: 150px;" /></td>
+						<td class="px-3 py-2 border border-black bg-white"><input type="text" class="w-auto text-xs p-1" placeholder="Externe" style="min-width: 100px;" /></td>
+						<td class="px-3 py-2 border border-black bg-white"><input type="text" class="w-auto text-xs p-1" placeholder="Catastrophes..." style="min-width: 150px;" /></td>
+						<td class="px-3 py-2 border border-black bg-white"><input type="text" class="w-auto text-xs p-1 font-bold" value="DSI" style="min-width: 100px;" /></td>
 						
 						<!-- Catégories actifs - checkboxes -->
-						<td class="px-2 py-1 text-center border border-black bg-white"><input type="checkbox" class="w-4 h-4" /></td>
-						<td class="px-2 py-1 text-center border border-black bg-white"><input type="checkbox" class="w-4 h-4" /></td>
-						<td class="px-2 py-1 text-center border border-black bg-white"><input type="checkbox" class="w-4 h-4" /></td>
-						<td class="px-2 py-1 text-center border border-black bg-white"><input type="checkbox" class="w-4 h-4" /></td>
-						<td class="px-2 py-1 text-center border border-black bg-white"><input type="checkbox" class="w-4 h-4" /></td>
-						<td class="px-2 py-1 text-center border border-black bg-white"><input type="checkbox" class="w-4 h-4" /></td>
-						<td class="px-2 py-1 text-center border border-black bg-white"><input type="checkbox" class="w-4 h-4" /></td>
+						<td class="px-3 py-2 text-center border border-black bg-white"><input type="checkbox" class="w-5 h-5" /></td>
+						<td class="px-3 py-2 text-center border border-black bg-white"><input type="checkbox" class="w-5 h-5" /></td>
+						<td class="px-3 py-2 text-center border border-black bg-white"><input type="checkbox" class="w-5 h-5" /></td>
+						<td class="px-3 py-2 text-center border border-black bg-white"><input type="checkbox" class="w-5 h-5" /></td>
+						<td class="px-3 py-2 text-center border border-black bg-white"><input type="checkbox" class="w-5 h-5" /></td>
+						<td class="px-3 py-2 text-center border border-black bg-white"><input type="checkbox" class="w-5 h-5" /></td>
+						<td class="px-3 py-2 text-center border border-black bg-white"><input type="checkbox" class="w-5 h-5" /></td>
 						
 						<!-- Critères DIC -->
-						<td class="px-2 py-1 text-center border border-black bg-white"><input type="checkbox" class="w-4 h-4" /></td>
-						<td class="px-2 py-1 text-center border border-black bg-white"><input type="checkbox" class="w-4 h-4" /></td>
-						<td class="px-2 py-1 text-center border border-black bg-white"><input type="checkbox" class="w-4 h-4" /></td>
+						<td class="px-3 py-2 text-center border border-black bg-white"><input type="checkbox" class="w-5 h-5" /></td>
+						<td class="px-3 py-2 text-center border border-black bg-white"><input type="checkbox" class="w-5 h-5" /></td>
+						<td class="px-3 py-2 text-center border border-black bg-white"><input type="checkbox" class="w-5 h-5" /></td>
 						
 						<!-- Impact DIC (formules) -->
-						<td class="px-2 py-1 text-center border border-black bg-gray-100"><input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" /></td>
-						<td class="px-2 py-1 text-center border border-black bg-gray-100"><input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" /></td>
-						<td class="px-2 py-1 text-center border border-black bg-gray-100"><input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" /></td>
+						<td class="px-3 py-2 text-center border border-black bg-gray-100"><input type="number" class="w-auto text-xs p-1 text-center bg-transparent" min="1" max="4" style="min-width: 60px;" /></td>
+						<td class="px-3 py-2 text-center border border-black bg-gray-100"><input type="number" class="w-auto text-xs p-1 text-center bg-transparent" min="1" max="4" style="min-width: 60px;" /></td>
+						<td class="px-3 py-2 text-center border border-black bg-gray-100"><input type="number" class="w-auto text-xs p-1 text-center bg-transparent" min="1" max="4" style="min-width: 60px;" /></td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-1 text-center font-bold border border-black bg-yellow-200">-</td>
+						<td class="px-3 py-2 text-center font-bold border border-black bg-yellow-200" style="min-width: 80px;">-</td>
 						
 						<!-- Impacts -->
-						<td class="px-2 py-1 border border-black bg-white"><input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" /></td>
-						<td class="px-2 py-1 border border-black bg-white"><input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" /></td>
-						<td class="px-2 py-1 border border-black bg-white"><input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" /></td>
-						<td class="px-2 py-1 border border-black bg-white"><input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" /></td>
+						<td class="px-3 py-2 border border-black bg-white"><input type="number" class="w-auto text-xs p-1 text-center" min="1" max="6" style="min-width: 80px;" /></td>
+						<td class="px-3 py-2 border border-black bg-white"><input type="number" class="w-auto text-xs p-1 text-center" min="1" max="6" style="min-width: 80px;" /></td>
+						<td class="px-3 py-2 border border-black bg-white"><input type="number" class="w-auto text-xs p-1 text-center" min="1" max="6" style="min-width: 80px;" /></td>
+						<td class="px-3 py-2 border border-black bg-white"><input type="number" class="w-auto text-xs p-1 text-center" min="1" max="6" style="min-width: 80px;" /></td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-1 text-center font-bold border border-black bg-yellow-200">-</td>
+						<td class="px-3 py-2 text-center font-bold border border-black bg-yellow-200" style="min-width: 80px;">-</td>
 						
 						<!-- Probabilité -->
-						<td class="px-2 py-1 border border-black bg-white"><input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" /></td>
+						<td class="px-3 py-2 border border-black bg-white"><input type="number" class="w-auto text-xs p-1 text-center" min="1" max="5" style="min-width: 80px;" /></td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-1 text-center font-bold border border-black bg-orange-200">-</td>
+						<td class="px-3 py-2 text-center font-bold border border-black bg-orange-200" style="min-width: 70px;">-</td>
 						
 						<!-- Niveau risque brut -->
-						<td class="px-2 py-1 text-center font-bold border border-black bg-orange-200 text-xs">-</td>
+						<td class="px-3 py-2 text-center font-bold border border-black bg-orange-200 text-xs" style="min-width: 100px;">-</td>
 						
 						<!-- Dispositif -->
-						<td class="px-2 py-1 border border-black bg-white"><textarea class="w-full text-xs p-1 resize-none" rows="3" placeholder="Description du dispositif..."></textarea></td>
+						<td class="px-3 py-2 border border-black bg-white"><textarea class="w-auto text-xs p-2" style="min-width: 250px; min-height: 80px;" placeholder="Description du dispositif..."></textarea></td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-1 text-center font-bold border border-black bg-yellow-200">-</td>
+						<td class="px-3 py-2 text-center font-bold border border-black bg-yellow-200" style="min-width: 80px;">-</td>
 						
 						<!-- Risque Net - Gravité -->
-						<td class="px-2 py-1 border border-black bg-yellow-200"><input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" /></td>
+						<td class="px-3 py-2 border border-black bg-yellow-200"><input type="number" class="w-auto text-xs p-1 text-center bg-transparent" min="1" max="6" style="min-width: 80px;" /></td>
 						
 						<!-- Risque Net - Probabilité -->
-						<td class="px-2 py-1 border border-black bg-yellow-200"><input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" /></td>
+						<td class="px-3 py-2 border border-black bg-yellow-200"><input type="number" class="w-auto text-xs p-1 text-center bg-transparent" min="1" max="5" style="min-width: 80px;" /></td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-1 text-center font-bold border border-black bg-orange-200">-</td>
+						<td class="px-3 py-2 text-center font-bold border border-black bg-orange-200" style="min-width: 70px;">-</td>
 						
 						<!-- Risque Net - Niveau -->
-						<td class="px-2 py-1 text-center font-bold border border-black bg-orange-200 text-xs">-</td>
+						<td class="px-3 py-2 text-center font-bold border border-black bg-orange-200 text-xs" style="min-width: 100px;">-</td>
 						
 						<!-- PTR - Action -->
-						<td class="px-2 py-1 border border-black bg-white"><textarea class="w-full text-xs p-1 resize-none" rows="3" placeholder="Action..."></textarea></td>
+						<td class="px-3 py-2 border border-black bg-white"><textarea class="w-auto text-xs p-2" style="min-width: 250px; min-height: 80px;" placeholder="Action..."></textarea></td>
 						
 						<!-- PTR - Décision -->
-						<td class="px-2 py-1 border border-black bg-white">
-							<select class="w-full text-xs p-1">
+						<td class="px-3 py-2 border border-black bg-white">
+							<select class="w-auto text-xs p-1" style="min-width: 100px;">
 								<option value="">--</option>
 								<option value="Accepter">Accepter</option>
 								<option value="Réduire">Réduire</option>
@@ -1659,19 +1662,19 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-1 text-center font-bold border border-black bg-yellow-200">-</td>
+						<td class="px-3 py-2 text-center font-bold border border-black bg-yellow-200" style="min-width: 80px;">-</td>
 						
 						<!-- Risque Résiduel - Impact -->
-						<td class="px-2 py-1 border border-black bg-white"><input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" /></td>
+						<td class="px-3 py-2 border border-black bg-white"><input type="number" class="w-auto text-xs p-1 text-center" min="1" max="6" style="min-width: 80px;" /></td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
-						<td class="px-2 py-1 border border-black bg-white"><input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" /></td>
+						<td class="px-3 py-2 border border-black bg-white"><input type="number" class="w-auto text-xs p-1 text-center" min="1" max="5" style="min-width: 80px;" /></td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-1 text-center font-bold border border-black bg-orange-200">-</td>
+						<td class="px-3 py-2 text-center font-bold border border-black bg-orange-200" style="min-width: 70px;">-</td>
 						
 						<!-- Risque Résiduel - Niveau -->
-						<td class="px-2 py-1 text-center font-bold border border-black bg-orange-200 text-xs">-</td>
+						<td class="px-3 py-2 text-center font-bold border border-black bg-orange-200 text-xs" style="min-width: 100px;">-</td>
 					</tr>
 				</tbody>
 			</table>
