@@ -1564,9 +1564,9 @@
 							<tr>
 								<th class="px-2 py-3 text-center font-bold text-black bg-white border border-black">Code Risques</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-white border border-black">F.R</th>
-								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact DIC - D</th>
-								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact DIC - I</th>
-								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact DIC - C</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact disponibilité</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact intégrité </th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact confidentialité</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Criticité actif</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black">Impact Financier</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black">Impact Parties prenantes</th>
