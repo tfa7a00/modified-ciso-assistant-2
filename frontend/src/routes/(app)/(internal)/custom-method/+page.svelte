@@ -673,36 +673,30 @@
 </script>
 
 <style>
-    /* Hide/show table cells (th/td) by column position to handle colspan values correctly.
+    /* Hide/show table cells (only tbody td/data cells, NOT headers).
+       Keep all <thead> cells visible so headers display correctly for each view.
        Views: identification (1-22), brut (23-34), net (35-40), ptr (41-47).
-       We hide cells using nth-child selectors on actual row cells, which respects colspan.
     */
 
-    /* Identification view: hide columns 23-47 */
-    .view-identification table th:nth-child(n+23),
-    .view-identification table td:nth-child(n+23) {
+    /* Identification view: hide data columns 23-47, keep all headers */
+    .view-identification tbody tr td:nth-child(n+23) {
         display: none;
     }
 
-    /* Risque Brut view: hide columns 1-22 and 35-47 */
-    .view-brut table th:nth-child(-n+22),
-    .view-brut table td:nth-child(-n+22),
-    .view-brut table th:nth-child(n+35),
-    .view-brut table td:nth-child(n+35) {
+    /* Risque Brut view: hide data columns 1-22 and 35-47, keep all headers */
+    .view-brut tbody tr td:nth-child(-n+22),
+    .view-brut tbody tr td:nth-child(n+35) {
         display: none;
     }
 
-    /* Degré + Risque Net view: hide columns 1-34 and 41-47 */
-    .view-net table th:nth-child(-n+34),
-    .view-net table td:nth-child(-n+34),
-    .view-net table th:nth-child(n+41),
-    .view-net table td:nth-child(n+41) {
+    /* Degré + Risque Net view: hide data columns 1-34 and 41-47, keep all headers */
+    .view-net tbody tr td:nth-child(-n+34),
+    .view-net tbody tr td:nth-child(n+41) {
         display: none;
     }
 
-    /* PTR + Résiduel view: hide columns 1-40 */
-    .view-ptr table th:nth-child(-n+40),
-    .view-ptr table td:nth-child(-n+40) {
+    /* PTR + Résiduel view: hide data columns 1-40, keep all headers */
+    .view-ptr tbody tr td:nth-child(-n+40) {
         display: none;
     }
 
