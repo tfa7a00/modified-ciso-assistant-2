@@ -675,28 +675,29 @@
 <style>
     /* Hide/show table cells (only tbody td/data cells, NOT headers).
        Keep all <thead> cells visible so headers display correctly for each view.
+       Columns 1-2 (Code Risques, F.R) always stay visible in ALL views.
        Views: identification (1-22), brut (23-34), net (35-40), ptr (41-47).
     */
 
-    /* Identification view: hide data columns 23-47, keep all headers */
+    /* Identification view: hide data columns 23-47 */
     .view-identification tbody tr td:nth-child(n+23) {
         display: none;
     }
 
-    /* Risque Brut view: hide data columns 1-22 and 35-47, keep all headers */
-    .view-brut tbody tr td:nth-child(-n+22),
+    /* Risque Brut view: show cols 1-2 + 23-34, hide 3-22 and 35-47 */
+    .view-brut tbody tr td:nth-child(-n+34):not(:nth-child(1)):not(:nth-child(2)),
     .view-brut tbody tr td:nth-child(n+35) {
         display: none;
     }
 
-    /* Degré + Risque Net view: hide data columns 1-34 and 41-47, keep all headers */
-    .view-net tbody tr td:nth-child(-n+34),
+    /* Degré + Risque Net view: show cols 1-2 + 35-40, hide 3-34 and 41-47 */
+    .view-net tbody tr td:nth-child(-n+34):not(:nth-child(1)):not(:nth-child(2)),
     .view-net tbody tr td:nth-child(n+41) {
         display: none;
     }
 
-    /* PTR + Résiduel view: hide data columns 1-40, keep all headers */
-    .view-ptr tbody tr td:nth-child(-n+40) {
+    /* PTR + Résiduel view: show cols 1-2 + 41-47, hide 3-40 */
+    .view-ptr tbody tr td:nth-child(-n+40):not(:nth-child(1)):not(:nth-child(2)) {
         display: none;
     }
 
@@ -1556,11 +1557,13 @@
 					{:else if cartoView === 'brut'}
 						<thead>
 							<tr>
-								<th colspan="12" class="px-4 py-3 text-center font-bold text-lg text-black bg-yellow-400 border border-black">
+								<th colspan="14" class="px-4 py-3 text-center font-bold text-lg text-black bg-yellow-400 border border-black">
 									RISQUE BRUT - ÉVALUATION DE LA CRITICITÉ
 								</th>
 							</tr>
 							<tr>
+								<th class="px-2 py-3 text-center font-bold text-black bg-white border border-black">Code Risques</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-white border border-black">F.R</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact DIC - D</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact DIC - I</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact DIC - C</th>
@@ -1578,11 +1581,13 @@
 					{:else if cartoView === 'net'}
 						<thead>
 							<tr>
-								<th colspan="6" class="px-4 py-3 text-center font-bold text-lg text-white bg-teal-600 border border-black">
+								<th colspan="8" class="px-4 py-3 text-center font-bold text-lg text-white bg-teal-600 border border-black">
 									DEGRÉ D'EXPOSITION + RISQUE NET
 								</th>
 							</tr>
 							<tr>
+								<th class="px-2 py-3 text-center font-bold text-black bg-white border border-black">Code Risques</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-white border border-black">F.R</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Dispositif de Maîtrise</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Criticité actif</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Gravité des impacts</th>
@@ -1594,11 +1599,13 @@
 					{:else if cartoView === 'ptr'}
 						<thead>
 							<tr>
-								<th colspan="7" class="px-4 py-3 text-center font-bold text-lg text-white bg-gray-600 border border-black">
+								<th colspan="9" class="px-4 py-3 text-center font-bold text-lg text-white bg-gray-600 border border-black">
 									PLAN DE TRAITEMENT + RISQUE RÉSIDUEL
 								</th>
 							</tr>
 							<tr>
+								<th class="px-2 py-3 text-center font-bold text-black bg-white border border-black">Code Risques</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-white border border-black">F.R</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Action PTR</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Décision</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Criticité actif</th>
