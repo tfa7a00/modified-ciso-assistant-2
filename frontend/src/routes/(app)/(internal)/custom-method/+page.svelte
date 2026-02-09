@@ -673,43 +673,38 @@
 </script>
 
 <style>
-	/* Use the <colgroup> classes added earlier to hide/show entire columns
-	   so headers and body stay aligned. The table's <colgroup> contains 47
-	   <col> elements grouped by purpose (identification / brut / net / ptr).
-	*/
+    /* Hide/show table columns via <colgroup> <col> visibility.
+       Use visibility:collapse (not display:none) to properly hide table columns.
+       The table's <colgroup> contains 47 <col> elements with classes:
+       col-identification (cols 1-22), col-brut (cols 23-34), col-net (cols 35-40), col-ptr (cols 41-47).
+    */
 
-	/* Identification: hide brut/net/ptr columns */
-	.view-identification col.col-brut,
-	.view-identification col.col-net,
-	.view-identification col.col-ptr {
-		display: none;
-	}
+    /* Identification view: show cols 1-22 only */
+    .view-identification col.col-brut,
+    .view-identification col.col-net,
+    .view-identification col.col-ptr {
+        visibility: collapse;
+    }
 
-	/* Risque Brut: hide identification/net/ptr columns */
-	.view-brut col.col-identification,
-	.view-brut col.col-net,
-	.view-brut col.col-ptr {
-		display: none;
-	}
+    /* Risque Brut view: show cols 23-34 only */
+    .view-brut col.col-identification,
+    .view-brut col.col-net,
+    .view-brut col.col-ptr {
+        visibility: collapse;
+    }
 
-	/* Degré + Risque Net: hide identification/brut/ptr columns */
-	.view-net col.col-identification,
-	.view-net col.col-brut,
-	.view-net col.col-ptr {
-		display: none;
-	}
+    /* Degré + Risque Net view: show cols 35-40 only */
+    .view-net col.col-identification,
+    .view-net col.col-brut,
+    .view-net col.col-ptr {
+        visibility: collapse;
+    }
 
-	/* PTR + Résiduel: hide identification/brut/net columns */
-	.view-ptr col.col-identification,
-	.view-ptr col.col-brut,
-	.view-ptr col.col-net {
-		display: none;
-	}
-
-	/* Tout: show all columns */
-	.view-all col {
-		display: table-column;
-	}
+    /* PTR + Résiduel view: show cols 41-47 only */
+    .view-ptr col.col-identification,
+    .view-ptr col.col-brut,
+    .view-ptr col.col-net {
+        visibility: collapse;
 
 	/* Keep table layout predictable */
 	table {
