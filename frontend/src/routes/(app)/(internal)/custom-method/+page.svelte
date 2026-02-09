@@ -1939,7 +1939,7 @@
 						<!-- View 'all': show original complex headers (hidden by default, shown when cartoView === 'all') -->
 						<thead style="display: none;">
 							<tr>
-								<th colspan="47" class="px-4 py-3 text-center font-bold text-lg text-black border border-black bg-white">
+								<th colspan="45" class="px-4 py-3 text-center font-bold text-lg text-black border border-black bg-white">
 									CARTOGRAPHIE DES RISQUES DE SECURITÉ DES SYSTÈMES D'INFORMATION
 								</th>
 							</tr>
@@ -1951,7 +1951,7 @@
 					<thead>
 					<!-- Ligne 1: Titre principal -->
 					<tr>
-						<th colspan="47" class="px-4 py-3 text-center font-bold text-lg text-black border border-black bg-white">
+						<th colspan="45" class="px-4 py-3 text-center font-bold text-lg text-black border border-black bg-white">
 							CARTOGRAPHIE DES RISQUES DE SECURITÉ DES SYSTÈMES D'INFORMATION
 						</th>
 					</tr>
@@ -4025,7 +4025,7 @@
 					
 					<!-- Ligne séparateur famille de risques -->
 					<tr class="bg-teal-700">
-						<td colspan="47" class="px-3 py-3 font-bold text-white border border-black">
+						<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">
 							3 - Compromission des informations
 						</td>
 					</tr>
@@ -6367,7 +6367,7 @@
 					
 					<!-- Ligne séparateur famille de risques -->
 					<tr class="bg-teal-700">
-						<td colspan="47" class="px-3 py-3 font-bold text-white border border-black">
+						<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">
 							4 - Compromission des fonctions
 						</td>
 					</tr>
@@ -7542,7 +7542,7 @@ Externe</textarea>
 					
 					<!-- Ligne séparateur famille de risques -->
 					<tr class="bg-teal-700">
-						<td colspan="47" class="px-3 py-3 font-bold text-white border border-black">
+						<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">
 							5 - Acte illicite
 						</td>
 					</tr>
@@ -8048,7 +8048,7 @@ Externe</textarea>
 					
 					<!-- Ligne séparateur famille de risques -->
 					<tr class="bg-teal-700">
-						<td colspan="47" class="px-3 py-3 font-bold text-white border border-black">
+						<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">
 							6 - Mise en production non maitrisée
 						</td>
 					</tr>
@@ -8555,7 +8555,7 @@ Externe</textarea>
 					
 					<!-- Ligne séparateur famille de risques -->
 					<tr class="bg-teal-700">
-						<td colspan="47" class="px-3 py-3 font-bold text-white border border-black">
+						<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">
 							7 - Conformité légale et réglementaire
 						</td>
 					</tr>
@@ -8894,7 +8894,7 @@ Externe</textarea>
 					
 					<!-- Ligne séparateur famille de risques -->
 					<tr class="bg-teal-700">
-						<td colspan="47" class="px-3 py-3 font-bold text-white border border-black">
+						<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">
 							8 - Tiers
 						</td>
 					</tr>
