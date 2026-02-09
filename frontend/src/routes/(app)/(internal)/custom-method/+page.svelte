@@ -1984,12 +1984,7 @@
 					
 					<!-- Ligne 6-7: Headers détaillés -->
 					<tr>
-						<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-white border border-black" style="min-width: 50px;">
-							Code<br/>Risques
-						</th>
-						<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-white border border-black" style="min-width: 40px;">
-							F.R
-						</th>
+						
 						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black" style="min-width: 80px;">
 							Entité
 						</th>
