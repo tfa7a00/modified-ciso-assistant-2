@@ -673,30 +673,42 @@
 </script>
 
 <style>
-	/* Table column group visibility for cartographie views */
-	.view-identification .col-brut,
-	.view-identification .col-net,
-	.view-identification .col-ptr {
- 		display: none;
- 	}
+	/* Hide/show columns by index so each cartographie sub-view shows only its columns.
+	   Table has 47 logical columns: identification 1-22, brut 23-34, net 35-40, ptr 41-47. */
 
-	.view-brut .col-identification,
-	.view-brut .col-net,
-	.view-brut .col-ptr {
- 		display: none;
- 	}
+	/* Identification: show cols 1-22 only */
+	.view-identification table th:nth-child(n+23),
+	.view-identification table td:nth-child(n+23) {
+		display: none;
+	}
 
-	.view-net .col-identification,
-	.view-net .col-brut,
-	.view-net .col-ptr {
- 		display: none;
- 	}
+	/* Risque Brut: show cols 23-34 only (hide 1-22 and 35-47) */
+	.view-brut table th:nth-child(-n+22),
+	.view-brut table td:nth-child(-n+22),
+	.view-brut table th:nth-child(n+35),
+	.view-brut table td:nth-child(n+35) {
+		display: none;
+	}
 
-	.view-ptr .col-identification,
-	.view-ptr .col-brut,
-	.view-ptr .col-net {
- 		display: none;
- 	}
+	/* Degré + Risque Net: show cols 35-40 only (hide 1-34 and 41-47) */
+	.view-net table th:nth-child(-n+34),
+	.view-net table td:nth-child(-n+34),
+	.view-net table th:nth-child(n+41),
+	.view-net table td:nth-child(n+41) {
+		display: none;
+	}
+
+	/* PTR + Risque Résiduel: show cols 41-47 only (hide 1-40) */
+	.view-ptr table th:nth-child(-n+40),
+	.view-ptr table td:nth-child(-n+40) {
+		display: none;
+	}
+
+	/* Tout: ensure all cells are visible */
+	.view-all table th,
+	.view-all table td {
+		display: table-cell;
+	}
 
 	/* Keep table layout predictable */
 	table {
