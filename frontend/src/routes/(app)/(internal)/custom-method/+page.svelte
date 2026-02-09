@@ -2341,17 +2341,7 @@
 					</tr>
 					
 					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -2519,16 +2509,6 @@
 					</tr>
 					
 					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
 						<!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
@@ -2699,16 +2679,6 @@
 					</tr>
 					
 					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
 						<!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
@@ -2877,17 +2847,7 @@
 					</tr>
 					
 					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -3056,22 +3016,12 @@
 					
 					<!-- Ligne séparateur famille de risques -->
 					<tr class="bg-teal-700">
-						<td colspan="47" class="px-3 py-3 font-bold text-white border border-black">
+						<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">
 							2 - Perte de services essentiels
 						</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
 						<!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
@@ -3239,17 +3189,7 @@
 					</tr>
 					
 					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -3419,17 +3359,7 @@
 					</tr>
 					
 					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -3596,17 +3526,7 @@
 					</tr>
 					
 					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -3773,17 +3693,7 @@
 					</tr>
 					
 					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -3950,18 +3860,7 @@
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -4136,18 +4035,7 @@
 						</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -4314,18 +4202,7 @@
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -4492,18 +4369,7 @@
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -4670,18 +4536,7 @@
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -4847,18 +4702,7 @@
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -5024,18 +4868,7 @@
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -5201,18 +5034,7 @@
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -5381,18 +5203,7 @@
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -5560,18 +5371,7 @@
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -5737,18 +5537,7 @@
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -5915,18 +5704,7 @@
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -6092,18 +5870,7 @@
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -6269,18 +6036,7 @@
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -6447,18 +6203,7 @@
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -6632,18 +6377,7 @@
 						</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -6809,18 +6543,7 @@
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -6987,18 +6710,7 @@
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -7166,18 +6878,7 @@ Externe</textarea>
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -7345,18 +7046,7 @@ Externe</textarea>
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -7523,18 +7213,7 @@ Externe</textarea>
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -7700,18 +7379,7 @@ Externe</textarea>
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -7884,18 +7552,7 @@ Externe</textarea>
 						</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -8062,18 +7719,7 @@ Externe</textarea>
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -8239,18 +7885,7 @@ Externe</textarea>
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -8423,18 +8058,7 @@ Externe</textarea>
 						</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -8601,18 +8225,7 @@ Externe</textarea>
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -8779,18 +8392,7 @@ Externe</textarea>
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -8963,18 +8565,7 @@ Externe</textarea>
 						</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -9140,18 +8731,7 @@ Externe</textarea>
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -9324,18 +8904,7 @@ Externe</textarea>
 						</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -9502,18 +9071,7 @@ Externe</textarea>
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -9680,18 +9238,7 @@ Externe</textarea>
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
@@ -9858,18 +9405,7 @@ Externe</textarea>
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 text-xs align-middle">-</td>
 					</tr>
 					
-					<tr class="hover:bg-gray-50">
-						<!-- Code Risques - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 50px;" value="" />
-						</td>
-						
-						<!-- F.R - PETIT -->
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<input type="text" class="w-full text-xs p-1" style="max-width: 40px;" value="" />
-						</td>
-						
-						<!-- Entité -->
+					<tr class="hover:bg-gray-50"><!-- Entité -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
 						</td>
