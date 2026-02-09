@@ -1855,9 +1855,9 @@
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Entité</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Domaine / Processus</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Activités</th>
-								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Description du scénario</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Code Risque</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Description du scénario</th>
+			
 								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">ISO 27001</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Famille de risque</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Source</th>
@@ -1996,11 +1996,11 @@
 						</th>
 						
 						<!-- Identification risques -->
-						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black" style="min-width: 200px;">
-							Description du scénario du Risque
-						</th>
 						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black" style="min-width: 100px;">
 							Code<br/>Risque
+						</th>
+						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black" style="min-width: 200px;">
+							Description du scénario du Risque
 						</th>
 						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black" style="min-width: 100px;">
 							Mesure ISO27001, annexe A
