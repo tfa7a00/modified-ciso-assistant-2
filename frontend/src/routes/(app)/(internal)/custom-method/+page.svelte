@@ -610,6 +610,63 @@
 		}
 	}
 
+
+
+	// PTR Table data structure
+	let ptrData = [
+		{
+			id: 1,
+			refRisque: '',
+			correspISO: '',
+			proprietaire: '',
+			niveauRisque: '',
+			decision: '',
+			idPTR: '',
+			action: '',
+			typeAction: '',
+			porteur: '',
+			priorite: '',
+			periodicite: '',
+			complexite: '',
+			echeance: '',
+			etatAvancement: ''
+		}
+	];
+
+	// Function to add a new row
+	function addRow() {
+		const newRow = {
+			id: ptrData.length + 1,
+			refRisque: '',
+			correspISO: '',
+			proprietaire: '',
+			niveauRisque: '',
+			decision: '',
+			idPTR: '',
+			action: '',
+			typeAction: '',
+			porteur: '',
+			priorite: '',
+			periodicite: '',
+			complexite: '',
+			echeance: '',
+			etatAvancement: ''
+		};
+		ptrData = [...ptrData, newRow];
+	}
+
+	// Function to delete a row
+	function deleteRow(index) {
+		ptrData = ptrData.filter((_, i) => i !== index);
+		// Reindex the IDs
+		ptrData = ptrData.map((row, i) => ({ ...row, id: i + 1 }));
+	}
+
+	// Handle cell value changes
+	function updateCell(index, field, event) {
+		ptrData[index][field] = event.target.value;
+	}
+
 </script>
 
 <main class="p-6 space-y-8">
@@ -9769,10 +9826,309 @@ Externe</textarea>
 	{:else if activeSection === 'ptr'}
 		<section class="space-y-4">
 			<h2 class="text-xl font-semibold text-gray-900">PTR</h2>
-			<p class="text-gray-700">
-				Section dédiée au PTR (Plan de Traitement des Risques ou autre signification selon ta
-				méthode). Cette partie sera complétée avec le contenu que tu vas m'envoyer.
-			</p>
+			
+			
+
+
+
+
+
+
+
+{#if activeSection === 'ptr'}
+	<section class="space-y-4">
+		<h2 class="text-xl font-semibold text-gray-900">PTR</h2>
+		<p class="text-gray-700 mb-4">
+			Plan de traitement des risques (PTR)
+		</p>
+
+		<!-- Table Container -->
+		<div class="overflow-x-auto border border-gray-300 rounded-lg">
+			<table class="min-w-full bg-white">
+				<thead>
+					<tr class="bg-[#FFC000]">
+						<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+							REF Risque
+						</th>
+						<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+							Corresp. ISO27001, annexe A
+						</th>
+						<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+							Propriétaire du risque
+						</th>
+						<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+							Niveau du risque net
+						</th>
+						<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+							Décision
+						</th>
+						<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+							ID PTR
+						</th>
+						<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+							Action à mettre en place
+						</th>
+						<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+							Type de l'action
+						</th>
+						<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+							Porteur de l'action
+						</th>
+						<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+							Priorité
+						</th>
+						<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+							Périodicité
+						</th>
+						<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+							Complexité
+						</th>
+						<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+							Echéance
+						</th>
+						<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+							Etat d'avancement
+						</th>
+						<th class="px-4 py-3 text-center text-sm font-bold text-gray-900 border border-gray-300">
+							Actions
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					{#each ptrData as row, index}
+						<tr class="hover:bg-gray-50">
+							<td class="px-2 py-2 border border-gray-300">
+								<input
+									type="text"
+									value={row.refRisque}
+									on:input={(e) => updateCell(index, 'refRisque', e)}
+									class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+									placeholder=""
+								/>
+							</td>
+							<td class="px-2 py-2 border border-gray-300">
+								<input
+									type="text"
+									value={row.correspISO}
+									on:input={(e) => updateCell(index, 'correspISO', e)}
+									class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+									placeholder=""
+								/>
+							</td>
+							<td class="px-2 py-2 border border-gray-300">
+								<input
+									type="text"
+									value={row.proprietaire}
+									on:input={(e) => updateCell(index, 'proprietaire', e)}
+									class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+									placeholder=""
+								/>
+							</td>
+							<td class="px-2 py-2 border border-gray-300">
+								<select
+									value={row.niveauRisque}
+									on:change={(e) => updateCell(index, 'niveauRisque', e)}
+									class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+								>
+									<option value="">-</option>
+									<option value="Très faible">Très faible</option>
+									<option value="Faible">Faible</option>
+									<option value="Moyen">Moyen</option>
+									<option value="Élevé">Élevé</option>
+									<option value="Très élevé">Très élevé</option>
+								</select>
+							</td>
+							<td class="px-2 py-2 border border-gray-300">
+								<select
+									value={row.decision}
+									on:change={(e) => updateCell(index, 'decision', e)}
+									class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+								>
+									<option value="">-</option>
+									<option value="Accepter">Accepter</option>
+									<option value="Réduire">Réduire</option>
+									<option value="Transférer">Transférer</option>
+									<option value="Éviter">Éviter</option>
+								</select>
+							</td>
+							<td class="px-2 py-2 border border-gray-300">
+								<input
+									type="text"
+									value={row.idPTR}
+									on:input={(e) => updateCell(index, 'idPTR', e)}
+									class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+									placeholder=""
+								/>
+							</td>
+							<td class="px-2 py-2 border border-gray-300">
+								<input
+									type="text"
+									value={row.action}
+									on:input={(e) => updateCell(index, 'action', e)}
+									class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+									placeholder=""
+								/>
+							</td>
+							<td class="px-2 py-2 border border-gray-300">
+								<select
+									value={row.typeAction}
+									on:change={(e) => updateCell(index, 'typeAction', e)}
+									class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+								>
+									<option value="">-</option>
+									<option value="Préventive">Préventive</option>
+									<option value="Détective">Détective</option>
+									<option value="Corrective">Corrective</option>
+								</select>
+							</td>
+							<td class="px-2 py-2 border border-gray-300">
+								<input
+									type="text"
+									value={row.porteur}
+									on:input={(e) => updateCell(index, 'porteur', e)}
+									class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+									placeholder=""
+								/>
+							</td>
+							<td class="px-2 py-2 border border-gray-300">
+								<select
+									value={row.priorite}
+									on:change={(e) => updateCell(index, 'priorite', e)}
+									class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+								>
+									<option value="">-</option>
+									<option value="Haute">Haute</option>
+									<option value="Moyenne">Moyenne</option>
+									<option value="Basse">Basse</option>
+								</select>
+							</td>
+							<td class="px-2 py-2 border border-gray-300">
+								<select
+									value={row.periodicite}
+									on:change={(e) => updateCell(index, 'periodicite', e)}
+									class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+								>
+									<option value="">-</option>
+									<option value="Ponctuelle">Ponctuelle</option>
+									<option value="Récurrente">Récurrente</option>
+									<option value="Continue">Continue</option>
+								</select>
+							</td>
+							<td class="px-2 py-2 border border-gray-300">
+								<select
+									value={row.complexite}
+									on:change={(e) => updateCell(index, 'complexite', e)}
+									class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+								>
+									<option value="">-</option>
+									<option value="Faible">Faible</option>
+									<option value="Moyenne">Moyenne</option>
+									<option value="Élevée">Élevée</option>
+								</select>
+							</td>
+							<td class="px-2 py-2 border border-gray-300">
+								<input
+									type="date"
+									value={row.echeance}
+									on:input={(e) => updateCell(index, 'echeance', e)}
+									class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+								/>
+							</td>
+							<td class="px-2 py-2 border border-gray-300">
+								<select
+									value={row.etatAvancement}
+									on:change={(e) => updateCell(index, 'etatAvancement', e)}
+									class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+								>
+									<option value="">-</option>
+									<option value="Non démarrée">Non démarrée</option>
+									<option value="En cours">En cours</option>
+									<option value="Terminée">Terminée</option>
+									<option value="En retard">En retard</option>
+								</select>
+							</td>
+							<td class="px-2 py-2 border border-gray-300 text-center">
+								<button
+									on:click={() => deleteRow(index)}
+									class="px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors"
+									title="Supprimer cette ligne"
+								>
+									✕
+								</button>
+							</td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		</div>
+
+		<!-- Add Row Button -->
+		<div class="flex justify-start mt-4">
+			<button
+				on:click={addRow}
+				class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="h-5 w-5"
+					viewBox="0 0 20 20"
+					fill="currentColor"
+				>
+					<path
+						fill-rule="evenodd"
+						d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+						clip-rule="evenodd"
+					/>
+				</svg>
+				Ajouter une ligne
+			</button>
+		</div>
+	</section>
+{/if}
+
+<style>
+	/* Custom scrollbar for the table */
+	.overflow-x-auto::-webkit-scrollbar {
+		height: 8px;
+	}
+
+	.overflow-x-auto::-webkit-scrollbar-track {
+		background: #f1f1f1;
+		border-radius: 4px;
+	}
+
+	.overflow-x-auto::-webkit-scrollbar-thumb {
+		background: #888;
+		border-radius: 4px;
+	}
+
+	.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+		background: #555;
+	}
+
+	/* Ensure inputs don't have default browser styling */
+	input[type='text'],
+	input[type='date'],
+	select {
+		appearance: none;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+	}
+
+	select {
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+		background-position: right 0.5rem center;
+		background-repeat: no-repeat;
+		background-size: 1.5em 1.5em;
+		padding-right: 2.5rem;
+	}
+</style>
+
+
+
+
+
+
 		</section>
 	{:else if activeSection === 'echelle-ptr'}
 		<!-- Échelle PTR : les 4 tables déjà définies -->
