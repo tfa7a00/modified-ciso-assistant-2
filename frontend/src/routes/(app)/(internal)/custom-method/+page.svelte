@@ -1857,6 +1857,7 @@
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Activités</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Description du scénario</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Code Risque</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Description du scénario</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">ISO 27001</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Famille de risque</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Source</th>
@@ -1882,8 +1883,8 @@
 								</th>
 							</tr>
 							<tr>
-								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Description du scénario</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Code Risque</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Description du scénario</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact disponibilité</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact intégrité </th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact confidentialité</th>
@@ -1906,8 +1907,8 @@
 								</th>
 							</tr>
 							<tr>
-								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Description du scénario</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Code Risque</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Description du scénario</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Dispositif de Maîtrise</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Criticité actif</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Gravité des impacts</th>
@@ -1924,8 +1925,8 @@
 								</th>
 							</tr>
 							<tr>
-								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Description du scénario</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Code Risque</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Description du scénario</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Action PTR</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Décision</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Criticité actif</th>
