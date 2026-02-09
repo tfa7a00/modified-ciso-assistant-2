@@ -9823,9 +9823,7 @@ Externe</textarea>
 				</p>
 			</section>
 		</section>
-	{:else if activeSection === 'ptr'}
-		<section class="space-y-4">
-			<h2 class="text-xl font-semibold text-gray-900">PTR</h2>
+
 			
 			
 
