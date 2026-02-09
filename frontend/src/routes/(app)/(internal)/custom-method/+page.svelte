@@ -1489,7 +1489,9 @@
 						<col class="col-identification" />
 						<col class="col-identification" />
 						<col class="col-identification" />
+						<col class="col-identification" />
 						<!-- cols 23-34 : risque brut -->
+						<col class="col-brut" />
 						<col class="col-brut" />
 						<col class="col-brut" />
 						<col class="col-brut" />
@@ -1517,7 +1519,109 @@
 						<col class="col-ptr" />
 						<col class="col-ptr" />
 					</colgroup>
-				<thead>
+
+					<!-- Dynamic headers per view: hide original thead, show correct headers for each view -->
+					{#if cartoView === 'identification'}
+						<thead>
+							<tr>
+								<th colspan="22" class="px-4 py-3 text-center font-bold text-lg text-white bg-teal-700 border border-black">
+									IDENTIFICATION DES RISQUES
+								</th>
+							</tr>
+							<tr>
+								<th class="px-2 py-3 text-center font-bold text-black bg-white border border-black">Code Risques</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-white border border-black">F.R</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Entité</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Domaine / Processus</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Activités</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Description du scénario</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Code Risque</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">ISO 27001</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Famille de risque</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Source</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Famille de causes</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Propriétaire du risque</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-red-700 border border-black">Matériel informatique</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-red-700 border border-black">Application</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-red-700 border border-black">Équipements sécurité</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-red-700 border border-black">Équipements réseaux</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-red-700 border border-black">Ressources humaines</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-red-700 border border-black">Document</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-red-700 border border-black">Données</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-green-600 border border-black">D</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-green-600 border border-black">I</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-green-600 border border-black">C</th>
+							</tr>
+						</thead>
+					{:else if cartoView === 'brut'}
+						<thead>
+							<tr>
+								<th colspan="12" class="px-4 py-3 text-center font-bold text-lg text-black bg-yellow-400 border border-black">
+									RISQUE BRUT - ÉVALUATION DE LA CRITICITÉ
+								</th>
+							</tr>
+							<tr>
+								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact DIC - D</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact DIC - I</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact DIC - C</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Criticité actif</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black">Impact Financier</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black">Impact Parties prenantes</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black">Impact Réputation</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black">Impact Réglementaire</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Gravité des impacts</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Probabilité</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">I*P*C</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Risque Brut</th>
+							</tr>
+						</thead>
+					{:else if cartoView === 'net'}
+						<thead>
+							<tr>
+								<th colspan="6" class="px-4 py-3 text-center font-bold text-lg text-white bg-teal-600 border border-black">
+									DEGRÉ D'EXPOSITION + RISQUE NET
+								</th>
+							</tr>
+							<tr>
+								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Dispositif de Maîtrise</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Criticité actif</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Gravité des impacts</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Probabilité</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">I*P*C</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Risque Net</th>
+							</tr>
+						</thead>
+					{:else if cartoView === 'ptr'}
+						<thead>
+							<tr>
+								<th colspan="7" class="px-4 py-3 text-center font-bold text-lg text-white bg-gray-600 border border-black">
+									PLAN DE TRAITEMENT + RISQUE RÉSIDUEL
+								</th>
+							</tr>
+							<tr>
+								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Action PTR</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Décision</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Criticité actif</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Vraissemblance</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">I*P*C</th>
+								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Risque Résiduel</th>
+							</tr>
+						</thead>
+					{:else}
+						<!-- View 'all': show original complex headers (hidden by default, shown when cartoView === 'all') -->
+						<thead style="display: none;">
+							<tr>
+								<th colspan="47" class="px-4 py-3 text-center font-bold text-lg text-black border border-black bg-white">
+									CARTOGRAPHIE DES RISQUES DE SECURITÉ DES SYSTÈMES D'INFORMATION
+								</th>
+							</tr>
+						</thead>
+					{/if}
+
+					<!-- Old complex headers (show only when cartoView==='all') -->
+					{#if cartoView === 'all'}
+					<thead>
 					<!-- Ligne 1: Titre principal -->
 					<tr>
 						<th colspan="47" class="px-4 py-3 text-center font-bold text-lg text-black border border-black bg-white">
@@ -1731,6 +1835,7 @@
 						</th>
 					</tr>
 				</thead>
+				{/if}
 				
 				<tbody>
 					<!-- Ligne séparateur famille de risques -->
