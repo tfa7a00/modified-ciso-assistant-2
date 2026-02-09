@@ -9519,7 +9519,7 @@ Externe</textarea>
 
 		<!-- Note formules -->
 		<div class="mt-4 p-4 bg-blue-50 border-l-4 border-blue-600">
-			<p class="font-semibold text-gray-900 mb-2">Formules automatiques (comme dans Excel)</p>
+			<p class="font-semibold text-gray-900 mb-2">Formules automatiques: </p>
 			<ul class="text-sm text-gray-700 space-y-1">
 				<li>• <strong>Criticité</strong> = MAX(D, I, C)</li>
 				<li>• <strong>Gravité</strong> = MAX(Impact Financier, Impact PP, Impact Réputation, Impact Réglementaire)</li>
