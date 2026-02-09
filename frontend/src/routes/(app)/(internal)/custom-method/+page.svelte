@@ -685,19 +685,19 @@
     }
 
     /* Risque Brut view: show cols 1-2 + 23-34, hide 3-22 and 35-47 */
-    .view-brut tbody tr td:nth-child(-n+34):not(:nth-child(1)):not(:nth-child(2)),
+    .view-brut tbody tr td:nth-child(n+3):nth-child(-n+22),
     .view-brut tbody tr td:nth-child(n+35) {
         display: none;
     }
 
     /* Degré + Risque Net view: show cols 1-2 + 35-40, hide 3-34 and 41-47 */
-    .view-net tbody tr td:nth-child(-n+34):not(:nth-child(1)):not(:nth-child(2)),
+    .view-net tbody tr td:nth-child(n+3):nth-child(-n+34),
     .view-net tbody tr td:nth-child(n+41) {
         display: none;
     }
 
     /* PTR + Résiduel view: show cols 1-2 + 41-47, hide 3-40 */
-    .view-ptr tbody tr td:nth-child(-n+40):not(:nth-child(1)):not(:nth-child(2)) {
+    .view-ptr tbody tr td:nth-child(n+3):nth-child(-n+40) {
         display: none;
     }
 
