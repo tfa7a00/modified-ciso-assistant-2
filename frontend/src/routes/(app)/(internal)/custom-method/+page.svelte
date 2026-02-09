@@ -705,11 +705,12 @@
     .view-ptr col.col-brut,
     .view-ptr col.col-net {
         visibility: collapse;
+    }
 
-	/* Keep table layout predictable */
-	table {
-		table-layout: fixed;
-	}
+    /* Keep table layout predictable */
+    table {
+        table-layout: fixed;
+    }
 </style>
 
 <main class="p-6 space-y-8">
