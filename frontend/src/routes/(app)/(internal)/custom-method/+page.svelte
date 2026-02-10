@@ -291,7 +291,8 @@
 		probaRows,
 		impactRows,
 		frequenceRisqueRows,
-		matriceRisqueRows
+		matriceRisqueRows,
+		ptrData
 	];
 	$: if (typeof window !== 'undefined' && _persistDeps) {
 		if (persistTimeout) clearTimeout(persistTimeout);
@@ -676,7 +677,8 @@
 			probaRows,
 			impactRows,
 			frequenceRisqueRows,
-			matriceRisqueRows
+			matriceRisqueRows,
+			ptrData
 		};
 	}
 
@@ -684,8 +686,11 @@
 		if (!state || typeof state !== 'object') return;
 		const sectionIds: SectionId[] = ['controle-document', 'registre-classification', 'aide-classification', 'cartographie-risques', 'aide-risque', 'ptr', 'echelle-ptr'];
 		const cartoViews = ['all', 'identification', 'brut', 'net', 'ptr'] as const;
-		if (state.cartoRows && Array.isArray(state.cartoRows) && state.cartoRows.length === 45) {
-			cartoRows = (state.cartoRows as CartoRow[]).map((r) => ({ ...defaultCartoRow(), ...r }));
+		// Cartographie des risques: accept 45 rows or pad/trim to 45
+		if (state.cartoRows && Array.isArray(state.cartoRows)) {
+			const arr = (state.cartoRows as CartoRow[]).map((r) => ({ ...defaultCartoRow(), ...r }));
+			while (arr.length < 45) arr.push(defaultCartoRow());
+			cartoRows = arr.slice(0, 45);
 		}
 		if (state.redactionRows && Array.isArray(state.redactionRows) && state.redactionRows.length > 0) {
 			redactionRows = state.redactionRows as RedactionRow[];
@@ -740,6 +745,27 @@
 			if (rows.every((r) => r && typeof r.libelle === 'string' && Array.isArray(r.valeurs))) {
 				matriceRisqueRows = rows;
 			}
+		}
+		// Tableau PTR (Plan de Traitement des Risques)
+		if (state.ptrData && Array.isArray(state.ptrData) && state.ptrData.length > 0) {
+			const rows = state.ptrData as Array<Record<string, unknown>>;
+			ptrData = rows.map((r, i) => ({
+				id: typeof r.id === 'number' ? r.id : i + 1,
+				refRisque: String(r.refRisque ?? ''),
+				correspISO: String(r.correspISO ?? ''),
+				proprietaire: String(r.proprietaire ?? ''),
+				niveauRisque: String(r.niveauRisque ?? ''),
+				decision: String(r.decision ?? ''),
+				idPTR: String(r.idPTR ?? ''),
+				action: String(r.action ?? ''),
+				typeAction: String(r.typeAction ?? ''),
+				porteur: String(r.porteur ?? ''),
+				priorite: String(r.priorite ?? ''),
+				periodicite: String(r.periodicite ?? ''),
+				complexite: String(r.complexite ?? ''),
+				echeance: String(r.echeance ?? ''),
+				etatAvancement: String(r.etatAvancement ?? '')
+			}));
 		}
 	}
 
@@ -1177,9 +1203,13 @@
 		ptrData = ptrData.map((row, i) => ({ ...row, id: i + 1 }));
 	}
 
-	// Handle cell value changes
-	function updateCell(index, field, event) {
-		ptrData[index][field] = event.target.value;
+	// Handle cell value changes (reassign to trigger reactivity and persistence)
+	function updateCell(index: number, field: string, event: Event) {
+		const target = event.target as HTMLInputElement | HTMLTextAreaElement;
+		const value = target?.value ?? '';
+		ptrData = ptrData.map((row, i) =>
+			i === index ? { ...row, [field]: value } : row
+		);
 	}
 
 </script>
