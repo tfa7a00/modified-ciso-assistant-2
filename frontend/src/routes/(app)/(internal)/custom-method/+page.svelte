@@ -2298,13 +2298,13 @@
 						</th>
 						
 						<!-- Impact DIC -->
-						<th class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black" style="min-width: 40px;">
+						<th class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black" style="min-width: 56px;">
 							D
 						</th>
-						<th class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black" style="min-width: 40px;">
+						<th class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black" style="min-width: 56px;">
 							I
 						</th>
-						<th class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black" style="min-width: 40px;">
+						<th class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black" style="min-width: 56px;">
 							C
 						</th>
 					</tr>
@@ -2387,13 +2387,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 1 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[0].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[0].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[0].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[0].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[0].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[0].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -2557,13 +2557,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 2 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[1].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[1].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[1].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[1].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[1].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[1].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -2731,13 +2731,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 3 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[2].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[2].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[2].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[2].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[2].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[2].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -2902,13 +2902,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 4 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -3075,13 +3075,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 5 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[4].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[4].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[4].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[4].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[4].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[4].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -3249,13 +3249,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 6 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[5].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[5].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[5].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[5].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[5].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[5].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -3419,13 +3419,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 7 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[6].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[6].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[6].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[6].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[6].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[6].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -3586,13 +3586,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 8 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[7].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[7].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[7].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[7].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[7].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[7].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -3753,13 +3753,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 9 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[8].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[8].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[8].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[8].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[8].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[8].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -3921,13 +3921,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 10 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[9].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[9].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[9].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[9].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[9].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[9].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -4091,13 +4091,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 11 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[10].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[10].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[10].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[10].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[10].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[10].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -4265,13 +4265,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 12 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[11].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[11].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[11].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[11].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[11].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[11].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -4432,13 +4432,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 13 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[12].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[12].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[12].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[12].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[12].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[12].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -4599,13 +4599,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 14 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[13].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[13].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[13].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[13].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[13].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[13].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -4765,13 +4765,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 15 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[14].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[14].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[14].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[14].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[14].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[14].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -4931,13 +4931,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 16 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[15].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[15].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[15].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[15].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[15].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[15].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -5097,13 +5097,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 17 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[16].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[16].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[16].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[16].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[16].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[16].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -5266,13 +5266,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 18 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[17].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[17].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[17].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[17].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[17].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[17].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -5434,13 +5434,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 19 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[18].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[18].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[18].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[18].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[18].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[18].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -5600,13 +5600,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 20 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[19].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[19].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[19].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[19].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[19].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[19].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -5767,13 +5767,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 21 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[20].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[20].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[20].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[20].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[20].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[20].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -5933,13 +5933,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 22 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[21].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[21].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[21].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[21].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[21].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[21].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -6099,13 +6099,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 23 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[22].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[22].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[22].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[22].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[22].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[22].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -6266,13 +6266,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 24 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[23].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[23].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[23].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[23].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[23].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[23].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -6433,13 +6433,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 25 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[24].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[24].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[24].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[24].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[24].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[24].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -6606,13 +6606,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 26 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[25].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[25].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[25].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[25].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[25].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[25].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -6773,13 +6773,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 27 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[26].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[26].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[26].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[26].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[26].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[26].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -6941,13 +6941,13 @@ Externe</textarea>
 						
 						<!-- Impact DIC (formules) - Ligne 28 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[27].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[27].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[27].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[27].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[27].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[27].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -7109,13 +7109,13 @@ Externe</textarea>
 						
 						<!-- Impact DIC (formules) - Ligne 29 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[28].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[28].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[28].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[28].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[28].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[28].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -7276,13 +7276,13 @@ Externe</textarea>
 						
 						<!-- Impact DIC (formules) - Ligne 30 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[29].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[29].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[29].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[29].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[29].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[29].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -7442,13 +7442,13 @@ Externe</textarea>
 						
 						<!-- Impact DIC (formules) - Ligne 31 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[30].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[30].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[30].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[30].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[30].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[30].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -7608,13 +7608,13 @@ Externe</textarea>
 						
 						<!-- Impact DIC (formules) - Ligne 32 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[31].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[31].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[31].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[31].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[31].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[31].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -7782,13 +7782,13 @@ Externe</textarea>
 						
 						<!-- Impact DIC (formules) - Ligne 33 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[32].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[32].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[32].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[32].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[32].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[32].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -7948,13 +7948,13 @@ Externe</textarea>
 						
 						<!-- Impact DIC (formules) - Ligne 34 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[33].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[33].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[33].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[33].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[33].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[33].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -8114,13 +8114,13 @@ Externe</textarea>
 						
 						<!-- Impact DIC (formules) - Ligne 35 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[34].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[34].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[34].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[34].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[34].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[34].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -8288,13 +8288,13 @@ Externe</textarea>
 						
 						<!-- Impact DIC (formules) - Ligne 36 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[35].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[35].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[35].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[35].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[35].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[35].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -8455,13 +8455,13 @@ Externe</textarea>
 						
 						<!-- Impact DIC (formules) - Ligne 37 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[36].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[36].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[36].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[36].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[36].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[36].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -8621,13 +8621,13 @@ Externe</textarea>
 						
 						<!-- Impact DIC (formules) - Ligne 38 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[37].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[37].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[37].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[37].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[37].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[37].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -8794,13 +8794,13 @@ Externe</textarea>
 						
 						<!-- Impact DIC (formules) - Ligne 39 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[38].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[38].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[38].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[38].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[38].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[38].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -8960,13 +8960,13 @@ Externe</textarea>
 						
 						<!-- Impact DIC (formules) - Ligne 40 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[39].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[39].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[39].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[39].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[39].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[39].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -9134,13 +9134,13 @@ Externe</textarea>
 						
 						<!-- Impact DIC (formules) - Ligne 41 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[40].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[40].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[40].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[40].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[40].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[40].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -9301,13 +9301,13 @@ Externe</textarea>
 						
 						<!-- Impact DIC (formules) - Ligne 42 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[41].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[41].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[41].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[41].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[41].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[41].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -9468,13 +9468,13 @@ Externe</textarea>
 						
 						<!-- Impact DIC (formules) - Ligne 43 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[42].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[42].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[42].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[42].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[42].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[42].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -9635,13 +9635,13 @@ Externe</textarea>
 						
 						<!-- Impact DIC (formules) - Ligne 44 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[43].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[43].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[43].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[43].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[43].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[43].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
