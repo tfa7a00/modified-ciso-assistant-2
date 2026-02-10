@@ -3073,47 +3073,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 5 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[4].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[4].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[4].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[4]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[4].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[4].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[4].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[4].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[4]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[4].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[4]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[4]))}">{getNiveauBrut(cartoRows[4])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -3121,23 +3121,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[4]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[4].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[4].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[4]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[4]))}">{getNiveauNet(cartoRows[4])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -3156,23 +3156,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[4]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[4].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[4].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[4]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[4]))}">{getNiveauResiduel(cartoRows[4])}</td>
 					</tr>
 					
 					<!-- Ligne séparateur famille de risques -->
@@ -3247,47 +3247,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 6 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[5].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[5].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[5].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[5]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[5].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[5].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[5].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[5].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[5]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[5].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[5]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[5]))}">{getNiveauBrut(cartoRows[5])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -3295,23 +3295,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[5]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[5].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[5].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[5]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[5]))}">{getNiveauNet(cartoRows[5])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -3330,23 +3330,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[5]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[5].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[5].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[5]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[5]))}">{getNiveauResiduel(cartoRows[5])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50">
@@ -3417,47 +3417,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 7 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[6].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[6].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[6].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[6]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[6].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[6].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[6].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[6].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[6]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[6].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[6]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[6]))}">{getNiveauBrut(cartoRows[6])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -3465,23 +3465,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[6]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[6].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[6].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[6]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[6]))}">{getNiveauNet(cartoRows[6])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -3500,23 +3500,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[6]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[6].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[6].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[6]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[6]))}">{getNiveauResiduel(cartoRows[6])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50">
@@ -3584,47 +3584,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 8 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[7].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[7].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[7].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[7]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[7].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[7].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[7].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[7].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[7]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[7].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[7]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[7]))}">{getNiveauBrut(cartoRows[7])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -3632,23 +3632,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[7]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[7].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[7].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[7]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[7]))}">{getNiveauNet(cartoRows[7])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -3667,23 +3667,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[7]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[7].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[7].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[7]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[7]))}">{getNiveauResiduel(cartoRows[7])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50">
@@ -3751,47 +3751,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 9 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[8].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[8].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[8].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[8]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[8].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[8].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[8].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[8].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[8]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[8].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[8]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[8]))}">{getNiveauBrut(cartoRows[8])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -3799,23 +3799,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[8]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[8].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[8].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[8]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[8]))}">{getNiveauNet(cartoRows[8])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -3834,23 +3834,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[8]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[8].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[8].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[8]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[8]))}">{getNiveauResiduel(cartoRows[8])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50">
@@ -3919,47 +3919,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 10 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[9].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[9].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[9].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[9]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[9].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[9].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[9].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[9].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[9]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[9].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[9]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[9]))}">{getNiveauBrut(cartoRows[9])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -3967,23 +3967,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[9]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[9].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[9].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[9]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[9]))}">{getNiveauNet(cartoRows[9])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -4002,23 +4002,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[9]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[9].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[9].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[9]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[9]))}">{getNiveauResiduel(cartoRows[9])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -4089,47 +4089,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 11 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[10].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[10].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[10].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[10]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[10].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[10].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[10].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[10].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[10]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[10].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[10]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[10]))}">{getNiveauBrut(cartoRows[10])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -4137,23 +4137,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[10]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[10].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[10].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[10]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[10]))}">{getNiveauNet(cartoRows[10])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -4172,23 +4172,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[10]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[10].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[10].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[10]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[10]))}">{getNiveauResiduel(cartoRows[10])}</td>
 					</tr>
 					
 					<!-- Ligne séparateur famille de risques -->
@@ -4263,47 +4263,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 12 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[11].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[11].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[11].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[11]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[11].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[11].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[11].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[11].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[11]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[11].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[11]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[11]))}">{getNiveauBrut(cartoRows[11])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -4311,23 +4311,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[11]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[11].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[11].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[11]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[11]))}">{getNiveauNet(cartoRows[11])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -4346,23 +4346,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[11]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[11].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[11].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[11]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[11]))}">{getNiveauResiduel(cartoRows[11])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -4430,47 +4430,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 13 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[12].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[12].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[12].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[12]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[12].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[12].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[12].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[12].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[12]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[12].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[12]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[12]))}">{getNiveauBrut(cartoRows[12])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -4478,23 +4478,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[12]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[12].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[12].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[12]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[12]))}">{getNiveauNet(cartoRows[12])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -4513,23 +4513,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[12]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[12].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[12].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[12]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[12]))}">{getNiveauResiduel(cartoRows[12])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -4597,47 +4597,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 14 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[13].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[13].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[13].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[13]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[13].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[13].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[13].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[13].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[13]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[13].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[13]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[13]))}">{getNiveauBrut(cartoRows[13])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -4645,23 +4645,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[13]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[13].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[13].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[13]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[13]))}">{getNiveauNet(cartoRows[13])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -4680,23 +4680,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[13]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[13].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[13].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[13]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[13]))}">{getNiveauResiduel(cartoRows[13])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -4763,47 +4763,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 15 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[14].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[14].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[14].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[14]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[14].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[14].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[14].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[14].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[14]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[14].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[14]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[14]))}">{getNiveauBrut(cartoRows[14])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -4811,23 +4811,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[14]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[14].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[14].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[14]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[14]))}">{getNiveauNet(cartoRows[14])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -4846,23 +4846,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[14]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[14].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[14].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[14]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[14]))}">{getNiveauResiduel(cartoRows[14])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -4929,47 +4929,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 16 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[15].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[15].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[15].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[15]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[15].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[15].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[15].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[15].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[15]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[15].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[15]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[15]))}">{getNiveauBrut(cartoRows[15])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -4977,23 +4977,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[15]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[15].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[15].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[15]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[15]))}">{getNiveauNet(cartoRows[15])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -5012,23 +5012,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[15]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[15].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[15].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[15]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[15]))}">{getNiveauResiduel(cartoRows[15])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -5095,47 +5095,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 17 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[16].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[16].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[16].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[16]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[16].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[16].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[16].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[16].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[16]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[16].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[16]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[16]))}">{getNiveauBrut(cartoRows[16])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -5143,23 +5143,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[16]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[16].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[16].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[16]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[16]))}">{getNiveauNet(cartoRows[16])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -5178,23 +5178,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[16]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[16].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[16].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[16]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[16]))}">{getNiveauResiduel(cartoRows[16])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -5264,47 +5264,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 18 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[17].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[17].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[17].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[17]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[17].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[17].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[17].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[17].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[17]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[17].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[17]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[17]))}">{getNiveauBrut(cartoRows[17])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -5312,23 +5312,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[17]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[17].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[17].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[17]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[17]))}">{getNiveauNet(cartoRows[17])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -5347,23 +5347,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[17]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[17].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[17].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[17]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[17]))}">{getNiveauResiduel(cartoRows[17])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -5432,47 +5432,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 19 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[18].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[18].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[18].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[18]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[18].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[18].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[18].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[18].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[18]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[18].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[18]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[18]))}">{getNiveauBrut(cartoRows[18])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -5480,23 +5480,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[18]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[18].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[18].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[18]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[18]))}">{getNiveauNet(cartoRows[18])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -5515,23 +5515,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[18]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[18].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[18].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[18]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[18]))}">{getNiveauResiduel(cartoRows[18])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -5598,47 +5598,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 20 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[19].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[19].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[19].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[19]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[19].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[19].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[19].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[19].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[19]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[19].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[19]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[19]))}">{getNiveauBrut(cartoRows[19])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -5646,23 +5646,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[19]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[19].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[19].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[19]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[19]))}">{getNiveauNet(cartoRows[19])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -5681,23 +5681,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[19]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[19].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[19].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[19]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[19]))}">{getNiveauResiduel(cartoRows[19])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -5765,47 +5765,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 21 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[20].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[20].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[20].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[20]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[20].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[20].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[20].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[20].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[20]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[20].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[20]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[20]))}">{getNiveauBrut(cartoRows[20])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -5813,23 +5813,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[20]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[20].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[20].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[20]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[20]))}">{getNiveauNet(cartoRows[20])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -5848,23 +5848,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[20]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[20].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[20].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[20]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[20]))}">{getNiveauResiduel(cartoRows[20])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -5931,47 +5931,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 22 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[21].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[21].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[21].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[21]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[21].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[21].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[21].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[21].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[21]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[21].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[21]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[21]))}">{getNiveauBrut(cartoRows[21])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -5979,23 +5979,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[21]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[21].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[21].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[21]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[21]))}">{getNiveauNet(cartoRows[21])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -6014,23 +6014,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[21]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[21].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[21].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[21]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[21]))}">{getNiveauResiduel(cartoRows[21])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -6097,47 +6097,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 23 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[22].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[22].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[22].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[22]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[22].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[22].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[22].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[22].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[22]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[22].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[22]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[22]))}">{getNiveauBrut(cartoRows[22])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -6145,23 +6145,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[22]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[22].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[22].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[22]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[22]))}">{getNiveauNet(cartoRows[22])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -6180,23 +6180,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[22]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[22].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[22].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[22]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[22]))}">{getNiveauResiduel(cartoRows[22])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -6264,47 +6264,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 24 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[23].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[23].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[23].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[23]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[23].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[23].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[23].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[23].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[23]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[23].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[23]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[23]))}">{getNiveauBrut(cartoRows[23])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -6312,23 +6312,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[23]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[23].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[23].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[23]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[23]))}">{getNiveauNet(cartoRows[23])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -6347,23 +6347,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[23]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[23].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[23].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[23]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[23]))}">{getNiveauResiduel(cartoRows[23])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -6431,47 +6431,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 25 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[24].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[24].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[24].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[24]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[24].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[24].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[24].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[24].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[24]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[24].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[24]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[24]))}">{getNiveauBrut(cartoRows[24])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -6479,23 +6479,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[24]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[24].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[24].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[24]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[24]))}">{getNiveauNet(cartoRows[24])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -6514,23 +6514,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[24]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[24].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[24].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[24]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[24]))}">{getNiveauResiduel(cartoRows[24])}</td>
 					</tr>
 					
 					<!-- Ligne séparateur famille de risques -->
@@ -6604,47 +6604,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 26 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[25].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[25].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[25].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[25]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[25].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[25].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[25].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[25].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[25]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[25].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[25]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[25]))}">{getNiveauBrut(cartoRows[25])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -6652,23 +6652,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[25]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[25].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[25].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[25]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[25]))}">{getNiveauNet(cartoRows[25])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -6687,23 +6687,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[25]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[25].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[25].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[25]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[25]))}">{getNiveauResiduel(cartoRows[25])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -6771,47 +6771,47 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 27 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[26].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[26].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[26].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[26]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[26].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[26].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[26].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[26].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[26]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[26].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[26]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[26]))}">{getNiveauBrut(cartoRows[26])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -6819,23 +6819,23 @@
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[26]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[26].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[26].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[26]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[26]))}">{getNiveauNet(cartoRows[26])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -6854,23 +6854,23 @@
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[26]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[26].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[26].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[26]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[26]))}">{getNiveauResiduel(cartoRows[26])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -6939,47 +6939,47 @@ Externe</textarea>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 28 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[27].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[27].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[27].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[27]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[27].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[27].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[27].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[27].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[27]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[27].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[27]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[27]))}">{getNiveauBrut(cartoRows[27])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -6987,23 +6987,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[27]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[27].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[27].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[27]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[27]))}">{getNiveauNet(cartoRows[27])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -7022,23 +7022,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[27]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[27].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[27].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[27]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[27]))}">{getNiveauResiduel(cartoRows[27])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -7107,47 +7107,47 @@ Externe</textarea>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 29 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[28].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[28].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[28].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[28]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[28].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[28].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[28].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[28].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[28]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[28].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[28]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[28]))}">{getNiveauBrut(cartoRows[28])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -7155,23 +7155,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[28]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[28].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[28].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[28]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[28]))}">{getNiveauNet(cartoRows[28])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -7190,23 +7190,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[28]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[28].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[28].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[28]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[28]))}">{getNiveauResiduel(cartoRows[28])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -7274,47 +7274,47 @@ Externe</textarea>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 30 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[29].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[29].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[29].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[29]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[29].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[29].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[29].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[29].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[29]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[29].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[29]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[29]))}">{getNiveauBrut(cartoRows[29])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -7322,23 +7322,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[29]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[29].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[29].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[29]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[29]))}">{getNiveauNet(cartoRows[29])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -7357,23 +7357,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[29]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[29].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[29].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[29]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[29]))}">{getNiveauResiduel(cartoRows[29])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -7440,47 +7440,47 @@ Externe</textarea>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 31 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[30].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[30].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[30].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[30]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[30].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[30].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[30].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[30].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[30]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[30].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[30]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[30]))}">{getNiveauBrut(cartoRows[30])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -7488,23 +7488,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[30]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[30].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[30].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[30]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[30]))}">{getNiveauNet(cartoRows[30])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -7523,23 +7523,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[30]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[30].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[30].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[30]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[30]))}">{getNiveauResiduel(cartoRows[30])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -7606,47 +7606,47 @@ Externe</textarea>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 32 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[31].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[31].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[31].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[31]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[31].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[31].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[31].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[31].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[31]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[31].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[31]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[31]))}">{getNiveauBrut(cartoRows[31])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -7654,23 +7654,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[31]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[31].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[31].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[31]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[31]))}">{getNiveauNet(cartoRows[31])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -7689,23 +7689,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[31]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[31].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[31].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[31]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[31]))}">{getNiveauResiduel(cartoRows[31])}</td>
 					</tr>
 					
 					<!-- Ligne séparateur famille de risques -->
@@ -7780,47 +7780,47 @@ Externe</textarea>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 33 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[32].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[32].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[32].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[32]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[32].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[32].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[32].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[32].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[32]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[32].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[32]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[32]))}">{getNiveauBrut(cartoRows[32])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -7828,23 +7828,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[32]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[32].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[32].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[32]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[32]))}">{getNiveauNet(cartoRows[32])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -7863,23 +7863,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[32]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[32].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[32].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[32]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[32]))}">{getNiveauResiduel(cartoRows[32])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -7946,47 +7946,47 @@ Externe</textarea>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 34 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[33].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[33].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[33].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[33]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[33].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[33].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[33].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[33].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[33]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[33].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[33]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[33]))}">{getNiveauBrut(cartoRows[33])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -7994,23 +7994,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[33]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[33].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[33].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[33]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[33]))}">{getNiveauNet(cartoRows[33])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -8029,23 +8029,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[33]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[33].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[33].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[33]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[33]))}">{getNiveauResiduel(cartoRows[33])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -8112,47 +8112,47 @@ Externe</textarea>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 35 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[34].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[34].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[34].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[34]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[34].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[34].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[34].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[34].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[34]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[34].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[34]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[34]))}">{getNiveauBrut(cartoRows[34])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -8160,23 +8160,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[34]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[34].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[34].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[34]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[34]))}">{getNiveauNet(cartoRows[34])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -8195,23 +8195,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[34]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[34].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[34].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[34]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[34]))}">{getNiveauResiduel(cartoRows[34])}</td>
 					</tr>
 					
 					<!-- Ligne séparateur famille de risques -->
@@ -8286,47 +8286,47 @@ Externe</textarea>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 36 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[35].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[35].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[35].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[35]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[35].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[35].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[35].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[35].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[35]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[35].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[35]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[35]))}">{getNiveauBrut(cartoRows[35])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -8334,23 +8334,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[35]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[35].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[35].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[35]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[35]))}">{getNiveauNet(cartoRows[35])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -8369,23 +8369,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[35]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[35].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[35].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[35]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[35]))}">{getNiveauResiduel(cartoRows[35])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -8453,47 +8453,47 @@ Externe</textarea>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 37 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[36].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[36].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[36].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[36]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[36].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[36].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[36].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[36].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[36]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[36].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[36]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[36]))}">{getNiveauBrut(cartoRows[36])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -8501,23 +8501,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[36]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[36].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[36].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[36]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[36]))}">{getNiveauNet(cartoRows[36])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -8536,23 +8536,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[36]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[36].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[36].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[36]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[36]))}">{getNiveauResiduel(cartoRows[36])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -8619,47 +8619,47 @@ Externe</textarea>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 38 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[37].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[37].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[37].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[37]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[37].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[37].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[37].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[37].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[37]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[37].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[37]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[37]))}">{getNiveauBrut(cartoRows[37])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -8667,23 +8667,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[37]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[37].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[37].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[37]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[37]))}">{getNiveauNet(cartoRows[37])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -8702,23 +8702,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[37]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[37].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[37].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[37]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[37]))}">{getNiveauResiduel(cartoRows[37])}</td>
 					</tr>
 					
 					<!-- Ligne séparateur famille de risques -->
@@ -8792,47 +8792,47 @@ Externe</textarea>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 39 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[38].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[38].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[38].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[38]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[38].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[38].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[38].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[38].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[38]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[38].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[38]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[38]))}">{getNiveauBrut(cartoRows[38])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -8840,23 +8840,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[38]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[38].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[38].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[38]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[38]))}">{getNiveauNet(cartoRows[38])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -8875,23 +8875,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[38]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[38].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[38].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[38]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[38]))}">{getNiveauResiduel(cartoRows[38])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -8958,47 +8958,47 @@ Externe</textarea>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 40 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[39].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[39].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[39].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[39]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[39].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[39].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[39].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[39].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[39]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[39].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[39]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[39]))}">{getNiveauBrut(cartoRows[39])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -9006,23 +9006,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[39]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[39].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[39].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[39]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[39]))}">{getNiveauNet(cartoRows[39])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -9041,23 +9041,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[39]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[39].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[39].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[39]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[39]))}">{getNiveauResiduel(cartoRows[39])}</td>
 					</tr>
 					
 					<!-- Ligne séparateur famille de risques -->
@@ -9132,47 +9132,47 @@ Externe</textarea>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 41 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[40].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[40].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[40].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[40]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[40].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[40].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[40].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[40].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[40]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[40].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[40]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[40]))}">{getNiveauBrut(cartoRows[40])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -9180,23 +9180,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[40]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[40].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[40].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[40]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[40]))}">{getNiveauNet(cartoRows[40])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -9215,23 +9215,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[40]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[40].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[40].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[40]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[40]))}">{getNiveauResiduel(cartoRows[40])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -9299,47 +9299,47 @@ Externe</textarea>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 42 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[41].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[41].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[41].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[41]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[41].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[41].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[41].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[41].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[41]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[41].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[41]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[41]))}">{getNiveauBrut(cartoRows[41])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -9347,23 +9347,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[41]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[41].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[41].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[41]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[41]))}">{getNiveauNet(cartoRows[41])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -9382,23 +9382,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[41]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[41].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[41].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[41]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[41]))}">{getNiveauResiduel(cartoRows[41])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -9466,47 +9466,47 @@ Externe</textarea>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 43 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[42].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[42].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[42].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[42]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[42].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[42].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[42].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[42].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[42]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[42].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[42]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[42]))}">{getNiveauBrut(cartoRows[42])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -9514,23 +9514,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[42]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[42].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[42].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[42]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[42]))}">{getNiveauNet(cartoRows[42])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -9549,23 +9549,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[42]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[42].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[42].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[42]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[42]))}">{getNiveauResiduel(cartoRows[42])}</td>
 					</tr>
 					
 					<tr class="hover:bg-gray-50"><!-- Entité -->
@@ -9633,47 +9633,47 @@ Externe</textarea>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
 						
-						<!-- Impact DIC (formules) - Ligne 4 -->
+						<!-- Impact DIC (formules) - Ligne 44 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactD} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[43].impactD} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactI} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[43].impactI} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[3].impactC} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[43].impactC} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[43]) ?? '-'}</td>
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[43].impactFinancier} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[43].impactPP} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[43].impactReputation} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[43].impactReglementaire} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[43]) ?? '-'}</td>
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[43].probabilite} />
 						</td>
 						
 						<!-- I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(cartoRows[43]) ?? '-'}</td>
 						
 						<!-- Niveau risque brut (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[3]))}">{getNiveauBrut(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[43]))}">{getNiveauBrut(cartoRows[43])}</td>
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -9681,23 +9681,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Net - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[43]) ?? '-'}</td>
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[3].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[43].graviteNet} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[3].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[43].probabiliteNet} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(cartoRows[43]) ?? '-'}</td>
 						
 						<!-- Risque Net - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[3]))}">{getNiveauNet(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[43]))}">{getNiveauNet(cartoRows[43])}</td>
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
@@ -9716,23 +9716,23 @@ Externe</textarea>
 						</td>
 						
 						<!-- Risque Résiduel - Criticité -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[43]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[3].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[43].impactResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[3].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[43].vraisemblanceResiduel} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[3]) ?? '-'}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[43]) ?? '-'}</td>
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[3]))}">{getNiveauResiduel(cartoRows[3])}</td>
+						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[43]))}">{getNiveauResiduel(cartoRows[43])}</td>
 					</tr>
 					
 				</tbody>
