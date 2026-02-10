@@ -916,6 +916,29 @@
     table {
         table-layout: auto;
     }
+
+    /* Increase cartographie table cell heights */
+    .view-identification tbody tr,
+    .view-brut tbody tr,
+    .view-net tbody tr,
+    .view-ptr tbody tr {
+        min-height: 100px; /* Adjust as needed */
+    }
+
+    .view-identification tbody td,
+    .view-brut tbody td,
+    .view-net tbody td,
+    .view-ptr tbody td {
+        padding: 8px; /* Increased from py-2 (0.5rem) to 0.5rem */
+    }
+
+    /* Increase textarea height */
+    .view-identification textarea,
+    .view-brut textarea,
+    .view-net textarea,
+    .view-ptr textarea {
+        min-height: 120px;
+    }
 </style>
 
 <main class="p-6 space-y-8">
