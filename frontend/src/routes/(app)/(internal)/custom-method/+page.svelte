@@ -1,4 +1,5 @@
 <script lang="ts">
+import { onMount } from 'svelte';
 	// Page simple pour afficher une "méthode personnalisée"
 	// avec des tableaux statiques basés sur tes définitions en français.
 
@@ -877,6 +878,31 @@
 	function updateCell(index, field, event) {
 		ptrData[index][field] = event.target.value;
 	}
+
+// Au montage, inverser le contenu textuel des colonnes "Description du scénario" (td index 3)
+// et "Code Risque" (td index 4) pour chaque ligne de la table de cartographie.
+onMount(() => {
+	const tables = Array.from(document.querySelectorAll('table'));
+	const cartoTable = tables.find((t) => !!t.querySelector('col.col-identification'));
+	if (!cartoTable) return;
+
+	const rows = Array.from(cartoTable.querySelectorAll('tbody > tr'));
+
+	rows.forEach((row) => {
+		const tds = Array.from(row.querySelectorAll('td'));
+		// Skip separator rows (ex: colspan rows) and any row without the expected columns
+		if (tds.length < 5) return;
+
+		const descElem = tds[3].querySelector('textarea, input') as HTMLTextAreaElement | HTMLInputElement | null;
+		const codeElem = tds[4].querySelector('textarea, input') as HTMLTextAreaElement | HTMLInputElement | null;
+
+		if (descElem && codeElem) {
+			const tmp = descElem.value;
+			descElem.value = codeElem.value;
+			codeElem.value = tmp;
+		}
+	});
+});
 
 </script>
 
