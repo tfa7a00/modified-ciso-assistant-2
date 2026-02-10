@@ -7966,6 +7966,26 @@ class Actor(AbstractBaseModel):
         return str(self.specific)
 
 
+class CustomMethodState(models.Model):
+    """
+    Stores the full state of the Custom Method page (all table cells) per folder.
+    Shared by all users with access to that folder so they can view and edit the same data.
+    """
+
+    folder = models.OneToOneField(
+        Folder,
+        on_delete=models.CASCADE,
+        related_name="custom_method_state",
+    )
+    value = models.JSONField(default=dict)
+
+    class Meta:
+        db_table = "core_custommethodstate"
+
+    def __str__(self):
+        return f"CustomMethodState({self.folder_id})"
+
+
 common_exclude = ["created_at", "updated_at"]
 
 auditlog.register(

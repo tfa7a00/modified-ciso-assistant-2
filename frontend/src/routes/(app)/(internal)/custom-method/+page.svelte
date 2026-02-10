@@ -230,66 +230,69 @@
 		}
 	];
 
-	// --- Persistence: load/save to localStorage so modifications stick when leaving the page ---
+	// --- Persistence: localStorage + server (shared for all users in the same folder) ---
 	function saveCustomMethodState() {
 		try {
-			const state = {
-				cartoRows,
-				redactionRows,
-				diffusionRows,
-				versionRows,
-				registreRows,
-				activeSection,
-				cartoView
-			};
+			const state = getFullState();
 			localStorage.setItem(CUSTOM_METHOD_STORAGE_KEY, JSON.stringify(state));
+			// Save to server so others can view/edit
+			fetch('/fe-api/custom-method-state', {
+				method: 'PATCH',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(state)
+			}).catch((e) => console.warn('Could not save custom method state to server:', e));
 		} catch (e) {
 			console.warn('Could not save custom method state:', e);
 		}
 	}
 
-	function loadCustomMethodState() {
+	function loadCustomMethodStateFromStorage() {
 		try {
 			const raw = localStorage.getItem(CUSTOM_METHOD_STORAGE_KEY);
 			if (!raw) return;
-			const state = JSON.parse(raw) as Partial<{
-				cartoRows: CartoRow[];
-				redactionRows: RedactionRow[];
-				diffusionRows: DiffusionRow[];
-				versionRows: VersionRow[];
-				registreRows: RegistreRow[];
-				activeSection: SectionId;
-				cartoView: typeof cartoView;
-			}>;
-			if (state.cartoRows && Array.isArray(state.cartoRows) && state.cartoRows.length === 45) {
-				cartoRows = state.cartoRows.map((r) => ({ ...defaultCartoRow(), ...r }));
-			}
-			if (state.redactionRows && Array.isArray(state.redactionRows) && state.redactionRows.length === redactionRows.length) {
-				redactionRows = state.redactionRows;
-			}
-			if (state.diffusionRows && Array.isArray(state.diffusionRows) && state.diffusionRows.length === diffusionRows.length) {
-				diffusionRows = state.diffusionRows;
-			}
-			if (state.versionRows && Array.isArray(state.versionRows) && state.versionRows.length === versionRows.length) {
-				versionRows = state.versionRows;
-			}
-			if (state.registreRows && Array.isArray(state.registreRows) && state.registreRows.length > 0) {
-				registreRows = state.registreRows;
-			}
-			if (state.activeSection && ['controle-document', 'registre-classification', 'aide-classification', 'cartographie-risques', 'aide-risque', 'ptr', 'echelle-ptr'].includes(state.activeSection)) {
-				activeSection = state.activeSection;
-			}
-			if (state.cartoView && ['all', 'identification', 'brut', 'net', 'ptr'].includes(state.cartoView)) {
-				cartoView = state.cartoView;
-			}
+			const state = JSON.parse(raw) as Record<string, unknown>;
+			applyFullState(state);
 		} catch (e) {
-			console.warn('Could not load custom method state:', e);
+			console.warn('Could not load custom method state from localStorage:', e);
 		}
 	}
 
+	async function loadCustomMethodState() {
+		try {
+			const res = await fetch('/fe-api/custom-method-state');
+			const data = await res.json();
+			if (res.ok && data && typeof data === 'object' && Object.keys(data).length > 0) {
+				applyFullState(data);
+				return;
+			}
+		} catch (e) {
+			console.warn('Could not load custom method state from server:', e);
+		}
+		loadCustomMethodStateFromStorage();
+	}
+
 	let persistTimeout: ReturnType<typeof setTimeout> | null = null;
-	// Re-run when any of these change so we debounce-save (persists on tab close / refresh)
-	$: _persistDeps = [cartoRows, redactionRows, diffusionRows, versionRows, registreRows, activeSection, cartoView];
+	// Re-run when any of these change so we debounce-save (persists on tab close / refresh + server)
+	$: _persistDeps = [
+		cartoRows,
+		redactionRows,
+		diffusionRows,
+		versionRows,
+		registreRows,
+		activeSection,
+		cartoView,
+		periodiciteRows,
+		complexiteRows,
+		typeActionRows,
+		prioriteRows,
+		dicCriteriaRows,
+		dicNiveauxRows,
+		categoriesActifsRows,
+		probaRows,
+		impactRows,
+		frequenceRisqueRows,
+		matriceRisqueRows
+	];
 	$: if (typeof window !== 'undefined' && _persistDeps) {
 		if (persistTimeout) clearTimeout(persistTimeout);
 		persistTimeout = setTimeout(() => {
@@ -652,6 +655,93 @@
 		{ libelle: '4×5', valeurs: [20, 40, 60, 80, 100] },
 		{ libelle: '4×6', valeurs: [24, 48, 72, 96, 120] }
 	];
+
+	/** Full state for server/localStorage: all table rows + UI state */
+	function getFullState() {
+		return {
+			cartoRows,
+			redactionRows,
+			diffusionRows,
+			versionRows,
+			registreRows,
+			activeSection,
+			cartoView,
+			periodiciteRows,
+			complexiteRows,
+			typeActionRows,
+			prioriteRows,
+			dicCriteriaRows,
+			dicNiveauxRows,
+			categoriesActifsRows,
+			probaRows,
+			impactRows,
+			frequenceRisqueRows,
+			matriceRisqueRows
+		};
+	}
+
+	function applyFullState(state: Record<string, unknown>) {
+		if (!state || typeof state !== 'object') return;
+		const sectionIds: SectionId[] = ['controle-document', 'registre-classification', 'aide-classification', 'cartographie-risques', 'aide-risque', 'ptr', 'echelle-ptr'];
+		const cartoViews = ['all', 'identification', 'brut', 'net', 'ptr'] as const;
+		if (state.cartoRows && Array.isArray(state.cartoRows) && state.cartoRows.length === 45) {
+			cartoRows = (state.cartoRows as CartoRow[]).map((r) => ({ ...defaultCartoRow(), ...r }));
+		}
+		if (state.redactionRows && Array.isArray(state.redactionRows) && state.redactionRows.length > 0) {
+			redactionRows = state.redactionRows as RedactionRow[];
+		}
+		if (state.diffusionRows && Array.isArray(state.diffusionRows) && state.diffusionRows.length > 0) {
+			diffusionRows = state.diffusionRows as DiffusionRow[];
+		}
+		if (state.versionRows && Array.isArray(state.versionRows) && state.versionRows.length > 0) {
+			versionRows = state.versionRows as VersionRow[];
+		}
+		if (state.registreRows && Array.isArray(state.registreRows) && state.registreRows.length > 0) {
+			registreRows = state.registreRows as RegistreRow[];
+		}
+		if (state.activeSection && sectionIds.includes(state.activeSection as SectionId)) {
+			activeSection = state.activeSection as SectionId;
+		}
+		if (state.cartoView && cartoViews.includes(state.cartoView as typeof cartoView)) {
+			cartoView = state.cartoView as typeof cartoView;
+		}
+		if (state.periodiciteRows && Array.isArray(state.periodiciteRows) && state.periodiciteRows.length > 0) {
+			periodiciteRows = state.periodiciteRows as Row[];
+		}
+		if (state.complexiteRows && Array.isArray(state.complexiteRows) && state.complexiteRows.length > 0) {
+			complexiteRows = state.complexiteRows as Row[];
+		}
+		if (state.typeActionRows && Array.isArray(state.typeActionRows) && state.typeActionRows.length > 0) {
+			typeActionRows = state.typeActionRows as Row[];
+		}
+		if (state.prioriteRows && Array.isArray(state.prioriteRows) && state.prioriteRows.length > 0) {
+			prioriteRows = state.prioriteRows as Row[];
+		}
+		if (state.dicCriteriaRows && Array.isArray(state.dicCriteriaRows) && state.dicCriteriaRows.length > 0) {
+			dicCriteriaRows = state.dicCriteriaRows as DICCriteriaRow[];
+		}
+		if (state.dicNiveauxRows && Array.isArray(state.dicNiveauxRows) && state.dicNiveauxRows.length > 0) {
+			dicNiveauxRows = state.dicNiveauxRows as DICNiveauRow[];
+		}
+		if (state.categoriesActifsRows && Array.isArray(state.categoriesActifsRows)) {
+			categoriesActifsRows = state.categoriesActifsRows as string[];
+		}
+		if (state.probaRows && Array.isArray(state.probaRows) && state.probaRows.length > 0) {
+			probaRows = state.probaRows as ProbaRow[];
+		}
+		if (state.impactRows && Array.isArray(state.impactRows) && state.impactRows.length > 0) {
+			impactRows = state.impactRows as ImpactRow[];
+		}
+		if (state.frequenceRisqueRows && Array.isArray(state.frequenceRisqueRows) && state.frequenceRisqueRows.length > 0) {
+			frequenceRisqueRows = state.frequenceRisqueRows as Row[];
+		}
+		if (state.matriceRisqueRows && Array.isArray(state.matriceRisqueRows) && state.matriceRisqueRows.length > 0) {
+			const rows = state.matriceRisqueRows as MatriceRow[];
+			if (rows.every((r) => r && typeof r.libelle === 'string' && Array.isArray(r.valeurs))) {
+				matriceRisqueRows = rows;
+			}
+		}
+	}
 
 	function getProbaDefBg(definition: string): string {
 		switch (definition) {

@@ -7207,6 +7207,61 @@ class UserPreferencesView(APIView):
         return Response({}, status=status.HTTP_200_OK)
 
 
+class CustomMethodStateView(APIView):
+    """
+    GET/PATCH the custom method page state (all table cells) for the current focus folder.
+    State is shared for all users with access to that folder.
+    """
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def _get_folder(self, request):
+        from core.context import focus_folder_id_var
+
+        folder_id = focus_folder_id_var.get()
+        if folder_id is None:
+            folder = Folder.get_root_folder()
+        else:
+            if not RoleAssignment.is_object_readable(request.user, Folder, folder_id):
+                return None
+            folder = Folder.objects.filter(id=folder_id).first()
+            if folder is None:
+                return None
+        return folder
+
+    def get(self, request) -> Response:
+        folder = self._get_folder(request)
+        if folder is None:
+            return Response(
+                {"error": "Folder not found or access denied"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        state, _ = CustomMethodState.objects.get_or_create(
+            folder=folder, defaults={"value": {}}
+        )
+        return Response(state.value, status=status.HTTP_200_OK)
+
+    def patch(self, request) -> Response:
+        folder = self._get_folder(request)
+        if folder is None:
+            return Response(
+                {"error": "Folder not found or access denied"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        value = request.data
+        if not isinstance(value, dict):
+            return Response(
+                {"error": "Expected a JSON object"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        state, _ = CustomMethodState.objects.get_or_create(
+            folder=folder, defaults={"value": {}}
+        )
+        state.value = value
+        state.save()
+        return Response(state.value, status=status.HTTP_200_OK)
+
+
 @cache_page(60 * SHORT_CACHE_TTL)
 @vary_on_cookie
 @api_view(["GET"])
