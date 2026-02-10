@@ -2,6 +2,11 @@
 	// Page simple pour afficher une "méthode personnalisée"
 	// avec des tableaux statiques basés sur tes définitions en français.
 
+	import { onMount } from 'svelte';
+	import { beforeNavigate } from '$app/navigation';
+
+	const CUSTOM_METHOD_STORAGE_KEY = 'ciso-assistant-custom-method';
+
 	type Row = Record<string, string>;
 
 	// Gestion des 7 sous-parties de la méthode personnalisée (ajout de controle-document)
@@ -225,6 +230,86 @@
 		}
 	];
 
+	// --- Persistence: load/save to localStorage so modifications stick when leaving the page ---
+	function saveCustomMethodState() {
+		try {
+			const state = {
+				cartoRows,
+				redactionRows,
+				diffusionRows,
+				versionRows,
+				registreRows,
+				activeSection,
+				cartoView
+			};
+			localStorage.setItem(CUSTOM_METHOD_STORAGE_KEY, JSON.stringify(state));
+		} catch (e) {
+			console.warn('Could not save custom method state:', e);
+		}
+	}
+
+	function loadCustomMethodState() {
+		try {
+			const raw = localStorage.getItem(CUSTOM_METHOD_STORAGE_KEY);
+			if (!raw) return;
+			const state = JSON.parse(raw) as Partial<{
+				cartoRows: CartoRow[];
+				redactionRows: RedactionRow[];
+				diffusionRows: DiffusionRow[];
+				versionRows: VersionRow[];
+				registreRows: RegistreRow[];
+				activeSection: SectionId;
+				cartoView: typeof cartoView;
+			}>;
+			if (state.cartoRows && Array.isArray(state.cartoRows) && state.cartoRows.length === 45) {
+				cartoRows = state.cartoRows.map((r) => ({ ...defaultCartoRow(), ...r }));
+			}
+			if (state.redactionRows && Array.isArray(state.redactionRows) && state.redactionRows.length === redactionRows.length) {
+				redactionRows = state.redactionRows;
+			}
+			if (state.diffusionRows && Array.isArray(state.diffusionRows) && state.diffusionRows.length === diffusionRows.length) {
+				diffusionRows = state.diffusionRows;
+			}
+			if (state.versionRows && Array.isArray(state.versionRows) && state.versionRows.length === versionRows.length) {
+				versionRows = state.versionRows;
+			}
+			if (state.registreRows && Array.isArray(state.registreRows) && state.registreRows.length > 0) {
+				registreRows = state.registreRows;
+			}
+			if (state.activeSection && ['controle-document', 'registre-classification', 'aide-classification', 'cartographie-risques', 'aide-risque', 'ptr', 'echelle-ptr'].includes(state.activeSection)) {
+				activeSection = state.activeSection;
+			}
+			if (state.cartoView && ['all', 'identification', 'brut', 'net', 'ptr'].includes(state.cartoView)) {
+				cartoView = state.cartoView;
+			}
+		} catch (e) {
+			console.warn('Could not load custom method state:', e);
+		}
+	}
+
+	let persistTimeout: ReturnType<typeof setTimeout> | null = null;
+	// Re-run when any of these change so we debounce-save (persists on tab close / refresh)
+	$: _persistDeps = [cartoRows, redactionRows, diffusionRows, versionRows, registreRows, activeSection, cartoView];
+	$: if (typeof window !== 'undefined' && _persistDeps) {
+		if (persistTimeout) clearTimeout(persistTimeout);
+		persistTimeout = setTimeout(() => {
+			persistTimeout = null;
+			saveCustomMethodState();
+		}, 1500);
+	}
+
+	onMount(() => {
+		loadCustomMethodState();
+		const saveOnUnload = () => saveCustomMethodState();
+		window.addEventListener('beforeunload', saveOnUnload);
+		return () => window.removeEventListener('beforeunload', saveOnUnload);
+	});
+
+	beforeNavigate(({ from }) => {
+		if (from?.url?.pathname?.includes('custom-method')) {
+			saveCustomMethodState();
+		}
+	});
 
 	let periodiciteRows: Row[] = [
 		{ periodicite: 'QuickWin', duree: '0 – 3 mois' },
