@@ -232,6 +232,13 @@
 		i === 0 ? { ...defaultCartoRow(), ...firstRowDefaultContent } : defaultCartoRow()
 	);
 
+	/** Réinitialise la première ligne du tableau cartographie avec les données d'origine (DSI, Systèmes d'Information, etc.). Sauvegarde immédiate. */
+	function resetFirstRowToDefault() {
+		cartoRows[0] = { ...defaultCartoRow(), ...firstRowDefaultContent };
+		cartoRows = cartoRows;
+		saveCustomMethodState();
+	}
+
 	// --- Données pour Contrôle du document ---
 	type RedactionRow = {
 		role: string;
@@ -2243,8 +2250,9 @@
 		<!-- Tableau de cartographie - Flexible avec hauteur augmentée -->
 			<!-- Toolbar: switchable sub-views for cartographie -->
 			<div class="flex items-center justify-between mb-2">
-				<div class="flex gap-2">
+				<div class="flex gap-2 items-center flex-wrap">
 					<button type="button" class={`px-3 py-1 text-sm rounded-md border ${cartoView==='identification' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`} on:click={() => (cartoView='identification')}>Identification</button>
+					<button type="button" class="px-2 py-1 text-xs rounded border border-amber-300 bg-amber-50 text-amber-800 hover:bg-amber-100" title="Remettre la 1ère ligne avec les données d'origine (DSI, Systèmes d'Information, …)" on:click={resetFirstRowToDefault}>Réinitialiser la 1ère ligne</button>
 					<button type="button" class={`px-3 py-1 text-sm rounded-md border ${cartoView==='brut' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`} on:click={() => (cartoView='brut')}>Risque Brut</button>
 					<button type="button" class={`px-3 py-1 text-sm rounded-md border ${cartoView==='net' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`} on:click={() => (cartoView='net')}>Degré & Risque Net</button>
 					<button type="button" class={`px-3 py-1 text-sm rounded-md border ${cartoView==='ptr' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`} on:click={() => (cartoView='ptr')}>PTR + Résiduel</button>
@@ -2632,6 +2640,7 @@
 				</td>
 			</tr>
 			
+			<!-- Première ligne cartographie : données d'origine par défaut (DSI, Systèmes d'Information, …), chaque modification est sauvegardée immédiatement -->
 			<tr class="hover:bg-gray-50">
 				<!-- Entité -->
 				<td class="px-2 py-2 border border-black bg-white align-top">
@@ -2699,13 +2708,13 @@
 						
 						<!-- Impact DIC (formules) - Ligne 1 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[0].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[0].impactD} on:change={() => saveCustomMethodState()} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[0].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[0].impactI} on:change={() => saveCustomMethodState()} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[0].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[0].impactC} on:change={() => saveCustomMethodState()} />
 						</td>
 						
 						<!-- Criticité (=MAX) -->
@@ -2713,16 +2722,16 @@
 						
 						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[0].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[0].impactFinancier} on:change={() => saveCustomMethodState()} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[0].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[0].impactPP} on:change={() => saveCustomMethodState()} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[0].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[0].impactReputation} on:change={() => saveCustomMethodState()} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[0].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[0].impactReglementaire} on:change={() => saveCustomMethodState()} />
 						</td>
 						
 						<!-- Gravité (=MAX) -->
@@ -2730,7 +2739,7 @@
 						
 						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[0].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[0].probabilite} on:change={() => saveCustomMethodState()} />
 						</td>
 						
 						<!-- I*P*C -->
@@ -2749,12 +2758,12 @@
 						
 						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[0].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[0].graviteNet} on:change={() => saveCustomMethodState()} />
 						</td>
 						
 						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[0].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[0].probabiliteNet} on:change={() => saveCustomMethodState()} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
@@ -2784,12 +2793,12 @@
 						
 						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[0].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[0].impactResiduel} on:change={() => saveCustomMethodState()} />
 						</td>
 						
 						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[0].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[0].vraisemblanceResiduel} on:change={() => saveCustomMethodState()} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
