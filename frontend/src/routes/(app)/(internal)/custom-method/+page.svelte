@@ -153,11 +153,6 @@
 	// Tableau de 45 lignes pour les formules de la cartographie des risques
 	let cartoRows: CartoRow[] = Array.from({ length: 45 }, () => defaultCartoRow());
 
-	/** Force reactivity so persistence runs after in-place edits (bind:value) in cartographie table */
-	function touchCartoRows() {
-		cartoRows = cartoRows.map((r) => ({ ...r }));
-	}
-
 	// --- Données pour Contrôle du document ---
 	type RedactionRow = {
 		role: string;
@@ -238,6 +233,7 @@
 	// --- Persistence: localStorage + server (shared for all users in the same folder) ---
 	function saveCustomMethodState() {
 		try {
+			// Always read current state at save time (cartoRows is mutated in place by bind:value)
 			const state = getFullState();
 			localStorage.setItem(CUSTOM_METHOD_STORAGE_KEY, JSON.stringify(state));
 			// Save to server so others can view/edit
@@ -278,9 +274,8 @@
 
 	let persistTimeout: ReturnType<typeof setTimeout> | null = null;
 	// Re-run when any of these change so we debounce-save (persists on tab close / refresh + server).
-	// cartoRows is triggered by touchCartoRows() on blur of cartographie table cells (bind:value mutates in place).
+	// Note: cartoRows is NOT reactive to in-place edits (bind:value); cartographie is saved via interval + on section leave.
 	$: _persistDeps = [
-		cartoRows,
 		redactionRows,
 		diffusionRows,
 		versionRows,
@@ -308,14 +303,23 @@
 		}, 1500);
 	}
 
+	// When leaving cartographie section, save immediately so bind:value mutations are persisted
+	let _prevSection: SectionId = activeSection;
+	$: {
+		if (typeof window !== 'undefined' && _prevSection === 'cartographie-risques' && activeSection !== 'cartographie-risques') {
+			saveCustomMethodState();
+		}
+		_prevSection = activeSection;
+	}
+
 	onMount(() => {
 		loadCustomMethodState();
 		const saveOnUnload = () => saveCustomMethodState();
 		window.addEventListener('beforeunload', saveOnUnload);
-		// Periodic touch of cartoRows so in-place edits are persisted even if blur does not fire
+		// Cartographie: bind:value mutates in place so reactivity never fires. Save directly every 2s when on that section.
 		const cartoPersistInterval = setInterval(() => {
-			if (activeSection === 'cartographie-risques') touchCartoRows();
-		}, 5000);
+			if (activeSection === 'cartographie-risques') saveCustomMethodState();
+		}, 2000);
 		return () => {
 			window.removeEventListener('beforeunload', saveOnUnload);
 			clearInterval(cartoPersistInterval);
@@ -2158,16 +2162,7 @@
 				<p class="text-xs text-gray-500">Affiche uniquement la sous-partie sélectionnée pour une meilleure lisibilité.</p>
 			</div>
 
-			<div
-				class="overflow-x-auto rounded-lg border border-black bg-white shadow-sm"
-				class:view-all={cartoView==='all'}
-				class:view-identification={cartoView==='identification'}
-				class:view-brut={cartoView==='brut'}
-				class:view-net={cartoView==='net'}
-				class:view-ptr={cartoView==='ptr'}
-				on:blur={() => touchCartoRows()}
-				role="presentation"
-			>
+			<div class="overflow-x-auto rounded-lg border border-black bg-white shadow-sm" class:view-all={cartoView==='all'} class:view-identification={cartoView==='identification'} class:view-brut={cartoView==='brut'} class:view-net={cartoView==='net'} class:view-ptr={cartoView==='ptr'}>
 				<table class="min-w-full text-xs border-collapse border border-black">
 					<!-- Colgroup: 45 colonnes (removed empty Code Risques & F.R), classes par groupe pour masquage via CSS -->
 					<colgroup>
