@@ -491,11 +491,23 @@
 		}
 	});
 
-	/** Tableau 1.2 D/I/C : cellule en cours d'édition (clic pour éditer) */
-	type DicNiveauxField = 'disponibilite' | 'integrite' | 'confidentialite';
-	let editingDicNiveaux: { row: number; field: DicNiveauxField } | null = null;
+	/** Édition au clic : quelle cellule est en cours d'édition (tous tableaux) */
+	let editingCell: { table: string; row: number; field: string } | null = null;
 	function focusTextareaOnMount(node: HTMLTextAreaElement) {
 		node.focus();
+	}
+	function focusInputOnMount(node: HTMLInputElement) {
+		node.focus();
+	}
+	function isEditing(table: string, row: number, field: string): boolean {
+		return editingCell?.table === table && editingCell?.row === row && editingCell?.field === field;
+	}
+	function startEditing(table: string, row: number, field: string) {
+		editingCell = { table, row, field };
+	}
+	function stopEditing() {
+		editingCell = null;
+		saveCustomMethodState();
 	}
 
 	let periodiciteRows: Row[] = [
@@ -1612,25 +1624,70 @@
 										{row.role}
 									</td>
 									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
-										<input
-											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
-											type="text"
-											bind:value={redactionRows[i].nom}
-										/>
+										{#if isEditing('redaction', i, 'nom')}
+											<input
+												use:focusInputOnMount
+												class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+												type="text"
+												bind:value={redactionRows[i].nom}
+												on:blur={stopEditing}
+												on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
+											/>
+										{:else}
+											<div
+												role="button"
+												tabindex="0"
+												class="w-full px-2 py-1 text-sm border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[28px]"
+												on:click={() => startEditing('redaction', i, 'nom')}
+												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('redaction', i, 'nom')) : null}
+											>
+												{row.nom || '\u00A0'}
+											</div>
+										{/if}
 									</td>
 									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
-										<input
-											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
-											type="text"
-											bind:value={redactionRows[i].fonction}
-										/>
+										{#if isEditing('redaction', i, 'fonction')}
+											<input
+												use:focusInputOnMount
+												class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+												type="text"
+												bind:value={redactionRows[i].fonction}
+												on:blur={stopEditing}
+												on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
+											/>
+										{:else}
+											<div
+												role="button"
+												tabindex="0"
+												class="w-full px-2 py-1 text-sm border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[28px]"
+												on:click={() => startEditing('redaction', i, 'fonction')}
+												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('redaction', i, 'fonction')) : null}
+											>
+												{row.fonction || '\u00A0'}
+											</div>
+										{/if}
 									</td>
 									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
-										<input
-											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
-											type="text"
-											bind:value={redactionRows[i].date}
-										/>
+										{#if isEditing('redaction', i, 'date')}
+											<input
+												use:focusInputOnMount
+												class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+												type="text"
+												bind:value={redactionRows[i].date}
+												on:blur={stopEditing}
+												on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
+											/>
+										{:else}
+											<div
+												role="button"
+												tabindex="0"
+												class="w-full px-2 py-1 text-sm border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[28px]"
+												on:click={() => startEditing('redaction', i, 'date')}
+												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('redaction', i, 'date')) : null}
+											>
+												{row.date || '\u00A0'}
+											</div>
+										{/if}
 									</td>
 									<td class="px-4 py-2 border border-gray-700 bg-gray-100">
 										<div class="flex gap-1">
@@ -1819,25 +1876,70 @@
 							{#each versionRows as row, i}
 								<tr class="border border-gray-700">
 									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
-										<input
-											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
-											type="text"
-											bind:value={versionRows[i].version}
-										/>
+										{#if isEditing('version', i, 'version')}
+											<input
+												use:focusInputOnMount
+												class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+												type="text"
+												bind:value={versionRows[i].version}
+												on:blur={stopEditing}
+												on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
+											/>
+										{:else}
+											<div
+												role="button"
+												tabindex="0"
+												class="w-full px-2 py-1 text-sm border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[28px]"
+												on:click={() => startEditing('version', i, 'version')}
+												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('version', i, 'version')) : null}
+											>
+												{row.version || '\u00A0'}
+											</div>
+										{/if}
 									</td>
 									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
-										<input
-											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
-											type="text"
-											bind:value={versionRows[i].date}
-										/>
+										{#if isEditing('version', i, 'date')}
+											<input
+												use:focusInputOnMount
+												class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+												type="text"
+												bind:value={versionRows[i].date}
+												on:blur={stopEditing}
+												on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
+											/>
+										{:else}
+											<div
+												role="button"
+												tabindex="0"
+												class="w-full px-2 py-1 text-sm border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[28px]"
+												on:click={() => startEditing('version', i, 'date')}
+												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('version', i, 'date')) : null}
+											>
+												{row.date || '\u00A0'}
+											</div>
+										{/if}
 									</td>
 									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
-										<input
-											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
-											type="text"
-											bind:value={versionRows[i].modification}
-										/>
+										{#if isEditing('version', i, 'modification')}
+											<input
+												use:focusInputOnMount
+												class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+												type="text"
+												bind:value={versionRows[i].modification}
+												on:blur={stopEditing}
+												on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
+											/>
+										{:else}
+											<div
+												role="button"
+												tabindex="0"
+												class="w-full px-2 py-1 text-sm border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[28px]"
+												on:click={() => startEditing('version', i, 'modification')}
+												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('version', i, 'modification')) : null}
+											>
+												{row.modification || '\u00A0'}
+											</div>
+										{/if}
 									</td>
 								</tr>
 							{/each}
@@ -2007,11 +2109,26 @@
 									/>
 								</td>
 								<!-- Description de l'actif -->
-								<td class="px-2 py-1 border border-black bg-white">
-									<textarea
-										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs min-h-[40px]"
-										bind:value={registreRows[i].description_actif}
-									></textarea>
+								<td class="px-2 py-1 border border-black bg-white min-h-[40px]">
+									{#if isEditing('registre', i, 'description_actif')}
+										<textarea
+											use:focusTextareaOnMount
+											class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs min-h-[40px]"
+											bind:value={registreRows[i].description_actif}
+											on:blur={stopEditing}
+											on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
+										></textarea>
+									{:else}
+										<div
+											role="button"
+											tabindex="0"
+											class="w-full px-1 py-0.5 text-xs prose prose-sm max-w-none prose-p:my-0.5 text-left border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[40px]"
+											on:click={() => startEditing('registre', i, 'description_actif')}
+											on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('registre', i, 'description_actif')) : null}
+										>
+											{@html (row.description_actif ?? '') || '<span class="text-gray-400">Cliquer pour éditer</span>'}
+										</div>
+									{/if}
 								</td>
 								<!-- Catégorie de l'actif -->
 								<td class="px-2 py-1 border border-black bg-white">
@@ -2085,11 +2202,26 @@
 									<span class="text-xs font-semibold">{row.sensibilite || '--'}</span>
 								</td>
 								<!-- Commentaire -->
-								<td class="px-2 py-1 border border-black bg-white">
-									<textarea
-										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs min-h-[40px]"
-										bind:value={registreRows[i].commentaire}
-									></textarea>
+								<td class="px-2 py-1 border border-black bg-white min-h-[40px]">
+									{#if isEditing('registre', i, 'commentaire')}
+										<textarea
+											use:focusTextareaOnMount
+											class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs min-h-[40px]"
+											bind:value={registreRows[i].commentaire}
+											on:blur={stopEditing}
+											on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
+										></textarea>
+									{:else}
+										<div
+											role="button"
+											tabindex="0"
+											class="w-full px-1 py-0.5 text-xs prose prose-sm max-w-none prose-p:my-0.5 text-left border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[40px]"
+											on:click={() => startEditing('registre', i, 'commentaire')}
+											on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('registre', i, 'commentaire')) : null}
+										>
+											{@html (row.commentaire ?? '') || '<span class="text-gray-400">Cliquer pour éditer</span>'}
+										</div>
+									{/if}
 								</td>
 							</tr>
 						{/each}
@@ -2128,11 +2260,26 @@
 						<tbody>
 							<tr class="border border-black">
 								{#each dicCriteriaRows as criteria, i}
-									<td class="px-4 py-2 text-black border border-black bg-white align-top">
-										<textarea
-											class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[80px]"
-											bind:value={dicCriteriaRows[i].definition}
-										></textarea>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top min-h-[80px]">
+										{#if isEditing('dicCriteria', 0, String(i))}
+											<textarea
+												use:focusTextareaOnMount
+												class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[80px]"
+												bind:value={dicCriteriaRows[i].definition}
+												on:blur={stopEditing}
+												on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
+											></textarea>
+										{:else}
+											<div
+												role="button"
+												tabindex="0"
+												class="w-full px-2 py-1 text-sm prose prose-sm max-w-none prose-p:my-1 text-left border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[80px]"
+												on:click={() => startEditing('dicCriteria', 0, String(i))}
+												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('dicCriteria', 0, String(i))) : null}
+											>
+												{@html criteria.definition ?? ''}
+											</div>
+										{/if}
 									</td>
 								{/each}
 							</tr>
@@ -2185,29 +2332,30 @@
 										/>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs min-h-[100px]">
-										{#if editingDicNiveaux?.row === i && editingDicNiveaux?.field === 'disponibilite'}
+										{#if isEditing('dicNiveaux', i, 'disponibilite')}
 											<textarea
 												use:focusTextareaOnMount
 												class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[100px]"
 												bind:value={dicNiveauxRows[i].disponibilite}
-												on:blur={() => { editingDicNiveaux = null; saveCustomMethodState(); }}
-												on:keydown={(e) => e.key === 'Escape' && (editingDicNiveaux = null)}
+												on:blur={stopEditing}
+												on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
 											></textarea>
 										{:else}
 											<div
 												role="button"
 												tabindex="0"
 												class="w-full px-2 py-1 text-xs prose prose-sm max-w-none prose-p:my-1 text-left border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500"
-												on:click={() => editingDicNiveaux = { row: i, field: 'disponibilite' }}
-												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), editingDicNiveaux = { row: i, field: 'disponibilite' }) : null}
+												on:click={() => startEditing('dicNiveaux', i, 'disponibilite')}
+												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('dicNiveaux', i, 'disponibilite')) : null}
 											>
 												{@html row.disponibilite ?? ''}
 											</div>
 										{/if}
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs min-h-[100px]">
-										{#if editingDicNiveaux?.row === i && editingDicNiveaux?.field === 'integrite'}
+										{#if isEditing('dicNiveaux', i, 'integrite')}
 											<textarea
+												use:focusTextareaOnMount
 												class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[100px]"
 												bind:value={dicNiveauxRows[i].integrite}
 												on:blur={() => { editingDicNiveaux = null; saveCustomMethodState(); }}
@@ -2226,21 +2374,21 @@
 										{/if}
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs min-h-[100px]">
-										{#if editingDicNiveaux?.row === i && editingDicNiveaux?.field === 'confidentialite'}
+										{#if isEditing('dicNiveaux', i, 'confidentialite')}
 											<textarea
 												use:focusTextareaOnMount
 												class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[100px]"
 												bind:value={dicNiveauxRows[i].confidentialite}
-												on:blur={() => { editingDicNiveaux = null; saveCustomMethodState(); }}
-												on:keydown={(e) => e.key === 'Escape' && (editingDicNiveaux = null)}
+												on:blur={stopEditing}
+												on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
 											></textarea>
 										{:else}
 											<div
 												role="button"
 												tabindex="0"
 												class="w-full px-2 py-1 text-xs prose prose-sm max-w-none prose-p:my-1 text-left border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500"
-												on:click={() => editingDicNiveaux = { row: i, field: 'confidentialite' }}
-												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), editingDicNiveaux = { row: i, field: 'confidentialite' }) : null}
+												on:click={() => startEditing('dicNiveaux', i, 'confidentialite')}
+												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('dicNiveaux', i, 'confidentialite')) : null}
 											>
 												{@html row.confidentialite ?? ''}
 											</div>
