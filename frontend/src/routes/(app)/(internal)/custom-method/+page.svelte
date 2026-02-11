@@ -3235,7 +3235,6 @@
 							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerPriorite(prioriteRows.length - 1)}>- Supprimer la dernière ligne</button>
 						{/if}
 					</div>
-			</section>
 		</section>
 	{/if}
 </main>
