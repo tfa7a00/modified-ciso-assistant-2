@@ -272,9 +272,11 @@
 	}
 
 	let persistTimeout: ReturnType<typeof setTimeout> | null = null;
+	// Digest of cartoRows so that in-place cell edits (bind:value) trigger persistence
+	$: _cartoDigest = typeof window !== 'undefined' ? JSON.stringify(cartoRows) : '';
 	// Re-run when any of these change so we debounce-save (persists on tab close / refresh + server)
 	$: _persistDeps = [
-		cartoRows,
+		_cartoDigest,
 		redactionRows,
 		diffusionRows,
 		versionRows,
