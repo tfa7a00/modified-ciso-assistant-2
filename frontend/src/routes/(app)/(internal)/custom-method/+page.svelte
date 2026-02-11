@@ -26,6 +26,33 @@
 
 	// Données et formules pour la cartographie des risques (une ligne = un objet)
 	type CartoRow = {
+		// Identification (colonnes 1–10)
+		entite: string;
+		domaineProcessus: string;
+		activites: string;
+		codeRisque: string;
+		descriptionScenario: string;
+		mesureISO: string;
+		familleRisque: string;
+		source: string;
+		familleCauses: string;
+		proprietaireRisque: string;
+		// Catégories d'actifs informationnels (7 cases à cocher)
+		actifMateriel: boolean;
+		actifApplication: boolean;
+		actifEquipementsSecurite: boolean;
+		actifEquipementsReseaux: boolean;
+		actifRessourcesHumaines: boolean;
+		actifDocument: boolean;
+		actifDonnees: boolean;
+		// Critères DIC (3 cases)
+		dicD: boolean;
+		dicI: boolean;
+		dicC: boolean;
+		// Dispositif de maîtrise, PTR
+		dispositifMaitrise: string;
+		actionPTR: string;
+		decision: string;
 		// Risque brut: Impact DIC (D, I, C) et impacts / probabilité (string | number pour bind input type="number")
 		impactD: string | number;
 		impactI: string | number;
@@ -135,6 +162,29 @@
 
 	function defaultCartoRow(): CartoRow {
 		return {
+			entite: '',
+			domaineProcessus: '',
+			activites: '',
+			codeRisque: '',
+			descriptionScenario: '',
+			mesureISO: '',
+			familleRisque: '',
+			source: '',
+			familleCauses: '',
+			proprietaireRisque: '',
+			actifMateriel: false,
+			actifApplication: false,
+			actifEquipementsSecurite: false,
+			actifEquipementsReseaux: false,
+			actifRessourcesHumaines: false,
+			actifDocument: false,
+			actifDonnees: false,
+			dicD: false,
+			dicI: false,
+			dicC: false,
+			dispositifMaitrise: '',
+			actionPTR: '',
+			decision: '',
 			impactD: '',
 			impactI: '',
 			impactC: '',
@@ -150,8 +200,37 @@
 		};
 	}
 
+	// Valeurs par défaut pour la première ligne (identification + PTR)
+	const firstRowDefaultContent: Partial<CartoRow> = {
+		entite: "DSI",
+		domaineProcessus: "Systèmes d'Information",
+		activites: "Gestion de l'infrastructure IT & Réseau",
+		codeRisque: "DSI-R-SP-001",
+		descriptionScenario: "Dégâts au niveau des infrastructures et installations informatiques au niveau de la salle des machines à cause de catastrophes naturelles (Montée d'eau, inondations, incendie, etc…).",
+		mesureISO: "7.3\n7.13",
+		familleRisque: "Sinistres physiques / Evènements naturels",
+		source: "Externe",
+		familleCauses: "Catastrophes Environnementales",
+		proprietaireRisque: "DSI",
+		actifMateriel: true,
+		actifApplication: false,
+		actifEquipementsSecurite: true,
+		actifEquipementsReseaux: true,
+		actifRessourcesHumaines: true,
+		actifDocument: true,
+		actifDonnees: true,
+		dicD: true,
+		dicI: false,
+		dicC: false,
+		dispositifMaitrise: "",
+		actionPTR: "",
+		decision: "Réduire"
+	};
+
 	// Tableau de 45 lignes pour les formules de la cartographie des risques
-	let cartoRows: CartoRow[] = Array.from({ length: 45 }, () => defaultCartoRow());
+	let cartoRows: CartoRow[] = Array.from({ length: 45 }, (_, i) =>
+		i === 0 ? { ...defaultCartoRow(), ...firstRowDefaultContent } : defaultCartoRow()
+	);
 
 	// --- Données pour Contrôle du document ---
 	type RedactionRow = {
@@ -2544,68 +2623,67 @@
 			<tr class="hover:bg-gray-50">
 				<!-- Entité -->
 				<td class="px-2 py-2 border border-black bg-white align-top">
-					<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
+					<textarea class="w-full text-xs p-1 resize-none" rows="4" bind:value={cartoRows[0].entite} on:blur={() => saveCustomMethodState()}></textarea>
 				</td>
 				
 				<!-- Domaine / Processus -->
 				<td class="px-2 py-2 border border-black bg-white align-top">
-					<textarea class="w-full text-xs p-1 resize-none" rows="4">Systèmes d'Information</textarea>
+					<textarea class="w-full text-xs p-1 resize-none" rows="4" bind:value={cartoRows[0].domaineProcessus} on:blur={() => saveCustomMethodState()}></textarea>
 				</td>
 				
 				<!-- Activités -->
 				<td class="px-2 py-2 border border-black bg-white align-top">
-					<textarea class="w-full text-xs p-1 resize-none" rows="4">Gestion de l'infrastructure IT & Réseau</textarea>
-				</td>
-				
-				<!-- Description du scénario (ligne 1 - formules liées à cartoRow1) -->
-				<td class="px-2 py-2 border border-black bg-white align-top">
-					<textarea class="w-full text-xs p-1 resize-none" rows="6"> DSI-R-SP-001 </textarea>
+					<textarea class="w-full text-xs p-1 resize-none" rows="4" bind:value={cartoRows[0].activites} on:blur={() => saveCustomMethodState()}></textarea>
 				</td>
 				
 				<!-- Code Risque -->
 				<td class="px-2 py-2 border border-black bg-white align-top">
-					<textarea class="w-full text-xs p-1 resize-none" rows="4">	Dégâts au niveau des infrastructures et installations informatiques au niveau de la salle des machines à cause de catastrophes naturelles (Montée d'eau, inondations, incendie, etc…).</textarea>
+					<textarea class="w-full text-xs p-1 resize-none" rows="4" bind:value={cartoRows[0].codeRisque} on:blur={() => saveCustomMethodState()}></textarea>
+				</td>
+				
+				<!-- Description du scénario -->
+				<td class="px-2 py-2 border border-black bg-white align-top">
+					<textarea class="w-full text-xs p-1 resize-none" rows="6" bind:value={cartoRows[0].descriptionScenario} on:blur={() => saveCustomMethodState()}></textarea>
 				</td>
 						
 						<!-- Mesure ISO27001 -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 font-bold resize-none" rows="4">7.3
-7.13</textarea>
+							<textarea class="w-full text-xs p-1 font-bold resize-none" rows="4" bind:value={cartoRows[0].mesureISO} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
 						
 						<!-- Famille de risque -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="4">Sinistres physiques / Evènements naturels</textarea>
+							<textarea class="w-full text-xs p-1 resize-none" rows="4" bind:value={cartoRows[0].familleRisque} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
 						
 						<!-- Source -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="4">Externe</textarea>
+							<textarea class="w-full text-xs p-1 resize-none" rows="4" bind:value={cartoRows[0].source} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
 						
 						<!-- Famille de causes -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="4">Catastrophes Environnementales</textarea>
+							<textarea class="w-full text-xs p-1 resize-none" rows="4" bind:value={cartoRows[0].familleCauses} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
 						
 						<!-- Propriétaire du risque -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 font-bold resize-none" rows="4">DSI</textarea>
+							<textarea class="w-full text-xs p-1 font-bold resize-none" rows="4" bind:value={cartoRows[0].proprietaireRisque} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
 						
 						<!-- Catégories actifs - checkboxes -->
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={cartoRows[0].actifMateriel} on:change={() => saveCustomMethodState()} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={cartoRows[0].actifApplication} on:change={() => saveCustomMethodState()} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={cartoRows[0].actifEquipementsSecurite} on:change={() => saveCustomMethodState()} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={cartoRows[0].actifEquipementsReseaux} on:change={() => saveCustomMethodState()} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={cartoRows[0].actifRessourcesHumaines} on:change={() => saveCustomMethodState()} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={cartoRows[0].actifDocument} on:change={() => saveCustomMethodState()} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={cartoRows[0].actifDonnees} on:change={() => saveCustomMethodState()} /></td>
 						
 						<!-- Critères DIC -->
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={cartoRows[0].dicD} on:change={() => saveCustomMethodState()} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={cartoRows[0].dicI} on:change={() => saveCustomMethodState()} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={cartoRows[0].dicC} on:change={() => saveCustomMethodState()} /></td>
 						
 						<!-- Impact DIC (formules) - Ligne 1 -->
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
@@ -2651,7 +2729,7 @@
 						
 						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="6" placeholder="Description du dispositif..."></textarea>
+							<textarea class="w-full text-xs p-1 resize-none" rows="6" placeholder="Description du dispositif..." bind:value={cartoRows[0].dispositifMaitrise} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
 						
 						<!-- Risque Net - Criticité -->
@@ -2675,17 +2753,17 @@
 						
 						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="6" placeholder="Action..."></textarea>
+							<textarea class="w-full text-xs p-1 resize-none" rows="6" placeholder="Action..." bind:value={cartoRows[0].actionPTR} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
 						
 						<!-- PTR - Décision -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<select class="w-full text-xs p-1">
+							<select class="w-full text-xs p-1" bind:value={cartoRows[0].decision} on:change={() => saveCustomMethodState()}>
 								<option value="">--</option>
-								<option value="Accepter" >Accepter</option>
-								<option value="Réduire" selected>Réduire</option>
-								<option value="Transférer" >Transférer</option>
-								<option value="Éviter" >Éviter</option>
+								<option value="Accepter">Accepter</option>
+								<option value="Réduire">Réduire</option>
+								<option value="Transférer">Transférer</option>
+								<option value="Éviter">Éviter</option>
 							</select>
 						</td>
 						
