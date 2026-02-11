@@ -491,6 +491,13 @@
 		}
 	});
 
+	/** Tableau 1.2 D/I/C : cellule en cours d'édition (clic pour éditer) */
+	type DicNiveauxField = 'disponibilite' | 'integrite' | 'confidentialite';
+	let editingDicNiveaux: { row: number; field: DicNiveauxField } | null = null;
+	function focusTextareaOnMount(node: HTMLTextAreaElement) {
+		node.focus();
+	}
+
 	let periodiciteRows: Row[] = [
 		{ periodicite: 'QuickWin', duree: '0 – 3 mois' },
 		{ periodicite: 'Court terme', duree: '3 – 12 mois' },
@@ -2177,23 +2184,67 @@
 											bind:value={dicNiveauxRows[i].valeur}
 										/>
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs">
-										<textarea
-											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[100px]"
-											bind:value={dicNiveauxRows[i].disponibilite}
-										></textarea>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs min-h-[100px]">
+										{#if editingDicNiveaux?.row === i && editingDicNiveaux?.field === 'disponibilite'}
+											<textarea
+												use:focusTextareaOnMount
+												class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[100px]"
+												bind:value={dicNiveauxRows[i].disponibilite}
+												on:blur={() => { editingDicNiveaux = null; saveCustomMethodState(); }}
+												on:keydown={(e) => e.key === 'Escape' && (editingDicNiveaux = null)}
+											></textarea>
+										{:else}
+											<div
+												role="button"
+												tabindex="0"
+												class="w-full px-2 py-1 text-xs prose prose-sm max-w-none prose-p:my-1 text-left border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500"
+												on:click={() => editingDicNiveaux = { row: i, field: 'disponibilite' }}
+												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), editingDicNiveaux = { row: i, field: 'disponibilite' }) : null}
+											>
+												{@html row.disponibilite ?? ''}
+											</div>
+										{/if}
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs">
-										<textarea
-											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[100px]"
-											bind:value={dicNiveauxRows[i].integrite}
-										></textarea>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs min-h-[100px]">
+										{#if editingDicNiveaux?.row === i && editingDicNiveaux?.field === 'integrite'}
+											<textarea
+												class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[100px]"
+												bind:value={dicNiveauxRows[i].integrite}
+												on:blur={() => { editingDicNiveaux = null; saveCustomMethodState(); }}
+												on:keydown={(e) => e.key === 'Escape' && (editingDicNiveaux = null)}
+											></textarea>
+										{:else}
+											<div
+												role="button"
+												tabindex="0"
+												class="w-full px-2 py-1 text-xs prose prose-sm max-w-none prose-p:my-1 text-left border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500"
+												on:click={() => editingDicNiveaux = { row: i, field: 'integrite' }}
+												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), editingDicNiveaux = { row: i, field: 'integrite' }) : null}
+											>
+												{@html row.integrite ?? ''}
+											</div>
+										{/if}
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs">
-										<textarea
-											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[100px]"
-											bind:value={dicNiveauxRows[i].confidentialite}
-										></textarea>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs min-h-[100px]">
+										{#if editingDicNiveaux?.row === i && editingDicNiveaux?.field === 'confidentialite'}
+											<textarea
+												use:focusTextareaOnMount
+												class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[100px]"
+												bind:value={dicNiveauxRows[i].confidentialite}
+												on:blur={() => { editingDicNiveaux = null; saveCustomMethodState(); }}
+												on:keydown={(e) => e.key === 'Escape' && (editingDicNiveaux = null)}
+											></textarea>
+										{:else}
+											<div
+												role="button"
+												tabindex="0"
+												class="w-full px-2 py-1 text-xs prose prose-sm max-w-none prose-p:my-1 text-left border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500"
+												on:click={() => editingDicNiveaux = { row: i, field: 'confidentialite' }}
+												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), editingDicNiveaux = { row: i, field: 'confidentialite' }) : null}
+											>
+												{@html row.confidentialite ?? ''}
+											</div>
+										{/if}
 									</td>
 								</tr>
 							{/each}
