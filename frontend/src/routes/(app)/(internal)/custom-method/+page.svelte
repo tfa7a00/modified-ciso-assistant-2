@@ -232,13 +232,6 @@
 		i === 0 ? { ...defaultCartoRow(), ...firstRowDefaultContent } : defaultCartoRow()
 	);
 
-	/** Réinitialise la première ligne du tableau cartographie avec les données d'origine (DSI, Systèmes d'Information, etc.). Sauvegarde immédiate. */
-	function resetFirstRowToDefault() {
-		cartoRows[0] = { ...defaultCartoRow(), ...firstRowDefaultContent };
-		cartoRows = cartoRows;
-		saveCustomMethodState();
-	}
-
 	// --- Données pour Contrôle du document ---
 	type RedactionRow = {
 		role: string;
@@ -2252,7 +2245,6 @@
 			<div class="flex items-center justify-between mb-2">
 				<div class="flex gap-2 items-center flex-wrap">
 					<button type="button" class={`px-3 py-1 text-sm rounded-md border ${cartoView==='identification' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`} on:click={() => (cartoView='identification')}>Identification</button>
-					<button type="button" class="px-2 py-1 text-xs rounded border border-amber-300 bg-amber-50 text-amber-800 hover:bg-amber-100" title="Remettre la 1ère ligne avec les données d'origine (DSI, Systèmes d'Information, …)" on:click={resetFirstRowToDefault}>Réinitialiser la 1ère ligne</button>
 					<button type="button" class={`px-3 py-1 text-sm rounded-md border ${cartoView==='brut' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`} on:click={() => (cartoView='brut')}>Risque Brut</button>
 					<button type="button" class={`px-3 py-1 text-sm rounded-md border ${cartoView==='net' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`} on:click={() => (cartoView='net')}>Degré & Risque Net</button>
 					<button type="button" class={`px-3 py-1 text-sm rounded-md border ${cartoView==='ptr' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`} on:click={() => (cartoView='ptr')}>PTR + Résiduel</button>
