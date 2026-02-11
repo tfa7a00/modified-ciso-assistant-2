@@ -227,9 +227,42 @@
 		decision: "Réduire"
 	};
 
+	// Valeurs par défaut pour la deuxième ligne (identification + PTR)
+	const row2Content: Partial<CartoRow> = {
+		entite: "DSI",
+		domaineProcessus: "Systèmes d'Information",
+		activites: "Gestion de l'infrastructure IT & Réseau",
+		codeRisque: "DSI-R-SP-002",
+		descriptionScenario: "Incendie en salle serveur (pouvant être causé par un court-circuit électrique, un incendie dans un local adjacent, …) entraînant une destruction des équipements",
+		mesureISO: "7.3\n7.6",
+		familleRisque: "Sinistres physiques / Evènements naturels",
+		source: "Interne",
+		familleCauses: "Catastrophes Environnementales",
+		proprietaireRisque: "DSI",
+		actifMateriel: true,
+		actifApplication: false,
+		actifEquipementsSecurite: true,
+		actifEquipementsReseaux: true,
+		actifRessourcesHumaines: false,
+		actifDocument: false,
+		actifDonnees: false,
+		dicD: true,
+		dicI: false,
+		dicC: false,
+		dispositifMaitrise: "",
+		actionPTR: "",
+		decision: "Réduire"
+	};
+
+	function resetCartoRow2() {
+		cartoRows[1] = { ...defaultCartoRow(), ...row2Content };
+		cartoRows = cartoRows;
+		saveCustomMethodState();
+	}
+
 	// Tableau de 45 lignes pour les formules de la cartographie des risques
 	let cartoRows: CartoRow[] = Array.from({ length: 45 }, (_, i) =>
-		i === 0 ? { ...defaultCartoRow(), ...firstRowDefaultContent } : defaultCartoRow()
+		i === 0 ? { ...defaultCartoRow(), ...firstRowDefaultContent } : i === 1 ? { ...defaultCartoRow(), ...row2Content } : defaultCartoRow()
 	);
 
 	// --- Données pour Contrôle du document ---
@@ -790,6 +823,14 @@
 				if (i === 0 && firstRowDefaultContent) {
 					for (const k of Object.keys(firstRowDefaultContent) as (keyof CartoRow)[]) {
 						const val = firstRowDefaultContent[k];
+						if (val === undefined) continue;
+						const current = merged[k];
+						if (current === undefined || current === '') merged[k] = val as CartoRow[keyof CartoRow];
+					}
+				}
+				if (i === 1 && row2Content) {
+					for (const k of Object.keys(row2Content) as (keyof CartoRow)[]) {
+						const val = row2Content[k];
 						if (val === undefined) continue;
 						const current = merged[k];
 						if (current === undefined || current === '') merged[k] = val as CartoRow[keyof CartoRow];
@@ -2800,108 +2841,80 @@
 						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[0]))}">{getNiveauResiduel(cartoRows[0])}</td>
 					</tr>
 					
+					<!-- Bouton Réinitialiser ligne 2 -->
+					<tr>
+						<td colspan="45" class="px-2 py-1 text-right border border-black bg-gray-100">
+							<button type="button" class="px-3 py-1 text-sm rounded border border-gray-400 bg-white hover:bg-gray-100" on:click={resetCartoRow2}>Réinitialiser ligne 2</button>
+						</td>
+					</tr>
+					
+					<!-- Deuxième ligne cartographie : données par défaut (DSI-R-SP-002, incendie salle serveur…), modifications sauvegardées -->
 					<tr class="hover:bg-gray-50">
-
 						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI</textarea>
+							<textarea class="w-full text-xs p-1 resize-none" rows="4" bind:value={cartoRows[1].entite} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
-						
-						<!-- Domaine / Processus -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="4">Systèmes d'Information</textarea>
+							<textarea class="w-full text-xs p-1 resize-none" rows="4" bind:value={cartoRows[1].domaineProcessus} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
-						
-						<!-- Activités -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="4">Gestion de l'infrastructure IT & Réseau</textarea>
+							<textarea class="w-full text-xs p-1 resize-none" rows="4" bind:value={cartoRows[1].activites} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
-												<!-- Code Risque -->
-
 						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="4">DSI-R-SP-002	</textarea>
-
+							<textarea class="w-full text-xs p-1 resize-none" rows="4" bind:value={cartoRows[1].codeRisque} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
-												<!-- Description du scénario -->
-
 						<td class="px-2 py-2 border border-black bg-white align-top">
-													<textarea class="w-full text-xs p-1 resize-none" rows="6">Incendie en salle serveur (pouvant être causé par un court-circuit électrique, un incendie dans un local adjacent, …) entraînant une destruction des équipements </textarea>
-
+							<textarea class="w-full text-xs p-1 resize-none" rows="6" bind:value={cartoRows[1].descriptionScenario} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
-						
-						<!-- Mesure ISO27001 -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 font-bold resize-none" rows="4">7.3
-7.6</textarea>
+							<textarea class="w-full text-xs p-1 font-bold resize-none" rows="4" bind:value={cartoRows[1].mesureISO} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
-						
-						<!-- Famille de risque -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="4">Sinistres physiques / Evènements naturels</textarea>
+							<textarea class="w-full text-xs p-1 resize-none" rows="4" bind:value={cartoRows[1].familleRisque} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
-						
-						<!-- Source -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="4">Interne</textarea>
+							<textarea class="w-full text-xs p-1 resize-none" rows="4" bind:value={cartoRows[1].source} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
-						
-						<!-- Famille de causes -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="4">Catastrophes Environnementales</textarea>
+							<textarea class="w-full text-xs p-1 resize-none" rows="4" bind:value={cartoRows[1].familleCauses} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
-						
-						<!-- Propriétaire du risque -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 font-bold resize-none" rows="4">DSI</textarea>
+							<textarea class="w-full text-xs p-1 font-bold resize-none" rows="4" bind:value={cartoRows[1].proprietaireRisque} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
-						
-						<!-- Catégories actifs - checkboxes -->
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
-						
-						<!-- Critères DIC -->
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" checked /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4"  /></td>
-						
-						<!-- Impact DIC (formules) - Ligne 2 -->
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={cartoRows[1].actifMateriel} on:change={() => saveCustomMethodState()} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={cartoRows[1].actifApplication} on:change={() => saveCustomMethodState()} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={cartoRows[1].actifEquipementsSecurite} on:change={() => saveCustomMethodState()} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={cartoRows[1].actifEquipementsReseaux} on:change={() => saveCustomMethodState()} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={cartoRows[1].actifRessourcesHumaines} on:change={() => saveCustomMethodState()} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={cartoRows[1].actifDocument} on:change={() => saveCustomMethodState()} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={cartoRows[1].actifDonnees} on:change={() => saveCustomMethodState()} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={cartoRows[1].dicD} on:change={() => saveCustomMethodState()} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={cartoRows[1].dicI} on:change={() => saveCustomMethodState()} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={cartoRows[1].dicC} on:change={() => saveCustomMethodState()} /></td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[1].impactD} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[1].impactD} on:change={() => saveCustomMethodState()} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[1].impactI} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[1].impactI} on:change={() => saveCustomMethodState()} />
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[1].impactC} />
+							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={cartoRows[1].impactC} on:change={() => saveCustomMethodState()} />
 						</td>
-						
-						<!-- Criticité (=MAX) -->
 						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[1]) ?? '-'}</td>
-						
-						<!-- Impacts -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[1].impactFinancier} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[1].impactFinancier} on:change={() => saveCustomMethodState()} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[1].impactPP} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[1].impactPP} on:change={() => saveCustomMethodState()} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[1].impactReputation} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[1].impactReputation} on:change={() => saveCustomMethodState()} />
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[1].impactReglementaire} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[1].impactReglementaire} on:change={() => saveCustomMethodState()} />
 						</td>
-						
-						<!-- Gravité (=MAX) -->
 						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(cartoRows[1]) ?? '-'}</td>
-						
-						<!-- Probabilité -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[1].probabilite} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[1].probabilite} on:change={() => saveCustomMethodState()} />
 						</td>
 						
 						<!-- I*P*C -->
@@ -2910,22 +2923,15 @@
 						<!-- Niveau risque brut (couleur échelle) -->
 						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(cartoRows[1]))}">{getNiveauBrut(cartoRows[1])}</td>
 						
-						<!-- Dispositif -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="6" placeholder="Description du dispositif..."></textarea>
+							<textarea class="w-full text-xs p-1 resize-none" rows="6" placeholder="Description du dispositif..." bind:value={cartoRows[1].dispositifMaitrise} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
-						
-						<!-- Risque Net - Criticité -->
 						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[1]) ?? '-'}</td>
-						
-						<!-- Risque Net - Gravité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[1].graviteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={cartoRows[1].graviteNet} on:change={() => saveCustomMethodState()} />
 						</td>
-						
-						<!-- Risque Net - Probabilité -->
 						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[1].probabiliteNet} />
+							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={cartoRows[1].probabiliteNet} on:change={() => saveCustomMethodState()} />
 						</td>
 						
 						<!-- Risque Net - I*P*C -->
@@ -2934,33 +2940,24 @@
 						<!-- Risque Net - Niveau (couleur échelle) -->
 						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(cartoRows[1]))}">{getNiveauNet(cartoRows[1])}</td>
 						
-						<!-- PTR - Action -->
 						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="6" placeholder="Action..."></textarea>
+							<textarea class="w-full text-xs p-1 resize-none" rows="6" placeholder="Action..." bind:value={cartoRows[1].actionPTR} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
-						
-						<!-- PTR - Décision -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<select class="w-full text-xs p-1">
+							<select class="w-full text-xs p-1" bind:value={cartoRows[1].decision} on:change={() => saveCustomMethodState()}>
 								<option value="">--</option>
-								<option value="Accepter" >Accepter</option>
-								<option value="Réduire" selected>Réduire</option>
-								<option value="Transférer" >Transférer</option>
-								<option value="Éviter" >Éviter</option>
+								<option value="Accepter">Accepter</option>
+								<option value="Réduire">Réduire</option>
+								<option value="Transférer">Transférer</option>
+								<option value="Éviter">Éviter</option>
 							</select>
 						</td>
-						
-						<!-- Risque Résiduel - Criticité -->
 						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(cartoRows[1]) ?? '-'}</td>
-						
-						<!-- Risque Résiduel - Impact -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[1].impactResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={cartoRows[1].impactResiduel} on:change={() => saveCustomMethodState()} />
 						</td>
-						
-						<!-- Risque Résiduel - Vraisemblance -->
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[1].vraisemblanceResiduel} />
+							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={cartoRows[1].vraisemblanceResiduel} on:change={() => saveCustomMethodState()} />
 						</td>
 						
 						<!-- Risque Résiduel - I*P*C -->
