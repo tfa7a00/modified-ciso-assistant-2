@@ -200,7 +200,8 @@
 		};
 	}
 
-	// Valeurs par défaut pour la première ligne (identification + PTR)
+	// Valeurs par défaut pour la première ligne uniquement (DSI, DSI-R-SP-001, etc.).
+	// Au chargement : si une cellule de la ligne 0 est vide, on affiche cette valeur ; après modification et sauvegarde, c’est la valeur sauvegardée qui s’affiche.
 	const firstRowDefaultContent: Partial<CartoRow> = {
 		entite: "DSI",
 		domaineProcessus: "Systèmes d'Information",
@@ -227,7 +228,7 @@
 		decision: "Réduire"
 	};
 
-	// Tableau de 45 lignes pour les formules de la cartographie des risques
+	// Tableau de 45 lignes. Seule la première ligne (index 0) est préremplie avec firstRowDefaultContent ; les autres restent vides.
 	let cartoRows: CartoRow[] = Array.from({ length: 45 }, (_, i) =>
 		i === 0 ? { ...defaultCartoRow(), ...firstRowDefaultContent } : defaultCartoRow()
 	);
@@ -786,7 +787,8 @@
 		if (state.cartoRows && Array.isArray(state.cartoRows)) {
 			const arr = (state.cartoRows as CartoRow[]).map((r, i) => {
 				const merged = { ...defaultCartoRow(), ...r } as CartoRow;
-				// Row 0: show original default text for any cell that was never saved (empty/undefined)
+				// Première ligne uniquement : cellules vides = texte d’origine (firstRowDefaultContent).
+				// Après modification et sauvegarde, la nouvelle valeur s’affiche au rechargement.
 				if (i === 0 && firstRowDefaultContent) {
 					for (const k of Object.keys(firstRowDefaultContent) as (keyof CartoRow)[]) {
 						const val = firstRowDefaultContent[k];
