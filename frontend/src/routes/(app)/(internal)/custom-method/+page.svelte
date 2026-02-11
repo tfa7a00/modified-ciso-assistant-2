@@ -784,7 +784,19 @@
 		const cartoViews = ['all', 'identification', 'brut', 'net', 'ptr'] as const;
 		// Cartographie des risques: accept 45 rows or pad/trim to 45
 		if (state.cartoRows && Array.isArray(state.cartoRows)) {
-			const arr = (state.cartoRows as CartoRow[]).map((r) => ({ ...defaultCartoRow(), ...r }));
+			const arr = (state.cartoRows as CartoRow[]).map((r, i) => {
+				const merged = { ...defaultCartoRow(), ...r } as CartoRow;
+				// Row 0: show original default text for any cell that was never saved (empty/undefined)
+				if (i === 0 && firstRowDefaultContent) {
+					for (const k of Object.keys(firstRowDefaultContent) as (keyof CartoRow)[]) {
+						const val = firstRowDefaultContent[k];
+						if (val === undefined) continue;
+						const current = merged[k];
+						if (current === undefined || current === '') merged[k] = val as CartoRow[keyof CartoRow];
+					}
+				}
+				return merged;
+			});
 			while (arr.length < 45) arr.push(defaultCartoRow());
 			cartoRows = arr.slice(0, 45);
 		}
