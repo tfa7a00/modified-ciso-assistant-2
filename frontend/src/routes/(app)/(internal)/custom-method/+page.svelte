@@ -3280,12 +3280,840 @@
 						</tbody>
 					</table>
 				</div>
+		</section>
+	{:else if activeSection === 'aide-risque'}
+		<section class="space-y-8">
+			<h2 class="text-xl font-semibold text-gray-900">Aide-Risque</h2>
+
+			<!-- Tableau 1 – Échelle de probabilité / fréquence -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">
+					Tableau 1&nbsp;: Échelle de probabilité / fréquence
+				</h3>
+				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+					<table class="min-w-full text-sm border-collapse border border-black">
+						<thead>
+							<tr>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Échelle
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Définition
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Fréquence
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Désignation de la probabilité
+								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each probaRows as row, i}
+								<tr class="border border-black">
+									<td class="px-4 py-2 text-black border border-black bg-white">
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={probaRows[i].echelle}
+										/>
+									</td>
+									<td
+										class={`px-4 py-2 border border-black ${getProbaDefBg(row.definition)}`}
+									>
+										<input
+											class="w-full border border-transparent bg-transparent font-semibold"
+											type="text"
+											bind:value={probaRows[i].definition}
+										/>
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top">
+										<textarea
+											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]"
+											bind:value={probaRows[i].frequence}
+										></textarea>
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top">
+										<textarea
+											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]"
+											bind:value={probaRows[i].historique}
+										></textarea>
+									</td>
+									<td class="px-4 py-2 border border-black bg-gray-100 text-center">
+										<div class="flex gap-1 justify-center">
+											<button
+												type="button"
+												class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+												on:click={() => insererProbaAvant(i)}
+												title="Ajouter avant"
+											>
+												↑+
+											</button>
+											<button
+												type="button"
+												class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+												on:click={() => insererProbaApres(i)}
+												title="Ajouter après"
+											>
+												↓+
+											</button>
+											<button
+												type="button"
+												class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700"
+												on:click={() => supprimerProba(i)}
+												title="Supprimer"
+											>
+												✕
+											</button>
+										</div>
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+					<div class="flex gap-2 mt-2">
+						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterProba}>+ Ajouter une ligne</button>
+						{#if probaRows.length > 1}
+							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerProba(probaRows.length - 1)}>- Supprimer la dernière ligne</button>
+						{/if}
+					</div>
+			</section>
+
+			<!-- Tableau 2 – Échelle d'impact -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">Tableau 2&nbsp;: Échelle d'impact</h3>
+				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+					<table class="min-w-full text-sm border-collapse border border-black">
+						<thead>
+							<tr>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Échelle
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Définition
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Financier
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Réputation
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Parties prenantes
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Réglementaire
+								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each impactRows as row, i}
+								<tr class="border border-black">
+									<td class="px-4 py-2 text-black border border-black bg-white">
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={impactRows[i].echelle}
+										/>
+									</td>
+									<td
+										class={`px-4 py-2 border border-black ${getImpactDefBg(row.definition)}`}
+									>
+										<input
+											class="w-full border border-transparent bg-transparent font-semibold"
+											type="text"
+											bind:value={impactRows[i].definition}
+										/>
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top">
+										<textarea
+											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]"
+											bind:value={impactRows[i].financier}
+										></textarea>
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top">
+										<textarea
+											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]"
+											bind:value={impactRows[i].reputation}
+										></textarea>
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top">
+										<textarea
+											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]"
+											bind:value={impactRows[i].parties_prenantes}
+										></textarea>
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top">
+										<textarea
+											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]"
+											bind:value={impactRows[i].reglementaire}
+										></textarea>
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+				<p class="text-xs text-gray-600">
+					Les mots‑clés <strong>Financier</strong>, <strong>Réputation</strong>,
+					<strong>Parties prenantes</strong> et <strong>Réglementaire</strong> doivent être
+					considérés comme des axes d'analyse principaux.
+				</p>
+			</section>
+
+			<!-- Tableau 3.1 – Fréquence / probabilité d'occurrence (échelle de risque) -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">
+					Tableau 3.1&nbsp;: Fréquence / probabilité d'occurrence (échelle de risque)
+				</h3>
+				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+					<table class="min-w-full text-sm border-collapse border border-black">
+						<thead>
+							<tr>
+								<th colspan="3" class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">
+									Fréquence / Probabilité d'occurrence
+								</th>
+							</tr>
+							<tr>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black"
+								>
+									Échelle
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black"
+								>
+									Définition
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black"
+								>
+									Signification
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each frequenceRisqueRows as row, i}
+								<tr class="border border-black">
+									<td class="px-4 py-2 text-black border border-black bg-white">
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={frequenceRisqueRows[i].echelle}
+										/>
+									</td>
+									<td
+										class={`px-4 py-2 border border-black ${getFrequenceDefBg(row.definition)}`}
+									>
+										<input
+											class="w-full border border-transparent bg-transparent font-semibold"
+											type="text"
+											bind:value={frequenceRisqueRows[i].definition}
+										/>
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white">
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={frequenceRisqueRows[i].signification}
+										/>
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<!-- Tableau 3.2 – Matrice de vraisemblance du risque -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">
+					Tableau 3.2&nbsp;: Matrice de vraisemblance du risque
+				</h3>
+				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+					<table class="min-w-full text-sm border-collapse border border-black">
+						<thead>
+							<tr>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Impact du risque × Criticité de l'actif \ Vraisemblance du risque
+								</th>
+								{#each [1, 2, 3, 4, 5] as col}
+									<th class="px-4 py-2 text-sm font-semibold border border-black bg-gray-100">
+										{col}
+									</th>
+								{/each}
+							</tr>
+						</thead>
+						<tbody>
+							{#each matriceRisqueRows as row, i}
+								<tr class="border border-black">
+									<td class="px-2 py-2 text-sm border border-black bg-white">
+										<input
+											class="w-20 border border-gray-300 rounded px-1 py-0.5 text-sm"
+											type="text"
+											bind:value={matriceRisqueRows[i].libelle}
+										/>
+									</td>
+									{#each row.valeurs as v, j}
+										<td
+											class={`px-2 py-2 text-xs text-center border border-black ${getMatriceCellBg(v)}`}
+										>
+											<input
+												class="w-16 text-center border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent"
+												type="number"
+												bind:value={matriceRisqueRows[i].valeurs[j]}
+											/>
+										</td>
+									{/each}
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+				<p class="text-xs text-gray-600">
+					Les zones vertes correspondent à la plage [1–20[ (Risque Faible), les zones jaunes à
+					[20–36[, les zones orange à [36–64[ et les zones rouges à [64–120] (Risque Extrême).
+				</p>
+			</section>
+		</section>
+	{:else if activeSection === 'ptr'}
+		<section class="space-y-4">
+			<h2 class="text-xl font-semibold text-gray-900">PTR</h2>
+			<p class="text-gray-700 mb-4">
+				Plan de traitement des risques (PTR)
+			</p>
+
+			<div class="overflow-x-auto border border-gray-300 rounded-lg">
+				<table class="min-w-full bg-white">
+					<thead>
+						<tr class="bg-[#FFC000]">
+							<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+								REF Risque
+							</th>
+							<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+								Corresp. ISO27001, annexe A
+							</th>
+							<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+								Propriétaire du risque
+							</th>
+							<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+								Niveau du risque net
+							</th>
+							<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+								Décision
+							</th>
+							<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+								ID PTR
+							</th>
+							<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+								Action à mettre en place
+							</th>
+							<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+								Type de l'action
+							</th>
+							<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+								Porteur de l'action
+							</th>
+							<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+								Priorité
+							</th>
+							<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+								Périodicité
+							</th>
+							<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+								Complexité
+							</th>
+							<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+								Echéance
+							</th>
+							<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
+								Etat d'avancement
+							</th>
+							<th class="px-4 py-3 text-center text-sm font-bold text-gray-900 border border-gray-300">
+								Actions
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each ptrData as row, index}
+							<tr class="hover:bg-gray-50">
+								<td class="px-2 py-2 border border-gray-300">
+									<input
+										type="text"
+										value={row.refRisque}
+										on:input={(e) => updateCell(index, 'refRisque', e)}
+										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+										placeholder=""
+									/>
+								</td>
+								<td class="px-2 py-2 border border-gray-300">
+									<input
+										type="text"
+										value={row.correspISO}
+										on:input={(e) => updateCell(index, 'correspISO', e)}
+										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+										placeholder=""
+									/>
+								</td>
+								<td class="px-2 py-2 border border-gray-300">
+									<input
+										type="text"
+										value={row.proprietaire}
+										on:input={(e) => updateCell(index, 'proprietaire', e)}
+										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+										placeholder=""
+									/>
+								</td>
+								<td class="px-2 py-2 border border-gray-300">
+									<select
+										value={row.niveauRisque}
+										on:change={(e) => updateCell(index, 'niveauRisque', e)}
+										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+									>
+										<option value="">-</option>
+										<option value="Très faible">Très faible</option>
+										<option value="Faible">Faible</option>
+										<option value="Moyen">Moyen</option>
+										<option value="Élevé">Élevé</option>
+										<option value="Très élevé">Très élevé</option>
+									</select>
+								</td>
+								<td class="px-2 py-2 border border-gray-300">
+									<select
+										value={row.decision}
+										on:change={(e) => updateCell(index, 'decision', e)}
+										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+									>
+										<option value="">-</option>
+										<option value="Accepter">Accepter</option>
+										<option value="Réduire">Réduire</option>
+										<option value="Transférer">Transférer</option>
+										<option value="Éviter">Éviter</option>
+									</select>
+								</td>
+								<td class="px-2 py-2 border border-gray-300">
+									<input
+										type="text"
+										value={row.idPTR}
+										on:input={(e) => updateCell(index, 'idPTR', e)}
+										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+										placeholder=""
+									/>
+								</td>
+								<td class="px-2 py-2 border border-gray-300">
+									<input
+										type="text"
+										value={row.action}
+										on:input={(e) => updateCell(index, 'action', e)}
+										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+										placeholder=""
+									/>
+								</td>
+								<td class="px-2 py-2 border border-gray-300">
+									<select
+										value={row.typeAction}
+										on:change={(e) => updateCell(index, 'typeAction', e)}
+										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+									>
+										<option value="">-</option>
+										<option value="Préventive">Préventive</option>
+										<option value="Détective">Détective</option>
+										<option value="Corrective">Corrective</option>
+									</select>
+								</td>
+								<td class="px-2 py-2 border border-gray-300">
+									<input
+										type="text"
+										value={row.porteur}
+										on:input={(e) => updateCell(index, 'porteur', e)}
+										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+										placeholder=""
+									/>
+								</td>
+								<td class="px-2 py-2 border border-gray-300">
+									<select
+										value={row.priorite}
+										on:change={(e) => updateCell(index, 'priorite', e)}
+										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+									>
+										<option value="">-</option>
+										<option value="Haute">Haute</option>
+										<option value="Moyenne">Moyenne</option>
+										<option value="Basse">Basse</option>
+									</select>
+								</td>
+								<td class="px-2 py-2 border border-gray-300">
+									<select
+										value={row.periodicite}
+										on:change={(e) => updateCell(index, 'periodicite', e)}
+										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+									>
+										<option value="">-</option>
+										<option value="Ponctuelle">Ponctuelle</option>
+										<option value="Récurrente">Récurrente</option>
+										<option value="Continue">Continue</option>
+									</select>
+								</td>
+								<td class="px-2 py-2 border border-gray-300">
+									<select
+										value={row.complexite}
+										on:change={(e) => updateCell(index, 'complexite', e)}
+										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+									>
+										<option value="">-</option>
+										<option value="Faible">Faible</option>
+										<option value="Moyenne">Moyenne</option>
+										<option value="Élevée">Élevée</option>
+									</select>
+								</td>
+								<td class="px-2 py-2 border border-gray-300">
+									<input
+										type="date"
+										value={row.echeance}
+										on:input={(e) => updateCell(index, 'echeance', e)}
+										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+									/>
+								</td>
+								<td class="px-2 py-2 border border-gray-300">
+									<select
+										value={row.etatAvancement}
+										on:change={(e) => updateCell(index, 'etatAvancement', e)}
+										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+									>
+										<option value="">-</option>
+										<option value="Non démarrée">Non démarrée</option>
+										<option value="En cours">En cours</option>
+										<option value="Terminée">Terminée</option>
+										<option value="En retard">En retard</option>
+									</select>
+								</td>
+								<td class="px-2 py-2 border border-gray-300 text-center">
+									<div class="flex gap-1 justify-center">
+										<button
+											on:click={() => insererPtrAvant(index)}
+											class="px-2 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600"
+											title="Ajouter avant"
+										>
+											↑+
+										</button>
+										<button
+											on:click={() => insererPtrApres(index)}
+											class="px-2 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600"
+											title="Ajouter après"
+										>
+											↓+
+										</button>
+										<button
+											on:click={() => deleteRow(index)}
+											class="px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors"
+											title="Supprimer cette ligne"
+										>
+											✕
+										</button>
+									</div>
+								</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</div>
+
+			<div class="flex justify-start mt-4">
+				<button
+					on:click={addRow}
+					class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-5 w-5"
+						viewBox="0 0 20 20"
+						fill="currentColor"
+					>
+						<path
+							fill-rule="evenodd"
+							d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+							clip-rule="evenodd"
+						/>
+					</svg>
+					Ajouter une ligne
+				</button>
+			</div>
+		</section>
+	{:else if activeSection === 'echelle-ptr'}
+		<!-- Échelle PTR : les 4 tables déjà définies -->
+		<section class="space-y-6">
+			<h2 class="text-xl font-semibold text-gray-900">Échelle-PTR&nbsp;: Tables 1 à 4</h2>
+
+			<section class="space-y-4">
+				<h3 class="text-lg font-semibold text-gray-900">Table 1&nbsp;: Périodicité / Durée</h3>
+				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+					<table class="min-w-full text-sm border-collapse border border-black">
+						<thead>
+							<tr>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Périodicité
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Durée
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each periodiciteRows as row, i}
+								<tr class="border border-black">
+									<td
+										class={`px-4 py-2 text-black border border-black ${getPeriodiciteBg(row.periodicite)}`}
+									>
+										<input
+											class="w-full border border-transparent bg-transparent"
+											type="text"
+											bind:value={periodiciteRows[i].periodicite}
+										/>
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white">
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={periodiciteRows[i].duree}
+										/>
+									</td>
+									<td class="px-4 py-2 border border-black bg-gray-100 text-center">
+										<div class="flex gap-1 justify-center">
+											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererPeriodiciteAvant(i)} title="Ajouter avant">↑+</button>
+											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererPeriodiciteApres(i)} title="Ajouter après">↓+</button>
+											<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerPeriodicite(i)} title="Supprimer">✕</button>
+										</div>
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+					<div class="flex gap-2 mt-2">
+						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterPeriodicite}>+ Ajouter une ligne</button>
+						{#if periodiciteRows.length > 1}
+							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerPeriodicite(periodiciteRows.length - 1)}>- Supprimer la dernière ligne</button>
+						{/if}
+					</div>
+			</section>
+
+			<section class="space-y-4">
+				<h3 class="text-lg font-semibold text-gray-900">Table 2&nbsp;: Niveau de complexité</h3>
+				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+					<table class="min-w-full text-sm align-top border-collapse border border-black">
+						<thead>
+							<tr>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Complexité
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Définition du niveau de complexité supposé
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each complexiteRows as row, i}
+								<tr class="border border-black">
+									<td
+										class={`px-4 py-2 font-medium border border-black ${getComplexiteBg(row.complexite)}`}
+									>
+										<input
+											class="w-full border border-transparent bg-transparent font-medium"
+											type="text"
+											bind:value={complexiteRows[i].complexite}
+										/>
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white">
+										<textarea
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[80px]"
+											bind:value={complexiteRows[i].definition}
+										></textarea>
+									</td>
+									<td class="px-4 py-2 border border-black bg-gray-100 text-center">
+										<div class="flex gap-1 justify-center">
+											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererComplexiteAvant(i)} title="Ajouter avant">↑+</button>
+											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererComplexiteApres(i)} title="Ajouter après">↓+</button>
+											<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerComplexite(i)} title="Supprimer">✕</button>
+										</div>
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+					<div class="flex gap-2 mt-2">
+						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterComplexite}>+ Ajouter une ligne</button>
+						{#if complexiteRows.length > 1}
+							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerComplexite(complexiteRows.length - 1)}>- Supprimer la dernière ligne</button>
+						{/if}
+					</div>
+			</section>
+
+			<section class="space-y-4">
+				<h3 class="text-lg font-semibold text-gray-900">Table 3&nbsp;: Type de l'action</h3>
+				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+					<table class="min-w-full text-sm align-top border-collapse border border-black">
+						<thead>
+							<tr>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Type de l'action
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Description
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each typeActionRows as row, i}
+								<tr class="border border-black">
+									<td
+										class={`px-4 py-2 font-medium border border-black ${getTypeActionBg(row.type_action)}`}
+									>
+										<input
+											class="w-full border border-transparent bg-transparent font-medium"
+											type="text"
+											bind:value={typeActionRows[i].type_action}
+										/>
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white">
+										<textarea
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[60px]"
+											bind:value={typeActionRows[i].description}
+										></textarea>
+									</td>
+									<td class="px-4 py-2 border border-black bg-gray-100 text-center">
+										<div class="flex gap-1 justify-center">
+											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererTypeActionAvant(i)} title="Ajouter avant">↑+</button>
+											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererTypeActionApres(i)} title="Ajouter après">↓+</button>
+											<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerTypeAction(i)} title="Supprimer">✕</button>
+										</div>
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+				<div class="flex gap-2 mt-2">
+					<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterTypeAction}>+ Ajouter une ligne</button>
+					{#if typeActionRows.length > 1}
+						<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerTypeAction(typeActionRows.length - 1)}>- Supprimer la dernière ligne</button>
+					{/if}
+				</div>
+			</section>
+
+			<section class="space-y-4">
+				<h3 class="text-lg font-semibold text-gray-900">Table 4&nbsp;: Priorité de l'action</h3>
+				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+					<table class="min-w-full text-sm border-collapse border border-black">
+						<thead>
+							<tr>
+								<th
+									colspan="3"
+									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
+								>
+									Priorité de l'action
+								</th>
+							</tr>
+							<tr>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black"
+								>
+									Échelle
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black"
+								>
+									Définition
+								</th>
+								<th
+									class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black"
+								>
+									Signification (score)
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each prioriteRows as row, i}
+								<tr class="border border-black">
+									<td class="px-4 py-2 font-medium text-black border border-black bg-white">
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={prioriteRows[i].echelle}
+										/>
+									</td>
+									<td
+										class={`px-4 py-2 border border-black ${getPrioriteDefinitionBg(row.echelle)}`}
+									>
+										<input
+											class="w-full border border-transparent bg-transparent"
+											type="text"
+											bind:value={prioriteRows[i].definition}
+										/>
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white">
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={prioriteRows[i].signification}
+										/>
+									</td>
+									<td class="px-4 py-2 border border-black bg-gray-100 text-center">
+										<div class="flex gap-1 justify-center">
+											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererPrioriteAvant(i)} title="Ajouter avant">↑+</button>
+											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererPrioriteApres(i)} title="Ajouter après">↓+</button>
+											<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerPriorite(i)} title="Supprimer">✕</button>
+										</div>
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
 					<div class="flex gap-2 mt-2">
 						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterPriorite}>+ Ajouter une ligne</button>
 						{#if prioriteRows.length > 1}
 							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerPriorite(prioriteRows.length - 1)}>- Supprimer la dernière ligne</button>
 						{/if}
 					</div>
+			</section>
 		</section>
 	{/if}
 </main>
