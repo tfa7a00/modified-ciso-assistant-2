@@ -153,6 +153,11 @@
 	// Tableau de 45 lignes pour les formules de la cartographie des risques
 	let cartoRows: CartoRow[] = Array.from({ length: 45 }, () => defaultCartoRow());
 
+	/** Force reactivity so persistence runs after in-place edits (bind:value) in cartographie table */
+	function touchCartoRows() {
+		cartoRows = cartoRows.map((r) => ({ ...r }));
+	}
+
 	// --- Données pour Contrôle du document ---
 	type RedactionRow = {
 		role: string;
@@ -272,11 +277,10 @@
 	}
 
 	let persistTimeout: ReturnType<typeof setTimeout> | null = null;
-	// Digest of cartoRows so that in-place cell edits (bind:value) trigger persistence
-	$: _cartoDigest = typeof window !== 'undefined' ? JSON.stringify(cartoRows) : '';
-	// Re-run when any of these change so we debounce-save (persists on tab close / refresh + server)
+	// Re-run when any of these change so we debounce-save (persists on tab close / refresh + server).
+	// cartoRows is triggered by touchCartoRows() on blur of cartographie table cells (bind:value mutates in place).
 	$: _persistDeps = [
-		_cartoDigest,
+		cartoRows,
 		redactionRows,
 		diffusionRows,
 		versionRows,
@@ -308,7 +312,14 @@
 		loadCustomMethodState();
 		const saveOnUnload = () => saveCustomMethodState();
 		window.addEventListener('beforeunload', saveOnUnload);
-		return () => window.removeEventListener('beforeunload', saveOnUnload);
+		// Periodic touch of cartoRows so in-place edits are persisted even if blur does not fire
+		const cartoPersistInterval = setInterval(() => {
+			if (activeSection === 'cartographie-risques') touchCartoRows();
+		}, 5000);
+		return () => {
+			window.removeEventListener('beforeunload', saveOnUnload);
+			clearInterval(cartoPersistInterval);
+		};
 	});
 
 	beforeNavigate(({ from }) => {
@@ -2147,7 +2158,16 @@
 				<p class="text-xs text-gray-500">Affiche uniquement la sous-partie sélectionnée pour une meilleure lisibilité.</p>
 			</div>
 
-			<div class="overflow-x-auto rounded-lg border border-black bg-white shadow-sm" class:view-all={cartoView==='all'} class:view-identification={cartoView==='identification'} class:view-brut={cartoView==='brut'} class:view-net={cartoView==='net'} class:view-ptr={cartoView==='ptr'}>
+			<div
+				class="overflow-x-auto rounded-lg border border-black bg-white shadow-sm"
+				class:view-all={cartoView==='all'}
+				class:view-identification={cartoView==='identification'}
+				class:view-brut={cartoView==='brut'}
+				class:view-net={cartoView==='net'}
+				class:view-ptr={cartoView==='ptr'}
+				on:blur={() => touchCartoRows()}
+				role="presentation"
+			>
 				<table class="min-w-full text-xs border-collapse border border-black">
 					<!-- Colgroup: 45 colonnes (removed empty Code Risques & F.R), classes par groupe pour masquage via CSS -->
 					<colgroup>
