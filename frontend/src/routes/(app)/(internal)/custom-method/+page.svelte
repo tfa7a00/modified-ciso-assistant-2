@@ -1392,6 +1392,7 @@
 	function supprimerMatrice(index: number) {
 		matriceRisqueRows = matriceRisqueRows.filter((_, i) => i !== index);
 	}
+	/** Ajoute une colonne de données avant la colonne Actions ; en-tête = n+1 (n = ancien dernier numéro). */
 	function ajouterColonneMatrice() {
 		matriceRisqueRows = matriceRisqueRows.map((r) => ({ ...r, valeurs: [...r.valeurs, 0] }));
 	}
@@ -3901,6 +3902,7 @@
 								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">
 									Impact du risque × Criticité de l'actif \ Vraisemblance du risque
 								</th>
+								<!-- Colonnes de données : en-têtes 1, 2, …, n (toujours avant Actions) ; nouvelle colonne = n+1 -->
 								{#each Array.from({ length: getMatriceColumnCount() }, (_, i) => i) as colIndex}
 									<th class="px-4 py-2 text-sm font-semibold border border-black bg-gray-100 relative">
 										{colIndex + 1}
@@ -3945,7 +3947,7 @@
 						{#if matriceRisqueRows.length > 1}
 							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerMatrice(matriceRisqueRows.length - 1)}>- Supprimer la dernière ligne</button>
 						{/if}
-						<button type="button" class="px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700" on:click={ajouterColonneMatrice}>+ Ajouter une colonne</button>
+						<button type="button" class="px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700" on:click={ajouterColonneMatrice} title="Ajoute une colonne avant Actions avec l'en-tête n°{getMatriceColumnCount() + 1}">+ Ajouter une colonne (n°{getMatriceColumnCount() + 1})</button>
 						{#if getMatriceColumnCount() > 1}
 							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerColonneMatrice(getMatriceColumnCount() - 1)}>- Supprimer la dernière colonne</button>
 						{/if}
