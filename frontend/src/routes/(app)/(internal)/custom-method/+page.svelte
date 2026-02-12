@@ -510,69 +510,81 @@
 		saveCustomMethodState();
 	}
 
+	const ECHELLE_PTR_COULEURS = [
+		'bg-orange-100',
+		'bg-green-100',
+		'bg-yellow-100',
+		'bg-gray-100',
+		'bg-sky-100',
+		'bg-amber-100',
+		'bg-white',
+		'bg-red-500',
+		'bg-yellow-400',
+		'bg-green-400',
+		'bg-yellow-300',
+		'bg-orange-400',
+		'bg-red-500 text-black',
+		'bg-yellow-400 text-black',
+		'bg-green-400 text-black',
+		'bg-yellow-300 text-black',
+		'bg-orange-400 text-black'
+	];
+
 	let periodiciteRows: Row[] = [
-		{ periodicite: 'QuickWin', duree: '0 – 3 mois' },
-		{ periodicite: 'Court terme', duree: '3 – 12 mois' },
-		{ periodicite: 'Moyen terme', duree: '12 – 18 mois' },
-		{ periodicite: 'Long terme', duree: 'Supérieur à 18 mois' },
-		{ periodicite: 'Périodique', duree: 'Périodiquement' }
+		{ periodicite: 'QuickWin', duree: '0 – 3 mois', bgColor: 'bg-orange-100' },
+		{ periodicite: 'Court terme', duree: '3 – 12 mois', bgColor: 'bg-green-100' },
+		{ periodicite: 'Moyen terme', duree: '12 – 18 mois', bgColor: 'bg-yellow-100' },
+		{ periodicite: 'Long terme', duree: 'Supérieur à 18 mois', bgColor: 'bg-gray-100' },
+		{ periodicite: 'Périodique', duree: 'Périodiquement', bgColor: 'bg-sky-100' }
 	];
 
 	let complexiteRows: Row[] = [
 		{
 			complexite: 'Important',
 			definition:
-				"Complexité à coût important, correspondant à une tâche supérieure à une dizaine de jours/homme et/ou un coût supérieur à une centaine de milliers de dirhams (par exemple, refonte d'une architecture réseau)."
+				"Complexité à coût important, correspondant à une tâche supérieure à une dizaine de jours/homme et/ou un coût supérieur à une centaine de milliers de dirhams (par exemple, refonte d'une architecture réseau).",
+			bgColor: 'bg-red-500 text-black'
 		},
 		{
 			complexite: 'Moyen',
 			definition:
-				"Complexité à coût moyen, correspondant à une tâche inférieure à une dizaine de jours/homme et/ou un coût inférieur à une centaine de milliers de dirhams (par exemple, rédaction d'une procédure plus complexe, achat d'un composant, etc.)."
+				"Complexité à coût moyen, correspondant à une tâche inférieure à une dizaine de jours/homme et/ou un coût inférieur à une centaine de milliers de dirhams (par exemple, rédaction d'une procédure plus complexe, achat d'un composant, etc.).",
+			bgColor: 'bg-yellow-400 text-black'
 		},
 		{
 			complexite: 'Faible',
 			definition:
-				"Complexité à coût faible, n'entraînant pas de coût d'acquisition (par exemple, modification d'un paramètre, rédaction d'une procédure simple, etc.)."
+				"Complexité à coût faible, n'entraînant pas de coût d'acquisition (par exemple, modification d'un paramètre, rédaction d'une procédure simple, etc.).",
+			bgColor: 'bg-green-400 text-black'
 		}
 	];
 
 	let typeActionRows: Row[] = [
 		{
 			type_action: 'Action Organisationnelle',
-			description: 'Action visant à modifier les processus ou politiques internes de la SOCIÉTÉ.'
+			description: 'Action visant à modifier les processus ou politiques internes de la SOCIÉTÉ.',
+			bgColor: 'bg-sky-100'
 		},
 		{
 			type_action: 'Action Technique',
-			description: 'Intervention sur les SI ou infrastructures techniques de la SOCIÉTÉ.'
+			description: 'Intervention sur les SI ou infrastructures techniques de la SOCIÉTÉ.',
+			bgColor: 'bg-green-100'
 		},
 		{
 			type_action: 'Action Organisationnelle et Technique',
-			description: 'Action combinant les deux dimensions (organisationnelle et technique).'
+			description: 'Action combinant les deux dimensions (organisationnelle et technique).',
+			bgColor: 'bg-amber-100'
 		}
 	];
 
 	let prioriteRows: Row[] = [
-		{
-			echelle: 'Priorité 4',
-			definition: 'Risque Faible',
-			signification: '[1 – 20['
-		},
-		{
-			echelle: 'Priorité 3',
-			definition: 'Risque Modéré',
-			signification: '[20 – 36['
-		},
-		{
-			echelle: 'Priorité 2',
-			definition: 'Risque Élevé',
-			signification: '[36 – 64['
-		},
-		{
-			echelle: 'Priorité 1',
-			definition: 'Risque Extrême',
-			signification: '[64 – 120]'
-		}
+		{ echelle: 'Priorité 4', definition: 'Risque Faible', signification: '[1 – 20[', bgColor: 'bg-green-400 text-black' },
+		{ echelle: 'Priorité 3', definition: 'Risque Modéré', signification: '[20 – 36[', bgColor: 'bg-yellow-300 text-black' },
+		{ echelle: 'Priorité 2', definition: 'Risque Élevé', signification: '[36 – 64[', bgColor: 'bg-orange-400 text-black' },
+		{ echelle: 'Priorité 1', definition: 'Risque Extrême', signification: '[64 – 120]', bgColor: 'bg-red-500 text-black' }
 	];
+
+	let editModeEchellePtr = false;
 
 	// --- Aide-Classification: Tableaux DIC ---
 
@@ -735,62 +747,59 @@
 		'Site'
 	];
 
-	function getPeriodiciteBg(periodicite: string): string {
+	function getPeriodiciteBgDefault(periodicite: string): string {
 		switch (periodicite) {
-			case 'QuickWin':
-				return 'bg-orange-100';
-			case 'Court terme':
-				return 'bg-green-100';
-			case 'Moyen terme':
-				return 'bg-yellow-100';
-			case 'Long terme':
-				return 'bg-gray-100';
-			case 'Périodique':
-				return 'bg-sky-100';
-			default:
-				return 'bg-white';
+			case 'QuickWin': return 'bg-orange-100';
+			case 'Court terme': return 'bg-green-100';
+			case 'Moyen terme': return 'bg-yellow-100';
+			case 'Long terme': return 'bg-gray-100';
+			case 'Périodique': return 'bg-sky-100';
+			default: return 'bg-white';
 		}
 	}
+	function getPeriodiciteBg(periodicite: string): string {
+		const row = periodiciteRows.find((r) => r.periodicite === periodicite);
+		return (row && row.bgColor) ? row.bgColor : getPeriodiciteBgDefault(periodicite);
+	}
 
-	function getComplexiteBg(complexite: string): string {
+	function getComplexiteBgDefault(complexite: string): string {
 		switch (complexite) {
-			case 'Important':
-				return 'bg-red-500 text-black';
-			case 'Moyen':
-				return 'bg-yellow-400 text-black';
-			case 'Faible':
-				return 'bg-green-400 text-black';
-			default:
-				return 'bg-white text-black';
+			case 'Important': return 'bg-red-500 text-black';
+			case 'Moyen': return 'bg-yellow-400 text-black';
+			case 'Faible': return 'bg-green-400 text-black';
+			default: return 'bg-white text-black';
 		}
 	}
+	function getComplexiteBg(complexite: string): string {
+		const row = complexiteRows.find((r) => r.complexite === complexite);
+		return (row && row.bgColor) ? row.bgColor : getComplexiteBgDefault(complexite);
+	}
 
-	function getTypeActionBg(typeAction: string): string {
+	function getTypeActionBgDefault(typeAction: string): string {
 		switch (typeAction) {
-			case 'Action Organisationnelle':
-				return 'bg-sky-100';
-			case 'Action Technique':
-				return 'bg-green-100';
-			case 'Action Organisationnelle et Technique':
-				return 'bg-amber-100';
-			default:
-				return 'bg-white';
+			case 'Action Organisationnelle': return 'bg-sky-100';
+			case 'Action Technique': return 'bg-green-100';
+			case 'Action Organisationnelle et Technique': return 'bg-amber-100';
+			default: return 'bg-white';
 		}
 	}
+	function getTypeActionBg(typeAction: string): string {
+		const row = typeActionRows.find((r) => r.type_action === typeAction);
+		return (row && row.bgColor) ? row.bgColor : getTypeActionBgDefault(typeAction);
+	}
 
-	function getPrioriteDefinitionBg(echelle: string): string {
+	function getPrioriteDefinitionBgDefault(echelle: string): string {
 		switch (echelle) {
-			case 'Priorité 4':
-				return 'bg-green-400 text-black';
-			case 'Priorité 3':
-				return 'bg-yellow-300 text-black';
-			case 'Priorité 2':
-				return 'bg-orange-400 text-black';
-			case 'Priorité 1':
-				return 'bg-red-500 text-black';
-			default:
-				return 'bg-white text-black';
+			case 'Priorité 4': return 'bg-green-400 text-black';
+			case 'Priorité 3': return 'bg-yellow-300 text-black';
+			case 'Priorité 2': return 'bg-orange-400 text-black';
+			case 'Priorité 1': return 'bg-red-500 text-black';
+			default: return 'bg-white text-black';
 		}
+	}
+	function getPrioriteDefinitionBg(echelle: string): string {
+		const row = prioriteRows.find((r) => r.echelle === echelle);
+		return (row && row.bgColor) ? row.bgColor : getPrioriteDefinitionBgDefault(echelle);
 	}
 
 	function getValeurBg(valeur: string): string {
@@ -987,16 +996,20 @@
 			cartoView = state.cartoView as typeof cartoView;
 		}
 		if (state.periodiciteRows && Array.isArray(state.periodiciteRows) && state.periodiciteRows.length > 0) {
-			periodiciteRows = state.periodiciteRows as Row[];
+			const rows = state.periodiciteRows as Row[];
+			periodiciteRows = rows.map((r) => ({ ...r, bgColor: r.bgColor || getPeriodiciteBgDefault(r.periodicite) }));
 		}
 		if (state.complexiteRows && Array.isArray(state.complexiteRows) && state.complexiteRows.length > 0) {
-			complexiteRows = state.complexiteRows as Row[];
+			const rows = state.complexiteRows as Row[];
+			complexiteRows = rows.map((r) => ({ ...r, bgColor: r.bgColor || getComplexiteBgDefault(r.complexite) }));
 		}
 		if (state.typeActionRows && Array.isArray(state.typeActionRows) && state.typeActionRows.length > 0) {
-			typeActionRows = state.typeActionRows as Row[];
+			const rows = state.typeActionRows as Row[];
+			typeActionRows = rows.map((r) => ({ ...r, bgColor: r.bgColor || getTypeActionBgDefault(r.type_action) }));
 		}
 		if (state.prioriteRows && Array.isArray(state.prioriteRows) && state.prioriteRows.length > 0) {
-			prioriteRows = state.prioriteRows as Row[];
+			const rows = state.prioriteRows as Row[];
+			prioriteRows = rows.map((r) => ({ ...r, bgColor: r.bgColor || getPrioriteDefinitionBgDefault(r.echelle) }));
 		}
 		if (state.dicCriteriaRows && Array.isArray(state.dicCriteriaRows) && state.dicCriteriaRows.length > 0) {
 			dicCriteriaRows = state.dicCriteriaRows as DICCriteriaRow[];
@@ -1234,7 +1247,7 @@
 	// Fonctions pour Échelle-PTR (Periodicité / Complexité / TypeAction / Priorité)
 
 	function ajouterPeriodicite() {
-		periodiciteRows = [...periodiciteRows, { periodicite: '', duree: '' }];
+		periodiciteRows = [...periodiciteRows, { periodicite: '', duree: '', bgColor: 'bg-white' }];
 	}
 
 	function supprimerPeriodicite(index: number) {
@@ -1242,15 +1255,15 @@
 	}
 
 	function insererPeriodiciteAvant(index: number) {
-		periodiciteRows = insererLigneAvant(periodiciteRows, index, { periodicite: '', duree: '' });
+		periodiciteRows = insererLigneAvant(periodiciteRows, index, { periodicite: '', duree: '', bgColor: 'bg-white' });
 	}
 
 	function insererPeriodiciteApres(index: number) {
-		periodiciteRows = insererLigneApres(periodiciteRows, index, { periodicite: '', duree: '' });
+		periodiciteRows = insererLigneApres(periodiciteRows, index, { periodicite: '', duree: '', bgColor: 'bg-white' });
 	}
 
 	function ajouterComplexite() {
-		complexiteRows = [...complexiteRows, { complexite: '', definition: '' }];
+		complexiteRows = [...complexiteRows, { complexite: '', definition: '', bgColor: 'bg-white text-black' }];
 	}
 
 	function supprimerComplexite(index: number) {
@@ -1258,15 +1271,15 @@
 	}
 
 	function insererComplexiteAvant(index: number) {
-		complexiteRows = insererLigneAvant(complexiteRows, index, { complexite: '', definition: '' });
+		complexiteRows = insererLigneAvant(complexiteRows, index, { complexite: '', definition: '', bgColor: 'bg-white text-black' });
 	}
 
 	function insererComplexiteApres(index: number) {
-		complexiteRows = insererLigneApres(complexiteRows, index, { complexite: '', definition: '' });
+		complexiteRows = insererLigneApres(complexiteRows, index, { complexite: '', definition: '', bgColor: 'bg-white text-black' });
 	}
 
 	function ajouterTypeAction() {
-		typeActionRows = [...typeActionRows, { type_action: '', description: '' }];
+		typeActionRows = [...typeActionRows, { type_action: '', description: '', bgColor: 'bg-white' }];
 	}
 
 	function supprimerTypeAction(index: number) {
@@ -1274,15 +1287,15 @@
 	}
 
 	function insererTypeActionAvant(index: number) {
-		typeActionRows = insererLigneAvant(typeActionRows, index, { type_action: '', description: '' });
+		typeActionRows = insererLigneAvant(typeActionRows, index, { type_action: '', description: '', bgColor: 'bg-white' });
 	}
 
 	function insererTypeActionApres(index: number) {
-		typeActionRows = insererLigneApres(typeActionRows, index, { type_action: '', description: '' });
+		typeActionRows = insererLigneApres(typeActionRows, index, { type_action: '', description: '', bgColor: 'bg-white' });
 	}
 
 	function ajouterPriorite() {
-		prioriteRows = [...prioriteRows, { echelle: '', definition: '', signification: '' }];
+		prioriteRows = [...prioriteRows, { echelle: '', definition: '', signification: '', bgColor: 'bg-white text-black' }];
 	}
 
 	function supprimerPriorite(index: number) {
@@ -1290,11 +1303,11 @@
 	}
 
 	function insererPrioriteAvant(index: number) {
-		prioriteRows = insererLigneAvant(prioriteRows, index, { echelle: '', definition: '', signification: '' });
+		prioriteRows = insererLigneAvant(prioriteRows, index, { echelle: '', definition: '', signification: '', bgColor: 'bg-white text-black' });
 	}
 
 	function insererPrioriteApres(index: number) {
-		prioriteRows = insererLigneApres(prioriteRows, index, { echelle: '', definition: '', signification: '' });
+		prioriteRows = insererLigneApres(prioriteRows, index, { echelle: '', definition: '', signification: '', bgColor: 'bg-white text-black' });
 	}
 
 	function supprimerImpact(index: number) {
@@ -3972,11 +3985,11 @@
 										placeholder=""
 									/>
 								</td>
-								<td class="px-2 py-2 border border-gray-300">
+								<td class="px-2 py-2 border border-gray-300 {getTypeActionBg(row.typeAction)}">
 									<select
 										value={row.typeAction}
 										on:change={(e) => updateCell(index, 'typeAction', e)}
-										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+										class="w-full px-2 py-1 text-sm border-0 bg-transparent focus:ring-2 focus:ring-blue-500 rounded"
 									>
 										<option value="">-</option>
 										{#each typeActionRows as tr}
@@ -3993,11 +4006,11 @@
 										placeholder=""
 									/>
 								</td>
-								<td class="px-2 py-2 border border-gray-300">
+								<td class="px-2 py-2 border border-gray-300 {getPrioriteDefinitionBg(row.priorite)}">
 									<select
 										value={row.priorite}
 										on:change={(e) => updateCell(index, 'priorite', e)}
-										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+										class="w-full px-2 py-1 text-sm border-0 bg-transparent focus:ring-2 focus:ring-blue-500 rounded"
 									>
 										<option value="">-</option>
 										{#each prioriteRows as pr}
@@ -4005,11 +4018,11 @@
 										{/each}
 									</select>
 								</td>
-								<td class="px-2 py-2 border border-gray-300">
+								<td class="px-2 py-2 border border-gray-300 {getPeriodiciteBg(row.periodicite)}">
 									<select
 										value={row.periodicite}
 										on:change={(e) => updateCell(index, 'periodicite', e)}
-										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+										class="w-full px-2 py-1 text-sm border-0 bg-transparent focus:ring-2 focus:ring-blue-500 rounded"
 									>
 										<option value="">-</option>
 										{#each periodiciteRows as per}
@@ -4017,11 +4030,11 @@
 										{/each}
 									</select>
 								</td>
-								<td class="px-2 py-2 border border-gray-300">
+								<td class="px-2 py-2 border border-gray-300 {getComplexiteBg(row.complexite)}">
 									<select
 										value={row.complexite}
 										on:change={(e) => updateCell(index, 'complexite', e)}
-										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+										class="w-full px-2 py-1 text-sm border-0 bg-transparent focus:ring-2 focus:ring-blue-500 rounded"
 									>
 										<option value="">-</option>
 										{#each complexiteRows as cr}
@@ -4105,7 +4118,18 @@
 	{:else if activeSection === 'echelle-ptr'}
 		<!-- Échelle PTR : les 4 tables déjà définies -->
 		<section class="space-y-6">
-			<h2 class="text-xl font-semibold text-gray-900">Échelle-PTR&nbsp;: Tables 1 à 4</h2>
+			<div class="flex items-center justify-between gap-4 flex-wrap">
+				<h2 class="text-xl font-semibold text-gray-900">Échelle-PTR&nbsp;: Tables 1 à 4</h2>
+				<button
+					type="button"
+					class="px-3 py-1.5 text-sm rounded {editModeEchellePtr
+						? 'bg-gray-600 text-white hover:bg-gray-700'
+						: 'bg-sky-600 text-white hover:bg-sky-700'}"
+					on:click={() => (editModeEchellePtr = !editModeEchellePtr)}
+				>
+					{editModeEchellePtr ? 'Terminer la modification' : 'Modifier'}
+				</button>
+			</div>
 
 			<section class="space-y-4">
 				<h3 class="text-lg font-semibold text-gray-900">Table 1&nbsp;: Périodicité / Durée</h3>
@@ -4113,55 +4137,52 @@
 					<table class="min-w-full text-sm border-collapse border border-black">
 						<thead>
 							<tr>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
-								>
-									Périodicité
-								</th>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
-								>
-									Durée
-								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Périodicité</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Durée</th>
+								{#if editModeEchellePtr}
+									<th class="px-2 py-2 text-center font-semibold text-white bg-yellow-500 border border-black min-w-[120px]">Couleur</th>
+									<th class="px-2 py-2 text-center font-semibold text-white bg-yellow-500 border border-black">Actions</th>
+								{/if}
 							</tr>
 						</thead>
 						<tbody>
 							{#each periodiciteRows as row, i}
 								<tr class="border border-black">
-									<td
-										class={`px-4 py-2 text-black border border-black ${getPeriodiciteBg(row.periodicite)}`}
-									>
-										<input
-											class="w-full border border-transparent bg-transparent"
-											type="text"
-											bind:value={periodiciteRows[i].periodicite}
-										/>
+									<td class={`px-4 py-2 text-black border border-black ${getPeriodiciteBg(row.periodicite)}`}>
+										<input class="w-full border border-transparent bg-transparent" type="text" bind:value={periodiciteRows[i].periodicite} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<input
-											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
-											type="text"
-											bind:value={periodiciteRows[i].duree}
-										/>
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={periodiciteRows[i].duree} />
 									</td>
-									<td class="px-4 py-2 border border-black bg-gray-100 text-center">
-										<div class="flex gap-1 justify-center">
-											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererPeriodiciteAvant(i)} title="Ajouter avant">↑+</button>
-											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererPeriodiciteApres(i)} title="Ajouter après">↓+</button>
-											<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerPeriodicite(i)} title="Supprimer">✕</button>
-										</div>
-									</td>
+									{#if editModeEchellePtr}
+										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
+											<select class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs" bind:value={periodiciteRows[i].bgColor} on:change={() => saveCustomMethodState()}>
+												{#each ECHELLE_PTR_COULEURS as c}
+													<option value={c}>{c}</option>
+												{/each}
+											</select>
+										</td>
+										<td class="px-2 py-2 border border-black bg-gray-100 text-center">
+											<div class="flex gap-1 justify-center">
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererPeriodiciteAvant(i)} title="Ajouter avant">↑+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererPeriodiciteApres(i)} title="Ajouter après">↓+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerPeriodicite(i)} title="Supprimer">✕</button>
+											</div>
+										</td>
+									{/if}
 								</tr>
 							{/each}
 						</tbody>
 					</table>
 				</div>
+				{#if editModeEchellePtr}
 					<div class="flex gap-2 mt-2">
 						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterPeriodicite}>+ Ajouter une ligne</button>
 						{#if periodiciteRows.length > 1}
 							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerPeriodicite(periodiciteRows.length - 1)}>- Supprimer la dernière ligne</button>
 						{/if}
 					</div>
+				{/if}
 			</section>
 
 			<section class="space-y-4">
@@ -4170,54 +4191,52 @@
 					<table class="min-w-full text-sm align-top border-collapse border border-black">
 						<thead>
 							<tr>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
-								>
-									Complexité
-								</th>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
-								>
-									Définition du niveau de complexité supposé
-								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Complexité</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Définition du niveau de complexité supposé</th>
+								{#if editModeEchellePtr}
+									<th class="px-2 py-2 text-center font-semibold text-white bg-yellow-500 border border-black min-w-[120px]">Couleur</th>
+									<th class="px-2 py-2 text-center font-semibold text-white bg-yellow-500 border border-black">Actions</th>
+								{/if}
 							</tr>
 						</thead>
 						<tbody>
 							{#each complexiteRows as row, i}
 								<tr class="border border-black">
-									<td
-										class={`px-4 py-2 font-medium border border-black ${getComplexiteBg(row.complexite)}`}
-									>
-										<input
-											class="w-full border border-transparent bg-transparent font-medium"
-											type="text"
-											bind:value={complexiteRows[i].complexite}
-										/>
+									<td class={`px-4 py-2 font-medium border border-black ${getComplexiteBg(row.complexite)}`}>
+										<input class="w-full border border-transparent bg-transparent font-medium" type="text" bind:value={complexiteRows[i].complexite} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<textarea
-											class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[80px]"
-											bind:value={complexiteRows[i].definition}
-										></textarea>
+										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[80px]" bind:value={complexiteRows[i].definition}></textarea>
 									</td>
-									<td class="px-4 py-2 border border-black bg-gray-100 text-center">
-										<div class="flex gap-1 justify-center">
-											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererComplexiteAvant(i)} title="Ajouter avant">↑+</button>
-											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererComplexiteApres(i)} title="Ajouter après">↓+</button>
-											<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerComplexite(i)} title="Supprimer">✕</button>
-										</div>
-									</td>
+									{#if editModeEchellePtr}
+										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
+											<select class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs" bind:value={complexiteRows[i].bgColor} on:change={() => saveCustomMethodState()}>
+												{#each ECHELLE_PTR_COULEURS as c}
+													<option value={c}>{c}</option>
+												{/each}
+											</select>
+										</td>
+										<td class="px-2 py-2 border border-black bg-gray-100 text-center">
+											<div class="flex gap-1 justify-center">
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererComplexiteAvant(i)} title="Ajouter avant">↑+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererComplexiteApres(i)} title="Ajouter après">↓+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerComplexite(i)} title="Supprimer">✕</button>
+											</div>
+										</td>
+									{/if}
 								</tr>
 							{/each}
 						</tbody>
 					</table>
 				</div>
+				{#if editModeEchellePtr}
 					<div class="flex gap-2 mt-2">
 						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterComplexite}>+ Ajouter une ligne</button>
 						{#if complexiteRows.length > 1}
 							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerComplexite(complexiteRows.length - 1)}>- Supprimer la dernière ligne</button>
 						{/if}
 					</div>
+				{/if}
 			</section>
 
 			<section class="space-y-4">
@@ -4226,54 +4245,52 @@
 					<table class="min-w-full text-sm align-top border-collapse border border-black">
 						<thead>
 							<tr>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
-								>
-									Type de l'action
-								</th>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
-								>
-									Description
-								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Type de l'action</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Description</th>
+								{#if editModeEchellePtr}
+									<th class="px-2 py-2 text-center font-semibold text-white bg-yellow-500 border border-black min-w-[120px]">Couleur</th>
+									<th class="px-2 py-2 text-center font-semibold text-white bg-yellow-500 border border-black">Actions</th>
+								{/if}
 							</tr>
 						</thead>
 						<tbody>
 							{#each typeActionRows as row, i}
 								<tr class="border border-black">
-									<td
-										class={`px-4 py-2 font-medium border border-black ${getTypeActionBg(row.type_action)}`}
-									>
-										<input
-											class="w-full border border-transparent bg-transparent font-medium"
-											type="text"
-											bind:value={typeActionRows[i].type_action}
-										/>
+									<td class={`px-4 py-2 font-medium border border-black ${getTypeActionBg(row.type_action)}`}>
+										<input class="w-full border border-transparent bg-transparent font-medium" type="text" bind:value={typeActionRows[i].type_action} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<textarea
-											class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[60px]"
-											bind:value={typeActionRows[i].description}
-										></textarea>
+										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[60px]" bind:value={typeActionRows[i].description}></textarea>
 									</td>
-									<td class="px-4 py-2 border border-black bg-gray-100 text-center">
-										<div class="flex gap-1 justify-center">
-											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererTypeActionAvant(i)} title="Ajouter avant">↑+</button>
-											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererTypeActionApres(i)} title="Ajouter après">↓+</button>
-											<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerTypeAction(i)} title="Supprimer">✕</button>
-										</div>
-									</td>
+									{#if editModeEchellePtr}
+										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
+											<select class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs" bind:value={typeActionRows[i].bgColor} on:change={() => saveCustomMethodState()}>
+												{#each ECHELLE_PTR_COULEURS as c}
+													<option value={c}>{c}</option>
+												{/each}
+											</select>
+										</td>
+										<td class="px-2 py-2 border border-black bg-gray-100 text-center">
+											<div class="flex gap-1 justify-center">
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererTypeActionAvant(i)} title="Ajouter avant">↑+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererTypeActionApres(i)} title="Ajouter après">↓+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerTypeAction(i)} title="Supprimer">✕</button>
+											</div>
+										</td>
+									{/if}
 								</tr>
 							{/each}
 						</tbody>
 					</table>
 				</div>
-				<div class="flex gap-2 mt-2">
-					<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterTypeAction}>+ Ajouter une ligne</button>
-					{#if typeActionRows.length > 1}
-						<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerTypeAction(typeActionRows.length - 1)}>- Supprimer la dernière ligne</button>
-					{/if}
-				</div>
+				{#if editModeEchellePtr}
+					<div class="flex gap-2 mt-2">
+						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterTypeAction}>+ Ajouter une ligne</button>
+						{#if typeActionRows.length > 1}
+							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerTypeAction(typeActionRows.length - 1)}>- Supprimer la dernière ligne</button>
+						{/if}
+					</div>
+				{/if}
 			</section>
 
 			<section class="space-y-4">
@@ -4282,75 +4299,59 @@
 					<table class="min-w-full text-sm border-collapse border border-black">
 						<thead>
 							<tr>
-								<th
-									colspan="3"
-									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
-								>
-									Priorité de l'action
-								</th>
+								<th colspan={editModeEchellePtr ? 5 : 3} class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Priorité de l'action</th>
 							</tr>
 							<tr>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black"
-								>
-									Échelle
-								</th>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black"
-								>
-									Définition
-								</th>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black"
-								>
-									Signification (score)
-								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black">Échelle</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black">Définition</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black">Signification (score)</th>
+								{#if editModeEchellePtr}
+									<th class="px-2 py-2 text-center font-semibold text-white bg-slate-900 border border-black min-w-[120px]">Couleur</th>
+									<th class="px-2 py-2 text-center font-semibold text-white bg-slate-900 border border-black">Actions</th>
+								{/if}
 							</tr>
 						</thead>
 						<tbody>
 							{#each prioriteRows as row, i}
 								<tr class="border border-black">
 									<td class="px-4 py-2 font-medium text-black border border-black bg-white">
-										<input
-											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
-											type="text"
-											bind:value={prioriteRows[i].echelle}
-										/>
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={prioriteRows[i].echelle} />
 									</td>
-									<td
-										class={`px-4 py-2 border border-black ${getPrioriteDefinitionBg(row.echelle)}`}
-									>
-										<input
-											class="w-full border border-transparent bg-transparent"
-											type="text"
-											bind:value={prioriteRows[i].definition}
-										/>
+									<td class={`px-4 py-2 border border-black ${getPrioriteDefinitionBg(row.echelle)}`}>
+										<input class="w-full border border-transparent bg-transparent" type="text" bind:value={prioriteRows[i].definition} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<input
-											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
-											type="text"
-											bind:value={prioriteRows[i].signification}
-										/>
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={prioriteRows[i].signification} />
 									</td>
-									<td class="px-4 py-2 border border-black bg-gray-100 text-center">
-										<div class="flex gap-1 justify-center">
-											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererPrioriteAvant(i)} title="Ajouter avant">↑+</button>
-											<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererPrioriteApres(i)} title="Ajouter après">↓+</button>
-											<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerPriorite(i)} title="Supprimer">✕</button>
-										</div>
-									</td>
+									{#if editModeEchellePtr}
+										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
+											<select class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs" bind:value={prioriteRows[i].bgColor} on:change={() => saveCustomMethodState()}>
+												{#each ECHELLE_PTR_COULEURS as c}
+													<option value={c}>{c}</option>
+												{/each}
+											</select>
+										</td>
+										<td class="px-2 py-2 border border-black bg-gray-100 text-center">
+											<div class="flex gap-1 justify-center">
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererPrioriteAvant(i)} title="Ajouter avant">↑+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererPrioriteApres(i)} title="Ajouter après">↓+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerPriorite(i)} title="Supprimer">✕</button>
+											</div>
+										</td>
+									{/if}
 								</tr>
 							{/each}
 						</tbody>
 					</table>
 				</div>
+				{#if editModeEchellePtr}
 					<div class="flex gap-2 mt-2">
 						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterPriorite}>+ Ajouter une ligne</button>
 						{#if prioriteRows.length > 1}
 							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerPriorite(prioriteRows.length - 1)}>- Supprimer la dernière ligne</button>
 						{/if}
 					</div>
+				{/if}
 			</section>
 		</section>
 	{/if}
