@@ -922,7 +922,7 @@
 		{ echelle: '4', definition: 'Risque Extrême', signification: '[64 – 120]' }
 	];
 
-	type MatriceRow = { libelle: string; valeurs: number[]; bgColor?: string };
+	type MatriceRow = { libelle: string; valeurs: number[] };
 
 	let matriceRisqueRows: MatriceRow[] = [
 		{ libelle: '4×1', valeurs: [4, 8, 12, 16, 20] },
@@ -1054,7 +1054,7 @@
 		if (state.matriceRisqueRows && Array.isArray(state.matriceRisqueRows) && state.matriceRisqueRows.length > 0) {
 			const rows = state.matriceRisqueRows as MatriceRow[];
 			if (rows.every((r) => r && typeof r.libelle === 'string' && Array.isArray(r.valeurs))) {
-				matriceRisqueRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? 'bg-white text-black' }));
+				matriceRisqueRows = rows.map((r) => ({ libelle: r.libelle, valeurs: [...r.valeurs] }));
 			}
 		}
 		// Tableau PTR (Plan de Traitement des Risques)
@@ -1140,20 +1140,35 @@
 		return (row as Row & { bgColor?: string }).bgColor ?? getFrequenceDefBg(row.definition ?? '');
 	}
 
-	function getMatriceCellBg(valeur: number): string {
-		if (valeur < 20) {
-			return 'bg-green-400 text-black';
-		}
-		if (valeur >= 20 && valeur < 36) {
-			return 'bg-yellow-300 text-black';
-		}
-		if (valeur >= 36 && valeur < 64) {
-			return 'bg-orange-400 text-black';
-		}
-		return 'bg-red-500 text-black';
+	/** Parse "signification" (ex: "[1 – 20[" or "[64 – 120]") into min, max and whether max is inclusive. */
+	function parseInterval(signification: string): { min: number; max: number; maxInclusive: boolean } | null {
+		if (!signification || typeof signification !== 'string') return null;
+		const match = signification.match(/(\d+)\s*[–\-]\s*(\d+)/);
+		if (!match) return null;
+		const min = parseInt(match[1], 10);
+		const max = parseInt(match[2], 10);
+		const maxInclusive = /\]\s*$/.test(signification.trim());
+		return { min, max, maxInclusive };
 	}
-	function getMatriceRowBg(row: MatriceRow): string {
-		return row.bgColor ?? 'bg-white text-black';
+	/** Couleur d'une cellule de la matrice selon les intervalles du tableau Fréquence / Probabilité d'occurrence. */
+	function getMatriceCellBgFromFrequence(valeur: number): string {
+		const rows = frequenceRisqueRows as (Row & { bgColor?: string })[];
+		const num = Number(valeur);
+		if (rows.length === 0) return 'bg-white text-black';
+		const intervals = rows
+			.map((r) => {
+				const parsed = parseInterval(r.signification ?? '');
+				return parsed ? { ...parsed, row: r } : null;
+			})
+			.filter(Boolean) as { min: number; max: number; maxInclusive: boolean; row: Row & { bgColor?: string } }[];
+		intervals.sort((a, b) => a.min - b.min);
+		for (const it of intervals) {
+			const inRange = it.maxInclusive
+				? num >= it.min && num <= it.max
+				: num >= it.min && num < it.max;
+			if (inRange) return getFrequenceRowBg(it.row);
+		}
+		return 'bg-white text-black';
 	}
 
 	// Fonctions pour ajouter/supprimer des lignes
@@ -1356,25 +1371,36 @@
 		frequenceRisqueRows = supprimerLigneAt(frequenceRisqueRows, index);
 	}
 
+	function getMatriceColumnCount(): number {
+		return matriceRisqueRows[0]?.valeurs?.length ?? 5;
+	}
 	function defaultMatriceRow(): MatriceRow {
-		return { libelle: '', valeurs: [0, 0, 0, 0, 0], bgColor: 'bg-white text-black' };
+		return { libelle: '', valeurs: Array(getMatriceColumnCount()).fill(0) };
 	}
 	function insererMatriceAvant(index: number) {
-		const def = matriceRisqueRows[index]?.valeurs?.length ?? 5;
-		const newRow: MatriceRow = { libelle: '', valeurs: Array(def).fill(0), bgColor: 'bg-white text-black' };
-		matriceRisqueRows = insererLigneAvant(matriceRisqueRows, index, newRow);
+		const n = getMatriceColumnCount();
+		matriceRisqueRows = insererLigneAvant(matriceRisqueRows, index, { libelle: '', valeurs: Array(n).fill(0) });
 	}
 	function insererMatriceApres(index: number) {
-		const def = matriceRisqueRows[index]?.valeurs?.length ?? 5;
-		const newRow: MatriceRow = { libelle: '', valeurs: Array(def).fill(0), bgColor: 'bg-white text-black' };
-		matriceRisqueRows = insererLigneApres(matriceRisqueRows, index, newRow);
+		const n = getMatriceColumnCount();
+		matriceRisqueRows = insererLigneApres(matriceRisqueRows, index, { libelle: '', valeurs: Array(n).fill(0) });
 	}
 	function ajouterMatrice() {
-		const def = matriceRisqueRows[0]?.valeurs?.length ?? 5;
-		matriceRisqueRows = [...matriceRisqueRows, { libelle: '', valeurs: Array(def).fill(0), bgColor: 'bg-white text-black' }];
+		const n = getMatriceColumnCount();
+		matriceRisqueRows = [...matriceRisqueRows, { libelle: '', valeurs: Array(n).fill(0) }];
 	}
 	function supprimerMatrice(index: number) {
 		matriceRisqueRows = matriceRisqueRows.filter((_, i) => i !== index);
+	}
+	function ajouterColonneMatrice() {
+		matriceRisqueRows = matriceRisqueRows.map((r) => ({ ...r, valeurs: [...r.valeurs, 0] }));
+	}
+	function supprimerColonneMatrice(colIndex: number) {
+		if (getMatriceColumnCount() <= 1) return;
+		matriceRisqueRows = matriceRisqueRows.map((r) => ({
+			...r,
+			valeurs: r.valeurs.filter((_, j) => j !== colIndex)
+		}));
 	}
 
 	// Fonctions pour PTR (addRow/deleteRow existantes, mais ajouter les variantes)
@@ -3648,7 +3674,6 @@
 							probaRows = probaRows.map((r) => ({ ...r, bgColor: r.bgColor ?? getProbaDefBg(r.definition) }));
 							impactRows = impactRows.map((r) => ({ ...r, bgColor: r.bgColor ?? getImpactDefBg(r.definition) }));
 							frequenceRisqueRows = frequenceRisqueRows.map((r) => ({ ...r, bgColor: (r as Row & { bgColor?: string }).bgColor ?? getFrequenceDefBg(r.definition ?? '') }));
-							matriceRisqueRows = matriceRisqueRows.map((r) => ({ ...r, bgColor: r.bgColor ?? 'bg-white text-black' }));
 						}
 						editModeAideRisque = !editModeAideRisque;
 					}}
@@ -3864,7 +3889,7 @@
 				{/if}
 			</section>
 
-			<!-- Tableau 3.2 – Matrice de vraisemblance du risque -->
+			<!-- Tableau 3.2 – Matrice de vraisemblance du risque (couleurs selon intervalles du tableau 3.1) -->
 			<section class="space-y-3">
 				<h3 class="text-lg font-semibold text-gray-900">
 					Tableau 3.2&nbsp;: Matrice de vraisemblance du risque
@@ -3876,11 +3901,15 @@
 								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">
 									Impact du risque × Criticité de l'actif \ Vraisemblance du risque
 								</th>
-								{#each [1, 2, 3, 4, 5] as col}
-									<th class="px-4 py-2 text-sm font-semibold border border-black bg-gray-100">{col}</th>
+								{#each Array.from({ length: getMatriceColumnCount() }, (_, i) => i) as colIndex}
+									<th class="px-4 py-2 text-sm font-semibold border border-black bg-gray-100 relative">
+										{colIndex + 1}
+										{#if editModeAideRisque && getMatriceColumnCount() > 1}
+											<button type="button" class="absolute -top-0.5 -right-0.5 w-5 h-5 text-[10px] bg-red-600 text-white rounded-full hover:bg-red-700 leading-none" title="Supprimer cette colonne" on:click={() => supprimerColonneMatrice(colIndex)}>✕</button>
+										{/if}
+									</th>
 								{/each}
 								{#if editModeAideRisque}
-									<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Couleur</th>
 									<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Actions</th>
 								{/if}
 							</tr>
@@ -3888,22 +3917,15 @@
 						<tbody>
 							{#each matriceRisqueRows as row, i}
 								<tr class="border border-black">
-									<td class={`px-2 py-2 text-sm border border-black ${getMatriceRowBg(row)}`}>
-										<input class="w-20 border border-gray-300 rounded px-1 py-0.5 text-sm bg-transparent" type="text" bind:value={matriceRisqueRows[i].libelle} />
+									<td class="px-2 py-2 text-sm border border-black bg-white">
+										<input class="w-20 border border-gray-300 rounded px-1 py-0.5 text-sm" type="text" bind:value={matriceRisqueRows[i].libelle} />
 									</td>
 									{#each row.valeurs as v, j}
-										<td class={`px-2 py-2 text-xs text-center border border-black ${getMatriceCellBg(v)}`}>
+										<td class={`px-2 py-2 text-xs text-center border border-black ${getMatriceCellBgFromFrequence(v)}`}>
 											<input class="w-16 text-center border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent" type="number" bind:value={matriceRisqueRows[i].valeurs[j]} />
 										</td>
 									{/each}
 									{#if editModeAideRisque}
-										<td class="px-2 py-2 border border-black bg-gray-100">
-											<select class="w-full text-xs rounded border border-gray-300 px-1 py-1" bind:value={matriceRisqueRows[i].bgColor} on:change={() => saveCustomMethodState()}>
-												{#each AIDE_RISQUE_COULEURS as c}
-													<option value={c}>{c.replace('bg-', '').replace(' text-', ' / ')}</option>
-												{/each}
-											</select>
-										</td>
 										<td class="px-4 py-2 border border-black bg-gray-100 text-center">
 											<div class="flex gap-1 justify-center flex-wrap">
 												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererMatriceAvant(i)} title="Ajouter avant">↑+</button>
@@ -3918,16 +3940,19 @@
 					</table>
 				</div>
 				{#if editModeAideRisque}
-					<div class="flex gap-2 mt-2">
+					<div class="flex gap-2 mt-2 flex-wrap">
 						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterMatrice}>+ Ajouter une ligne</button>
 						{#if matriceRisqueRows.length > 1}
 							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerMatrice(matriceRisqueRows.length - 1)}>- Supprimer la dernière ligne</button>
 						{/if}
+						<button type="button" class="px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700" on:click={ajouterColonneMatrice}>+ Ajouter une colonne</button>
+						{#if getMatriceColumnCount() > 1}
+							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerColonneMatrice(getMatriceColumnCount() - 1)}>- Supprimer la dernière colonne</button>
+						{/if}
 					</div>
 				{/if}
 				<p class="text-xs text-gray-600">
-					Les zones vertes correspondent à la plage [1–20[ (Risque Faible), les zones jaunes à
-					[20–36[, les zones orange à [36–64[ et les zones rouges à [64–120] (Risque Extrême).
+					Les couleurs des cellules sont déterminées par les intervalles du tableau «&nbsp;Fréquence / probabilité d'occurrence&nbsp;» (Tableau 3.1). Modifiez ces intervalles pour que la matrice reflète vos seuils.
 				</p>
 			</section>
 		</section>
