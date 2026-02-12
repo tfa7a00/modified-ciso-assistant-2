@@ -817,6 +817,7 @@
 		definition: string;
 		frequence: string;
 		historique: string;
+		bgColor?: string;
 	};
 
 	let probaRows: ProbaRow[] = [
@@ -859,6 +860,7 @@
 		reputation: string;
 		parties_prenantes: string;
 		reglementaire: string;
+		bgColor?: string;
 	};
 
 	let impactRows: ImpactRow[] = [
@@ -920,7 +922,7 @@
 		{ echelle: '4', definition: 'Risque Extrême', signification: '[64 – 120]' }
 	];
 
-	type MatriceRow = { libelle: string; valeurs: number[] };
+	type MatriceRow = { libelle: string; valeurs: number[]; bgColor?: string };
 
 	let matriceRisqueRows: MatriceRow[] = [
 		{ libelle: '4×1', valeurs: [4, 8, 12, 16, 20] },
@@ -929,6 +931,17 @@
 		{ libelle: '4×4', valeurs: [16, 32, 48, 64, 80] },
 		{ libelle: '4×5', valeurs: [20, 40, 60, 80, 100] },
 		{ libelle: '4×6', valeurs: [24, 48, 72, 96, 120] }
+	];
+
+	let editModeAideRisque = false;
+	const AIDE_RISQUE_COULEURS = [
+		'bg-green-400 text-black',
+		'bg-yellow-300 text-black',
+		'bg-orange-400 text-black',
+		'bg-red-500 text-black',
+		'bg-red-700 text-black',
+		'bg-red-900 text-white',
+		'bg-white text-black'
 	];
 
 	/** Full state for server/localStorage: all table rows + UI state */
@@ -1027,18 +1040,21 @@
 			categoriesActifsRows = state.categoriesActifsRows as string[];
 		}
 		if (state.probaRows && Array.isArray(state.probaRows) && state.probaRows.length > 0) {
-			probaRows = state.probaRows as ProbaRow[];
+			const rows = state.probaRows as ProbaRow[];
+			probaRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getProbaDefBg(r.definition) }));
 		}
 		if (state.impactRows && Array.isArray(state.impactRows) && state.impactRows.length > 0) {
-			impactRows = state.impactRows as ImpactRow[];
+			const rows = state.impactRows as ImpactRow[];
+			impactRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getImpactDefBg(r.definition) }));
 		}
 		if (state.frequenceRisqueRows && Array.isArray(state.frequenceRisqueRows) && state.frequenceRisqueRows.length > 0) {
-			frequenceRisqueRows = state.frequenceRisqueRows as Row[];
+			const rows = state.frequenceRisqueRows as (Row & { bgColor?: string })[];
+			frequenceRisqueRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getFrequenceDefBg(r.definition ?? '') }));
 		}
 		if (state.matriceRisqueRows && Array.isArray(state.matriceRisqueRows) && state.matriceRisqueRows.length > 0) {
 			const rows = state.matriceRisqueRows as MatriceRow[];
 			if (rows.every((r) => r && typeof r.libelle === 'string' && Array.isArray(r.valeurs))) {
-				matriceRisqueRows = rows;
+				matriceRisqueRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? 'bg-white text-black' }));
 			}
 		}
 		// Tableau PTR (Plan de Traitement des Risques)
@@ -1080,6 +1096,9 @@
 				return 'bg-white text-black';
 		}
 	}
+	function getProbaRowBg(row: ProbaRow): string {
+		return row.bgColor ?? getProbaDefBg(row.definition);
+	}
 
 	function getImpactDefBg(definition: string): string {
 		switch (definition) {
@@ -1099,6 +1118,9 @@
 				return 'bg-white text-black';
 		}
 	}
+	function getImpactRowBg(row: ImpactRow): string {
+		return row.bgColor ?? getImpactDefBg(row.definition);
+	}
 
 	function getFrequenceDefBg(definition: string): string {
 		switch (definition) {
@@ -1114,6 +1136,9 @@
 				return 'bg-white text-black';
 		}
 	}
+	function getFrequenceRowBg(row: Row): string {
+		return (row as Row & { bgColor?: string }).bgColor ?? getFrequenceDefBg(row.definition ?? '');
+	}
 
 	function getMatriceCellBg(valeur: number): string {
 		if (valeur < 20) {
@@ -1126,6 +1151,9 @@
 			return 'bg-orange-400 text-black';
 		}
 		return 'bg-red-500 text-black';
+	}
+	function getMatriceRowBg(row: MatriceRow): string {
+		return row.bgColor ?? 'bg-white text-black';
 	}
 
 	// Fonctions pour ajouter/supprimer des lignes
@@ -1212,38 +1240,34 @@
 	}
 
 	// Fonctions pour tableaux Aide-Risque (Probabilité, Impact)
+	function defaultProbaRow(): ProbaRow {
+		return { echelle: '', definition: '', frequence: '', historique: '', bgColor: 'bg-white text-black' };
+	}
 	function insererProbaAvant(index: number) {
-		const defaultProba: ProbaRow = { echelle: '', definition: '', frequence: '', historique: '' };
-		probaRows = insererLigneAvant(probaRows, index, defaultProba);
+		probaRows = insererLigneAvant(probaRows, index, defaultProbaRow());
 	}
-
 	function insererProbaApres(index: number) {
-		const defaultProba: ProbaRow = { echelle: '', definition: '', frequence: '', historique: '' };
-		probaRows = insererLigneApres(probaRows, index, defaultProba);
+		probaRows = insererLigneApres(probaRows, index, defaultProbaRow());
 	}
-
 	function ajouterProba() {
-		const defaultProba: ProbaRow = { echelle: '', definition: '', frequence: '', historique: '' };
-		probaRows = [...probaRows, defaultProba];
+		probaRows = [...probaRows, defaultProbaRow()];
 	}
 
 	function supprimerProba(index: number) {
 		probaRows = supprimerLigneAt(probaRows, index);
 	}
 
+	function defaultImpactRow(): ImpactRow {
+		return { echelle: '', definition: '', financier: '', reputation: '', parties_prenantes: '', reglementaire: '', bgColor: 'bg-white text-black' };
+	}
 	function insererImpactAvant(index: number) {
-		const defaultImpact: ImpactRow = { echelle: '', definition: '', financier: '', reputation: '', parties_prenantes: '', reglementaire: '' };
-		impactRows = insererLigneAvant(impactRows, index, defaultImpact);
+		impactRows = insererLigneAvant(impactRows, index, defaultImpactRow());
 	}
-
 	function insererImpactApres(index: number) {
-		const defaultImpact: ImpactRow = { echelle: '', definition: '', financier: '', reputation: '', parties_prenantes: '', reglementaire: '' };
-		impactRows = insererLigneApres(impactRows, index, defaultImpact);
+		impactRows = insererLigneApres(impactRows, index, defaultImpactRow());
 	}
-
 	function ajouterImpact() {
-		const defaultImpact: ImpactRow = { echelle: '', definition: '', financier: '', reputation: '', parties_prenantes: '', reglementaire: '' };
-		impactRows = [...impactRows, defaultImpact];
+		impactRows = [...impactRows, defaultImpactRow()];
 	}
 
 	// Fonctions pour Échelle-PTR (Periodicité / Complexité / TypeAction / Priorité)
@@ -1314,6 +1338,43 @@
 
 	function supprimerImpact(index: number) {
 		impactRows = supprimerLigneAt(impactRows, index);
+	}
+
+	function defaultFrequenceRow(): Row & { bgColor?: string } {
+		return { echelle: '', definition: '', signification: '', bgColor: 'bg-white text-black' };
+	}
+	function insererFrequenceAvant(index: number) {
+		frequenceRisqueRows = insererLigneAvant(frequenceRisqueRows, index, defaultFrequenceRow());
+	}
+	function insererFrequenceApres(index: number) {
+		frequenceRisqueRows = insererLigneApres(frequenceRisqueRows, index, defaultFrequenceRow());
+	}
+	function ajouterFrequence() {
+		frequenceRisqueRows = [...frequenceRisqueRows, defaultFrequenceRow()];
+	}
+	function supprimerFrequence(index: number) {
+		frequenceRisqueRows = supprimerLigneAt(frequenceRisqueRows, index);
+	}
+
+	function defaultMatriceRow(): MatriceRow {
+		return { libelle: '', valeurs: [0, 0, 0, 0, 0], bgColor: 'bg-white text-black' };
+	}
+	function insererMatriceAvant(index: number) {
+		const def = matriceRisqueRows[index]?.valeurs?.length ?? 5;
+		const newRow: MatriceRow = { libelle: '', valeurs: Array(def).fill(0), bgColor: 'bg-white text-black' };
+		matriceRisqueRows = insererLigneAvant(matriceRisqueRows, index, newRow);
+	}
+	function insererMatriceApres(index: number) {
+		const def = matriceRisqueRows[index]?.valeurs?.length ?? 5;
+		const newRow: MatriceRow = { libelle: '', valeurs: Array(def).fill(0), bgColor: 'bg-white text-black' };
+		matriceRisqueRows = insererLigneApres(matriceRisqueRows, index, newRow);
+	}
+	function ajouterMatrice() {
+		const def = matriceRisqueRows[0]?.valeurs?.length ?? 5;
+		matriceRisqueRows = [...matriceRisqueRows, { libelle: '', valeurs: Array(def).fill(0), bgColor: 'bg-white text-black' }];
+	}
+	function supprimerMatrice(index: number) {
+		matriceRisqueRows = matriceRisqueRows.filter((_, i) => i !== index);
 	}
 
 	// Fonctions pour PTR (addRow/deleteRow existantes, mais ajouter les variantes)
@@ -3575,7 +3636,26 @@
 		</section>
 	{:else if activeSection === 'aide-risque'}
 		<section class="space-y-8">
-			<h2 class="text-xl font-semibold text-gray-900">Aide-Risque</h2>
+			<div class="flex items-center justify-between gap-4 flex-wrap">
+				<h2 class="text-xl font-semibold text-gray-900">Aide-Risque</h2>
+				<button
+					type="button"
+					class="px-3 py-1.5 text-sm rounded {editModeAideRisque
+						? 'bg-amber-600 text-white border border-amber-600'
+						: 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'}"
+					on:click={() => {
+						if (!editModeAideRisque) {
+							probaRows = probaRows.map((r) => ({ ...r, bgColor: r.bgColor ?? getProbaDefBg(r.definition) }));
+							impactRows = impactRows.map((r) => ({ ...r, bgColor: r.bgColor ?? getImpactDefBg(r.definition) }));
+							frequenceRisqueRows = frequenceRisqueRows.map((r) => ({ ...r, bgColor: (r as Row & { bgColor?: string }).bgColor ?? getFrequenceDefBg(r.definition ?? '') }));
+							matriceRisqueRows = matriceRisqueRows.map((r) => ({ ...r, bgColor: r.bgColor ?? 'bg-white text-black' }));
+						}
+						editModeAideRisque = !editModeAideRisque;
+					}}
+				>
+					{editModeAideRisque ? 'Terminer la modification' : 'Modifier'}
+				</button>
+			</div>
 
 			<!-- Tableau 1 – Échelle de probabilité / fréquence -->
 			<section class="space-y-3">
@@ -3586,99 +3666,60 @@
 					<table class="min-w-full text-sm border-collapse border border-black">
 						<thead>
 							<tr>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
-								>
-									Échelle
-								</th>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
-								>
-									Définition
-								</th>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
-								>
-									Fréquence
-								</th>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
-								>
-									Désignation de la probabilité
-								</th>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Actions</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Échelle</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Définition</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Fréquence</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Désignation de la probabilité</th>
+								{#if editModeAideRisque}
+									<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Couleur</th>
+									<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Actions</th>
+								{/if}
 							</tr>
 						</thead>
 						<tbody>
 							{#each probaRows as row, i}
 								<tr class="border border-black">
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<input
-											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
-											type="text"
-											bind:value={probaRows[i].echelle}
-										/>
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={probaRows[i].echelle} />
 									</td>
-									<td
-										class={`px-4 py-2 border border-black ${getProbaDefBg(row.definition)}`}
-									>
-										<input
-											class="w-full border border-transparent bg-transparent font-semibold"
-											type="text"
-											bind:value={probaRows[i].definition}
-										/>
+									<td class={`px-4 py-2 border border-black ${getProbaRowBg(row)}`}>
+										<input class="w-full border border-transparent bg-transparent font-semibold" type="text" bind:value={probaRows[i].definition} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
-										<textarea
-											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]"
-											bind:value={probaRows[i].frequence}
-										></textarea>
+										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]" bind:value={probaRows[i].frequence}></textarea>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
-										<textarea
-											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]"
-											bind:value={probaRows[i].historique}
-										></textarea>
+										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]" bind:value={probaRows[i].historique}></textarea>
 									</td>
-									<td class="px-4 py-2 border border-black bg-gray-100 text-center">
-										<div class="flex gap-1 justify-center">
-											<button
-												type="button"
-												class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
-												on:click={() => insererProbaAvant(i)}
-												title="Ajouter avant"
-											>
-												↑+
-											</button>
-											<button
-												type="button"
-												class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
-												on:click={() => insererProbaApres(i)}
-												title="Ajouter après"
-											>
-												↓+
-											</button>
-											<button
-												type="button"
-												class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700"
-												on:click={() => supprimerProba(i)}
-												title="Supprimer"
-											>
-												✕
-											</button>
-										</div>
-									</td>
+									{#if editModeAideRisque}
+										<td class="px-2 py-2 border border-black bg-gray-100">
+											<select class="w-full text-xs rounded border border-gray-300 px-1 py-1" bind:value={probaRows[i].bgColor} on:change={() => saveCustomMethodState()}>
+												{#each AIDE_RISQUE_COULEURS as c}
+													<option value={c}>{c.replace('bg-', '').replace(' text-', ' / ')}</option>
+												{/each}
+											</select>
+										</td>
+										<td class="px-4 py-2 border border-black bg-gray-100 text-center">
+											<div class="flex gap-1 justify-center flex-wrap">
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererProbaAvant(i)} title="Ajouter avant">↑+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererProbaApres(i)} title="Ajouter après">↓+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerProba(i)} title="Supprimer" disabled={probaRows.length <= 1}>✕</button>
+											</div>
+										</td>
+									{/if}
 								</tr>
 							{/each}
 						</tbody>
 					</table>
 				</div>
+				{#if editModeAideRisque}
 					<div class="flex gap-2 mt-2">
 						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterProba}>+ Ajouter une ligne</button>
 						{#if probaRows.length > 1}
 							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerProba(probaRows.length - 1)}>- Supprimer la dernière ligne</button>
 						{/if}
 					</div>
+				{/if}
 			</section>
 
 			<!-- Tableau 2 – Échelle d'impact -->
@@ -3688,87 +3729,68 @@
 					<table class="min-w-full text-sm border-collapse border border-black">
 						<thead>
 							<tr>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
-								>
-									Échelle
-								</th>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
-								>
-									Définition
-								</th>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
-								>
-									Financier
-								</th>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
-								>
-									Réputation
-								</th>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
-								>
-									Parties prenantes
-								</th>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
-								>
-									Réglementaire
-								</th>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Actions</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Échelle</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Définition</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Financier</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Réputation</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Parties prenantes</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Réglementaire</th>
+								{#if editModeAideRisque}
+									<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Couleur</th>
+									<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Actions</th>
+								{/if}
 							</tr>
 						</thead>
 						<tbody>
 							{#each impactRows as row, i}
 								<tr class="border border-black">
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<input
-											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
-											type="text"
-											bind:value={impactRows[i].echelle}
-										/>
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={impactRows[i].echelle} />
 									</td>
-									<td
-										class={`px-4 py-2 border border-black ${getImpactDefBg(row.definition)}`}
-									>
-										<input
-											class="w-full border border-transparent bg-transparent font-semibold"
-											type="text"
-											bind:value={impactRows[i].definition}
-										/>
+									<td class={`px-4 py-2 border border-black ${getImpactRowBg(row)}`}>
+										<input class="w-full border border-transparent bg-transparent font-semibold" type="text" bind:value={impactRows[i].definition} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
-										<textarea
-											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]"
-											bind:value={impactRows[i].financier}
-										></textarea>
+										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]" bind:value={impactRows[i].financier}></textarea>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
-										<textarea
-											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]"
-											bind:value={impactRows[i].reputation}
-										></textarea>
+										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]" bind:value={impactRows[i].reputation}></textarea>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
-										<textarea
-											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]"
-											bind:value={impactRows[i].parties_prenantes}
-										></textarea>
+										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]" bind:value={impactRows[i].parties_prenantes}></textarea>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
-										<textarea
-											class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]"
-											bind:value={impactRows[i].reglementaire}
-										></textarea>
+										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]" bind:value={impactRows[i].reglementaire}></textarea>
 									</td>
+									{#if editModeAideRisque}
+										<td class="px-2 py-2 border border-black bg-gray-100">
+											<select class="w-full text-xs rounded border border-gray-300 px-1 py-1" bind:value={impactRows[i].bgColor} on:change={() => saveCustomMethodState()}>
+												{#each AIDE_RISQUE_COULEURS as c}
+													<option value={c}>{c.replace('bg-', '').replace(' text-', ' / ')}</option>
+												{/each}
+											</select>
+										</td>
+										<td class="px-4 py-2 border border-black bg-gray-100 text-center">
+											<div class="flex gap-1 justify-center flex-wrap">
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererImpactAvant(i)} title="Ajouter avant">↑+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererImpactApres(i)} title="Ajouter après">↓+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerImpact(i)} title="Supprimer" disabled={impactRows.length <= 1}>✕</button>
+											</div>
+										</td>
+									{/if}
 								</tr>
 							{/each}
 						</tbody>
 					</table>
 				</div>
+				{#if editModeAideRisque}
+					<div class="flex gap-2 mt-2">
+						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterImpact}>+ Ajouter une ligne</button>
+						{#if impactRows.length > 1}
+							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerImpact(impactRows.length - 1)}>- Supprimer la dernière ligne</button>
+						{/if}
+					</div>
+				{/if}
 				<p class="text-xs text-gray-600">
 					Les mots‑clés <strong>Financier</strong>, <strong>Réputation</strong>,
 					<strong>Parties prenantes</strong> et <strong>Réglementaire</strong> doivent être
@@ -3785,59 +3807,61 @@
 					<table class="min-w-full text-sm border-collapse border border-black">
 						<thead>
 							<tr>
-								<th colspan="3" class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">
+								<th colspan={editModeAideRisque ? 5 : 3} class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">
 									Fréquence / Probabilité d'occurrence
 								</th>
 							</tr>
 							<tr>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black"
-								>
-									Échelle
-								</th>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black"
-								>
-									Définition
-								</th>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black"
-								>
-									Signification
-								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black">Échelle</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black">Définition</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black">Signification</th>
+								{#if editModeAideRisque}
+									<th class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black">Couleur</th>
+									<th class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black">Actions</th>
+								{/if}
 							</tr>
 						</thead>
 						<tbody>
 							{#each frequenceRisqueRows as row, i}
 								<tr class="border border-black">
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<input
-											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
-											type="text"
-											bind:value={frequenceRisqueRows[i].echelle}
-										/>
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={frequenceRisqueRows[i].echelle} />
 									</td>
-									<td
-										class={`px-4 py-2 border border-black ${getFrequenceDefBg(row.definition)}`}
-									>
-										<input
-											class="w-full border border-transparent bg-transparent font-semibold"
-											type="text"
-											bind:value={frequenceRisqueRows[i].definition}
-										/>
+									<td class={`px-4 py-2 border border-black ${getFrequenceRowBg(row)}`}>
+										<input class="w-full border border-transparent bg-transparent font-semibold" type="text" bind:value={frequenceRisqueRows[i].definition} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<input
-											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
-											type="text"
-											bind:value={frequenceRisqueRows[i].signification}
-										/>
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={frequenceRisqueRows[i].signification} />
 									</td>
+									{#if editModeAideRisque}
+										<td class="px-2 py-2 border border-black bg-gray-100">
+											<select class="w-full text-xs rounded border border-gray-300 px-1 py-1" bind:value={(frequenceRisqueRows[i] as Row & { bgColor?: string }).bgColor} on:change={() => saveCustomMethodState()}>
+												{#each AIDE_RISQUE_COULEURS as c}
+													<option value={c}>{c.replace('bg-', '').replace(' text-', ' / ')}</option>
+												{/each}
+											</select>
+										</td>
+										<td class="px-4 py-2 border border-black bg-gray-100 text-center">
+											<div class="flex gap-1 justify-center flex-wrap">
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererFrequenceAvant(i)} title="Ajouter avant">↑+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererFrequenceApres(i)} title="Ajouter après">↓+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerFrequence(i)} title="Supprimer" disabled={frequenceRisqueRows.length <= 1}>✕</button>
+											</div>
+										</td>
+									{/if}
 								</tr>
 							{/each}
 						</tbody>
 					</table>
 				</div>
+				{#if editModeAideRisque}
+					<div class="flex gap-2 mt-2">
+						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterFrequence}>+ Ajouter une ligne</button>
+						{#if frequenceRisqueRows.length > 1}
+							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerFrequence(frequenceRisqueRows.length - 1)}>- Supprimer la dernière ligne</button>
+						{/if}
+					</div>
+				{/if}
 			</section>
 
 			<!-- Tableau 3.2 – Matrice de vraisemblance du risque -->
@@ -3849,44 +3873,58 @@
 					<table class="min-w-full text-sm border-collapse border border-black">
 						<thead>
 							<tr>
-								<th
-									class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black"
-								>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">
 									Impact du risque × Criticité de l'actif \ Vraisemblance du risque
 								</th>
 								{#each [1, 2, 3, 4, 5] as col}
-									<th class="px-4 py-2 text-sm font-semibold border border-black bg-gray-100">
-										{col}
-									</th>
+									<th class="px-4 py-2 text-sm font-semibold border border-black bg-gray-100">{col}</th>
 								{/each}
+								{#if editModeAideRisque}
+									<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Couleur</th>
+									<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Actions</th>
+								{/if}
 							</tr>
 						</thead>
 						<tbody>
 							{#each matriceRisqueRows as row, i}
 								<tr class="border border-black">
-									<td class="px-2 py-2 text-sm border border-black bg-white">
-										<input
-											class="w-20 border border-gray-300 rounded px-1 py-0.5 text-sm"
-											type="text"
-											bind:value={matriceRisqueRows[i].libelle}
-										/>
+									<td class={`px-2 py-2 text-sm border border-black ${getMatriceRowBg(row)}`}>
+										<input class="w-20 border border-gray-300 rounded px-1 py-0.5 text-sm bg-transparent" type="text" bind:value={matriceRisqueRows[i].libelle} />
 									</td>
 									{#each row.valeurs as v, j}
-										<td
-											class={`px-2 py-2 text-xs text-center border border-black ${getMatriceCellBg(v)}`}
-										>
-											<input
-												class="w-16 text-center border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent"
-												type="number"
-												bind:value={matriceRisqueRows[i].valeurs[j]}
-											/>
+										<td class={`px-2 py-2 text-xs text-center border border-black ${getMatriceCellBg(v)}`}>
+											<input class="w-16 text-center border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent" type="number" bind:value={matriceRisqueRows[i].valeurs[j]} />
 										</td>
 									{/each}
+									{#if editModeAideRisque}
+										<td class="px-2 py-2 border border-black bg-gray-100">
+											<select class="w-full text-xs rounded border border-gray-300 px-1 py-1" bind:value={matriceRisqueRows[i].bgColor} on:change={() => saveCustomMethodState()}>
+												{#each AIDE_RISQUE_COULEURS as c}
+													<option value={c}>{c.replace('bg-', '').replace(' text-', ' / ')}</option>
+												{/each}
+											</select>
+										</td>
+										<td class="px-4 py-2 border border-black bg-gray-100 text-center">
+											<div class="flex gap-1 justify-center flex-wrap">
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererMatriceAvant(i)} title="Ajouter avant">↑+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererMatriceApres(i)} title="Ajouter après">↓+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerMatrice(i)} title="Supprimer" disabled={matriceRisqueRows.length <= 1}>✕</button>
+											</div>
+										</td>
+									{/if}
 								</tr>
 							{/each}
 						</tbody>
 					</table>
 				</div>
+				{#if editModeAideRisque}
+					<div class="flex gap-2 mt-2">
+						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterMatrice}>+ Ajouter une ligne</button>
+						{#if matriceRisqueRows.length > 1}
+							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerMatrice(matriceRisqueRows.length - 1)}>- Supprimer la dernière ligne</button>
+						{/if}
+					</div>
+				{/if}
 				<p class="text-xs text-gray-600">
 					Les zones vertes correspondent à la plage [1–20[ (Risque Faible), les zones jaunes à
 					[20–36[, les zones orange à [36–64[ et les zones rouges à [64–120] (Risque Extrême).
