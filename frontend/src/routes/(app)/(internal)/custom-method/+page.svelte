@@ -2154,13 +2154,18 @@
 										placeholder="Description de l'actif..."
 									></textarea>
 								</td>
-								<!-- Catégorie de l'actif -->
+								<!-- Catégorie de l'actif – options issues du Tableau 2 (Catégories d'actifs) Aide-Classification -->
 								<td class="px-2 py-1 border border-black bg-white">
-									<input
+									<select
 										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
-										type="text"
 										bind:value={registreRows[i].categorie_actif}
-									/>
+										on:change={() => saveCustomMethodState()}
+									>
+										<option value="">--</option>
+										{#each categoriesActifsRows as categorie}
+											<option value={categorie}>{categorie || '(vide)'}</option>
+										{/each}
+									</select>
 								</td>
 								<!-- Type de l'actif -->
 								<td class="px-2 py-1 border border-black bg-white">
