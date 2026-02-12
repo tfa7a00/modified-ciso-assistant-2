@@ -2147,25 +2147,12 @@
 								</td>
 								<!-- Description de l'actif -->
 								<td class="px-2 py-1 border border-black bg-white min-h-[40px]">
-									{#if isEditing('registre', i, 'description_actif')}
-										<textarea
-											use:focusTextareaOnMount
-											class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs min-h-[40px]"
-											bind:value={registreRows[i].description_actif}
-											on:blur={stopEditing}
-											on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
-										></textarea>
-									{:else}
-										<div
-											role="button"
-											tabindex="0"
-											class="w-full px-1 py-0.5 text-xs prose prose-sm max-w-none prose-p:my-0.5 text-left border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[40px]"
-											on:click={() => startEditing('registre', i, 'description_actif')}
-											on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('registre', i, 'description_actif')) : null}
-										>
-											{@html (row.description_actif ?? '') || '<span class="text-gray-400">Cliquer pour éditer</span>'}
-										</div>
-									{/if}
+									<textarea
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs min-h-[40px] resize-y"
+										bind:value={registreRows[i].description_actif}
+										on:blur={() => saveCustomMethodState()}
+										placeholder="Description de l'actif..."
+									></textarea>
 								</td>
 								<!-- Catégorie de l'actif -->
 								<td class="px-2 py-1 border border-black bg-white">
@@ -2237,25 +2224,12 @@
 								</td>
 								<!-- Commentaire -->
 								<td class="px-2 py-1 border border-black bg-white min-h-[40px]">
-									{#if isEditing('registre', i, 'commentaire')}
-										<textarea
-											use:focusTextareaOnMount
-											class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs min-h-[40px]"
-											bind:value={registreRows[i].commentaire}
-											on:blur={stopEditing}
-											on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
-										></textarea>
-									{:else}
-										<div
-											role="button"
-											tabindex="0"
-											class="w-full px-1 py-0.5 text-xs prose prose-sm max-w-none prose-p:my-0.5 text-left border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[40px]"
-											on:click={() => startEditing('registre', i, 'commentaire')}
-											on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('registre', i, 'commentaire')) : null}
-										>
-											{@html (row.commentaire ?? '') || '<span class="text-gray-400">Cliquer pour éditer</span>'}
-										</div>
-									{/if}
+									<textarea
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs min-h-[40px] resize-y"
+										bind:value={registreRows[i].commentaire}
+										on:blur={() => saveCustomMethodState()}
+										placeholder="Commentaire..."
+									></textarea>
 								</td>
 							</tr>
 						{/each}
