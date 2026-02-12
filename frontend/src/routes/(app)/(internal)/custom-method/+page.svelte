@@ -3009,12 +3009,12 @@
 				{/if}
 				
 				<tbody>
-					<!-- Ligne séparateur famille de risques -->
+					<!-- En-tête sous-groupe 1 : Sinistres physiques / Evènements naturels / Perturbations dues aux rayonnements (codes DSI-R-SP-001 à SP-005) -->
 					<tr class="bg-teal-700">
-				<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">
-					1- Sinistres physiques / Evènements naturels / Perturbations dues aux rayonnements
-				</td>
-			</tr>
+						<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">
+							1 – Sinistres physiques / Evènements naturels / Perturbations dues aux rayonnements
+						</td>
+					</tr>
 			
 			<!-- Première ligne cartographie : données d'origine par défaut (DSI, Systèmes d'Information, …), chaque modification est sauvegardée immédiatement -->
 			<tr class="hover:bg-gray-50">
@@ -3304,6 +3304,41 @@
 					</tr>
 					
 					{#each Array.from({ length: 42 }, (_, k) => k + 2) as rowIndex}
+						{#if rowIndex === 5}
+							<tr class="bg-teal-700">
+								<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">2 – Perte de services essentiels</td>
+							</tr>
+						{/if}
+						{#if rowIndex === 11}
+							<tr class="bg-teal-700">
+								<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">3 – Compromission des informations</td>
+							</tr>
+						{/if}
+						{#if rowIndex === 25}
+							<tr class="bg-teal-700">
+								<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">4 – Compromission des fonctions</td>
+							</tr>
+						{/if}
+						{#if rowIndex === 32}
+							<tr class="bg-teal-700">
+								<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">5 – Acte illicite</td>
+							</tr>
+						{/if}
+						{#if rowIndex === 35}
+							<tr class="bg-teal-700">
+								<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">6 – Mise en production non maîtrisée</td>
+							</tr>
+						{/if}
+						{#if rowIndex === 38}
+							<tr class="bg-teal-700">
+								<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">7 – Conformité légale et réglementaire</td>
+							</tr>
+						{/if}
+						{#if rowIndex === 40}
+							<tr class="bg-teal-700">
+								<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">8 – Tiers</td>
+							</tr>
+						{/if}
 					<tr class="hover:bg-gray-50">
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4" bind:value={cartoRows[rowIndex].entite} on:blur={() => saveCustomMethodState()}></textarea>
