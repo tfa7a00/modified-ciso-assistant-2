@@ -606,7 +606,19 @@
 		disponibilite: string;
 		integrite: string;
 		confidentialite: string;
+		bgColor?: string;
 	};
+
+	const DIC_NIVEAU_COULEURS = [
+		'bg-green-500',
+		'bg-green-600',
+		'bg-yellow-400',
+		'bg-orange-500',
+		'bg-red-500',
+		'bg-red-600',
+		'bg-rose-900',
+		'bg-gray-500'
+	];
 
 	let dicNiveauxRows: DICNiveauRow[] = [
 		{
@@ -616,7 +628,8 @@
 			integrite:
 				"<span class='font-bold text-green-700'>La perte d'intégrité momentanée</span> des informations est acceptée, sous réserve qu'elle soit signalée et ne remette pas en cause le service fourni.",
 			confidentialite:
-				"<span class='font-bold text-green-700'>Public</span> : Information qui peut être rendue publique sans implication pour l'entité ou pour l'organisation."
+				"<span class='font-bold text-green-700'>Public</span> : Information qui peut être rendue publique sans implication pour l'entité ou pour l'organisation.",
+			bgColor: 'bg-green-500'
 		},
 		{
 			valeur: 'Moyen',
@@ -625,7 +638,8 @@
 			integrite:
 				"<span class='font-bold text-orange-700'>La perte d'intégrité tolérée si signalée</span> dans un délai suffisant pour ne pas avoir de conséquence grave sur le service fourni.",
 			confidentialite:
-				"<span class='font-bold text-orange-700'>Interne</span> : Information ayant vocation à demeurer au sein de l'organisation. Sa communication à l'extérieur de l'organisation ne peut se faire que sur autorisation."
+				"<span class='font-bold text-orange-700'>Interne</span> : Information ayant vocation à demeurer au sein de l'organisation. Sa communication à l'extérieur de l'organisation ne peut se faire que sur autorisation.",
+			bgColor: 'bg-orange-500'
 		},
 		{
 			valeur: 'Élevé',
@@ -634,7 +648,8 @@
 			integrite:
 				"Les informations <span class='font-bold text-red-700'>doivent rester intègres pendant la période d'utilisation</span> ; toute perte en dehors de cette période doit être signalée et justifiée.",
 			confidentialite:
-				"<span class='font-bold text-red-700'>Restreint</span> : Information qui aurait un impact dommageable sur l'organisation si elle était communiquée à des personnes non habilitées. Elle nécessite un accès limité à des personnes ou à un groupe d'utilisateurs bien défini."
+				"<span class='font-bold text-red-700'>Restreint</span> : Information qui aurait un impact dommageable sur l'organisation si elle était communiquée à des personnes non habilitées. Elle nécessite un accès limité à des personnes ou à un groupe d'utilisateurs bien défini.",
+			bgColor: 'bg-red-500'
 		},
 		{
 			valeur: 'Très élevé',
@@ -643,9 +658,71 @@
 			integrite:
 				"Les informations sont <span class='font-bold text-rose-900'>certifiées intègres</span> pendant toute leur période de validité.",
 			confidentialite:
-				"<span class='font-bold text-rose-900'>Confidentiel</span> : La divulgation de l'information aurait un impact majeur sur la SOCIETE si elle était communiquée à des personnes nommément désignées pour en connaître. Le circuit de l'information obéit à des règles très strictes."
+				"<span class='font-bold text-rose-900'>Confidentiel</span> : La divulgation de l'information aurait un impact majeur sur la SOCIETE si elle était communiquée à des personnes nommément désignées pour en connaître. Le circuit de l'information obéit à des règles très strictes.",
+			bgColor: 'bg-rose-900'
 		}
 	];
+
+	let editModeTable12 = false;
+
+	function getValeurBgDefault(valeur: string): string {
+		switch (valeur) {
+			case 'Faible':
+				return 'bg-green-500';
+			case 'Moyen':
+				return 'bg-orange-500';
+			case 'Élevé':
+				return 'bg-red-500';
+			case 'Très élevé':
+				return 'bg-rose-900';
+			default:
+				return 'bg-orange-500';
+		}
+	}
+
+	function ajouterNiveauDic() {
+		dicNiveauxRows = [
+			...dicNiveauxRows,
+			{
+				valeur: 'Nouveau',
+				disponibilite: '',
+				integrite: '',
+				confidentialite: '',
+				bgColor: 'bg-gray-500'
+			}
+		];
+		saveCustomMethodState();
+	}
+
+	function supprimerNiveauDic(index: number) {
+		if (dicNiveauxRows.length <= 1) return;
+		dicNiveauxRows = dicNiveauxRows.filter((_, i) => i !== index);
+		saveCustomMethodState();
+	}
+
+	function insererNiveauDicAvant(index: number) {
+		const def: DICNiveauRow = {
+			valeur: 'Nouveau',
+			disponibilite: '',
+			integrite: '',
+			confidentialite: '',
+			bgColor: 'bg-gray-500'
+		};
+		dicNiveauxRows = insererLigneAvant(dicNiveauxRows, index, def);
+		saveCustomMethodState();
+	}
+
+	function insererNiveauDicApres(index: number) {
+		const def: DICNiveauRow = {
+			valeur: 'Nouveau',
+			disponibilite: '',
+			integrite: '',
+			confidentialite: '',
+			bgColor: 'bg-gray-500'
+		};
+		dicNiveauxRows = insererLigneApres(dicNiveauxRows, index, def);
+		saveCustomMethodState();
+	}
 
 	let categoriesActifsRows: string[] = [
 		'Matériel informatique',
@@ -717,18 +794,9 @@
 	}
 
 	function getValeurBg(valeur: string): string {
-		switch (valeur) {
-			case 'Faible':
-				return 'bg-green-500';
-			case 'Moyen':
-				return 'bg-orange-500';
-			case 'Élevé':
-				return 'bg-red-500';
-			case 'Très élevé':
-				return 'bg-rose-900';
-			default:
-				return 'bg-orange-500';
-		}
+		const row = dicNiveauxRows.find((r) => r.valeur === valeur);
+		if (row?.bgColor) return row.bgColor;
+		return getValeurBgDefault(valeur);
 	}
 
 	// --- Aide-Risque : tableaux probabilité / impact / fréquence / matrice ---
@@ -934,7 +1002,11 @@
 			dicCriteriaRows = state.dicCriteriaRows as DICCriteriaRow[];
 		}
 		if (state.dicNiveauxRows && Array.isArray(state.dicNiveauxRows) && state.dicNiveauxRows.length > 0) {
-			dicNiveauxRows = state.dicNiveauxRows as DICNiveauRow[];
+			const rows = state.dicNiveauxRows as DICNiveauRow[];
+			dicNiveauxRows = rows.map((r) => ({
+				...r,
+				bgColor: r.bgColor || getValeurBgDefault(r.valeur)
+			}));
 		}
 		if (state.categoriesActifsRows && Array.isArray(state.categoriesActifsRows)) {
 			categoriesActifsRows = state.categoriesActifsRows as string[];
@@ -1302,61 +1374,26 @@
 	}
 
 	function getNiveauBesoinBg(niveau: string): string {
-		switch (niveau) {
-			case 'Faible':
-				return 'bg-green-500 text-white';
-			case 'Moyen':
-				return 'bg-yellow-400 text-black';
-			case 'Élevé':
-				return 'bg-orange-500 text-white';
-			case 'Très élevé':
-				return 'bg-red-600 text-white';
-			default:
-				return 'bg-white text-black';
-		}
+		const row = dicNiveauxRows.find((r) => r.valeur === niveau);
+		if (row?.bgColor) return `${row.bgColor} text-white`;
+		return 'bg-white text-black';
 	}
 
 	function calculerSensibilite(index: number) {
 		const row = registreRows[index];
 		const niveaux = [row.disponibilite, row.integrite, row.confidentialite];
-		
-		// Convertir les niveaux en valeurs numériques
-		const valeurs = niveaux.map((n) => {
-			switch (n) {
-				case 'Faible':
-					return 1;
-				case 'Moyen':
-					return 2;
-				case 'Élevé':
-					return 3;
-				case 'Très élevé':
-					return 4;
-				default:
-					return 0;
-			}
-		});
-
-		// Filtrer les valeurs non nulles
-		const valeursValides = valeurs.filter((v) => v > 0);
-		
-		if (valeursValides.length === 0) {
+		// Indices (0-based) selon l'ordre des niveaux dans dicNiveauxRows
+		const indices = niveaux
+			.map((n) => dicNiveauxRows.findIndex((r) => r.valeur === n))
+			.filter((i) => i >= 0);
+		if (indices.length === 0) {
 			registreRows[index].sensibilite = '';
 			return;
 		}
-
-		// Calculer la moyenne
-		const moyenne = valeursValides.reduce((acc, val) => acc + val, 0) / valeursValides.length;
-
-		// Convertir la moyenne en niveau
-		if (moyenne <= 1.5) {
-			registreRows[index].sensibilite = 'Faible';
-		} else if (moyenne <= 2.5) {
-			registreRows[index].sensibilite = 'Moyen';
-		} else if (moyenne <= 3.5) {
-			registreRows[index].sensibilite = 'Élevé';
-		} else {
-			registreRows[index].sensibilite = 'Très élevé';
-		}
+		const moyenne = indices.reduce((acc, val) => acc + val, 0) / indices.length;
+		const idx = Math.round(moyenne);
+		const clamped = Math.max(0, Math.min(idx, dicNiveauxRows.length - 1));
+		registreRows[index].sensibilite = dicNiveauxRows[clamped].valeur;
 	}
 
 
@@ -2155,7 +2192,7 @@
 										placeholder="Nom du propriétaire"
 									/>
 								</td>
-								<!-- Disponibilité (Section 6) -->
+								<!-- Disponibilité (Section 6) – options issues du Tableau 1.2 Aide-Classification -->
 								<td class={`px-2 py-1 border border-black ${getNiveauBesoinBg(row.disponibilite)}`}>
 									<select
 										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent"
@@ -2163,13 +2200,12 @@
 										on:change={() => calculerSensibilite(i)}
 									>
 										<option value="">--</option>
-										<option value="Faible">Faible</option>
-										<option value="Moyen">Moyen</option>
-										<option value="Élevé">Élevé</option>
-										<option value="Très élevé">Très élevé</option>
+										{#each dicNiveauxRows as niv}
+											<option value={niv.valeur}>{niv.valeur}</option>
+										{/each}
 									</select>
 								</td>
-								<!-- Intégrité (Section 6) -->
+								<!-- Intégrité (Section 6) – options issues du Tableau 1.2 Aide-Classification -->
 								<td class={`px-2 py-1 border border-black ${getNiveauBesoinBg(row.integrite)}`}>
 									<select
 										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent"
@@ -2177,13 +2213,12 @@
 										on:change={() => calculerSensibilite(i)}
 									>
 										<option value="">--</option>
-										<option value="Faible">Faible</option>
-										<option value="Moyen">Moyen</option>
-										<option value="Élevé">Élevé</option>
-										<option value="Très élevé">Très élevé</option>
+										{#each dicNiveauxRows as niv}
+											<option value={niv.valeur}>{niv.valeur}</option>
+										{/each}
 									</select>
 								</td>
-								<!-- Confidentialité (Section 6) -->
+								<!-- Confidentialité (Section 6) – options issues du Tableau 1.2 Aide-Classification -->
 								<td class={`px-2 py-1 border border-black ${getNiveauBesoinBg(row.confidentialite)}`}>
 									<select
 										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent"
@@ -2191,10 +2226,9 @@
 										on:change={() => calculerSensibilite(i)}
 									>
 										<option value="">--</option>
-										<option value="Faible">Faible</option>
-										<option value="Moyen">Moyen</option>
-										<option value="Élevé">Élevé</option>
-										<option value="Très élevé">Très élevé</option>
+										{#each dicNiveauxRows as niv}
+											<option value={niv.valeur}>{niv.valeur}</option>
+										{/each}
 									</select>
 								</td>
 								<!-- Sensibilité de l'actif (Section 6 - Calculée automatiquement comme moyenne de D/I/C) -->
@@ -2290,9 +2324,20 @@
 
 			<!-- Tableau 1.2 – Niveaux de valeur par critère (D / I / C) -->
 			<section class="space-y-3">
-				<h3 class="text-lg font-semibold text-gray-900">
-					Tableau 1.2 – Niveaux de valeur par critère (D / I / C)
-				</h3>
+				<div class="flex items-center justify-between gap-4 flex-wrap">
+					<h3 class="text-lg font-semibold text-gray-900">
+						Tableau 1.2 – Niveaux de valeur par critère (D / I / C)
+					</h3>
+					<button
+						type="button"
+						class="px-3 py-1.5 text-sm rounded {editModeTable12
+							? 'bg-gray-600 text-white hover:bg-gray-700'
+							: 'bg-sky-600 text-white hover:bg-sky-700'}"
+						on:click={() => (editModeTable12 = !editModeTable12)}
+					>
+						{editModeTable12 ? 'Terminer la modification' : 'Modifier'}
+					</button>
+				</div>
 				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
 					<table class="min-w-full text-sm border-collapse border border-black">
 						<thead>
@@ -2302,6 +2347,13 @@
 								>
 									Valeur
 								</th>
+								{#if editModeTable12}
+									<th
+										class="px-2 py-2 text-center font-semibold text-black bg-sky-200 border border-black min-w-[120px]"
+									>
+										Couleur
+									</th>
+								{/if}
 								<th
 									class="px-4 py-2 text-left font-semibold text-black bg-sky-200 border border-black"
 								>
@@ -2317,6 +2369,9 @@
 								>
 									Confidentialité (C)
 								</th>
+								{#if editModeTable12}
+									<th class="px-2 py-2 text-center font-semibold text-black bg-sky-200 border border-black">Actions</th>
+								{/if}
 							</tr>
 						</thead>
 						<tbody>
@@ -2326,11 +2381,25 @@
 										class={`px-4 py-2 font-semibold text-white border border-black ${getValeurBg(row.valeur)}`}
 									>
 										<input
-											class="w-full border border-transparent bg-transparent font-semibold text-white"
+											class="w-full border border-transparent bg-transparent font-semibold text-white placeholder-white/70"
 											type="text"
 											bind:value={dicNiveauxRows[i].valeur}
+											on:change={() => saveCustomMethodState()}
 										/>
 									</td>
+									{#if editModeTable12}
+										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
+											<select
+												class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
+												bind:value={dicNiveauxRows[i].bgColor}
+												on:change={() => saveCustomMethodState()}
+											>
+												{#each DIC_NIVEAU_COULEURS as c}
+													<option value={c}>{c}</option>
+												{/each}
+											</select>
+										</td>
+									{/if}
 									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs min-h-[100px]">
 										{#if isEditing('dicNiveaux', i, 'disponibilite')}
 											<textarea
@@ -2394,11 +2463,53 @@
 											</div>
 										{/if}
 									</td>
+									{#if editModeTable12}
+										<td class="px-2 py-2 border border-black bg-gray-100">
+											<div class="flex gap-1 justify-center flex-wrap">
+												<button
+													type="button"
+													class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+													on:click={() => insererNiveauDicAvant(i)}
+													title="Ajouter avant"
+												>
+													↑+
+												</button>
+												<button
+													type="button"
+													class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+													on:click={() => insererNiveauDicApres(i)}
+													title="Ajouter après"
+												>
+													↓+
+												</button>
+												<button
+													type="button"
+													class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700"
+													on:click={() => supprimerNiveauDic(i)}
+													title="Supprimer"
+													disabled={dicNiveauxRows.length <= 1}
+												>
+													✕
+												</button>
+											</div>
+										</td>
+									{/if}
 								</tr>
 							{/each}
 						</tbody>
 					</table>
 				</div>
+				{#if editModeTable12}
+					<div class="flex gap-2">
+						<button
+							type="button"
+							class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700"
+							on:click={ajouterNiveauDic}
+						>
+							+ Ajouter un niveau
+						</button>
+					</div>
+				{/if}
 			</section>
 
 			<!-- Tableau 2 – Catégories d'actifs -->
