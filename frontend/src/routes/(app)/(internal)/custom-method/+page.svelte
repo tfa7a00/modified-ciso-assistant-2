@@ -1361,31 +1361,56 @@
 		ptrData = ptrData.map((row, i) => ({ ...row, id: i + 1 }));
 	}
 
+	// Fonctions pour la cartographie des risques (conserve 45 lignes : insertion = dupliquer puis tronquer, suppression = retirer puis compléter)
+	function insererLigneCartoAvant(index: number) {
+		const newRow = { ...defaultCartoRow(), ...cartoRows[index] } as CartoRow;
+		cartoRows = insererLigneAvant(cartoRows, index, newRow).slice(0, 45);
+		saveCustomMethodState();
+	}
+	function insererLigneCartoApres(index: number) {
+		const newRow = { ...defaultCartoRow(), ...cartoRows[index] } as CartoRow;
+		cartoRows = insererLigneApres(cartoRows, index, newRow).slice(0, 45);
+		saveCustomMethodState();
+	}
+	function supprimerLigneCarto(index: number) {
+		if (cartoRows.length <= 1) return;
+		cartoRows = cartoRows.filter((_, i) => i !== index);
+		while (cartoRows.length < 45) cartoRows = [...cartoRows, defaultCartoRow()];
+		saveCustomMethodState();
+	}
+
 	// Fonctions pour le registre de classification
+	const defaultRegistreRow = (): RegistreRow => ({
+		id: '',
+		id_ps: '',
+		processus_metier: '',
+		activite_sous_processus: '',
+		designation_actif: '',
+		description_actif: '',
+		categorie_actif: '',
+		type_actif: '',
+		proprietaire_actif: '',
+		disponibilite: '',
+		integrite: '',
+		confidentialite: '',
+		sensibilite: '',
+		commentaire: ''
+	});
+
 	function ajouterLigneRegistre() {
-		registreRows = [
-			...registreRows,
-			{
-				id: '',
-				id_ps: '',
-				processus_metier: '',
-				activite_sous_processus: '',
-				designation_actif: '',
-				description_actif: '',
-				categorie_actif: '',
-				type_actif: '',
-				proprietaire_actif: '',
-				disponibilite: '',
-				integrite: '',
-				confidentialite: '',
-				sensibilite: '',
-				commentaire: ''
-			}
-		];
+		registreRows = [...registreRows, defaultRegistreRow()];
 	}
 
 	function supprimerLigneRegistre(index: number) {
 		registreRows = registreRows.filter((_, i) => i !== index);
+	}
+
+	function insererLigneRegistreAvant(index: number) {
+		registreRows = insererLigneAvant(registreRows, index, defaultRegistreRow());
+	}
+
+	function insererLigneRegistreApres(index: number) {
+		registreRows = insererLigneApres(registreRows, index, defaultRegistreRow());
 	}
 
 	function getNiveauBesoinBg(niveau: string): string {
@@ -1478,29 +1503,30 @@
     /* Hide/show table cells (only tbody td/data cells, NOT headers).
        Keep all <thead> cells visible so headers display correctly for each view.
        Columns 4-5 (Description, Code Risque) always stay visible in ALL views.
-       Views: identification (1-20), brut (21-32), net (33-38), ptr (39-45).
+       Column 46 = Actions (always visible in all views).
+       Views: identification (1-20 + 46), brut (21-32 + 46), net (33-38 + 46), ptr (39-45 + 46).
     */
 
-    /* Identification view: hide data columns 21 and beyond */
-    .view-identification tbody tr td:nth-child(n+21) {
+    /* Identification view: hide data columns 21-45, keep 1-20 and 46 (Actions) */
+    .view-identification tbody tr td:nth-child(n+21):nth-child(-n+45) {
         display: none;
     }
 
-    /* Risque Brut view: show cols 4-5 (Description, Code Risque) + 21-32 (brut), hide 1-3 and 6-20 and 33+ */
+    /* Risque Brut view: show cols 4-5 + 21-32 + 46 (Actions), hide 1-3, 6-20, 33-45 */
     .view-brut tbody tr td:nth-child(n+1):nth-child(-n+3),
     .view-brut tbody tr td:nth-child(n+6):nth-child(-n+20),
-    .view-brut tbody tr td:nth-child(n+33) {
+    .view-brut tbody tr td:nth-child(n+33):nth-child(-n+45) {
         display: none;
     }
 
-    /* Degré + Risque Net view: show cols 4-5 (Description, Code Risque) + 33-38 (net), hide 1-3 and 6-32 and 39+ */
+    /* Degré + Risque Net view: show cols 4-5 + 33-38 + 46 (Actions), hide 1-3, 6-32, 39-45 */
     .view-net tbody tr td:nth-child(n+1):nth-child(-n+3),
     .view-net tbody tr td:nth-child(n+6):nth-child(-n+32),
-    .view-net tbody tr td:nth-child(n+39) {
+    .view-net tbody tr td:nth-child(n+39):nth-child(-n+45) {
         display: none;
     }
 
-    /* PTR + Résiduel view: show cols 4-5 (Description, Code Risque) + 39-45 (ptr), hide 1-3 and 6-38 */
+    /* PTR + Résiduel view: show cols 4-5 + 39-46 (ptr + Actions), hide 1-3 and 6-38 */
     .view-ptr tbody tr td:nth-child(n+1):nth-child(-n+3),
     .view-ptr tbody tr td:nth-child(n+6):nth-child(-n+38) {
         display: none;
@@ -2010,6 +2036,9 @@
 							<th rowspan="2" class="px-2 py-2 text-center font-semibold text-white bg-blue-400 border border-black min-w-[150px]">
 								Commentaire
 							</th>
+							<th rowspan="2" class="px-2 py-2 text-center font-semibold text-black bg-yellow-300 border border-black min-w-[90px]">
+								Actions
+							</th>
 						</tr>
 						<!-- Ligne des sous-titres -->
 						<tr>
@@ -2181,6 +2210,14 @@
 										on:blur={() => saveCustomMethodState()}
 										placeholder="Commentaire..."
 									></textarea>
+								</td>
+								<!-- Actions -->
+								<td class="px-2 py-1 border border-black bg-gray-100">
+									<div class="flex gap-1 justify-center flex-wrap">
+										<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererLigneRegistreAvant(i)} title="Ajouter avant">↑+</button>
+										<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererLigneRegistreApres(i)} title="Ajouter après">↓+</button>
+										<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerLigneRegistre(i)} title="Supprimer" disabled={registreRows.length <= 1}>✕</button>
+									</div>
 								</td>
 							</tr>
 						{/each}
@@ -2623,13 +2660,14 @@
 						<col class="col-ptr" />
 						<col class="col-ptr" />
 						<col class="col-ptr" />
+						<col class="col-actions" />
 					</colgroup>
 
 					<!-- Dynamic headers per view: hide original thead, show correct headers for each view -->
 					{#if cartoView === 'identification'}
 						<thead>
 							<tr>
-								<th colspan="20" class="px-4 py-3 text-center font-bold text-lg text-white bg-teal-700 border border-black">
+								<th colspan="21" class="px-4 py-3 text-center font-bold text-lg text-white bg-teal-700 border border-black">
 									IDENTIFICATION DES RISQUES
 								</th>
 							</tr>
@@ -2655,12 +2693,13 @@
 								<th class="px-2 py-3 text-center font-bold text-white bg-green-600 border border-black">D</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-green-600 border border-black">I</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-green-600 border border-black">C</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black min-w-[90px]">Actions</th>
 							</tr>
 						</thead>
 					{:else if cartoView === 'brut'}
 						<thead>
 							<tr>
-								<th colspan="14" class="px-4 py-3 text-center font-bold text-lg text-black bg-yellow-400 border border-black">
+								<th colspan="15" class="px-4 py-3 text-center font-bold text-lg text-black bg-yellow-400 border border-black">
 									RISQUE BRUT - ÉVALUATION DE LA CRITICITÉ
 								</th>
 							</tr>
@@ -2679,12 +2718,13 @@
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Probabilité</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">I*P*C</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Risque Brut</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black min-w-[90px]">Actions</th>
 							</tr>
 						</thead>
 					{:else if cartoView === 'net'}
 						<thead>
 							<tr>
-								<th colspan="8" class="px-4 py-3 text-center font-bold text-lg text-white bg-teal-600 border border-black">
+								<th colspan="9" class="px-4 py-3 text-center font-bold text-lg text-white bg-teal-600 border border-black">
 									DEGRÉ D'EXPOSITION + RISQUE NET
 								</th>
 							</tr>
@@ -2697,12 +2737,13 @@
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Probabilité</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">I*P*C</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Risque Net</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black min-w-[90px]">Actions</th>
 							</tr>
 						</thead>
 					{:else if cartoView === 'ptr'}
 						<thead>
 							<tr>
-								<th colspan="9" class="px-4 py-3 text-center font-bold text-lg text-white bg-gray-600 border border-black">
+								<th colspan="10" class="px-4 py-3 text-center font-bold text-lg text-white bg-gray-600 border border-black">
 									PLAN DE TRAITEMENT + RISQUE RÉSIDUEL
 								</th>
 							</tr>
@@ -2716,13 +2757,14 @@
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Vraissemblance</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">I*P*C</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Risque Résiduel</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black min-w-[90px]">Actions</th>
 							</tr>
 						</thead>
 					{:else}
 						<!-- View 'all': show original complex headers (hidden by default, shown when cartoView === 'all') -->
 						<thead style="display: none;">
 							<tr>
-								<th colspan="45" class="px-4 py-3 text-center font-bold text-lg text-black border border-black bg-white">
+								<th colspan="46" class="px-4 py-3 text-center font-bold text-lg text-black border border-black bg-white">
 									CARTOGRAPHIE DES RISQUES DE SECURITÉ DES SYSTÈMES D'INFORMATION
 								</th>
 							</tr>
@@ -2889,6 +2931,9 @@
 						<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 100px;">
 							Niveau du risque résiduel
 						</th>
+						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black" style="min-width: 90px;">
+							Actions
+						</th>
 					</tr>
 					
 					<!-- Ligne 7: Sous-headers catégories actifs + DIC -->
@@ -2944,7 +2989,7 @@
 				<tbody>
 					<!-- En-tête sous-groupe 1 : Sinistres physiques / Evènements naturels / Perturbations dues aux rayonnements (codes DSI-R-SP-001 à SP-005) -->
 					<tr class="bg-teal-700">
-						<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">
+						<td colspan="46" class="px-3 py-3 font-bold text-white border border-black">
 							1 – Sinistres physiques / Evènements naturels / Perturbations dues aux rayonnements
 						</td>
 					</tr>
@@ -3115,6 +3160,13 @@
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
 						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[0]))}">{getNiveauResiduel(cartoRows[0])}</td>
+						<td class="px-2 py-2 border border-black bg-gray-100 text-center">
+							<div class="flex gap-1 justify-center flex-wrap">
+								<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererLigneCartoAvant(0)} title="Ajouter avant">↑+</button>
+								<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererLigneCartoApres(0)} title="Ajouter après">↓+</button>
+								<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerLigneCarto(0)} title="Supprimer" disabled={cartoRows.length <= 1}>✕</button>
+							</div>
+						</td>
 					</tr>
 					
 					<!-- Deuxième ligne cartographie : données par défaut (DSI-R-SP-002, incendie salle serveur…), modifications sauvegardées -->
@@ -3234,42 +3286,49 @@
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
 						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[1]))}">{getNiveauResiduel(cartoRows[1])}</td>
+						<td class="px-2 py-2 border border-black bg-gray-100 text-center">
+							<div class="flex gap-1 justify-center flex-wrap">
+								<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererLigneCartoAvant(1)} title="Ajouter avant">↑+</button>
+								<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererLigneCartoApres(1)} title="Ajouter après">↓+</button>
+								<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerLigneCarto(1)} title="Supprimer" disabled={cartoRows.length <= 1}>✕</button>
+							</div>
+						</td>
 					</tr>
 					
 					{#each Array.from({ length: 42 }, (_, k) => k + 2) as rowIndex}
 						{#if rowIndex === 5}
 							<tr class="bg-teal-700">
-								<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">2 – Perte de services essentiels</td>
+								<td colspan="46" class="px-3 py-3 font-bold text-white border border-black">2 – Perte de services essentiels</td>
 							</tr>
 						{/if}
 						{#if rowIndex === 11}
 							<tr class="bg-teal-700">
-								<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">3 – Compromission des informations</td>
+								<td colspan="46" class="px-3 py-3 font-bold text-white border border-black">3 – Compromission des informations</td>
 							</tr>
 						{/if}
 						{#if rowIndex === 25}
 							<tr class="bg-teal-700">
-								<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">4 – Compromission des fonctions</td>
+								<td colspan="46" class="px-3 py-3 font-bold text-white border border-black">4 – Compromission des fonctions</td>
 							</tr>
 						{/if}
 						{#if rowIndex === 32}
 							<tr class="bg-teal-700">
-								<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">5 – Acte illicite</td>
+								<td colspan="46" class="px-3 py-3 font-bold text-white border border-black">5 – Acte illicite</td>
 							</tr>
 						{/if}
 						{#if rowIndex === 35}
 							<tr class="bg-teal-700">
-								<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">6 – Mise en production non maîtrisée</td>
+								<td colspan="46" class="px-3 py-3 font-bold text-white border border-black">6 – Mise en production non maîtrisée</td>
 							</tr>
 						{/if}
 						{#if rowIndex === 38}
 							<tr class="bg-teal-700">
-								<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">7 – Conformité légale et réglementaire</td>
+								<td colspan="46" class="px-3 py-3 font-bold text-white border border-black">7 – Conformité légale et réglementaire</td>
 							</tr>
 						{/if}
 						{#if rowIndex === 40}
 							<tr class="bg-teal-700">
-								<td colspan="45" class="px-3 py-3 font-bold text-white border border-black">8 – Tiers</td>
+								<td colspan="46" class="px-3 py-3 font-bold text-white border border-black">8 – Tiers</td>
 							</tr>
 						{/if}
 					<tr class="hover:bg-gray-50">
@@ -3374,6 +3433,13 @@
 						</td>
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(cartoRows[rowIndex]) ?? '-'}</td>
 						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[rowIndex]))}">{getNiveauResiduel(cartoRows[rowIndex])}</td>
+						<td class="px-2 py-2 border border-black bg-gray-100 text-center">
+							<div class="flex gap-1 justify-center flex-wrap">
+								<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererLigneCartoAvant(rowIndex)} title="Ajouter avant">↑+</button>
+								<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererLigneCartoApres(rowIndex)} title="Ajouter après">↓+</button>
+								<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerLigneCarto(rowIndex)} title="Supprimer" disabled={cartoRows.length <= 1}>✕</button>
+							</div>
+						</td>
 					</tr>
 					{/each}
 					
@@ -3494,6 +3560,13 @@
 						
 						<!-- Risque Résiduel - Niveau (couleur échelle) -->
 						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(cartoRows[44]))}">{getNiveauResiduel(cartoRows[44])}</td>
+						<td class="px-2 py-2 border border-black bg-gray-100 text-center">
+							<div class="flex gap-1 justify-center flex-wrap">
+								<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererLigneCartoAvant(44)} title="Ajouter avant">↑+</button>
+								<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererLigneCartoApres(44)} title="Ajouter après">↓+</button>
+								<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerLigneCarto(44)} title="Supprimer" disabled={cartoRows.length <= 1}>✕</button>
+							</div>
+						</td>
 					</tr>
 					
 						</tbody>
