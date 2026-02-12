@@ -352,6 +352,8 @@
 		{ version: '', date: '', modification: '' }
 	];
 
+	let editModeControleDocument = false;
+
 	// --- Données pour Registre de classification ---
 	type RegistreRow = {
 		id: string;
@@ -1629,7 +1631,18 @@
 
 	{#if activeSection === 'controle-document'}
 		<section class="space-y-8">
-			<h2 class="text-xl font-semibold text-gray-900">Contrôle du document</h2>
+			<div class="flex items-center justify-between gap-4 flex-wrap">
+				<h2 class="text-xl font-semibold text-gray-900">Contrôle du document</h2>
+				<button
+					type="button"
+					class="px-3 py-1.5 text-sm rounded {editModeControleDocument
+						? 'bg-gray-600 text-white hover:bg-gray-700'
+						: 'bg-sky-600 text-white hover:bg-sky-700'}"
+					on:click={() => (editModeControleDocument = !editModeControleDocument)}
+				>
+					{editModeControleDocument ? 'Terminer la modification' : 'Modifier'}
+				</button>
+			</div>
 			
 			<div class="space-y-2">
 				<div class="p-4 bg-blue-50 border-l-4 border-blue-600">
@@ -1645,26 +1658,18 @@
 					<table class="min-w-full text-sm border-collapse border border-gray-700">
 						<thead>
 							<tr>
-								<th colspan="4" class="px-4 py-3 text-left font-semibold text-white bg-slate-900 border border-gray-700">
+								<th colspan={editModeControleDocument ? 5 : 4} class="px-4 py-3 text-left font-semibold text-white bg-slate-900 border border-gray-700">
 									RÉDACTION DU DOCUMENT
 								</th>
 							</tr>
 							<tr>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700 w-32">
-									Rôle
-								</th>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
-									Nom
-								</th>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
-									Fonction
-								</th>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
-									Date
-								</th>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
-									Actions
-								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700 w-32">Rôle</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">Nom</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">Fonction</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">Date</th>
+								{#if editModeControleDocument}
+									<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">Actions</th>
+								{/if}
 							</tr>
 						</thead>
 						<tbody>
@@ -1739,58 +1744,28 @@
 											</div>
 										{/if}
 									</td>
-									<td class="px-4 py-2 border border-gray-700 bg-gray-100">
-										<div class="flex gap-1">
-											<button
-												type="button"
-												class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
-												on:click={() => insererLigneRedactionAvant(i)}
-												title="Ajouter avant"
-											>
-												↑+
-											</button>
-											<button
-												type="button"
-												class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
-												on:click={() => insererLigneRedactionApres(i)}
-												title="Ajouter après"
-											>
-												↓+
-											</button>
-											<button
-												type="button"
-												class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700"
-												on:click={() => supprimerLigneRedaction(i)}
-												title="Supprimer"
-											>
-												✕
-											</button>
-										</div>
-									</td>
+									{#if editModeControleDocument}
+										<td class="px-4 py-2 border border-gray-700 bg-gray-100">
+											<div class="flex gap-1">
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererLigneRedactionAvant(i)} title="Ajouter avant">↑+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererLigneRedactionApres(i)} title="Ajouter après">↓+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerLigneRedaction(i)} title="Supprimer">✕</button>
+											</div>
+										</td>
+									{/if}
 								</tr>
 							{/each}
 						</tbody>
 					</table>
 					</div>
-					<div class="flex gap-2 mt-2">
-						<button
-							type="button"
-							class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700"
-							on:click={ajouterLigneRedaction}
-						>
-							+ Ajouter une ligne
-						</button>
-						{#if redactionRows.length > 1}
-							<button
-								type="button"
-								class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700"
-								on:click={() => supprimerLigneRedaction(redactionRows.length - 1)}
-							>
-								- Supprimer la dernière ligne
-							</button>
-						{/if}
-					</div>
-
+					{#if editModeControleDocument}
+						<div class="flex gap-2 mt-2">
+							<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterLigneRedaction}>+ Ajouter une ligne</button>
+							{#if redactionRows.length > 1}
+								<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerLigneRedaction(redactionRows.length - 1)}>- Supprimer la dernière ligne</button>
+							{/if}
+						</div>
+					{/if}
 			</section>
 
 			<!-- Tableau 2: Diffusion du document -->
@@ -1800,23 +1775,17 @@
 					<table class="min-w-full text-sm border-collapse border border-gray-700">
 						<thead>
 							<tr>
-								<th colspan="3" class="px-4 py-3 text-left font-semibold text-white bg-slate-900 border border-gray-700">
+								<th colspan={editModeControleDocument ? 4 : 3} class="px-4 py-3 text-left font-semibold text-white bg-slate-900 border border-gray-700">
 									DIFFUSION DU DOCUMENT
 								</th>
 							</tr>
 							<tr>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
-									Nom
-								</th>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
-									Entité / Fonction
-								</th>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
-									Date
-								</th>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
-									Actions
-								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">Nom</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">Entité / Fonction</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">Date</th>
+								{#if editModeControleDocument}
+									<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">Actions</th>
+								{/if}
 							</tr>
 						</thead>
 						<tbody>
@@ -1843,57 +1812,28 @@
 											bind:value={diffusionRows[i].date}
 										/>
 									</td>
-									<td class="px-4 py-2 border border-gray-700 bg-gray-100">
-										<div class="flex gap-1">
-											<button
-												type="button"
-												class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
-												on:click={() => insererLigneDiffusionAvant(i)}
-												title="Ajouter avant"
-											>
-												↑+
-											</button>
-											<button
-												type="button"
-												class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
-												on:click={() => insererLigneDiffusionApres(i)}
-												title="Ajouter après"
-											>
-												↓+
-											</button>
-											<button
-												type="button"
-												class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700"
-												on:click={() => supprimerLigneDiffusion(i)}
-												title="Supprimer"
-											>
-												✕
-											</button>
-										</div>
-									</td>
+									{#if editModeControleDocument}
+										<td class="px-4 py-2 border border-gray-700 bg-gray-100">
+											<div class="flex gap-1">
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererLigneDiffusionAvant(i)} title="Ajouter avant">↑+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererLigneDiffusionApres(i)} title="Ajouter après">↓+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerLigneDiffusion(i)} title="Supprimer">✕</button>
+											</div>
+										</td>
+									{/if}
 								</tr>
 							{/each}
 						</tbody>
 					</table>
 				</div>
-				<div class="flex gap-2">
-					<button
-						type="button"
-						class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700"
-						on:click={ajouterLigneDiffusion}
-					>
-						+ Ajouter une ligne
-					</button>
-					{#if diffusionRows.length > 1}
-						<button
-							type="button"
-							class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700"
-							on:click={() => supprimerLigneDiffusion(diffusionRows.length - 1)}
-						>
-							- Supprimer la dernière ligne
-						</button>
-					{/if}
-				</div>
+				{#if editModeControleDocument}
+					<div class="flex gap-2 mt-2">
+						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterLigneDiffusion}>+ Ajouter une ligne</button>
+						{#if diffusionRows.length > 1}
+							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerLigneDiffusion(diffusionRows.length - 1)}>- Supprimer la dernière ligne</button>
+						{/if}
+					</div>
+				{/if}
 			</section>
 
 			<!-- Tableau 3: Contrôle des versions -->
@@ -1903,23 +1843,17 @@
 					<table class="min-w-full text-sm border-collapse border border-gray-700">
 						<thead>
 							<tr>
-								<th colspan="3" class="px-4 py-3 text-left font-semibold text-white bg-slate-900 border border-gray-700">
+								<th colspan={editModeControleDocument ? 4 : 3} class="px-4 py-3 text-left font-semibold text-white bg-slate-900 border border-gray-700">
 									CONTRÔLE DES VERSIONS DU DOCUMENT
 								</th>
 							</tr>
 							<tr>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
-									Version
-								</th>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
-									Date
-								</th>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
-									Modification
-								</th>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">
-									Actions
-								</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">Version</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">Date</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">Modification</th>
+								{#if editModeControleDocument}
+									<th class="px-4 py-2 text-left font-semibold text-white bg-gray-600 border border-gray-700">Actions</th>
+								{/if}
 							</tr>
 						</thead>
 						<tbody>
@@ -1991,29 +1925,28 @@
 											</div>
 										{/if}
 									</td>
+									{#if editModeControleDocument}
+										<td class="px-4 py-2 border border-gray-700 bg-gray-100">
+											<div class="flex gap-1">
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererLigneVersionAvant(i)} title="Ajouter avant">↑+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererLigneVersionApres(i)} title="Ajouter après">↓+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerLigneVersion(i)} title="Supprimer">✕</button>
+											</div>
+										</td>
+									{/if}
 								</tr>
 							{/each}
 						</tbody>
 					</table>
 				</div>
-				<div class="flex gap-2">
-					<button
-						type="button"
-						class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700"
-						on:click={ajouterLigneVersion}
-					>
-						+ Ajouter une ligne
-					</button>
-					{#if versionRows.length > 1}
-						<button
-							type="button"
-							class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700"
-							on:click={() => supprimerLigneVersion(versionRows.length - 1)}
-						>
-							- Supprimer la dernière ligne
-						</button>
-					{/if}
-				</div>
+				{#if editModeControleDocument}
+					<div class="flex gap-2 mt-2">
+						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterLigneVersion}>+ Ajouter une ligne</button>
+						{#if versionRows.length > 1}
+							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerLigneVersion(versionRows.length - 1)}>- Supprimer la dernière ligne</button>
+						{/if}
+					</div>
+				{/if}
 			</section>
 		</section>
 	{:else if activeSection === 'registre-classification'}
