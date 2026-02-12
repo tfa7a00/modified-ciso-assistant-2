@@ -3979,9 +3979,9 @@
 										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
 									>
 										<option value="">-</option>
-										<option value="Préventive">Préventive</option>
-										<option value="Détective">Détective</option>
-										<option value="Corrective">Corrective</option>
+										{#each typeActionRows as tr}
+											<option value={tr.type_action}>{tr.type_action || '(vide)'}</option>
+										{/each}
 									</select>
 								</td>
 								<td class="px-2 py-2 border border-gray-300">
@@ -4000,9 +4000,9 @@
 										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
 									>
 										<option value="">-</option>
-										<option value="Haute">Haute</option>
-										<option value="Moyenne">Moyenne</option>
-										<option value="Basse">Basse</option>
+										{#each prioriteRows as pr}
+											<option value={pr.echelle}>{pr.echelle || '(vide)'}</option>
+										{/each}
 									</select>
 								</td>
 								<td class="px-2 py-2 border border-gray-300">
@@ -4012,9 +4012,9 @@
 										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
 									>
 										<option value="">-</option>
-										<option value="Ponctuelle">Ponctuelle</option>
-										<option value="Récurrente">Récurrente</option>
-										<option value="Continue">Continue</option>
+										{#each periodiciteRows as per}
+											<option value={per.periodicite}>{per.periodicite || '(vide)'}</option>
+										{/each}
 									</select>
 								</td>
 								<td class="px-2 py-2 border border-gray-300">
@@ -4024,9 +4024,9 @@
 										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
 									>
 										<option value="">-</option>
-										<option value="Faible">Faible</option>
-										<option value="Moyenne">Moyenne</option>
-										<option value="Élevée">Élevée</option>
+										{#each complexiteRows as cr}
+											<option value={cr.complexite}>{cr.complexite || '(vide)'}</option>
+										{/each}
 									</select>
 								</td>
 								<td class="px-2 py-2 border border-gray-300">
