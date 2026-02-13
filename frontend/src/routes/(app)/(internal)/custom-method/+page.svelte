@@ -3945,6 +3945,105 @@
 					Les couleurs des cellules sont déterminées par les intervalles du tableau «&nbsp;Fréquence / probabilité d'occurrence&nbsp;» (Tableau 3.1). Modifiez ces intervalles pour que la matrice reflète vos seuils.
 				</p>
 			</section>
+
+			<!-- Tableau : Niveaux d'efficacité (échelle 1-5) -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">
+					Niveaux d'efficacité
+				</h3>
+				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+					<table class="min-w-full text-sm border-collapse border border-black">
+						<thead>
+							<tr>
+								<th class="px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black whitespace-nowrap" style="background-color: #263c18;">
+									Niveau
+								</th>
+								<th class="px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black whitespace-nowrap" style="background-color: #263c18;">
+									Signification
+								</th>
+								<th colspan="3" class="px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black" style="background-color: #263c18;">
+									Descriptif
+								</th>
+								<th class="px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black whitespace-nowrap" style="background-color: #263c18;">
+									Intervalle d'efficacité (%)
+								</th>
+								<th class="px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black whitespace-nowrap" style="background-color: #263c18;">
+									Valeur correspondante
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="border border-black">
+								<td class="px-3 py-2 text-center font-bold border border-black bg-white">1</td>
+								<td class="px-3 py-2 text-center font-bold text-black border border-black" style="background-color: #ff0000;">Insuffisant</td>
+								<td colspan="3" class="px-3 py-2 text-[8px] text-left align-middle border border-black bg-white">
+									- Dispositif quasi inexistant ou inefficace<br />
+									- Contrôles absents ou très rares<br />
+									- Applicabilité très limitée<br />
+									- Couverture quasi nulle (&lt;30% du périmètre)
+								</td>
+								<td class="px-3 py-2 text-center font-bold border border-black bg-white">0 % – 30 %</td>
+								<td class="px-3 py-2 text-center border border-black bg-white">0.15</td>
+							</tr>
+							<tr class="border border-black">
+								<td class="px-3 py-2 text-center font-bold border border-black bg-white">2</td>
+								<td class="px-3 py-2 text-center font-bold text-black border border-black" style="background-color: #ffc000;">Faible</td>
+								<td colspan="3" class="px-3 py-2 text-[8px] text-left align-middle border border-black bg-white">
+									- Dispositif en début de déploiement, incomplet<br />
+									- Contrôles parfois appliqués mais non systématiques<br />
+									- Applicabilité partielle<br />
+									- Couverture limitée, risque toujours élevé (30-60% du périmètre)
+								</td>
+								<td class="px-3 py-2 text-center font-bold border border-black bg-white">31 % – 60 %</td>
+								<td class="px-3 py-2 text-center border border-black bg-white">0.45</td>
+							</tr>
+							<tr class="border border-black">
+								<td class="px-3 py-2 text-center font-bold border border-black bg-white">3</td>
+								<td class="px-3 py-2 text-center font-bold text-black border border-black" style="background-color: #ffff00;">Acceptable</td>
+								<td colspan="3" class="px-3 py-2 text-[8px] text-left align-middle border border-black bg-white">
+									- Dispositif en place et fonctionnel mais avec des lacunes<br />
+									- Contrôles réguliers mais améliorable<br />
+									- Applicabilité satisfaisante<br />
+									- Couverture correcte mais non exhaustive (60-80% du périmètre)
+								</td>
+								<td class="px-3 py-2 text-center font-bold border border-black bg-white">61 % – 80 %</td>
+								<td class="px-3 py-2 text-center border border-black bg-white">0.70</td>
+							</tr>
+							<tr class="border border-black">
+								<td class="px-3 py-2 text-center font-bold border border-black bg-white">4</td>
+								<td class="px-3 py-2 text-center font-bold text-black border border-black" style="background-color: #92d050;">Efficace</td>
+								<td colspan="3" class="px-3 py-2 text-[8px] text-left align-middle border border-black bg-white">
+									- Dispositif robuste et bien intégré<br />
+									- Contrôles efficaces, réguliers et fiables<br />
+									- Forte applicabilité<br />
+									- Large couverture du périmètre impacté (80-95% du périmètre)
+								</td>
+								<td class="px-3 py-2 text-center font-bold border border-black bg-white">81 % – 95 %</td>
+								<td class="px-3 py-2 text-center border border-black bg-white">0.90</td>
+							</tr>
+							<tr class="border border-black">
+								<td class="px-3 py-2 text-center font-bold border border-black bg-white">5</td>
+								<td class="px-3 py-2 text-center font-bold text-white border border-black" style="background-color: #00b050;">Exemplaire</td>
+								<td colspan="3" class="px-3 py-2 text-[8px] text-left align-middle border border-black bg-white">
+									- Dispositif optimal, proactif et innovant<br />
+									- Contrôles exhaustifs et très fiables<br />
+									- Applicabilité maximale<br />
+									- Couverture complète du périmètre (&gt;95% du périmètre)
+								</td>
+								<td class="px-3 py-2 text-center font-bold border border-black bg-white">96 % – 100 %</td>
+								<td class="px-3 py-2 text-center border border-black bg-white">0.98</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<p class="text-xs text-gray-600">
+					Échelle de risque (feu tricolore étendu)&nbsp;: <span class="font-semibold" style="color: #ff0000;">Rouge</span> (Insuffisant) – Risque très élevé,
+					<span class="font-semibold" style="color: #c08000;">Orange</span> (Faible) – Risque élevé,
+					<span class="font-semibold" style="color: #b0b000;">Jaune</span> (Acceptable) – Risque modéré,
+					<span class="font-semibold" style="color: #70a030;">Vert clair</span> (Efficace) – Risque faible,
+					<span class="font-semibold" style="color: #00b050;">Vert foncé</span> (Exemplaire) – Risque minimal.
+				</p>
+			</section>
 		</section>
 	{:else if activeSection === 'ptr'}
 		<section class="space-y-4">
