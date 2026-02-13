@@ -454,6 +454,7 @@
 		impactRows,
 		frequenceRisqueRows,
 		matriceRisqueRows,
+		efficaciteRows,
 		ptrData
 	];
 	$: if (typeof window !== 'undefined' && _persistDeps) {
@@ -933,6 +934,53 @@
 		{ libelle: '4×6', valeurs: [24, 48, 72, 96, 120] }
 	];
 
+	type EfficaciteRow = {
+		niveau: string;
+		signification: string;
+		descriptif: string;
+		intervalle: string;
+		valeur: string;
+		bgColor?: string;
+	};
+
+	let efficaciteRows: EfficaciteRow[] = [
+		{
+			niveau: '1',
+			signification: 'Insuffisant',
+			descriptif: '- Dispositif quasi inexistant ou inefficace\n- Contrôles absents ou très rares\n- Applicabilité très limitée\n- Couverture quasi nulle (<30% du périmètre)',
+			intervalle: '0 % – 30 %',
+			valeur: '0.15'
+		},
+		{
+			niveau: '2',
+			signification: 'Faible',
+			descriptif: '- Dispositif en début de déploiement, incomplet\n- Contrôles parfois appliqués mais non systématiques\n- Applicabilité partielle\n- Couverture limitée, risque toujours élevé (30-60% du périmètre)',
+			intervalle: '31 % – 60 %',
+			valeur: '0.45'
+		},
+		{
+			niveau: '3',
+			signification: 'Acceptable',
+			descriptif: '- Dispositif en place et fonctionnel mais avec des lacunes\n- Contrôles réguliers mais améliorable\n- Applicabilité satisfaisante\n- Couverture correcte mais non exhaustive (60-80% du périmètre)',
+			intervalle: '61 % – 80 %',
+			valeur: '0.70'
+		},
+		{
+			niveau: '4',
+			signification: 'Efficace',
+			descriptif: '- Dispositif robuste et bien intégré\n- Contrôles efficaces, réguliers et fiables\n- Forte applicabilité\n- Large couverture du périmètre impacté (80-95% du périmètre)',
+			intervalle: '81 % – 95 %',
+			valeur: '0.90'
+		},
+		{
+			niveau: '5',
+			signification: 'Exemplaire',
+			descriptif: '- Dispositif optimal, proactif et innovant\n- Contrôles exhaustifs et très fiables\n- Applicabilité maximale\n- Couverture complète du périmètre (>95% du périmètre)',
+			intervalle: '96 % – 100 %',
+			valeur: '0.98'
+		}
+	];
+
 	let editModeAideRisque = false;
 	const AIDE_RISQUE_COULEURS = [
 		'bg-green-400 text-black',
@@ -941,7 +989,12 @@
 		'bg-red-500 text-black',
 		'bg-red-700 text-black',
 		'bg-red-900 text-white',
-		'bg-white text-black'
+		'bg-white text-black',
+		'bg-[#ff0000] text-black',
+		'bg-[#ffc000] text-black',
+		'bg-[#ffff00] text-black',
+		'bg-[#92d050] text-black',
+		'bg-[#00b050] text-white'
 	];
 
 	/** Full state for server/localStorage: all table rows + UI state */
@@ -965,6 +1018,7 @@
 			impactRows,
 			frequenceRisqueRows,
 			matriceRisqueRows,
+			efficaciteRows,
 			ptrData
 		};
 	}
@@ -1057,6 +1111,10 @@
 				matriceRisqueRows = rows.map((r) => ({ libelle: r.libelle, valeurs: [...r.valeurs] }));
 			}
 		}
+		if (state.efficaciteRows && Array.isArray(state.efficaciteRows) && state.efficaciteRows.length > 0) {
+			const rows = state.efficaciteRows as EfficaciteRow[];
+			efficaciteRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getEfficaciteDefBg(r.signification) }));
+		}
 		// Tableau PTR (Plan de Traitement des Risques)
 		if (state.ptrData && Array.isArray(state.ptrData) && state.ptrData.length > 0) {
 			const rows = state.ptrData as Array<Record<string, unknown>>;
@@ -1138,6 +1196,26 @@
 	}
 	function getFrequenceRowBg(row: Row): string {
 		return (row as Row & { bgColor?: string }).bgColor ?? getFrequenceDefBg(row.definition ?? '');
+	}
+
+	function getEfficaciteDefBg(signification: string): string {
+		switch (signification) {
+			case 'Insuffisant':
+				return 'bg-[#ff0000] text-black';
+			case 'Faible':
+				return 'bg-[#ffc000] text-black';
+			case 'Acceptable':
+				return 'bg-[#ffff00] text-black';
+			case 'Efficace':
+				return 'bg-[#92d050] text-black';
+			case 'Exemplaire':
+				return 'bg-[#00b050] text-white';
+			default:
+				return 'bg-white text-black';
+		}
+	}
+	function getEfficaciteRowBg(row: EfficaciteRow): string {
+		return row.bgColor ?? getEfficaciteDefBg(row.signification);
 	}
 
 	/** Parse "signification" (ex: "[1 – 20[" or "[64 – 120]") into min, max and whether max is inclusive. */
@@ -1370,7 +1448,21 @@
 	function supprimerFrequence(index: number) {
 		frequenceRisqueRows = supprimerLigneAt(frequenceRisqueRows, index);
 	}
-
+	function defaultEfficaciteRow(): EfficaciteRow {
+		return { niveau: '', signification: '', descriptif: '', intervalle: '', valeur: '', bgColor: 'bg-white text-black' };
+	}
+	function insererEfficaciteAvant(index: number) {
+		efficaciteRows = insererLigneAvant(efficaciteRows, index, defaultEfficaciteRow());
+	}
+	function insererEfficaciteApres(index: number) {
+		efficaciteRows = insererLigneApres(efficaciteRows, index, defaultEfficaciteRow());
+	}
+	function ajouterEfficacite() {
+		efficaciteRows = [...efficaciteRows, defaultEfficaciteRow()];
+	}
+	function supprimerEfficacite(index: number) {
+		efficaciteRows = supprimerLigneAt(efficaciteRows, index);
+	}
 	function getMatriceColumnCount(): number {
 		return matriceRisqueRows[0]?.valeurs?.length ?? 5;
 	}
@@ -3675,6 +3767,7 @@
 							probaRows = probaRows.map((r) => ({ ...r, bgColor: r.bgColor ?? getProbaDefBg(r.definition) }));
 							impactRows = impactRows.map((r) => ({ ...r, bgColor: r.bgColor ?? getImpactDefBg(r.definition) }));
 							frequenceRisqueRows = frequenceRisqueRows.map((r) => ({ ...r, bgColor: (r as Row & { bgColor?: string }).bgColor ?? getFrequenceDefBg(r.definition ?? '') }));
+							efficaciteRows = efficaciteRows.map((r) => ({ ...r, bgColor: r.bgColor ?? getEfficaciteDefBg(r.signification) }));
 						}
 						editModeAideRisque = !editModeAideRisque;
 					}}
@@ -3951,91 +4044,78 @@
 				<h3 class="text-lg font-semibold text-gray-900">
 					Niveaux d'efficacité
 				</h3>
-				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+				<div class="overflow-x-auto overflow-hidden rounded-lg border border-black bg-white shadow-sm">
 					<table class="min-w-full text-sm border-collapse border border-black">
 						<thead>
 							<tr>
-								<th class="px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black whitespace-nowrap" style="background-color: #263c18;">
+								<th class="w-14 px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black whitespace-nowrap" style="background-color: #263c18;">
 									Niveau
 								</th>
-								<th class="px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black whitespace-nowrap" style="background-color: #263c18;">
+								<th class="w-28 px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black whitespace-nowrap" style="background-color: #263c18;">
 									Signification
 								</th>
-								<th colspan="3" class="px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black" style="background-color: #263c18;">
+								<th colspan="3" class="min-w-[420px] w-[420px] px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black" style="background-color: #263c18;">
 									Descriptif
 								</th>
-								<th class="px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black whitespace-nowrap" style="background-color: #263c18;">
+								<th class="w-36 px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black whitespace-nowrap" style="background-color: #263c18;">
 									Intervalle d'efficacité (%)
 								</th>
-								<th class="px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black whitespace-nowrap" style="background-color: #263c18;">
+								<th class="w-24 px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black whitespace-nowrap" style="background-color: #263c18;">
 									Valeur correspondante
 								</th>
+								{#if editModeAideRisque}
+									<th class="w-32 px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black whitespace-nowrap" style="background-color: #263c18;">Couleur</th>
+									<th class="w-28 px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black whitespace-nowrap" style="background-color: #263c18;">Actions</th>
+								{/if}
 							</tr>
 						</thead>
 						<tbody>
-							<tr class="border border-black">
-								<td class="px-3 py-2 text-center font-bold border border-black bg-white">1</td>
-								<td class="px-3 py-2 text-center font-bold text-black border border-black" style="background-color: #ff0000;">Insuffisant</td>
-								<td colspan="3" class="px-3 py-2 text-[8px] text-left align-middle border border-black bg-white">
-									- Dispositif quasi inexistant ou inefficace<br />
-									- Contrôles absents ou très rares<br />
-									- Applicabilité très limitée<br />
-									- Couverture quasi nulle (&lt;30% du périmètre)
-								</td>
-								<td class="px-3 py-2 text-center font-bold border border-black bg-white">0 % – 30 %</td>
-								<td class="px-3 py-2 text-center border border-black bg-white">0.15</td>
-							</tr>
-							<tr class="border border-black">
-								<td class="px-3 py-2 text-center font-bold border border-black bg-white">2</td>
-								<td class="px-3 py-2 text-center font-bold text-black border border-black" style="background-color: #ffc000;">Faible</td>
-								<td colspan="3" class="px-3 py-2 text-[8px] text-left align-middle border border-black bg-white">
-									- Dispositif en début de déploiement, incomplet<br />
-									- Contrôles parfois appliqués mais non systématiques<br />
-									- Applicabilité partielle<br />
-									- Couverture limitée, risque toujours élevé (30-60% du périmètre)
-								</td>
-								<td class="px-3 py-2 text-center font-bold border border-black bg-white">31 % – 60 %</td>
-								<td class="px-3 py-2 text-center border border-black bg-white">0.45</td>
-							</tr>
-							<tr class="border border-black">
-								<td class="px-3 py-2 text-center font-bold border border-black bg-white">3</td>
-								<td class="px-3 py-2 text-center font-bold text-black border border-black" style="background-color: #ffff00;">Acceptable</td>
-								<td colspan="3" class="px-3 py-2 text-[8px] text-left align-middle border border-black bg-white">
-									- Dispositif en place et fonctionnel mais avec des lacunes<br />
-									- Contrôles réguliers mais améliorable<br />
-									- Applicabilité satisfaisante<br />
-									- Couverture correcte mais non exhaustive (60-80% du périmètre)
-								</td>
-								<td class="px-3 py-2 text-center font-bold border border-black bg-white">61 % – 80 %</td>
-								<td class="px-3 py-2 text-center border border-black bg-white">0.70</td>
-							</tr>
-							<tr class="border border-black">
-								<td class="px-3 py-2 text-center font-bold border border-black bg-white">4</td>
-								<td class="px-3 py-2 text-center font-bold text-black border border-black" style="background-color: #92d050;">Efficace</td>
-								<td colspan="3" class="px-3 py-2 text-[8px] text-left align-middle border border-black bg-white">
-									- Dispositif robuste et bien intégré<br />
-									- Contrôles efficaces, réguliers et fiables<br />
-									- Forte applicabilité<br />
-									- Large couverture du périmètre impacté (80-95% du périmètre)
-								</td>
-								<td class="px-3 py-2 text-center font-bold border border-black bg-white">81 % – 95 %</td>
-								<td class="px-3 py-2 text-center border border-black bg-white">0.90</td>
-							</tr>
-							<tr class="border border-black">
-								<td class="px-3 py-2 text-center font-bold border border-black bg-white">5</td>
-								<td class="px-3 py-2 text-center font-bold text-white border border-black" style="background-color: #00b050;">Exemplaire</td>
-								<td colspan="3" class="px-3 py-2 text-[8px] text-left align-middle border border-black bg-white">
-									- Dispositif optimal, proactif et innovant<br />
-									- Contrôles exhaustifs et très fiables<br />
-									- Applicabilité maximale<br />
-									- Couverture complète du périmètre (&gt;95% du périmètre)
-								</td>
-								<td class="px-3 py-2 text-center font-bold border border-black bg-white">96 % – 100 %</td>
-								<td class="px-3 py-2 text-center border border-black bg-white">0.98</td>
-							</tr>
+							{#each efficaciteRows as row, i}
+								<tr class="border border-black">
+									<td class="px-3 py-2 text-center border border-black bg-white">
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold text-center" type="text" bind:value={efficaciteRows[i].niveau} />
+									</td>
+									<td class={`px-3 py-2 text-center font-bold border border-black ${getEfficaciteRowBg(row)}`}>
+										<input class="w-full border border-transparent bg-transparent font-semibold text-center" type="text" bind:value={efficaciteRows[i].signification} />
+									</td>
+									<td colspan="3" class="min-w-[420px] px-3 py-2 text-left align-middle border border-black bg-white">
+										<textarea class="w-full min-h-[80px] border border-gray-300 rounded px-2 py-1 text-xs whitespace-pre-wrap" bind:value={efficaciteRows[i].descriptif} placeholder="Descriptif du niveau…"></textarea>
+									</td>
+									<td class="px-3 py-2 text-center border border-black bg-white">
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold text-center" type="text" bind:value={efficaciteRows[i].intervalle} placeholder="0 % – 30 %" />
+									</td>
+									<td class="px-3 py-2 text-center border border-black bg-white">
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm text-center" type="text" inputmode="decimal" bind:value={efficaciteRows[i].valeur} placeholder="0.15" />
+									</td>
+									{#if editModeAideRisque}
+										<td class="px-2 py-2 border border-black bg-gray-100">
+											<select class="w-full text-xs rounded border border-gray-300 px-1 py-1" bind:value={efficaciteRows[i].bgColor} on:change={() => saveCustomMethodState()}>
+												{#each AIDE_RISQUE_COULEURS as c}
+													<option value={c}>{c.replace('bg-', '').replace(' text-', ' / ')}</option>
+												{/each}
+											</select>
+										</td>
+										<td class="px-3 py-2 border border-black bg-gray-100 text-center">
+											<div class="flex gap-1 justify-center flex-wrap">
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererEfficaciteAvant(i)} title="Ajouter avant">↑+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererEfficaciteApres(i)} title="Ajouter après">↓+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerEfficacite(i)} title="Supprimer" disabled={efficaciteRows.length <= 1}>✕</button>
+											</div>
+										</td>
+									{/if}
+								</tr>
+							{/each}
 						</tbody>
 					</table>
 				</div>
+				{#if editModeAideRisque}
+					<div class="flex gap-2 mt-2">
+						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterEfficacite}>+ Ajouter une ligne</button>
+						{#if efficaciteRows.length > 1}
+							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerEfficacite(efficaciteRows.length - 1)}>- Supprimer la dernière ligne</button>
+						{/if}
+					</div>
+				{/if}
 				<p class="text-xs text-gray-600">
 					Échelle de risque (feu tricolore étendu)&nbsp;: <span class="font-semibold" style="color: #ff0000;">Rouge</span> (Insuffisant) – Risque très élevé,
 					<span class="font-semibold" style="color: #c08000;">Orange</span> (Faible) – Risque élevé,
