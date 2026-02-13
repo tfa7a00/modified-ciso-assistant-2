@@ -4054,7 +4054,7 @@
 								<th class="w-28 px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black whitespace-nowrap" style="background-color: #263c18;">
 									Signification
 								</th>
-								<th colspan="3" class="min-w-[420px] w-[420px] px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black" style="background-color: #263c18;">
+								<th colspan="3" class="px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black" style="background-color: #263c18;">
 									Descriptif
 								</th>
 								<th class="w-36 px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black whitespace-nowrap" style="background-color: #263c18;">
@@ -4078,8 +4078,8 @@
 									<td class={`px-3 py-2 text-center font-bold border border-black ${getEfficaciteRowBg(row)}`}>
 										<input class="w-full border border-transparent bg-transparent font-semibold text-center" type="text" bind:value={efficaciteRows[i].signification} />
 									</td>
-									<td colspan="3" class="min-w-[420px] px-3 py-2 text-left align-middle border border-black bg-white">
-										<textarea class="w-full min-h-[80px] border border-gray-300 rounded px-2 py-1 text-xs whitespace-pre-wrap" bind:value={efficaciteRows[i].descriptif} placeholder="Descriptif du niveau…"></textarea>
+									<td colspan="3" class="px-3 py-2 text-left align-middle border border-black bg-white">
+										<textarea class="w-full min-h-[80px] border border-gray-300 rounded px-2 py-1 text-sm whitespace-pre-wrap" bind:value={efficaciteRows[i].descriptif} placeholder="Descriptif du niveau…"></textarea>
 									</td>
 									<td class="px-3 py-2 text-center border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold text-center" type="text" bind:value={efficaciteRows[i].intervalle} placeholder="0 % – 30 %" />
