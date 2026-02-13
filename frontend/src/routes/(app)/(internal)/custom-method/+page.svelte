@@ -3911,9 +3911,6 @@
 										{/if}
 									</th>
 								{/each}
-								{#if editModeAideRisque}
-									<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Actions</th>
-								{/if}
 							</tr>
 						</thead>
 						<tbody>
@@ -3927,15 +3924,6 @@
 											<input class="w-16 text-center border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent" type="number" bind:value={matriceRisqueRows[i].valeurs[j]} />
 										</td>
 									{/each}
-									{#if editModeAideRisque}
-										<td class="px-4 py-2 border border-black bg-gray-100 text-center">
-											<div class="flex gap-1 justify-center flex-wrap">
-												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererMatriceAvant(i)} title="Ajouter avant">↑+</button>
-												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererMatriceApres(i)} title="Ajouter après">↓+</button>
-												<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerMatrice(i)} title="Supprimer" disabled={matriceRisqueRows.length <= 1}>✕</button>
-											</div>
-										</td>
-									{/if}
 								</tr>
 							{/each}
 						</tbody>
