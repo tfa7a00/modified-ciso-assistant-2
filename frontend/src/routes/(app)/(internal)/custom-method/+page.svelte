@@ -1699,6 +1699,39 @@
 		);
 	}
 
+	/** Normalise un code risque pour comparaison (trim, majuscules, O→0) */
+	function normalizeCodeRisque(code: string): string {
+		return (code || '').trim().toUpperCase().replace(/O/g, '0');
+	}
+
+	/** Trouve une ligne de la cartographie dont le Code Risque correspond à la REF Risque donnée */
+	function findCartoRowByCodeRisque(refRisque: string): CartoRow | undefined {
+		const ref = normalizeCodeRisque(refRisque);
+		if (!ref) return undefined;
+		return cartoRows.find((r) => normalizeCodeRisque(r.codeRisque) === ref);
+	}
+
+	/** Remplit les champs de la ligne PTR à partir de la cartographie lorsque la REF Risque correspond à un Code Risque */
+	function fillPtrFromCartographie(ptrIndex: number) {
+		const row = ptrData[ptrIndex];
+		if (!row) return;
+		const carto = findCartoRowByCodeRisque(row.refRisque);
+		if (!carto) return;
+		ptrData = ptrData.map((r, i) =>
+			i !== ptrIndex
+				? r
+				: {
+						...r,
+						correspISO: carto.mesureISO ?? r.correspISO,
+						proprietaire: carto.proprietaireRisque ?? r.proprietaire,
+						niveauRisque: getNiveauNet(carto) || r.niveauRisque,
+						decision: carto.decision ?? r.decision,
+						action: carto.actionPTR ?? r.action
+					}
+		);
+		saveCustomMethodState();
+	}
+
 </script>
 
 <style>
@@ -3652,8 +3685,7 @@
 										<input class="w-full border border-transparent bg-transparent font-semibold text-center" type="text" bind:value={efficaciteRows[i].signification} />
 									</td>
 									<td colspan="3" class="px-3 py-3 text-left align-middle border border-black bg-white min-h-[140px] overflow-hidden">
-										<textarea class="w-full min-h-[120px] min-w-0 border border-gray-300 rounded px-2 py-1.5 text-base whitespace-pre-wrap" bind:value={efficaciteRows[i].descriptif} placeholder="Descriptif du niveau…"></textarea>
-									</td>
+										<textarea class="w-full min-h-[120px] min-w-0 border border-gray-300 rounded px-2 py-1.5 text-base whitespace-pre-wrap" bind:value={efficaciteRows[i].descriptif} placeholder="Descriptif du niveau…"></textarea'									</td>
 									<td class="px-3 py-2 text-center border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold text-center" type="text" bind:value={efficaciteRows[i].intervalle} placeholder="0 % – 30 %" />
 									</td>
@@ -3764,8 +3796,10 @@
 										type="text"
 										value={row.refRisque}
 										on:input={(e) => updateCell(index, 'refRisque', e)}
+										on:blur={() => fillPtrFromCartographie(index)}
 										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
-										placeholder=""
+										placeholder="Code risque (ex. DSI-R-SP-001)"
+										title="Saisir le code risque puis quitter le champ pour importer les données de la cartographie"
 									/>
 								</td>
 								<td class="px-2 py-2 border border-gray-300">
@@ -3795,8 +3829,10 @@
 										<option value="">-</option>
 										<option value="Très faible">Très faible</option>
 										<option value="Faible">Faible</option>
+										<option value="Modéré">Modéré</option>
 										<option value="Moyen">Moyen</option>
 										<option value="Élevé">Élevé</option>
+										<option value="Extrême">Extrême</option>
 										<option value="Très élevé">Très élevé</option>
 									</select>
 								</td>
