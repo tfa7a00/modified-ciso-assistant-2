@@ -1909,6 +1909,25 @@
         box-sizing: border-box;
         overflow: hidden;
     }
+
+    /* Modifiable text cells: no visible outline by default, show on hover/focus */
+    main table input:not([type="checkbox"]),
+    main table textarea {
+        border: 1px solid transparent !important;
+        outline: none !important;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    main table input:not([type="checkbox"]):hover,
+    main table input:not([type="checkbox"]):focus,
+    main table textarea:hover,
+    main table textarea:focus {
+        border-color: #d1d5db !important; /* gray-300 */
+        outline: none !important;
+    }
+    main table input:not([type="checkbox"]):focus,
+    main table textarea:focus {
+        box-shadow: 0 0 0 1px #d1d5db;
+    }
 </style>
 
 <main class="p-6 space-y-8">
