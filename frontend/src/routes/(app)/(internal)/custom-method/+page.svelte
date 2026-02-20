@@ -1836,10 +1836,14 @@
         min-height: 120px;
     }
 
-    /* Version "Avec Efficacité" : aligner la taille des cellules avec les en-têtes */
+    /* Version "Avec Efficacité" : aligner en-têtes et cellules (même taille) */
+    .carto-b-th {
+        box-sizing: border-box;
+        line-height: 1.2;
+    }
     .carto-b-cell {
         box-sizing: border-box;
-        max-width: 90px;
+        max-width: 78px;
     }
 </style>
 
@@ -3024,10 +3028,10 @@
 									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">I*P*C</th>
 									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Risque Net</th>
 								{:else}
-									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Efficacité DMR</th>
-									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Niveau d'efficacité</th>
-									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Niveau de risque</th>
-									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Signification du risque net</th>
+									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 68px; max-width: 68px;">Efficacité DMR</th>
+									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 76px; max-width: 76px;">Niveau d'eff.</th>
+									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 70px; max-width: 70px;">Niveau risque</th>
+									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 76px; max-width: 76px;">Signif. risque net</th>
 								{/if}
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black min-w-[90px]">Actions</th>
 							</tr>
@@ -3051,11 +3055,11 @@
 									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">I*P*C</th>
 									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Risque Résiduel</th>
 								{:else}
-									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Efficacité PTR</th>
-									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Pourcentage d'efficacité</th>
-									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Niveau de risque</th>
-									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Niveau du risque résiduel</th>
-									<th class="px-2 py-3 text-center font-bold text-black bg-gray-200 border border-black w-8"></th>
+									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 68px; max-width: 68px;">Efficacité PTR</th>
+									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 76px; max-width: 76px;">% efficacité</th>
+									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 68px; max-width: 68px;">Niveau risque</th>
+									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 76px; max-width: 76px;">Niv. risque résiduel</th>
+									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-gray-200 border border-black" style="width: 36px; max-width: 36px;"></th>
 								{/if}
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black min-w-[90px]">Actions</th>
 							</tr>
@@ -3198,11 +3202,11 @@
 							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 70px;">I*P*C</th>
 							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 100px;">Signification du risque net</th>
 						{:else}
-							<th rowspan="2" class="px-1 py-2 text-center font-bold text-black bg-yellow-400 border border-black text-xs whitespace-nowrap" style="width: 72px;">Efficacité DMR</th>
-							<th rowspan="2" class="px-1 py-2 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 85px;">Niveau d'eff.</th>
-							<th rowspan="2" class="px-1 py-2 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 75px;">Niveau risque</th>
-							<th rowspan="2" class="px-1 py-2 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 85px;">Signif. risque net</th>
-							<th rowspan="2" class="px-1 py-2 text-center font-bold text-black bg-gray-200 border border-black" style="width: 40px;"></th>
+							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs whitespace-nowrap" style="width: 68px; max-width: 68px;">Efficacité DMR</th>
+							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 76px; max-width: 76px;">Niveau d'eff.</th>
+							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 70px; max-width: 70px;">Niveau risque</th>
+							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 76px; max-width: 76px;">Signif. risque net</th>
+							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-gray-200 border border-black" style="width: 36px; max-width: 36px;"></th>
 						{/if}
 						<!-- PTR -->
 						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black" style="min-width: 200px;">Action à mettre en place</th>
@@ -3215,11 +3219,11 @@
 							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 70px;">I*P*C</th>
 							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 100px;">Niveau du risque résiduel</th>
 						{:else}
-							<th rowspan="2" class="px-1 py-2 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 72px;">Efficacité PTR</th>
-							<th rowspan="2" class="px-1 py-2 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 85px;">% efficacité</th>
-							<th rowspan="2" class="px-1 py-2 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 72px;">Niveau risque</th>
-							<th rowspan="2" class="px-1 py-2 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 85px;">Niv. risque résiduel</th>
-							<th rowspan="2" class="px-1 py-2 text-center font-bold text-black bg-gray-200 border border-black" style="width: 40px;"></th>
+							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 68px; max-width: 68px;">Efficacité PTR</th>
+							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 76px; max-width: 76px;">% efficacité</th>
+							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 68px; max-width: 68px;">Niveau risque</th>
+							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 76px; max-width: 76px;">Niv. risque résiduel</th>
+							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-gray-200 border border-black" style="width: 36px; max-width: 36px;"></th>
 						{/if}
 						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black" style="min-width: 90px;">
 							Actions
@@ -3369,18 +3373,18 @@
 							<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(row) ?? '-'}</td>
 							<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(row))}">{getNiveauNet(row)}</td>
 						{:else}
-							<td class="carto-b-cell px-1 py-2 border border-black bg-white align-middle">
-								<input type="number" class="w-full text-xs p-1 text-center max-w-[72px] mx-auto" min="1" max="5" placeholder="1-5" bind:value={row.efficaciteDMR} on:change={() => saveCustomMethodState()} />
+							<td class="carto-b-cell px-1 py-2 border border-black bg-white align-middle" style="width: 68px;">
+								<input type="number" class="w-full text-xs p-1 text-center max-w-[60px] mx-auto" min="1" max="5" placeholder="1-5" bind:value={row.efficaciteDMR} on:change={() => saveCustomMethodState()} />
 							</td>
-							<td class="carto-b-cell px-1 py-2 border border-black bg-white align-middle">
-								<select class="w-full text-xs p-1 max-w-[85px]" bind:value={row.niveauEfficaciteDMR} on:change={() => saveCustomMethodState()}>
+							<td class="carto-b-cell px-1 py-2 border border-black bg-white align-middle" style="width: 76px;">
+								<select class="w-full text-xs p-1 max-w-[70px]" bind:value={row.niveauEfficaciteDMR} on:change={() => saveCustomMethodState()}>
 									<option value="">--</option>
 									<option value="acceptable">Acceptable</option>
 									<option value="insuffisant">Insuffisant</option>
 								</select>
 							</td>
-							<td class="carto-b-cell px-1 py-2 border border-black bg-white align-middle">
-								<select class="w-full text-xs p-1 max-w-[75px]" bind:value={row.niveauRisqueNetB} on:change={() => saveCustomMethodState()}>
+							<td class="carto-b-cell px-1 py-2 border border-black bg-white align-middle" style="width: 70px;">
+								<select class="w-full text-xs p-1 max-w-[64px]" bind:value={row.niveauRisqueNetB} on:change={() => saveCustomMethodState()}>
 									<option value="">--</option>
 									<option value="Faible">Faible</option>
 									<option value="Modéré">Modéré</option>
@@ -3388,8 +3392,8 @@
 									<option value="Extrême">Extrême</option>
 								</select>
 							</td>
-							<td class="carto-b-cell px-1 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(row.niveauRisqueNetB || getNiveauNet(row))}">{row.niveauRisqueNetB || getNiveauNet(row)}</td>
-							<td class="carto-b-cell px-1 py-2 border border-black bg-gray-100 align-middle w-10"></td>
+							<td class="carto-b-cell px-1 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(row.niveauRisqueNetB || getNiveauNet(row))}" style="width: 76px;">{row.niveauRisqueNetB || getNiveauNet(row)}</td>
+							<td class="carto-b-cell px-1 py-2 border border-black bg-gray-100 align-middle" style="width: 36px;"></td>
 						{/if}
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="6" placeholder="Action..." bind:value={row.actionPTR} on:blur={() => saveCustomMethodState()}></textarea>
@@ -3414,18 +3418,18 @@
 							<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(row) ?? '-'}</td>
 							<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(row))}">{getNiveauResiduel(row)}</td>
 						{:else}
-							<td class="carto-b-cell px-1 py-2 border border-black bg-white align-middle">
-								<select class="w-full text-xs p-1 max-w-[72px]" bind:value={row.efficacitePTR} on:change={() => saveCustomMethodState()}>
+							<td class="carto-b-cell px-1 py-2 border border-black bg-white align-middle" style="width: 68px;">
+								<select class="w-full text-xs p-1 max-w-[62px]" bind:value={row.efficacitePTR} on:change={() => saveCustomMethodState()}>
 									<option value="">--</option>
 									{#each efficaciteRows as eff}
 										<option value={eff.niveau}>{eff.niveau} – {eff.signification}</option>
 									{/each}
 								</select>
 							</td>
-							<td class="carto-b-cell px-1 py-2 text-center font-bold border border-black bg-yellow-200 align-middle text-xs">{getPourcentageEfficaciteDisplay(row.efficacitePTR)}</td>
-							<td class="carto-b-cell px-1 py-2 text-center font-bold border border-black bg-orange-200 align-middle text-xs">{getNiveauRisqueResiduelB(row) ?? '-'}</td>
-							<td class="carto-b-cell px-1 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauFromIpc(getNiveauRisqueResiduelB(row)))}">{getNiveauFromIpc(getNiveauRisqueResiduelB(row))}</td>
-							<td class="carto-b-cell px-1 py-2 border border-black bg-gray-100 align-middle w-10"></td>
+							<td class="carto-b-cell px-1 py-2 text-center font-bold border border-black bg-yellow-200 align-middle text-xs" style="width: 76px;">{getPourcentageEfficaciteDisplay(row.efficacitePTR)}</td>
+							<td class="carto-b-cell px-1 py-2 text-center font-bold border border-black bg-orange-200 align-middle text-xs" style="width: 68px;">{getNiveauRisqueResiduelB(row) ?? '-'}</td>
+							<td class="carto-b-cell px-1 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauFromIpc(getNiveauRisqueResiduelB(row)))}" style="width: 76px;">{getNiveauFromIpc(getNiveauRisqueResiduelB(row))}</td>
+							<td class="carto-b-cell px-1 py-2 border border-black bg-gray-100 align-middle" style="width: 36px;"></td>
 						{/if}
 						<td class="px-2 py-2 border border-black bg-gray-100 text-center">
 							<div class="flex gap-1 justify-center flex-wrap">
