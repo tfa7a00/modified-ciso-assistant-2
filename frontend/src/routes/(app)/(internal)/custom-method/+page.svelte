@@ -112,12 +112,12 @@
 		return g * p * c;
 	}
 
-	/** Niveau: Faible [1-20[, Modéré [20-36[, Élevé [36-64[, Extrême [64-120] */
+	/** Niveau: Faible (≤20), Modéré ]20-36], Élevé ]36-60], Extrême >60 — aligné carto_efficacite.xlsx */
 	function getNiveauFromIpc(ipc: number | null): string {
 		if (ipc === null) return '-';
-		if (ipc < 20) return 'Faible';
-		if (ipc < 36) return 'Modéré';
-		if (ipc < 64) return 'Élevé';
+		if (ipc <= 20) return 'Faible';
+		if (ipc <= 36) return 'Modéré';
+		if (ipc <= 60) return 'Élevé';
 		return 'Extrême';
 	}
 
@@ -168,6 +168,22 @@
 		return getNiveauFromIpc(getIpcResiduel(row));
 	}
 
+	/** Taux de réduction DMR/PTR (0-1) pour score 1-5 — barème carto_efficacite.xlsx : 1→15%, 2→45%, 3→70%, 4→90%, 5→98% */
+	function getTauxReductionEfficacite(score: string | number | null | undefined): number | null {
+		const n = typeof score === 'number' ? (Number.isFinite(score) ? score : null) : parseNum(score as string);
+		if (n === null || n < 1 || n > 5) return null;
+		const taux: Record<number, number> = { 1: 0.15, 2: 0.45, 3: 0.7, 4: 0.9, 5: 0.98 };
+		return taux[Math.round(n)] ?? null;
+	}
+
+	/** Niveau d'efficacité (AK/AQ) : 1→Insuffisant, 2→Faible, 3→Acceptable, 4→Efficace, 5→Exemplaire */
+	function getNiveauEfficaciteLabel(score: string | number | null | undefined): string {
+		const n = typeof score === 'number' ? (Number.isFinite(score) ? score : null) : parseNum(score as string);
+		if (n === null || n < 1 || n > 5) return '';
+		const labels: Record<number, string> = { 1: 'Insuffisant', 2: 'Faible', 3: 'Acceptable', 4: 'Efficace', 5: 'Exemplaire' };
+		return labels[Math.round(n)] ?? '';
+	}
+
 	/** Valeur numérique d'efficacité (0-1) depuis le tableau Aide-Risque par niveau (1-5) */
 	function getEfficaciteValeurByNiveau(niveau: string): number | null {
 		const n = (niveau || '').trim();
@@ -178,12 +194,27 @@
 		return Number.isFinite(v) ? v : null;
 	}
 
-	/** Version B : Niveau de risque résiduel = I*P*C net × (1 - valeur efficacité PTR) */
+	/** Version B — Risque Net (AL) = (1 - taux_DMR) × Risque_Brut ; taux_DMR depuis Efficacité DMR 1-5 */
+	function getIpcNetB(row: CartoRow): number | null {
+		const ipcBrut = getIpcBrut(row);
+		const taux = getTauxReductionEfficacite(row.efficaciteDMR);
+		if (ipcBrut === null || taux === null) return null;
+		return (1 - taux) * ipcBrut;
+	}
+
+	/** Version B — Signification du risque net (AM) à partir du niveau de risque net (AL), seuils >60 / ]36-60] / ]20-36] / ≤20 */
+	function getSignificationRisqueNetB(row: CartoRow): string {
+		const al = getIpcNetB(row);
+		if (al === null) return '-';
+		return getNiveauFromIpc(al);
+	}
+
+	/** Version B : Niveau de risque résiduel (AR) = (1 - taux_PTR) × Risque_Net_B (AL) */
 	function getNiveauRisqueResiduelB(row: CartoRow): number | null {
-		const ipcNet = getIpcNet(row);
+		const ipcNetB = getIpcNetB(row);
 		const effVal = getEfficaciteValeurByNiveau(row.efficacitePTR);
-		if (ipcNet === null || effVal === null) return null;
-		return ipcNet * (1 - effVal);
+		if (ipcNetB === null || effVal === null) return null;
+		return (1 - effVal) * ipcNetB;
 	}
 
 	/** Affichage du niveau de risque résiduel (Version B) avec 2 décimales */
@@ -191,6 +222,22 @@
 		const v = getNiveauRisqueResiduelB(row);
 		if (v === null) return '-';
 		return Number(v).toFixed(2);
+	}
+
+	/** Affichage du niveau de risque net (Version B) avec 1 décimale — colonne AL */
+	function formatNiveauRisqueNetBDisplay(row: CartoRow): string {
+		const v = getIpcNetB(row);
+		if (v === null) return '-';
+		return Number(v).toFixed(1);
+	}
+
+	/** Libellé d'efficacité PTR (colonne AQ) : Insuffisant, Faible, Acceptable, Efficace, Exemplaire — depuis niveau "1"-"5" ou tableau Aide-Risque */
+	function getSignificationEfficacitePTRDisplay(niveau: string): string {
+		if (!niveau || !niveau.trim()) return '-';
+		const row = efficaciteRows.find((r) => String(r.niveau).trim() === String(niveau).trim());
+		if (row && row.signification) return row.signification;
+		// Fallback : niveau "1"-"5" → même libellés que getNiveauEfficaciteLabel
+		return getNiveauEfficaciteLabel(niveau) || '-';
 	}
 
 	/** Affichage du pourcentage d'efficacité (intervalle ou %) depuis le tableau Aide-Risque */
@@ -3227,7 +3274,7 @@
 							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 120px;">Niveau du risque résiduel</th>
 						{:else}
 							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Efficacité PTR</th>
-							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">% efficacité</th>
+							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niveau d'efficacité</th>
 							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niveau risque</th>
 							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niv. risque résiduel</th>
 						{/if}
@@ -3379,26 +3426,16 @@
 							<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(row) ?? '-'}</td>
 							<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(row))}">{getNiveauNet(row)}</td>
 						{:else}
+							<!-- AJ : Efficacité DMR (saisie 1-5) -->
 							<td class="carto-b-cell px-1 py-3 border border-black bg-white align-middle" style="width: 130px; max-width: 130px;">
 								<input type="number" class="w-full text-xs p-1 text-center max-w-[100px] mx-auto" min="1" max="5" placeholder="1-5" bind:value={row.efficaciteDMR} on:change={() => saveCustomMethodState()} />
 							</td>
-							<td class="carto-b-cell px-1 py-3 border border-black bg-white align-middle" style="width: 130px; max-width: 130px;">
-								<select class="w-full text-xs p-1 max-w-[110px]" bind:value={row.niveauEfficaciteDMR} on:change={() => saveCustomMethodState()}>
-									<option value="">--</option>
-									<option value="acceptable">Acceptable</option>
-									<option value="insuffisant">Insuffisant</option>
-								</select>
-							</td>
-							<td class="carto-b-cell px-1 py-3 border border-black bg-white align-middle" style="width: 130px; max-width: 130px;">
-								<select class="w-full text-xs p-1 max-w-[110px]" bind:value={row.niveauRisqueNetB} on:change={() => saveCustomMethodState()}>
-									<option value="">--</option>
-									<option value="Faible">Faible</option>
-									<option value="Modéré">Modéré</option>
-									<option value="Élevé">Élevé</option>
-									<option value="Extrême">Extrême</option>
-								</select>
-							</td>
-							<td class="carto-b-cell px-1 py-3 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(row.niveauRisqueNetB || getNiveauNet(row))}" style="width: 130px; max-width: 130px;">{row.niveauRisqueNetB || getNiveauNet(row)}</td>
+							<!-- AK : Niveau d'efficacité (calculé : Insuffisant, Faible, Acceptable, Efficace, Exemplaire) -->
+							<td class="carto-b-cell px-1 py-3 text-center font-bold border border-black bg-yellow-200 align-middle text-xs" style="width: 130px; max-width: 130px;">{getNiveauEfficaciteLabel(row.efficaciteDMR) || '-'}</td>
+							<!-- AL : Niveau de risque net (calculé = (1-taux_DMR)×Risque_Brut) -->
+							<td class="carto-b-cell px-1 py-3 text-center font-bold border border-black bg-orange-200 align-middle text-xs" style="width: 130px; max-width: 130px;">{formatNiveauRisqueNetBDisplay(row)}</td>
+							<!-- AM : Signification du risque net (calculée depuis AL, seuils ≤20 / ]20-36] / ]36-60] / >60) -->
+							<td class="carto-b-cell px-1 py-3 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getSignificationRisqueNetB(row))}" style="width: 130px; max-width: 130px;">{getSignificationRisqueNetB(row)}</td>
 						{/if}
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="6" placeholder="Action..." bind:value={row.actionPTR} on:blur={() => saveCustomMethodState()}></textarea>
@@ -3423,6 +3460,7 @@
 							<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(row) ?? '-'}</td>
 							<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(row))}">{getNiveauResiduel(row)}</td>
 						{:else}
+							<!-- AP : Efficacité PTR (sélection niveau 1-5) -->
 							<td class="carto-b-cell px-1 py-3 border border-black bg-white align-middle" style="width: 130px; max-width: 130px;">
 								<select class="w-full text-xs p-1 max-w-[110px]" bind:value={row.efficacitePTR} on:change={() => saveCustomMethodState()}>
 									<option value="">--</option>
@@ -3431,8 +3469,11 @@
 									{/each}
 								</select>
 							</td>
-							<td class="carto-b-cell px-1 py-3 text-center font-bold border border-black bg-yellow-200 align-middle text-xs" style="width: 130px; max-width: 130px;">{getPourcentageEfficaciteDisplay(row.efficacitePTR)}</td>
+							<!-- AQ : Niveau d'efficacité PTR (libellé : Insuffisant, Faible, Acceptable, Efficace, Exemplaire) -->
+							<td class="carto-b-cell px-1 py-3 text-center font-bold border border-black bg-yellow-200 align-middle text-xs" style="width: 130px; max-width: 130px;">{getSignificationEfficacitePTRDisplay(row.efficacitePTR)}</td>
+							<!-- AR : Niveau de risque résiduel (calculé = (1-taux_PTR)×Risque_Net_B) -->
 							<td class="carto-b-cell px-1 py-3 text-center font-bold border border-black bg-orange-200 align-middle text-xs" style="width: 130px; max-width: 130px;">{formatNiveauRisqueResiduelBDisplay(row)}</td>
+							<!-- AS : Niveau du risque résiduel (calculé depuis AR, mêmes seuils que AM) -->
 							<td class="carto-b-cell px-1 py-3 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauFromIpc(getNiveauRisqueResiduelB(row)))}" style="width: 130px; max-width: 130px;">{getNiveauFromIpc(getNiveauRisqueResiduelB(row))}</td>
 						{/if}
 						<td class="px-2 py-2 border border-black bg-gray-100 text-center">
