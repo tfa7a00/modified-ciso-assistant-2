@@ -23,6 +23,8 @@
 
 	// Vue pour la cartographie: identification / risque brut / risque net / PTR+résiduel
 	let cartoView: 'all' | 'identification' | 'brut' | 'net' | 'ptr' = 'identification';
+	// Version du tableau cartographie : A (criticité/gravité/proba/IPC) ou B (efficacité DMR/PTR)
+	let cartoVersion: 'A' | 'B' = 'A';
 
 	// Données et formules pour la cartographie des risques (une ligne = un objet)
 	type CartoRow = {
@@ -68,6 +70,12 @@
 		// Risque résiduel
 		impactResiduel: string | number;
 		vraisemblanceResiduel: string | number;
+		// Version B : Évaluation Risque Net (efficacité DMR)
+		efficaciteDMR: string | number;
+		niveauEfficaciteDMR: string; // 'acceptable' | 'insuffisant' | ''
+		niveauRisqueNetB: string;
+		// Version B : Évaluation Risque Résiduel (efficacité PTR depuis Aide-Risque)
+		efficacitePTR: string; // niveau 1-5 (référence tableau efficacité)
 	};
 
 	function parseNum(s: string | number | null | undefined): number | null {
@@ -160,6 +168,31 @@
 		return getNiveauFromIpc(getIpcResiduel(row));
 	}
 
+	/** Valeur numérique d'efficacité (0-1) depuis le tableau Aide-Risque par niveau (1-5) */
+	function getEfficaciteValeurByNiveau(niveau: string): number | null {
+		const n = (niveau || '').trim();
+		if (!n) return null;
+		const row = efficaciteRows.find((r) => String(r.niveau).trim() === n);
+		if (!row || row.valeur == null || row.valeur === '') return null;
+		const v = Number(String(row.valeur).replace(',', '.'));
+		return Number.isFinite(v) ? v : null;
+	}
+
+	/** Version B : Niveau de risque résiduel = I*P*C net × (1 - valeur efficacité PTR) */
+	function getNiveauRisqueResiduelB(row: CartoRow): number | null {
+		const ipcNet = getIpcNet(row);
+		const effVal = getEfficaciteValeurByNiveau(row.efficacitePTR);
+		if (ipcNet === null || effVal === null) return null;
+		return ipcNet * (1 - effVal);
+	}
+
+	/** Affichage du pourcentage d'efficacité (intervalle ou %) depuis le tableau Aide-Risque */
+	function getPourcentageEfficaciteDisplay(niveau: string): string {
+		const row = efficaciteRows.find((r) => String(r.niveau).trim() === String(niveau || '').trim());
+		if (!row) return '-';
+		return row.intervalle || (row.valeur != null && row.valeur !== '' ? Math.round(parseFloat(String(row.valeur).replace(',', '.')) * 100) + ' %' : '-');
+	}
+
 	function defaultCartoRow(): CartoRow {
 		return {
 			entite: '',
@@ -196,7 +229,11 @@
 			graviteNet: '',
 			probabiliteNet: '',
 			impactResiduel: '',
-			vraisemblanceResiduel: ''
+			vraisemblanceResiduel: '',
+			efficaciteDMR: '',
+			niveauEfficaciteDMR: '',
+			niveauRisqueNetB: '',
+			efficacitePTR: ''
 		};
 	}
 
@@ -1007,6 +1044,7 @@
 			registreRows,
 			activeSection,
 			cartoView,
+			cartoVersion,
 			periodiciteRows,
 			complexiteRows,
 			typeActionRows,
@@ -1061,6 +1099,9 @@
 		}
 		if (state.cartoView && cartoViews.includes(state.cartoView as typeof cartoView)) {
 			cartoView = state.cartoView as typeof cartoView;
+		}
+		if (state.cartoVersion === 'A' || state.cartoVersion === 'B') {
+			cartoVersion = state.cartoVersion;
 		}
 		if (state.periodiciteRows && Array.isArray(state.periodiciteRows) && state.periodiciteRows.length > 0) {
 			const rows = state.periodiciteRows as Row[];
@@ -2837,9 +2878,12 @@
 					<button type="button" class={`px-3 py-1 text-sm rounded-md border ${cartoView==='net' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`} on:click={() => (cartoView='net')}>Degré & Risque Net</button>
 					<button type="button" class={`px-3 py-1 text-sm rounded-md border ${cartoView==='ptr' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`} on:click={() => (cartoView='ptr')}>PTR + Résiduel</button>
 					<button type="button" class={`px-3 py-1 text-sm rounded-md border ${cartoView==='all' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`} on:click={() => (cartoView='all')}>Tout</button>
-					<button type="button" class="px-3 py-1 text-sm rounded-md border border-amber-500 bg-amber-50 text-amber-800 hover:bg-amber-100 ml-4" on:click={resetCartoTable}>Réinitialiser le tableau</button>
+					<span class="ml-4 pl-4 border-l border-gray-300 text-xs text-gray-600">Version tableau :</span>
+					<button type="button" class={`px-3 py-1 text-sm rounded-md border ${cartoVersion==='A' ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`} on:click={() => (cartoVersion='A')}>Version A</button>
+					<button type="button" class={`px-3 py-1 text-sm rounded-md border ${cartoVersion==='B' ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`} on:click={() => (cartoVersion='B')}>Version B</button>
+					<button type="button" class="px-3 py-1 text-sm rounded-md border border-amber-500 bg-amber-50 text-amber-800 hover:bg-amber-100 ml-2" on:click={resetCartoTable}>Réinitialiser le tableau</button>
 				</div>
-				<p class="text-xs text-gray-500">Affiche uniquement la sous-partie sélectionnée pour une meilleure lisibilité.</p>
+				<p class="text-xs text-gray-500">Affiche uniquement la sous-partie sélectionnée pour une meilleure lisibilité. Version A : Criticité/Gravité/Probabilité/I*P*C. Version B : Efficacité DMR/PTR (Aide-Risque).</p>
 			</div>
 
 			<div class="overflow-x-auto rounded-lg border border-black bg-white shadow-sm" class:view-all={cartoView==='all'} class:view-identification={cartoView==='identification'} class:view-brut={cartoView==='brut'} class:view-net={cartoView==='net'} class:view-ptr={cartoView==='ptr'}>
@@ -2959,19 +3003,26 @@
 					{:else if cartoView === 'net'}
 						<thead>
 							<tr>
-								<th colspan="9" class="px-4 py-3 text-center font-bold text-lg text-white bg-teal-600 border border-black">
-									DEGRÉ D'EXPOSITION + RISQUE NET
+								<th colspan={cartoVersion === 'B' ? 8 : 9} class="px-4 py-3 text-center font-bold text-lg text-white bg-teal-600 border border-black">
+									DEGRÉ D'EXPOSITION + RISQUE NET {#if cartoVersion === 'B'}(Version B){/if}
 								</th>
 							</tr>
 							<tr>
 								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Code Risque</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Description du scénario</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">Dispositif de Maîtrise</th>
-								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Criticité actif</th>
-								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Gravité des impacts</th>
-								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Probabilité</th>
-								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">I*P*C</th>
-								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Risque Net</th>
+								{#if cartoVersion === 'A'}
+									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Criticité actif</th>
+									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Gravité des impacts</th>
+									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Probabilité</th>
+									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">I*P*C</th>
+									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Risque Net</th>
+								{:else}
+									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Efficacité DMR</th>
+									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Niveau d'efficacité</th>
+									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Niveau de risque</th>
+									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Signification du risque net</th>
+								{/if}
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black min-w-[90px]">Actions</th>
 							</tr>
 						</thead>
@@ -2979,7 +3030,7 @@
 						<thead>
 							<tr>
 								<th colspan="10" class="px-4 py-3 text-center font-bold text-lg text-white bg-gray-600 border border-black">
-									PLAN DE TRAITEMENT + RISQUE RÉSIDUEL
+									PLAN DE TRAITEMENT + RISQUE RÉSIDUEL {#if cartoVersion === 'B'}(Version B){/if}
 								</th>
 							</tr>
 							<tr>
@@ -2987,11 +3038,19 @@
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Description du scénario</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Action PTR</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Décision</th>
-								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Criticité actif</th>
-								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact</th>
-								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Vraissemblance</th>
-								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">I*P*C</th>
-								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Risque Résiduel</th>
+								{#if cartoVersion === 'A'}
+									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Criticité actif</th>
+									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact</th>
+									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Vraissemblance</th>
+									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">I*P*C</th>
+									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Risque Résiduel</th>
+								{:else}
+									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Efficacité PTR</th>
+									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Pourcentage d'efficacité</th>
+									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Niveau de risque</th>
+									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Niveau du risque résiduel</th>
+									<th class="px-2 py-3 text-center font-bold text-black bg-gray-200 border border-black w-8"></th>
+								{/if}
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black min-w-[90px]">Actions</th>
 							</tr>
 						</thead>
@@ -3125,47 +3184,37 @@
 							Description du Dispositif de Maitrise des Risques
 						</th>
 						
-						<!-- Risque Net -->
-						<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 100px;">
-							Criticité de l'actif - Besoin de SOCIETE en SSI
-						</th>
-						<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 80px;">
-							Gravité des impacts
-						</th>
-						<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 80px;">
-							Probabilité<br/>d'Occurrence
-						</th>
-						<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 70px;">
-							I*P*C
-						</th>
-						<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 100px;">
-							Signification du risque net
-						</th>
-						
+						<!-- Risque Net : Version A ou B -->
+						{#if cartoVersion === 'A'}
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 100px;">Criticité de l'actif - Besoin de SOCIETE en SSI</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 80px;">Gravité des impacts</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 80px;">Probabilité<br/>d'Occurrence</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 70px;">I*P*C</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 100px;">Signification du risque net</th>
+						{:else}
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 80px;">Efficacité DMR</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 100px;">Niveau d'efficacité</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 90px;">Niveau de risque</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 100px;">Signification du risque net</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-gray-200 border border-black" style="min-width: 50px;"></th>
+						{/if}
 						<!-- PTR -->
-						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black" style="min-width: 200px;">
-							Action à mettre en place
-						</th>
-						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black" style="min-width: 100px;">
-							Décision
-						</th>
-						
-						<!-- Risque Résiduel -->
-						<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 100px;">
-							Criticité de l'actif - Besoin de SOCIETE en SSI
-						</th>
-						<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 70px;">
-							Impact
-						</th>
-						<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 80px;">
-							Vraissemblance
-						</th>
-						<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 70px;">
-							I*P*C
-						</th>
-						<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 100px;">
-							Niveau du risque résiduel
-						</th>
+						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black" style="min-width: 200px;">Action à mettre en place</th>
+						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black" style="min-width: 100px;">Décision</th>
+						<!-- Risque Résiduel : Version A ou B -->
+						{#if cartoVersion === 'A'}
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 100px;">Criticité de l'actif - Besoin de SOCIETE en SSI</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 70px;">Impact</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 80px;">Vraissemblance</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 70px;">I*P*C</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 100px;">Niveau du risque résiduel</th>
+						{:else}
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 90px;">Efficacité PTR</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 90px;">Pourcentage d'efficacité</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 90px;">Niveau de risque</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 100px;">Niveau du risque résiduel</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-gray-200 border border-black" style="min-width: 50px;"></th>
+						{/if}
 						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black" style="min-width: 90px;">
 							Actions
 						</th>
@@ -3303,15 +3352,39 @@
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="6" placeholder="Description du dispositif..." bind:value={row.dispositifMaitrise} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(row) ?? '-'}</td>
-						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={row.graviteNet} on:change={() => saveCustomMethodState()} />
-						</td>
-						<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={row.probabiliteNet} on:change={() => saveCustomMethodState()} />
-						</td>
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(row) ?? '-'}</td>
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(row))}">{getNiveauNet(row)}</td>
+						{#if cartoVersion === 'A'}
+							<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(row) ?? '-'}</td>
+							<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
+								<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={row.graviteNet} on:change={() => saveCustomMethodState()} />
+							</td>
+							<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
+								<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={row.probabiliteNet} on:change={() => saveCustomMethodState()} />
+							</td>
+							<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(row) ?? '-'}</td>
+							<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(row))}">{getNiveauNet(row)}</td>
+						{:else}
+							<td class="px-2 py-2 border border-black bg-white align-middle">
+								<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" placeholder="1-5" bind:value={row.efficaciteDMR} on:change={() => saveCustomMethodState()} />
+							</td>
+							<td class="px-2 py-2 border border-black bg-white align-middle">
+								<select class="w-full text-xs p-1" bind:value={row.niveauEfficaciteDMR} on:change={() => saveCustomMethodState()}>
+									<option value="">--</option>
+									<option value="acceptable">Acceptable</option>
+									<option value="insuffisant">Insuffisant</option>
+								</select>
+							</td>
+							<td class="px-2 py-2 border border-black bg-white align-middle">
+								<select class="w-full text-xs p-1" bind:value={row.niveauRisqueNetB} on:change={() => saveCustomMethodState()}>
+									<option value="">--</option>
+									<option value="Faible">Faible</option>
+									<option value="Modéré">Modéré</option>
+									<option value="Élevé">Élevé</option>
+									<option value="Extrême">Extrême</option>
+								</select>
+							</td>
+							<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(row.niveauRisqueNetB || getNiveauNet(row))}">{row.niveauRisqueNetB || getNiveauNet(row)}</td>
+							<td class="px-2 py-2 border border-black bg-gray-100 align-middle"></td>
+						{/if}
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="6" placeholder="Action..." bind:value={row.actionPTR} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
@@ -3324,15 +3397,30 @@
 								<option value="Éviter">Éviter</option>
 							</select>
 						</td>
-						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(row) ?? '-'}</td>
-						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={row.impactResiduel} on:change={() => saveCustomMethodState()} />
-						</td>
-						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={row.vraisemblanceResiduel} on:change={() => saveCustomMethodState()} />
-						</td>
-						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(row) ?? '-'}</td>
-						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(row))}">{getNiveauResiduel(row)}</td>
+						{#if cartoVersion === 'A'}
+							<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(row) ?? '-'}</td>
+							<td class="px-2 py-2 border border-black bg-white align-middle">
+								<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={row.impactResiduel} on:change={() => saveCustomMethodState()} />
+							</td>
+							<td class="px-2 py-2 border border-black bg-white align-middle">
+								<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={row.vraisemblanceResiduel} on:change={() => saveCustomMethodState()} />
+							</td>
+							<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(row) ?? '-'}</td>
+							<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(row))}">{getNiveauResiduel(row)}</td>
+						{:else}
+							<td class="px-2 py-2 border border-black bg-white align-middle">
+								<select class="w-full text-xs p-1" bind:value={row.efficacitePTR} on:change={() => saveCustomMethodState()}>
+									<option value="">--</option>
+									{#each efficaciteRows as eff}
+										<option value={eff.niveau}>{eff.niveau} – {eff.signification}</option>
+									{/each}
+								</select>
+							</td>
+							<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getPourcentageEfficaciteDisplay(row.efficacitePTR)}</td>
+							<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getNiveauRisqueResiduelB(row) ?? '-'}</td>
+							<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauFromIpc(getNiveauRisqueResiduelB(row)))}">{getNiveauFromIpc(getNiveauRisqueResiduelB(row))}</td>
+							<td class="px-2 py-2 border border-black bg-gray-100 align-middle"></td>
+						{/if}
 						<td class="px-2 py-2 border border-black bg-gray-100 text-center">
 							<div class="flex gap-1 justify-center flex-wrap">
 								<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererLigneCartoAvant(i)} title="Ajouter avant">↑+</button>
