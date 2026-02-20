@@ -1856,9 +1856,17 @@
         display: none;
     }
 
-    /* PTR + Résiduel view: show cols 4-5 + 39-46 (ptr + Actions), hide 1-3 and 6-38 */
+    /* PTR + Résiduel view: show cols 4-5 + Action PTR + Décision + Résiduel + Actions.
+       Version A (46 cols): Action PTR = col 39 → hide 1-3 and 6-38.
+       Version B (44 cols): Action PTR = col 38 → hide 1-3 and 6-37 (sinon col 38 masquée = décalage). */
     .view-ptr tbody tr td:nth-child(n+1):nth-child(-n+3),
     .view-ptr tbody tr td:nth-child(n+6):nth-child(-n+38) {
+        display: none;
+    }
+    .view-ptr.ptr-version-b tbody tr td:nth-child(n+6):nth-child(-n+38) {
+        display: table-cell;
+    }
+    .view-ptr.ptr-version-b tbody tr td:nth-child(n+6):nth-child(-n+37) {
         display: none;
     }
 
@@ -2952,7 +2960,7 @@
 				<p class="text-xs text-gray-500">Affiche uniquement la sous-partie sélectionnée pour une meilleure lisibilité.</p>
 			</div>
 
-			<div class="overflow-x-auto rounded-lg border border-black bg-white shadow-sm" class:view-all={cartoView==='all'} class:view-identification={cartoView==='identification'} class:view-brut={cartoView==='brut'} class:view-net={cartoView==='net'} class:view-ptr={cartoView==='ptr'}>
+			<div class="overflow-x-auto rounded-lg border border-black bg-white shadow-sm" class:view-all={cartoView==='all'} class:view-identification={cartoView==='identification'} class:view-brut={cartoView==='brut'} class:view-net={cartoView==='net'} class:view-ptr={cartoView==='ptr'} class:ptr-version-b={cartoView==='ptr' && cartoVersion==='B'}>
 				<table class="min-w-full text-xs border-collapse border border-black" class:carto-version-b-table={cartoView==='all' && cartoVersion==='B'}>
 					<!-- Colgroup: 45 colonnes (removed empty Code Risques & F.R), classes par groupe pour masquage via CSS -->
 					<colgroup>
