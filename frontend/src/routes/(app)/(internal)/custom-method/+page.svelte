@@ -1843,16 +1843,16 @@
         min-height: 120px;
     }
 
-    /* Version "Avec Efficacité" : aligner hauteur en-têtes et cellules (même ligne de tableau) */
+    /* Version "Avec Efficacité" : aligner LARGEUR en-têtes et cellules */
     .carto-b-th {
         box-sizing: border-box;
         line-height: 1.2;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .carto-b-cell {
         box-sizing: border-box;
-        max-width: 98px;
-        /* Même padding vertical que les autres en-têtes (py-3) pour aligner la hauteur de la ligne */
-        min-height: 2.75rem;
+        overflow: hidden;
     }
 </style>
 
@@ -2906,7 +2906,7 @@
 			</div>
 
 			<div class="overflow-x-auto rounded-lg border border-black bg-white shadow-sm" class:view-all={cartoView==='all'} class:view-identification={cartoView==='identification'} class:view-brut={cartoView==='brut'} class:view-net={cartoView==='net'} class:view-ptr={cartoView==='ptr'}>
-				<table class="min-w-full text-xs border-collapse border border-black">
+				<table class="min-w-full text-xs border-collapse border border-black" class:carto-version-b-table={cartoView==='all' && cartoVersion==='B'}>
 					<!-- Colgroup: 45 colonnes (removed empty Code Risques & F.R), classes par groupe pour masquage via CSS -->
 					<colgroup>
 						<!-- cols 1-20 : identification (removed 2 empty cols, was 3-22) -->
@@ -3382,17 +3382,17 @@
 							<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(row) ?? '-'}</td>
 							<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(row))}">{getNiveauNet(row)}</td>
 						{:else}
-							<td class="carto-b-cell px-1 py-3 border border-black bg-white align-middle" style="width: 88px;">
+							<td class="carto-b-cell px-1 py-3 border border-black bg-white align-middle" style="width: 88px; max-width: 88px;">
 								<input type="number" class="w-full text-xs p-1 text-center max-w-[76px] mx-auto" min="1" max="5" placeholder="1-5" bind:value={row.efficaciteDMR} on:change={() => saveCustomMethodState()} />
 							</td>
-							<td class="carto-b-cell px-1 py-3 border border-black bg-white align-middle" style="width: 92px;">
+							<td class="carto-b-cell px-1 py-3 border border-black bg-white align-middle" style="width: 92px; max-width: 92px;">
 								<select class="w-full text-xs p-1 max-w-[86px]" bind:value={row.niveauEfficaciteDMR} on:change={() => saveCustomMethodState()}>
 									<option value="">--</option>
 									<option value="acceptable">Acceptable</option>
 									<option value="insuffisant">Insuffisant</option>
 								</select>
 							</td>
-							<td class="carto-b-cell px-1 py-3 border border-black bg-white align-middle" style="width: 88px;">
+							<td class="carto-b-cell px-1 py-3 border border-black bg-white align-middle" style="width: 88px; max-width: 88px;">
 								<select class="w-full text-xs p-1 max-w-[82px]" bind:value={row.niveauRisqueNetB} on:change={() => saveCustomMethodState()}>
 									<option value="">--</option>
 									<option value="Faible">Faible</option>
@@ -3401,8 +3401,8 @@
 									<option value="Extrême">Extrême</option>
 								</select>
 							</td>
-							<td class="carto-b-cell px-1 py-3 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(row.niveauRisqueNetB || getNiveauNet(row))}" style="width: 92px;">{row.niveauRisqueNetB || getNiveauNet(row)}</td>
-							<td class="carto-b-cell px-1 py-3 border border-black bg-gray-100 align-middle" style="width: 44px;"></td>
+							<td class="carto-b-cell px-1 py-3 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(row.niveauRisqueNetB || getNiveauNet(row))}" style="width: 92px; max-width: 92px;">{row.niveauRisqueNetB || getNiveauNet(row)}</td>
+							<td class="carto-b-cell px-1 py-3 border border-black bg-gray-100 align-middle" style="width: 44px; max-width: 44px;"></td>
 						{/if}
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="6" placeholder="Action..." bind:value={row.actionPTR} on:blur={() => saveCustomMethodState()}></textarea>
@@ -3427,7 +3427,7 @@
 							<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(row) ?? '-'}</td>
 							<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(row))}">{getNiveauResiduel(row)}</td>
 						{:else}
-							<td class="carto-b-cell px-1 py-3 border border-black bg-white align-middle" style="width: 88px;">
+							<td class="carto-b-cell px-1 py-3 border border-black bg-white align-middle" style="width: 88px; max-width: 88px;">
 								<select class="w-full text-xs p-1 max-w-[82px]" bind:value={row.efficacitePTR} on:change={() => saveCustomMethodState()}>
 									<option value="">--</option>
 									{#each efficaciteRows as eff}
@@ -3435,10 +3435,10 @@
 									{/each}
 								</select>
 							</td>
-							<td class="carto-b-cell px-1 py-3 text-center font-bold border border-black bg-yellow-200 align-middle text-xs" style="width: 92px;">{getPourcentageEfficaciteDisplay(row.efficacitePTR)}</td>
-							<td class="carto-b-cell px-1 py-3 text-center font-bold border border-black bg-orange-200 align-middle text-xs" style="width: 88px;">{formatNiveauRisqueResiduelBDisplay(row)}</td>
-							<td class="carto-b-cell px-1 py-3 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauFromIpc(getNiveauRisqueResiduelB(row)))}" style="width: 92px;">{getNiveauFromIpc(getNiveauRisqueResiduelB(row))}</td>
-							<td class="carto-b-cell px-1 py-3 border border-black bg-gray-100 align-middle" style="width: 44px;"></td>
+							<td class="carto-b-cell px-1 py-3 text-center font-bold border border-black bg-yellow-200 align-middle text-xs" style="width: 92px; max-width: 92px;">{getPourcentageEfficaciteDisplay(row.efficacitePTR)}</td>
+							<td class="carto-b-cell px-1 py-3 text-center font-bold border border-black bg-orange-200 align-middle text-xs" style="width: 88px; max-width: 88px;">{formatNiveauRisqueResiduelBDisplay(row)}</td>
+							<td class="carto-b-cell px-1 py-3 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauFromIpc(getNiveauRisqueResiduelB(row)))}" style="width: 92px; max-width: 92px;">{getNiveauFromIpc(getNiveauRisqueResiduelB(row))}</td>
+							<td class="carto-b-cell px-1 py-3 border border-black bg-gray-100 align-middle" style="width: 44px; max-width: 44px;"></td>
 						{/if}
 						<td class="px-2 py-2 border border-black bg-gray-100 text-center">
 							<div class="flex gap-1 justify-center flex-wrap">
