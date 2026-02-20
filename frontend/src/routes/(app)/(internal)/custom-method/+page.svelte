@@ -1539,15 +1539,40 @@
 		ptrData = ptrData.map((row, i) => ({ ...row, id: i + 1 }));
 	}
 
+	// Parties (sous-groupes) de la cartographie par code risque (DSI-R-SP, DSI-R-PSE, etc.)
+	const CARTO_PART_TITLES: Record<number, string> = {
+		1: "1 – Sinistres physiques / Evènements naturels / Perturbations dues aux rayonnements",
+		2: "2 – Perte de services essentiels",
+		3: "3 – Compromission des informations",
+		4: "4 – Compromission des fonctions",
+		5: "5 – Acte illicite",
+		6: "6 – Mise en production non maîtrisée",
+		7: "7 – Conformité légale et réglementaire",
+		8: "8 – Tiers"
+	};
+	/** Retourne le numéro de partie (1-8) à partir du code risque, 0 si inconnu/vide */
+	function getPartFromCodeRisque(code: string): number {
+		const c = (code || '').trim().toUpperCase().replace(/O/g, '0');
+		if (!c) return 0;
+		if (c.includes('DSI-R-PSE')) return 2;
+		if (c.includes('DSI-R-SP')) return 1;
+		if (c.includes('DSI-R-CI')) return 3;
+		if (c.includes('DSI-R-CF')) return 4;
+		if (c.includes('DSI-R-AI')) return 5;
+		if (c.includes('DSI-R-MP')) return 6;
+		if (c.includes('DSI-R-CL')) return 7;
+		if (c.includes('DSI-R-TIER')) return 8;
+		return 0;
+	}
+
 	// Fonctions pour la cartographie des risques (tableau modifiable : ajout/suppression de lignes, toujours sauvegardé)
+	// Les lignes ajoutées sont vides ; l'insertion avant/après garde la nouvelle ligne dans la même partie que la ligne cible.
 	function insererLigneCartoAvant(index: number) {
-		const newRow = { ...defaultCartoRow(), ...cartoRows[index] } as CartoRow;
-		cartoRows = insererLigneAvant(cartoRows, index, newRow);
+		cartoRows = insererLigneAvant(cartoRows, index, defaultCartoRow());
 		saveCustomMethodState();
 	}
 	function insererLigneCartoApres(index: number) {
-		const newRow = { ...defaultCartoRow(), ...cartoRows[index] } as CartoRow;
-		cartoRows = insererLigneApres(cartoRows, index, newRow);
+		cartoRows = insererLigneApres(cartoRows, index, defaultCartoRow());
 		saveCustomMethodState();
 	}
 	function supprimerLigneCarto(index: number) {
@@ -3165,47 +3190,12 @@
 				
 				<tbody>
 					<!-- En-tête sous-groupe 1 : Sinistres physiques / Evènements naturels / Perturbations dues aux rayonnements (codes DSI-R-SP-001 à SP-005) -->
-					<tr class="bg-teal-700">
-						<td colspan="46" class="px-3 py-3 font-bold text-white border border-black">
-							1 – Sinistres physiques / Evènements naturels / Perturbations dues aux rayonnements
-						</td>
-					</tr>
-			
-			
 					{#each cartoRows as row, i}
-						{#if i === 5}
+						{@const part = getPartFromCodeRisque(row.codeRisque) || (i > 0 ? getPartFromCodeRisque(cartoRows[i - 1].codeRisque) : 1) || 1}
+						{@const prevPart = i > 0 ? (getPartFromCodeRisque(cartoRows[i - 1].codeRisque) || 1) : 0}
+						{#if part !== prevPart}
 							<tr class="bg-teal-700">
-								<td colspan="46" class="px-3 py-3 font-bold text-white border border-black">2 – Perte de services essentiels</td>
-							</tr>
-						{/if}
-						{#if i === 11}
-							<tr class="bg-teal-700">
-								<td colspan="46" class="px-3 py-3 font-bold text-white border border-black">3 – Compromission des informations</td>
-							</tr>
-						{/if}
-						{#if i === 25}
-							<tr class="bg-teal-700">
-								<td colspan="46" class="px-3 py-3 font-bold text-white border border-black">4 – Compromission des fonctions</td>
-							</tr>
-						{/if}
-						{#if i === 32}
-							<tr class="bg-teal-700">
-								<td colspan="46" class="px-3 py-3 font-bold text-white border border-black">5 – Acte illicite</td>
-							</tr>
-						{/if}
-						{#if i === 35}
-							<tr class="bg-teal-700">
-								<td colspan="46" class="px-3 py-3 font-bold text-white border border-black">6 – Mise en production non maîtrisée</td>
-							</tr>
-						{/if}
-						{#if i === 38}
-							<tr class="bg-teal-700">
-								<td colspan="46" class="px-3 py-3 font-bold text-white border border-black">7 – Conformité légale et réglementaire</td>
-							</tr>
-						{/if}
-						{#if i === 40}
-							<tr class="bg-teal-700">
-								<td colspan="46" class="px-3 py-3 font-bold text-white border border-black">8 – Tiers</td>
+								<td colspan="46" class="px-3 py-3 font-bold text-white border border-black">{CARTO_PART_TITLES[part] || 'Autres'}</td>
 							</tr>
 						{/if}
 					<tr class="hover:bg-gray-50">
