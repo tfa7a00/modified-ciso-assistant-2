@@ -2889,7 +2889,7 @@
 					<button type="button" class={`px-3 py-1 text-sm rounded-md border ${cartoVersion==='B' ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`} on:click={() => (cartoVersion='B')}>Avec Efficacité</button>
 					<button type="button" class="px-3 py-1 text-sm rounded-md border border-amber-500 bg-amber-50 text-amber-800 hover:bg-amber-100 ml-2" on:click={resetCartoTable}>Réinitialiser le tableau</button>
 				</div>
-				<p class="text-xs text-gray-500">Affiche uniquement la sous-partie sélectionnée pour une meilleure lisibilité. Sans Efficacité : Criticité/Gravité/Probabilité/I*P*C. Avec Efficacité : Efficacité DMR/PTR (Aide-Risque).</p>
+				<p class="text-xs text-gray-500">Affiche uniquement la sous-partie sélectionnée pour une meilleure lisibilité.</p>
 			</div>
 
 			<div class="overflow-x-auto rounded-lg border border-black bg-white shadow-sm" class:view-all={cartoView==='all'} class:view-identification={cartoView==='identification'} class:view-brut={cartoView==='brut'} class:view-net={cartoView==='net'} class:view-ptr={cartoView==='ptr'}>
