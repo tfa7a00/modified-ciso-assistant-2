@@ -2530,13 +2530,9 @@
 										{/each}
 									</select>
 								</td>
-								<!-- Type de l'actif -->
-								<td class="px-2 py-1 border border-black bg-white">
-									<input
-										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
-										type="text"
-										bind:value={registreRows[i].type_actif}
-									/>
+								<!-- Type de l'actif (automatique : Primaire si catégorie Document/Données, sinon Secondaire) -->
+								<td class="px-2 py-1 border border-black bg-gray-50 text-xs">
+									{registreRows[i].type_actif || '—'}
 								</td>
 								<!-- Propriétaire de l'actif (Section 5) -->
 								<td class="px-2 py-1 border border-black bg-white">
