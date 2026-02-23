@@ -2061,9 +2061,9 @@
 <style>
     /* Registre de classification : cellules plus hautes */
     .registre-classification-table tbody td {
-        min-height: 52px;
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
+        min-height: 104px;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
         vertical-align: middle;
     }
 
@@ -2771,9 +2771,9 @@
 									/>
 								</td>
 								<!-- Description de l'actif -->
-								<td class="px-2 py-1 border border-black bg-white min-h-[40px]">
+								<td class="px-2 py-1 border border-black bg-white min-h-[80px]">
 									<textarea
-										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs min-h-[40px] resize-y"
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs min-h-[80px] resize-y"
 										bind:value={registreRows[i].description_actif}
 										on:blur={() => saveCustomMethodState()}
 										placeholder="Description de l'actif..."
@@ -2898,9 +2898,9 @@
 								</td>
 								{/if}
 								<!-- Commentaire -->
-								<td class="px-2 py-1 border border-black bg-white min-h-[40px]">
+								<td class="px-2 py-1 border border-black bg-white min-h-[80px]">
 									<textarea
-										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs min-h-[40px] resize-y"
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs min-h-[80px] resize-y"
 										bind:value={registreRows[i].commentaire}
 										on:blur={() => saveCustomMethodState()}
 										placeholder="Commentaire..."
