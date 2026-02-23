@@ -487,8 +487,19 @@
 		integrite: string;
 		confidentialite: string;
 		sensibilite: string;
+		/** Section 7 – Loi 05.20 : Impact Disponibilité (T/G/M/L) */
+		impactDispo0520?: string;
+		/** Section 7 – Loi 05.20 : Impact Intégrité */
+		impactIntegrite0520?: string;
+		/** Section 7 – Loi 05.20 : Impact Confidentialité */
+		impactConfid0520?: string;
 		commentaire: string;
 	};
+
+	/** Afficher la section 7 (Classification selon la loi n° 05.20) dans le registre */
+	let showRegistreLoi0520 = false;
+
+	const REGISTRE_LOI0520_OPTIONS = ['Très Grave', 'Grave', 'Modéré', 'Limité'] as const;
 
 	let registreRows: RegistreRow[] = [
 		{
@@ -558,6 +569,7 @@
 		diffusionRows,
 		versionRows,
 		registreRows,
+		showRegistreLoi0520,
 		activeSection,
 		cartoView,
 		periodiciteRows,
@@ -1123,6 +1135,7 @@
 			diffusionRows,
 			versionRows,
 			registreRows,
+			showRegistreLoi0520,
 			activeSection,
 			cartoView,
 			cartoVersion,
@@ -1179,7 +1192,11 @@
 			versionRows = state.versionRows as VersionRow[];
 		}
 		if (state.registreRows && Array.isArray(state.registreRows) && state.registreRows.length > 0) {
-			registreRows = state.registreRows as RegistreRow[];
+			const raw = state.registreRows as Record<string, unknown>[];
+			registreRows = raw.map((r) => ({ ...defaultRegistreRow(), ...r })) as RegistreRow[];
+		}
+		if (typeof state.showRegistreLoi0520 === 'boolean') {
+			showRegistreLoi0520 = state.showRegistreLoi0520;
 		}
 		if (state.activeSection && sectionIds.includes(state.activeSection as SectionId)) {
 			activeSection = state.activeSection as SectionId;
@@ -1749,6 +1766,9 @@
 		integrite: '',
 		confidentialite: '',
 		sensibilite: '',
+		impactDispo0520: '',
+		impactIntegrite0520: '',
+		impactConfid0520: '',
 		commentaire: ''
 	});
 
@@ -1772,6 +1792,33 @@
 		const row = dicNiveauxRows.find((r) => r.valeur === niveau);
 		if (row?.bgColor) return `${row.bgColor} text-white`;
 		return 'bg-white text-black';
+	}
+
+	/** Première lettre du niveau loi 05.20 : T (Très Grave), G (Grave), M (Modéré), L (Limité) */
+	function firstLetter0520(val: string | undefined): string {
+		const v = (val || '').trim();
+		if (!v) return '';
+		return v[0].toUpperCase();
+	}
+
+	/** Section 7 – Sensibilité de l'actif selon le référentiel loi 05.20 (Classe A/B/C/D) */
+	function getSensibiliteClasse0520(row: RegistreRow): string {
+		const m = firstLetter0520(row.impactDispo0520);
+		const n = firstLetter0520(row.impactIntegrite0520);
+		const o = firstLetter0520(row.impactConfid0520);
+		if (m === 'T' || n === 'T' || o === 'T') return 'Classe A';
+		if (m === 'G' || n === 'G' || o === 'G') return 'Classe B';
+		if (m === 'M' || n === 'M' || o === 'M') return 'Classe C';
+		return 'Classe D';
+	}
+
+	/** Section 7 – Confidentialité de l'actif selon le décret loi 05-20 (basé sur Impact Confidentialité) */
+	function getConfidentialite0520(row: RegistreRow): string {
+		const o = firstLetter0520(row.impactConfid0520);
+		if (o === 'T') return 'Très secret';
+		if (o === 'G') return 'Secret';
+		if (o === 'M') return 'Confidentiel';
+		return 'Diffusion Restreinte';
 	}
 
 	function calculerSensibilite(index: number) {
@@ -2499,15 +2546,37 @@
 		<section class="space-y-6">
 			<div class="flex items-center justify-between gap-4 flex-wrap">
 				<h2 class="text-xl font-semibold text-gray-900">Registre de classification des actifs informationnels</h2>
-				<button
-					type="button"
-					class="px-3 py-1.5 text-sm rounded {editModeRegistre
-						? 'bg-gray-600 text-white hover:bg-gray-700'
-						: 'bg-sky-600 text-white hover:bg-sky-700'}"
-					on:click={() => (editModeRegistre = !editModeRegistre)}
-				>
-					{editModeRegistre ? 'Terminer la modification' : 'Modifier'}
-				</button>
+				<div class="flex gap-2 items-center flex-wrap">
+					<button
+						type="button"
+						class="px-3 py-1.5 text-sm rounded border {showRegistreLoi0520
+							? 'bg-amber-600 text-white border-amber-600'
+							: 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}"
+						on:click={() => { showRegistreLoi0520 = true; saveCustomMethodState(); }}
+						title="Afficher la section 7 – Classification selon la loi n° 05.20"
+					>
+						Avec classification loi 05-20
+					</button>
+					<button
+						type="button"
+						class="px-3 py-1.5 text-sm rounded border {!showRegistreLoi0520
+							? 'bg-sky-600 text-white border-sky-600'
+							: 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}"
+						on:click={() => { showRegistreLoi0520 = false; saveCustomMethodState(); }}
+						title="Masquer la section 7"
+					>
+						Sans classification loi 05-20
+					</button>
+					<button
+						type="button"
+						class="px-3 py-1.5 text-sm rounded {editModeRegistre
+							? 'bg-gray-600 text-white hover:bg-gray-700'
+							: 'bg-sky-600 text-white hover:bg-sky-700'}"
+						on:click={() => (editModeRegistre = !editModeRegistre)}
+					>
+						{editModeRegistre ? 'Terminer la modification' : 'Modifier'}
+					</button>
+				</div>
 			</div>
 			
 			<p class="text-gray-700">
@@ -2563,6 +2632,11 @@
 							<th colspan="4" class="px-2 py-2 text-center font-semibold text-black bg-yellow-400 border border-black">
 								6 - Classification des actifs sur la base d'une échelle d'impacts fixée
 							</th>
+							{#if showRegistreLoi0520}
+							<th colspan="5" class="px-2 py-2 text-center font-semibold text-black bg-amber-500 border border-black">
+								7 – Classification selon la loi n° 05.20
+							</th>
+							{/if}
 							<th rowspan="2" class="px-2 py-2 text-center font-semibold text-white bg-blue-400 border border-black min-w-[150px]">
 								Commentaire
 							</th>
@@ -2607,6 +2681,13 @@
 							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-300 border border-black min-w-[100px]">
 								Sensibilité de l'actif
 							</th>
+							{#if showRegistreLoi0520}
+							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[90px]">Impact Disponibilité</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[90px]">Impact Intégrité</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[90px]">Impact Confidentialité</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[90px]">Sensibilité (réf. loi 05.20)</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[100px]">Confidentialité (décret 05-20)</th>
+							{/if}
 						</tr>
 					</thead>
 					<tbody>
@@ -2722,6 +2803,55 @@
 								<td class={`px-2 py-1 text-center border border-black ${getNiveauBesoinBg(row.sensibilite)}`}>
 									<span class="text-xs font-semibold">{row.sensibilite || '--'}</span>
 								</td>
+								{#if showRegistreLoi0520}
+								<!-- Section 7 – Impact Disponibilité (loi 05.20) -->
+								<td class="px-2 py-1 border border-black bg-white">
+									<select
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
+										bind:value={registreRows[i].impactDispo0520}
+										on:change={() => saveCustomMethodState()}
+									>
+										<option value="">--</option>
+										{#each REGISTRE_LOI0520_OPTIONS as opt}
+											<option value={opt}>{opt}</option>
+										{/each}
+									</select>
+								</td>
+								<!-- Section 7 – Impact Intégrité (loi 05.20) -->
+								<td class="px-2 py-1 border border-black bg-white">
+									<select
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
+										bind:value={registreRows[i].impactIntegrite0520}
+										on:change={() => saveCustomMethodState()}
+									>
+										<option value="">--</option>
+										{#each REGISTRE_LOI0520_OPTIONS as opt}
+											<option value={opt}>{opt}</option>
+										{/each}
+									</select>
+								</td>
+								<!-- Section 7 – Impact Confidentialité (loi 05.20) -->
+								<td class="px-2 py-1 border border-black bg-white">
+									<select
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
+										bind:value={registreRows[i].impactConfid0520}
+										on:change={() => saveCustomMethodState()}
+									>
+										<option value="">--</option>
+										{#each REGISTRE_LOI0520_OPTIONS as opt}
+											<option value={opt}>{opt}</option>
+										{/each}
+									</select>
+								</td>
+								<!-- Section 7 – Sensibilité (Classe A/B/C/D, calculée) -->
+								<td class="px-2 py-1 text-center border border-black bg-amber-50 font-semibold text-xs">
+									{getSensibiliteClasse0520(row)}
+								</td>
+								<!-- Section 7 – Confidentialité décret 05-20 (calculée) -->
+								<td class="px-2 py-1 text-center border border-black bg-amber-50 font-semibold text-xs">
+									{getConfidentialite0520(row)}
+								</td>
+								{/if}
 								<!-- Commentaire -->
 								<td class="px-2 py-1 border border-black bg-white min-h-[40px]">
 									<textarea
