@@ -1796,6 +1796,26 @@
 		ptrData = ptrData.map((row, i) => ({ ...row, id: i + 1 }));
 	}
 
+	/** Monter la ligne d'un cran (échanger avec la ligne au-dessus) */
+	function monterLignePTR(index: number) {
+		if (index <= 0 || index >= ptrData.length) return;
+		ptrData = ptrData.slice();
+		const tmp = ptrData[index];
+		ptrData[index] = ptrData[index - 1];
+		ptrData[index - 1] = tmp;
+		ptrData = ptrData.map((row, i) => ({ ...row, id: i + 1 }));
+	}
+
+	/** Descendre la ligne d'un cran (échanger avec la ligne en dessous) */
+	function descendreLignePTR(index: number) {
+		if (index < 0 || index >= ptrData.length - 1) return;
+		ptrData = ptrData.slice();
+		const tmp = ptrData[index];
+		ptrData[index] = ptrData[index + 1];
+		ptrData[index + 1] = tmp;
+		ptrData = ptrData.map((row, i) => ({ ...row, id: i + 1 }));
+	}
+
 	// Handle cell value changes (reassign to trigger reactivity and persistence)
 	function updateCell(index: number, field: string, event: Event) {
 		const target = event.target as HTMLInputElement | HTMLTextAreaElement;
@@ -4208,7 +4228,23 @@
 								</td>
 								{#if editModePTR}
 								<td class="px-2 py-2 border border-gray-300 text-center">
-									<div class="flex gap-1 justify-center">
+									<div class="flex gap-1 justify-center flex-wrap">
+										<button
+											on:click={() => monterLignePTR(index)}
+											class="px-2 py-1 bg-amber-500 text-white text-xs rounded hover:bg-amber-600 disabled:opacity-50 disabled:cursor-not-allowed"
+											title="Monter la ligne"
+											disabled={index === 0}
+										>
+											↑
+										</button>
+										<button
+											on:click={() => descendreLignePTR(index)}
+											class="px-2 py-1 bg-amber-500 text-white text-xs rounded hover:bg-amber-600 disabled:opacity-50 disabled:cursor-not-allowed"
+											title="Descendre la ligne"
+											disabled={index === ptrData.length - 1}
+										>
+											↓
+										</button>
 										<button
 											on:click={() => insererPtrAvant(index)}
 											class="px-2 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600"
