@@ -1842,7 +1842,7 @@
 	function getLoi0520ImpactBg(val: string | undefined): string {
 		const letter = firstLetter0520(val);
 		if (letter === 'T') return '#FFEFEF';
-		if (letter === 'G') return '#F5AC8B';
+		if (letter === 'G') return '#fb923c';
 		if (letter === 'M') return '#FFFF00';
 		if (letter === 'L') return '#A1FB7D';
 		return '';
@@ -1851,8 +1851,8 @@
 	/** Couleur de fond des classes de sensibilité (réf. loi 05.20) : A → rouge, B → orange, C → jaune, D → vert */
 	function getSensibiliteClasse0520Bg(classe: string): string {
 		const c = (classe || '').trim();
-		if (c === 'Classe A') return '#fecaca';
-		if (c === 'Classe B') return '#F5AC8B';
+		if (c === 'Classe A') return '#f87171';
+		if (c === 'Classe B') return '#fb923c';
 		if (c === 'Classe C') return '#FEF08A';
 		if (c === 'Classe D') return '#A1FB7D';
 		return '';
@@ -3360,9 +3360,9 @@
 								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">4</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #FFEFEF;">TG: porter atteinte à la santé et à la sécurité de la population ;</td></tr>
 								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">4</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #FFEFEF;">TG: perturber ou nuire au fonctionnement de l'économie nationale ;</td></tr>
 								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">4</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #FFEFEF;">TG: engendrer une incapacité totale ou partielle de plusieurs infrastructures d'importance vitale à assurer leurs fonctions essentielles.</td></tr>
-								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">3</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #F5AC8B;">G: une incapacité totale ou partielle d'une infrastructure d'importance vitale à assurer ses fonctions essentielles ;</td></tr>
-								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">3</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #F5AC8B;">G: une incapacité totale d'une ou plusieurs entités non considérées comme infrastructures d'importance vitale à assurer leurs fonctions critiques ;</td></tr>
-								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">3</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #F5AC8B;">G: des pertes financières importantes pour une ou plusieurs entités ou infrastructures d'importance vitale</td></tr>
+								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">3</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #fb923c;">G: une incapacité totale ou partielle d'une infrastructure d'importance vitale à assurer ses fonctions essentielles ;</td></tr>
+								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">3</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #fb923c;">G: une incapacité totale d'une ou plusieurs entités non considérées comme infrastructures d'importance vitale à assurer leurs fonctions critiques ;</td></tr>
+								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">3</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #fb923c;">G: des pertes financières importantes pour une ou plusieurs entités ou infrastructures d'importance vitale</td></tr>
 								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">2</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #FFFF00;">M: une gêne ou perturbation mineure dans les fonctions d'une infrastructure d'importance vitale ;</td></tr>
 								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">2</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #FFFF00;">M: une incapacité partielle d'une ou de plusieurs entités non considérées comme infrastructures d'importance vitale, à assurer leurs fonctions ;</td></tr>
 								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">2</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #FFFF00;">M: des pertes financières modérées ;</td></tr>
