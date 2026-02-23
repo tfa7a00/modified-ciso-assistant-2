@@ -3084,7 +3084,9 @@
 						<col class="col-ptr" />
 						<col class="col-ptr" />
 						<col class="col-ptr" />
+						{#if editModeCarto}
 						<col class="col-actions" />
+						{/if}
 					</colgroup>
 
 					<!-- Dynamic headers per view: hide original thead, show correct headers for each view -->
@@ -3365,9 +3367,11 @@
 							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niveau risque</th>
 							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niv. risque résiduel</th>
 						{/if}
+						{#if editModeCarto}
 						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black" style="min-width: 90px;">
 							Actions
 						</th>
+						{/if}
 					</tr>
 					
 					<!-- Ligne 7: Sous-headers catégories actifs + DIC -->
