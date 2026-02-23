@@ -444,6 +444,10 @@
 	];
 
 	let editModeControleDocument = false;
+	let editModeRegistre = false;
+	let editModeTable2Categories = false;
+	let editModeCarto = false;
+	let editModePTR = false;
 
 	// --- Données pour Registre de classification ---
 	type RegistreRow = {
@@ -1675,6 +1679,10 @@
 		cartoRows = cartoRows.filter((_, i) => i !== index);
 		saveCustomMethodState();
 	}
+	function ajouterLigneCarto() {
+		cartoRows = [...cartoRows, defaultCartoRow()];
+		saveCustomMethodState();
+	}
 
 	// Fonctions pour le registre de classification
 	const defaultRegistreRow = (): RegistreRow => ({
@@ -2346,12 +2354,24 @@
 		</section>
 	{:else if activeSection === 'registre-classification'}
 		<section class="space-y-6">
-			<h2 class="text-xl font-semibold text-gray-900">Registre de classification des actifs informationnels</h2>
+			<div class="flex items-center justify-between gap-4 flex-wrap">
+				<h2 class="text-xl font-semibold text-gray-900">Registre de classification des actifs informationnels</h2>
+				<button
+					type="button"
+					class="px-3 py-1.5 text-sm rounded {editModeRegistre
+						? 'bg-gray-600 text-white hover:bg-gray-700'
+						: 'bg-sky-600 text-white hover:bg-sky-700'}"
+					on:click={() => (editModeRegistre = !editModeRegistre)}
+				>
+					{editModeRegistre ? 'Terminer la modification' : 'Modifier'}
+				</button>
+			</div>
 			
 			<p class="text-gray-700">
 				Ligne de saisie pour le registre de classification des actifs informationnels.
 			</p>
 
+			{#if editModeRegistre}
 			<!-- Boutons pour ajouter/supprimer des lignes -->
 			<div class="flex gap-2">
 				<button
@@ -2371,6 +2391,7 @@
 					</button>
 				{/if}
 			</div>
+			{/if}
 
 			<!-- Tableau principal du registre -->
 			<div class="overflow-x-auto rounded-lg border border-black bg-white shadow-sm">
@@ -2405,9 +2426,11 @@
 							<th rowspan="2" class="px-2 py-2 text-center font-semibold text-white bg-blue-400 border border-black min-w-[150px]">
 								Commentaire
 							</th>
+							{#if editModeRegistre}
 							<th rowspan="2" class="px-2 py-2 text-center font-semibold text-black bg-yellow-300 border border-black min-w-[90px]">
 								Actions
 							</th>
+							{/if}
 						</tr>
 						<!-- Ligne des sous-titres -->
 						<tr>
@@ -2580,6 +2603,7 @@
 										placeholder="Commentaire..."
 									></textarea>
 								</td>
+								{#if editModeRegistre}
 								<!-- Actions -->
 								<td class="px-2 py-1 border border-black bg-gray-100">
 									<div class="flex gap-1 justify-center flex-wrap">
@@ -2588,6 +2612,7 @@
 										<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerLigneRegistre(i)} title="Supprimer" disabled={registreRows.length <= 1}>✕</button>
 									</div>
 								</td>
+								{/if}
 							</tr>
 						{/each}
 					</tbody>
@@ -2845,7 +2870,18 @@
 
 			<!-- Tableau 2 – Catégories d'actifs -->
 			<section class="space-y-3">
-				<h3 class="text-lg font-semibold text-gray-900">Tableau 2 – Catégories d'actifs</h3>
+				<div class="flex items-center justify-between gap-4 flex-wrap">
+					<h3 class="text-lg font-semibold text-gray-900">Tableau 2 – Catégories d'actifs</h3>
+					<button
+						type="button"
+						class="px-3 py-1.5 text-sm rounded {editModeTable2Categories
+							? 'bg-gray-600 text-white hover:bg-gray-700'
+							: 'bg-sky-600 text-white hover:bg-sky-700'}"
+						on:click={() => (editModeTable2Categories = !editModeTable2Categories)}
+					>
+						{editModeTable2Categories ? 'Terminer la modification' : 'Modifier'}
+					</button>
+				</div>
 				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
 					<table class="min-w-full text-sm border-collapse border border-black">
 						<thead>
@@ -2855,7 +2891,9 @@
 								>
 									Catégories d'actifs
 								</th>
+								{#if editModeTable2Categories}
 								<th class="px-4 py-3 text-left font-semibold text-black bg-sky-200 border border-black">Actions</th>
+								{/if}
 							</tr>
 						</thead>
 						<tbody>
@@ -2868,6 +2906,7 @@
 											bind:value={categoriesActifsRows[i]}
 										/>
 									</td>
+									{#if editModeTable2Categories}
 									<td class="px-4 py-2 border border-black bg-gray-100">
 										<div class="flex gap-1 justify-center">
 											<button
@@ -2896,18 +2935,20 @@
 											</button>
 										</div>
 									</td>
+									{/if}
 								</tr>
 							{/each}
 						</tbody>
 					</table>
 				</div>
+				{#if editModeTable2Categories}
 				<div class="flex gap-2">
 					<button
 						type="button"
 						class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700"
 						on:click={ajouterCategorieActif}
 					>
-						+ Ajouter une catégorie
+						+ Ajouter une ligne
 					</button>
 					{#if categoriesActifsRows.length > 1}
 						<button
@@ -2915,10 +2956,11 @@
 							class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700"
 							on:click={() => supprimerCategorieActif(categoriesActifsRows.length - 1)}
 						>
-							- Supprimer la dernière catégorie
+							- Supprimer la dernière ligne
 						</button>
 					{/if}
 				</div>
+				{/if}
 			</section>
 
 			<!-- Tableau 3 – Propriétaires des actifs -->
@@ -2960,7 +3002,17 @@
 
 {:else if activeSection === 'cartographie-risques'}
 	<section class="space-y-6">
-		<h2 class="text-xl font-semibold text-gray-900">Cartographie des risques</h2>
+		<div class="flex items-center justify-between gap-4 flex-wrap">
+			<h2 class="text-xl font-semibold text-gray-900">Cartographie des risques</h2>
+			<button
+				type="button"
+				class="px-3 py-1.5 text-sm rounded {editModeCarto
+					? 'bg-gray-600 text-white hover:bg-gray-700'
+					: 'bg-sky-600 text-white hover:bg-sky-700'}"
+				on:click={() => (editModeCarto = !editModeCarto)}>
+				{editModeCarto ? 'Terminer la modification' : 'Modifier'}
+			</button>
+		</div>
 
 		<!-- Tableau de cartographie - Flexible avec hauteur augmentée -->
 			<!-- Toolbar: switchable sub-views for cartographie -->
@@ -3065,7 +3117,9 @@
 								<th class="px-2 py-3 text-center font-bold text-white bg-green-600 border border-black">D</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-green-600 border border-black">I</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-green-600 border border-black">C</th>
+								{#if editModeCarto}
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black min-w-[90px]">Actions</th>
+								{/if}
 							</tr>
 						</thead>
 					{:else if cartoView === 'brut'}
@@ -3090,7 +3144,9 @@
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Probabilité</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">I*P*C</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Risque Brut</th>
+								{#if editModeCarto}
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black min-w-[90px]">Actions</th>
+								{/if}
 							</tr>
 						</thead>
 					{:else if cartoView === 'net'}
@@ -3116,7 +3172,9 @@
 									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niveau risque</th>
 									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Signif. risque net</th>
 								{/if}
+								{#if editModeCarto}
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black min-w-[90px]">Actions</th>
+								{/if}
 							</tr>
 						</thead>
 					{:else if cartoView === 'ptr'}
@@ -3143,7 +3201,9 @@
 									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niveau risque</th>
 									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niv. risque résiduel</th>
 								{/if}
+								{#if editModeCarto}
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black min-w-[90px]">Actions</th>
+								{/if}
 							</tr>
 						</thead>
 					{:else}
@@ -3503,6 +3563,7 @@
 							<!-- AS : Niveau du risque résiduel (calculé depuis AR, mêmes seuils que AM) -->
 							<td class="carto-b-cell px-1 py-3 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauFromIpc(getNiveauRisqueResiduelB(row)))}" style="width: 130px; max-width: 130px;">{getNiveauFromIpc(getNiveauRisqueResiduelB(row))}</td>
 						{/if}
+						{#if editModeCarto}
 						<td class="px-2 py-2 border border-black bg-gray-100 text-center">
 							<div class="flex gap-1 justify-center flex-wrap">
 								<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererLigneCartoAvant(i)} title="Ajouter avant">↑+</button>
@@ -3510,11 +3571,32 @@
 								<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerLigneCarto(i)} title="Supprimer" disabled={cartoRows.length <= 1}>✕</button>
 							</div>
 						</td>
+						{/if}
 					</tr>
 					{/each}
 						</tbody>
 					</table>
 				</div>
+				{#if editModeCarto}
+				<div class="flex gap-2 mt-2">
+					<button
+						type="button"
+						class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700"
+						on:click={ajouterLigneCarto}
+					>
+						+ Ajouter une ligne
+					</button>
+					{#if cartoRows.length > 1}
+						<button
+							type="button"
+							class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700"
+							on:click={() => supprimerLigneCarto(cartoRows.length - 1)}
+						>
+							- Supprimer la dernière ligne
+						</button>
+					{/if}
+				</div>
+				{/if}
 		</section>
 	{:else if activeSection === 'aide-risque'}
 		<section class="space-y-8">
@@ -3902,7 +3984,18 @@
 		</section>
 	{:else if activeSection === 'ptr'}
 		<section class="space-y-4">
-			<h2 class="text-xl font-semibold text-gray-900">PTR</h2>
+			<div class="flex items-center justify-between gap-4 flex-wrap">
+				<h2 class="text-xl font-semibold text-gray-900">PTR</h2>
+				<button
+					type="button"
+					class="px-3 py-1.5 text-sm rounded {editModePTR
+						? 'bg-gray-600 text-white hover:bg-gray-700'
+						: 'bg-sky-600 text-white hover:bg-sky-700'}"
+					on:click={() => (editModePTR = !editModePTR)}
+				>
+					{editModePTR ? 'Terminer la modification' : 'Modifier'}
+				</button>
+			</div>
 			<p class="text-gray-700 mb-4">
 				Plan de traitement des risques (PTR)
 			</p>
@@ -3953,9 +4046,11 @@
 							<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
 								Etat d'avancement
 							</th>
+							{#if editModePTR}
 							<th class="px-4 py-3 text-center text-sm font-bold text-gray-900 border border-gray-300">
 								Actions
 							</th>
+							{/if}
 						</tr>
 					</thead>
 					<tbody>
@@ -4115,6 +4210,7 @@
 										<option value="En retard">En retard</option>
 									</select>
 								</td>
+								{#if editModePTR}
 								<td class="px-2 py-2 border border-gray-300 text-center">
 									<div class="flex gap-1 justify-center">
 										<button
@@ -4140,13 +4236,15 @@
 										</button>
 									</div>
 								</td>
+								{/if}
 							</tr>
 						{/each}
 					</tbody>
 				</table>
 			</div>
 
-			<div class="flex justify-start mt-4">
+			{#if editModePTR}
+			<div class="flex gap-2 justify-start mt-4">
 				<button
 					on:click={addRow}
 					class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
@@ -4165,7 +4263,17 @@
 					</svg>
 					Ajouter une ligne
 				</button>
+				{#if ptrData.length > 1}
+					<button
+						type="button"
+						class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+						on:click={() => deleteRow(ptrData.length - 1)}
+					>
+						Supprimer la dernière ligne
+					</button>
+				{/if}
 			</div>
+			{/if}
 		</section>
 	{:else if activeSection === 'echelle-ptr'}
 		<!-- Échelle PTR : les 4 tables déjà définies -->
