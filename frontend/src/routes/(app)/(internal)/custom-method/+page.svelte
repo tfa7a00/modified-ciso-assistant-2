@@ -2469,7 +2469,7 @@
 								Besoin en terme de Confidentialité
 							</th>
 							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-300 border border-black min-w-[100px]">
-								Sensibilité de l'actif°
+								Sensibilité de l'actif
 							</th>
 						</tr>
 					</thead>
