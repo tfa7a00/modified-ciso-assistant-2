@@ -3298,7 +3298,7 @@
 						</th>
 						
 						<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 100px;">
-							Criticité de l'actif - Besoin de SOCIETE en SSI
+							Criticité de l'actif - Besoin en SSI
 						</th>
 						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black" style="min-width: 80px;">
 							Impact Financier
@@ -3332,7 +3332,7 @@
 						
 						<!-- Risque Net : Version A ou B -->
 						{#if cartoVersion === 'A'}
-							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 120px;">Criticité de l'actif - Besoin de SOCIETE en SSI</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 120px;">Criticité de l'actif - Besoin en SSI</th>
 							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 95px;">Gravité des impacts</th>
 							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 95px;">Probabilité<br/>d'Occurrence</th>
 							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 85px;">I*P*C</th>
@@ -3348,7 +3348,7 @@
 						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black" style="min-width: 100px;">Décision</th>
 						<!-- Risque Résiduel : Version A ou B -->
 						{#if cartoVersion === 'A'}
-							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 120px;">Criticité de l'actif - Besoin de SOCIETE en SSI</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 120px;">Criticité de l'actif - Besoin en SSI</th>
 							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 85px;">Impact</th>
 							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 95px;">Vraissemblance</th>
 							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 85px;">I*P*C</th>
