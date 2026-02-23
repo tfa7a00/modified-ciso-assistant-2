@@ -1848,6 +1848,16 @@
 		return '';
 	}
 
+	/** Couleur de fond des classes de sensibilité (réf. loi 05.20) : A → rouge, B → orange, C → jaune, D → vert */
+	function getSensibiliteClasse0520Bg(classe: string): string {
+		const c = (classe || '').trim();
+		if (c === 'Classe A') return '#fecaca';
+		if (c === 'Classe B') return '#F5AC8B';
+		if (c === 'Classe C') return '#FEF08A';
+		if (c === 'Classe D') return '#A1FB7D';
+		return '';
+	}
+
 	function calculerSensibilite(index: number) {
 		const row = registreRows[index];
 		const niveaux = [row.disponibilite, row.integrite, row.confidentialite];
@@ -2870,8 +2880,8 @@
 										{/each}
 									</select>
 								</td>
-								<!-- Section 7 – Sensibilité (Classe A/B/C/D, calculée) -->
-								<td class="px-2 py-1 text-center border border-black bg-amber-50 font-semibold text-xs">
+								<!-- Section 7 – Sensibilité (Classe A/B/C/D, calculée) – rouge / orange / jaune / vert -->
+								<td class="px-2 py-1 text-center border border-black font-semibold text-xs" style="background-color: {getSensibiliteClasse0520Bg(getSensibiliteClasse0520(row)) || '#f5f5f5'};">
 									{getSensibiliteClasse0520(row)}
 								</td>
 								<!-- Section 7 – Confidentialité décret 05-20 (calculée) -->
