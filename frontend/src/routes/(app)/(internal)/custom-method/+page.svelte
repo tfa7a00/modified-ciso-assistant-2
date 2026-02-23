@@ -1738,6 +1738,12 @@
 		registreRows[index].sensibilite = dicNiveauxRows[clamped].valeur;
 	}
 
+	/** Quand la catégorie de l'actif est Document ou Données => Type = Primaire, sinon Secondaire */
+	function mettreAJourTypeActif(index: number) {
+		const cat = (registreRows[index].categorie_actif || '').trim().toLowerCase();
+		registreRows[index].type_actif = cat === 'document' || cat === 'données' ? 'Primaire' : 'Secondaire';
+	}
+
 
 
 	// PTR Table data structure
@@ -2516,7 +2522,7 @@
 									<select
 										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
 										bind:value={registreRows[i].categorie_actif}
-										on:change={() => saveCustomMethodState()}
+										on:change={() => { mettreAJourTypeActif(i); saveCustomMethodState(); }}
 									>
 										<option value="">--</option>
 										{#each categoriesActifsRows as categorie}
