@@ -59,10 +59,12 @@
 		impactD: string | number;
 		impactI: string | number;
 		impactC: string | number;
-		impactFinancier: string | number;
-		impactPP: string | number;
-		impactReputation: string | number;
-		impactReglementaire: string | number;
+		impactFinancier?: string | number;
+		impactPP?: string | number;
+		impactReputation?: string | number;
+		impactReglementaire?: string | number;
+		/** Valeurs des impacts (un par entrée de impactDefinitionsRows) – utilisé quand présent, sinon les 4 champs ci-dessus */
+		impacts?: (string | number)[];
 		probabilite: string | number;
 		// Risque net
 		graviteNet: string | number;
@@ -93,14 +95,26 @@
 		return Math.max(d ?? 0, i ?? 0, c ?? 0);
 	}
 
-	/** Gravité = MAX(Impact Financier, Impact PP, Impact Réputation, Impact Réglementaire) */
+	/** Retourne le tableau des impacts pour une ligne (longueur = impactDefinitionsRows.length), en migrant depuis les 4 champs si besoin */
+	function getRowImpacts(row: CartoRow): (string | number)[] {
+		const n = impactDefinitionsRows.length;
+		const legacy = [
+			row.impactFinancier ?? '',
+			row.impactPP ?? '',
+			row.impactReputation ?? '',
+			row.impactReglementaire ?? ''
+		];
+		const src = row.impacts && row.impacts.length === n ? row.impacts : legacy;
+		const out = src.slice(0, n);
+		while (out.length < n) out.push('');
+		return out;
+	}
+
+	/** Gravité = MAX des impacts (selon impactDefinitionsRows) */
 	function getGravite(row: CartoRow): number | null {
-		const f = parseNum(row.impactFinancier);
-		const pp = parseNum(row.impactPP);
-		const r = parseNum(row.impactReputation);
-		const reg = parseNum(row.impactReglementaire);
-		if (f === null && pp === null && r === null && reg === null) return null;
-		return Math.max(f ?? 0, pp ?? 0, r ?? 0, reg ?? 0);
+		const vals = getRowImpacts(row).map((v) => parseNum(v));
+		if (vals.every((v) => v === null)) return null;
+		return Math.max(...vals.map((v) => v ?? 0));
 	}
 
 	/** I*P*C = Impact (Gravité) × Probabilité × Criticité */
@@ -279,6 +293,7 @@
 			impactPP: '',
 			impactReputation: '',
 			impactReglementaire: '',
+			impacts: impactDefinitionsRows.map(() => ''),
 			probabilite: '',
 			graviteNet: '',
 			probabiliteNet: '',
@@ -545,6 +560,7 @@
 		categoriesActifsRows,
 		probaRows,
 		impactRows,
+		impactDefinitionsRows,
 		frequenceRisqueRows,
 		matriceRisqueRows,
 		efficaciteRows,
@@ -957,6 +973,15 @@
 		bgColor?: string;
 	};
 
+	/** Définition des impacts (Évaluation de la Criticité du Risque Brut) – modifiable, reflétée dans la cartographie */
+	type ImpactDefinition = { libelle: string; definition: string };
+	let impactDefinitionsRows: ImpactDefinition[] = [
+		{ libelle: 'Impact Financier', definition: 'Impact financier direct ou indirect (pertes, coûts de remédiation, amendes, etc.).' },
+		{ libelle: 'Impact Parties prenantes', definition: 'Impact sur les parties prenantes (clients, partenaires, fournisseurs, employés).' },
+		{ libelle: 'Impact sur la Réputation', definition: 'Impact sur l\'image et la réputation de l\'organisation (médiatisation, confiance).' },
+		{ libelle: 'Impact Réglementaire', definition: 'Impact réglementaire (non-conformité, sanctions, contrôles).' }
+	];
+
 	let impactRows: ImpactRow[] = [
 		{
 			echelle: '1',
@@ -1110,6 +1135,7 @@
 			categoriesActifsRows,
 			probaRows,
 			impactRows,
+			impactDefinitionsRows,
 			frequenceRisqueRows,
 			matriceRisqueRows,
 			efficaciteRows,
@@ -1121,6 +1147,10 @@
 		if (!state || typeof state !== 'object') return;
 		const sectionIds: SectionId[] = ['controle-document', 'registre-classification', 'aide-classification', 'cartographie-risques', 'aide-risque', 'ptr', 'echelle-ptr'];
 		const cartoViews = ['all', 'identification', 'brut', 'net', 'ptr'] as const;
+		// Définitions des impacts (avant cartoRows pour sync)
+		if (state.impactDefinitionsRows && Array.isArray(state.impactDefinitionsRows) && (state.impactDefinitionsRows as ImpactDefinition[]).length > 0) {
+			impactDefinitionsRows = state.impactDefinitionsRows as ImpactDefinition[];
+		}
 		// Cartographie des risques: nombre de lignes variable (ajout/suppression), toujours au moins 1 ligne
 		if (state.cartoRows && Array.isArray(state.cartoRows)) {
 			const arr = (state.cartoRows as CartoRow[]).map((r, i) => {
@@ -1134,6 +1164,7 @@
 						if (current === undefined || current === '') merged[k] = val as CartoRow[keyof CartoRow];
 					}
 				}
+				merged.impacts = getRowImpacts(merged);
 				return merged;
 			});
 			cartoRows = arr.length > 0 ? arr : [defaultCartoRow()];
@@ -1528,6 +1559,26 @@
 		impactRows = supprimerLigneAt(impactRows, index);
 	}
 
+	/** Synchronise les tableaux impacts de chaque ligne carto avec impactDefinitionsRows (ajout/suppression de colonnes) */
+	function syncCartoRowsImpacts() {
+		const n = impactDefinitionsRows.length;
+		cartoRows = cartoRows.map((r) => ({ ...r, impacts: getRowImpacts(r).slice(0, n).concat(Array(Math.max(0, n - getRowImpacts(r).length)).fill('')) }));
+	}
+
+	function ajouterDefinitionImpact() {
+		if (impactDefinitionsRows.length >= 8) return; /* max 8 pour la cartographie (colonnes fixes) */
+		impactDefinitionsRows = [...impactDefinitionsRows, { libelle: 'Nouvel impact', definition: '' }];
+		syncCartoRowsImpacts();
+		saveCustomMethodState();
+	}
+
+	function supprimerDefinitionImpact(index: number) {
+		if (impactDefinitionsRows.length <= 1) return;
+		impactDefinitionsRows = impactDefinitionsRows.filter((_, i) => i !== index);
+		syncCartoRowsImpacts();
+		saveCustomMethodState();
+	}
+
 	function defaultFrequenceRow(): Row & { bgColor?: string } {
 		return { echelle: '', definition: '', signification: '', bgColor: 'bg-white text-black' };
 	}
@@ -1869,21 +1920,25 @@
     */
 
     /* Identification view: hide data columns 21-45, keep 1-20 and 46 (Actions) */
-    .view-identification tbody tr td:nth-child(n+21):nth-child(-n+45) {
+    .view-identification tbody tr td:nth-child(n+21):nth-child(-n+50) {
         display: none;
     }
 
-    /* Risque Brut view: show cols 4-5 + 21-32 + 46 (Actions), hide 1-3, 6-20, 33-45 */
+    /* Risque Brut view: show cols 4-5 + 21-36 (3 DIC + 1 crit + 8 impacts + 4) + 51 Actions; hide 1-3, 6-20, 37-50 */
     .view-brut tbody tr td:nth-child(n+1):nth-child(-n+3),
     .view-brut tbody tr td:nth-child(n+6):nth-child(-n+20),
-    .view-brut tbody tr td:nth-child(n+33):nth-child(-n+45) {
+    .view-brut tbody tr td:nth-child(n+37):nth-child(-n+50) {
         display: none;
     }
+    /* Colonnes d'impact en trop (au-delà de impactDefinitionsRows.length) : masquées */
+    .carto-impact-col-hidden {
+        display: none !important;
+    }
 
-    /* Degré + Risque Net view: show cols 4-5 + 33-38 + 46 (Actions), hide 1-3, 6-32, 39-45 */
+    /* Degré + Risque Net view: show cols 4-5 + 37-42 + 51 (Actions), hide 1-3, 6-36, 43-50 */
     .view-net tbody tr td:nth-child(n+1):nth-child(-n+3),
-    .view-net tbody tr td:nth-child(n+6):nth-child(-n+32),
-    .view-net tbody tr td:nth-child(n+39):nth-child(-n+45) {
+    .view-net tbody tr td:nth-child(n+6):nth-child(-n+36),
+    .view-net tbody tr td:nth-child(n+43):nth-child(-n+50) {
         display: none;
     }
     /* Version B (avec efficacité) : en vue Degré & Risque net, ne pas afficher la colonne Action PTR (col 38) */
@@ -1891,17 +1946,15 @@
         display: none;
     }
 
-    /* PTR + Résiduel view: show cols 4-5 + Action PTR + Décision + Résiduel + Actions.
-       Version A (46 cols): Action PTR = col 39 → hide 1-3 and 6-38.
-       Version B (44 cols): Action PTR = col 38 → hide 1-3 and 6-37 (sinon col 38 masquée = décalage). */
+    /* PTR + Résiduel view: brut section now 16 cols (21-36), net 6 (37-42), ptr 7 (43-49), actions 50. Show 4-5 + 43-49 + 51. */
     .view-ptr tbody tr td:nth-child(n+1):nth-child(-n+3),
-    .view-ptr tbody tr td:nth-child(n+6):nth-child(-n+38) {
+    .view-ptr tbody tr td:nth-child(n+6):nth-child(-n+42) {
         display: none;
     }
-    .view-ptr.ptr-version-b tbody tr td:nth-child(n+6):nth-child(-n+38) {
+    .view-ptr.ptr-version-b tbody tr td:nth-child(n+6):nth-child(-n+42) {
         display: table-cell;
     }
-    .view-ptr.ptr-version-b tbody tr td:nth-child(n+6):nth-child(-n+37) {
+    .view-ptr.ptr-version-b tbody tr td:nth-child(n+6):nth-child(-n+41) {
         display: none;
     }
 
@@ -3068,15 +3121,19 @@
 						<col class="col-identification" />
 						<col class="col-identification" />
 						<col class="col-identification" />
-						<!-- cols 21-32 : risque brut (was 23-34) -->
+						<!-- cols 21-36 : risque brut (3 DIC + 1 crit + jusqu'à 8 impacts + 4 gravité/proba/ipc/risque) -->
 						<col class="col-brut" />
 						<col class="col-brut" />
 						<col class="col-brut" />
 						<col class="col-brut" />
-						<col class="col-brut" />
-						<col class="col-brut" />
-						<col class="col-brut" />
-						<col class="col-brut" />
+						<col class="col-brut col-brut-impact" />
+						<col class="col-brut col-brut-impact" />
+						<col class="col-brut col-brut-impact" />
+						<col class="col-brut col-brut-impact" />
+						<col class="col-brut col-brut-impact" />
+						<col class="col-brut col-brut-impact" />
+						<col class="col-brut col-brut-impact" />
+						<col class="col-brut col-brut-impact" />
 						<col class="col-brut" />
 						<col class="col-brut" />
 						<col class="col-brut" />
@@ -3139,7 +3196,7 @@
 					{:else if cartoView === 'brut'}
 						<thead>
 							<tr>
-								<th colspan="15" class="px-4 py-3 text-center font-bold text-lg text-black bg-yellow-400 border border-black">
+								<th colspan={11 + 8 + (editModeCarto ? 1 : 0)} class="px-4 py-3 text-center font-bold text-lg text-black bg-yellow-400 border border-black">
 									RISQUE BRUT - ÉVALUATION DE LA CRITICITÉ
 								</th>
 							</tr>
@@ -3150,10 +3207,9 @@
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact intégrité </th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact confidentialité</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Criticité actif</th>
-								<th class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black">Impact Financier</th>
-								<th class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black">Impact Parties prenantes</th>
-								<th class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black">Impact Réputation</th>
-								<th class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black">Impact Réglementaire</th>
+								{#each Array(8) as _, idx}
+									<th class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black col-brut-impact {idx >= impactDefinitionsRows.length ? 'carto-impact-col-hidden' : ''}" style="min-width: 90px;">{impactDefinitionsRows[idx]?.libelle || 'Impact'}</th>
+								{/each}
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Gravité des impacts</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Probabilité</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">I*P*C</th>
@@ -3497,18 +3553,15 @@
 							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={row.impactC} on:change={() => saveCustomMethodState()} />
 						</td>
 						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(row) ?? '-'}</td>
-						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={row.impactFinancier} on:change={() => saveCustomMethodState()} />
-						</td>
-						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={row.impactPP} on:change={() => saveCustomMethodState()} />
-						</td>
-						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={row.impactReputation} on:change={() => saveCustomMethodState()} />
-						</td>
-						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={row.impactReglementaire} on:change={() => saveCustomMethodState()} />
-						</td>
+						{#each Array(8) as _, idx}
+							<td class="px-2 py-2 border border-black bg-white align-middle col-brut-impact {idx >= impactDefinitionsRows.length ? 'carto-impact-col-hidden' : ''}">
+								{#if idx < impactDefinitionsRows.length}
+									<input type="number" class="w-full text-xs p-1 text-center min-w-[2rem]" min="1" max="6" value={getRowImpacts(row)[idx]} on:input={(e) => { const v = (e.target as HTMLInputElement).value; if (!row.impacts || row.impacts.length !== impactDefinitionsRows.length) row.impacts = getRowImpacts(row); row.impacts[idx] = v; saveCustomMethodState(); }} />
+								{:else}
+									<span></span>
+								{/if}
+							</td>
+						{/each}
 						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(row) ?? '-'}</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
 							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={row.probabilite} on:change={() => saveCustomMethodState()} />
@@ -3776,6 +3829,56 @@
 					<strong>Parties prenantes</strong> et <strong>Réglementaire</strong> doivent être
 					considérés comme des axes d'analyse principaux.
 				</p>
+			</section>
+
+			<!-- Tableau 2.1 – Définition des impacts (Évaluation de la Criticité du Risque Brut) -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">Définition des impacts</h3>
+				<p class="text-sm text-gray-600">
+					Ce tableau définit les types d'impacts utilisés dans l'évaluation de la criticité du risque brut. Les libellés et définitions sont repris dans la cartographie des risques (colonnes Impact). Modifier ce tableau ajoute ou supprime des colonnes dans la cartographie.
+				</p>
+				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+					<table class="min-w-full text-sm border-collapse border border-black">
+						<thead>
+							<tr>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-orange-600 border border-black">Libellé (Impact)</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-orange-600 border border-black">Définition</th>
+								{#if editModeAideRisque}
+									<th class="px-4 py-2 text-center font-semibold text-white bg-orange-600 border border-black">Actions</th>
+								{/if}
+							</tr>
+						</thead>
+						<tbody>
+							{#each impactDefinitionsRows as def, i}
+								<tr class="border border-black">
+									<td class="px-4 py-2 text-black border border-black bg-white">
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={impactDefinitionsRows[i].libelle} placeholder="Ex. Impact Financier" on:change={() => saveCustomMethodState()} />
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top">
+										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]" bind:value={impactDefinitionsRows[i].definition} placeholder="Explication de l'impact..." on:blur={() => saveCustomMethodState()}></textarea>
+									</td>
+									{#if editModeAideRisque}
+										<td class="px-4 py-2 border border-black bg-gray-100 text-center">
+											<div class="flex gap-1 justify-center flex-wrap">
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => { impactDefinitionsRows = insererLigneAvant(impactDefinitionsRows, i, { libelle: '', definition: '' }); syncCartoRowsImpacts(); saveCustomMethodState(); }} title="Ajouter avant">↑+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => { impactDefinitionsRows = insererLigneApres(impactDefinitionsRows, i, { libelle: '', definition: '' }); syncCartoRowsImpacts(); saveCustomMethodState(); }} title="Ajouter après">↓+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerDefinitionImpact(i)} title="Supprimer" disabled={impactDefinitionsRows.length <= 1}>✕</button>
+											</div>
+										</td>
+									{/if}
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+				{#if editModeAideRisque}
+					<div class="flex gap-2 mt-2">
+						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed" on:click={ajouterDefinitionImpact} disabled={impactDefinitionsRows.length >= 8} title={impactDefinitionsRows.length >= 8 ? 'Maximum 8 impacts (colonnes cartographie)' : ''}>+ Ajouter une ligne</button>
+						{#if impactDefinitionsRows.length > 1}
+							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerDefinitionImpact(impactDefinitionsRows.length - 1)}>- Supprimer la dernière ligne</button>
+						{/if}
+					</div>
+				{/if}
 			</section>
 
 			<!-- Tableau 3.1 – Fréquence / probabilité d'occurrence (échelle de risque) -->
