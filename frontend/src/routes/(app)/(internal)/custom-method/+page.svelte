@@ -2067,16 +2067,25 @@
         vertical-align: middle;
     }
 
-    /* Section 7 – listes Impact D/I/C : meilleure visibilité des options (texte plus grand) */
-    .registre-loi0520-select {
-        font-size: 0.95rem;
-        min-height: 2.5rem;
-        line-height: 1.4;
+    /* Section 7 – listes Impact D/I/C : select aussi haut que la cellule pour lire le contenu */
+    .registre-classification-table .registre-loi0520-cell {
+        height: 1px; /* allow child to set height */
     }
-    .registre-loi0520-select option {
-        font-size: 0.95rem;
-        padding: 0.4rem 0.5rem;
-        line-height: 1.5;
+    .registre-classification-table .registre-loi0520-cell .registre-loi0520-select {
+        font-size: 0.9rem;
+        line-height: 1.4;
+        min-height: 100%;
+        height: 100%;
+        padding: 0.5rem;
+        display: block;
+    }
+    .registre-classification-table tbody tr .registre-loi0520-cell {
+        height: auto;
+        vertical-align: top;
+    }
+    .registre-classification-table tbody tr .registre-loi0520-cell .registre-loi0520-select {
+        min-height: 96px;
+        height: 96px;
     }
 
     /* Hide/show table cells (only tbody td/data cells, NOT headers).
@@ -2739,9 +2748,9 @@
 								Sensibilité de l'actif
 							</th>
 							{#if showRegistreLoi0520}
-							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[320px]">Impact Disponibilité</th>
-							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[320px]">Impact Intégrité</th>
-							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[320px]">Impact Confidentialité</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[90px]">Impact Disponibilité</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[90px]">Impact Intégrité</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[90px]">Impact Confidentialité</th>
 							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[90px]">Sensibilité (réf. loi 05.20)</th>
 							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[100px]">Confidentialité (décret 05-20)</th>
 							{/if}
@@ -2862,9 +2871,9 @@
 								</td>
 								{#if showRegistreLoi0520}
 								<!-- Section 7 – Impact Disponibilité (loi 05.20) – couleur selon échelle TG/G/M/L -->
-								<td class="px-2 py-1 border border-black min-w-[320px]" style="background-color: {getLoi0520ImpactBg(row.impactDispo0520) || '#ffffff'};">
+								<td class="px-2 py-1 border border-black registre-loi0520-cell" style="background-color: {getLoi0520ImpactBg(row.impactDispo0520) || '#ffffff'};">
 									<select
-										class="registre-loi0520-select w-full border border-gray-300 rounded px-2 py-2 bg-transparent"
+										class="registre-loi0520-select w-full border border-gray-300 rounded px-2 bg-transparent"
 										bind:value={registreRows[i].impactDispo0520}
 										on:change={() => saveCustomMethodState()}
 									>
@@ -2875,9 +2884,9 @@
 									</select>
 								</td>
 								<!-- Section 7 – Impact Intégrité (loi 05.20) – couleur selon échelle TG/G/M/L -->
-								<td class="px-2 py-1 border border-black min-w-[320px]" style="background-color: {getLoi0520ImpactBg(row.impactIntegrite0520) || '#ffffff'};">
+								<td class="px-2 py-1 border border-black registre-loi0520-cell" style="background-color: {getLoi0520ImpactBg(row.impactIntegrite0520) || '#ffffff'};">
 									<select
-										class="registre-loi0520-select w-full border border-gray-300 rounded px-2 py-2 bg-transparent"
+										class="registre-loi0520-select w-full border border-gray-300 rounded px-2 bg-transparent"
 										bind:value={registreRows[i].impactIntegrite0520}
 										on:change={() => saveCustomMethodState()}
 									>
@@ -2888,9 +2897,9 @@
 									</select>
 								</td>
 								<!-- Section 7 – Impact Confidentialité (loi 05.20) – couleur selon échelle TG/G/M/L -->
-								<td class="px-2 py-1 border border-black min-w-[320px]" style="background-color: {getLoi0520ImpactBg(row.impactConfid0520) || '#ffffff'};">
+								<td class="px-2 py-1 border border-black registre-loi0520-cell" style="background-color: {getLoi0520ImpactBg(row.impactConfid0520) || '#ffffff'};">
 									<select
-										class="registre-loi0520-select w-full border border-gray-300 rounded px-2 py-2 bg-transparent"
+										class="registre-loi0520-select w-full border border-gray-300 rounded px-2 bg-transparent"
 										bind:value={registreRows[i].impactConfid0520}
 										on:change={() => saveCustomMethodState()}
 									>
