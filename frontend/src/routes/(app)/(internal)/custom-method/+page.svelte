@@ -501,21 +501,21 @@
 
 	/** Échelle d'impact du référentiel fixé par la loi n° 05.20 et son décret d'application (Section 7 – options pour Impact D/I/C) */
 	const REGISTRE_LOI0520_OPTIONS: string[] = [
-		'TG: nuire au maintien des capacités de sécurité et de défense de l\'Etat',
-		'TG: porter préjudice aux intérêts stratégiques de l\'Etat',
-		'TG: porter atteinte à la santé et à la sécurité de la population',
-		'TG: perturber ou nuire au fonctionnement de l\'économie nationale',
-		'TG: engendrer une incapacité totale ou partielle de plusieurs infrastructures d\'importance vitale à assurer leurs fonctions essentielles',
-		'G: une incapacité totale ou partielle d\'une infrastructure d\'importance vitale à assurer ses fonctions essentielles',
-		'G: une incapacité totale d\'une ou plusieurs entités non considérées comme infrastructures d\'importance vitale à assurer leurs fonctions critiques',
+		'TG: nuire au maintien des capacités de sécurité et de défense de l\'Etat ;',
+		'TG: porter préjudice aux intérêts stratégiques de l\'Etat ;',
+		'TG: porter atteinte à la santé et à la sécurité de la population ;',
+		'TG: perturber ou nuire au fonctionnement de l\'économie nationale ;',
+		'TG: engendrer une incapacité totale ou partielle de plusieurs infrastructures d\'importance vitale à assurer leurs fonctions essentielles.',
+		'G: une incapacité totale ou partielle d\'une infrastructure d\'importance vitale à assurer ses fonctions essentielles ;',
+		'G: une incapacité totale d\'une ou plusieurs entités non considérées comme infrastructures d\'importance vitale à assurer leurs fonctions critiques ;',
 		'G: des pertes financières importantes pour une ou plusieurs entités ou infrastructures d\'importance vitale',
-		'M: une gêne ou perturbation mineure dans les fonctions d\'une infrastructure d\'importance vitale',
-		'M: une incapacité partielle d\'une ou de plusieurs entités non considérées comme infrastructures d\'importance vitale, à assurer leurs fonctions',
-		'M: des pertes financières modérées',
+		'M: une gêne ou perturbation mineure dans les fonctions d\'une infrastructure d\'importance vitale ;',
+		'M: une incapacité partielle d\'une ou de plusieurs entités non considérées comme infrastructures d\'importance vitale, à assurer leurs fonctions ;',
+		'M: des pertes financières modérées ;',
 		'M: ou toute autre conséquence de nature analogue',
-		'L: une gêne ou perturbation dans les fonctions de l\'entité non considérée comme infrastructure d\'importance vitale',
-		'L: des pertes financières limitées',
-		'L: ou toute autre conséquence de nature analogue'
+		'L: une gêne ou perturbation dans les fonctions de l\'entité non considérée comme infrastructure d\'importance vitale ;',
+		'L: des pertes financières limitées ;',
+		'L: ou toute autre conséquence de nature analogue.'
 	];
 
 	let registreRows: RegistreRow[] = [
@@ -2067,6 +2067,18 @@
         vertical-align: middle;
     }
 
+    /* Section 7 – listes Impact D/I/C : meilleure visibilité des options (texte plus grand) */
+    .registre-loi0520-select {
+        font-size: 0.95rem;
+        min-height: 2.5rem;
+        line-height: 1.4;
+    }
+    .registre-loi0520-select option {
+        font-size: 0.95rem;
+        padding: 0.4rem 0.5rem;
+        line-height: 1.5;
+    }
+
     /* Hide/show table cells (only tbody td/data cells, NOT headers).
        Keep all <thead> cells visible so headers display correctly for each view.
        Columns 4-5 (Description, Code Risque) always stay visible in ALL views.
@@ -2727,9 +2739,9 @@
 								Sensibilité de l'actif
 							</th>
 							{#if showRegistreLoi0520}
-							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[90px]">Impact Disponibilité</th>
-							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[90px]">Impact Intégrité</th>
-							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[90px]">Impact Confidentialité</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[320px]">Impact Disponibilité</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[320px]">Impact Intégrité</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[320px]">Impact Confidentialité</th>
 							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[90px]">Sensibilité (réf. loi 05.20)</th>
 							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[100px]">Confidentialité (décret 05-20)</th>
 							{/if}
@@ -2850,9 +2862,9 @@
 								</td>
 								{#if showRegistreLoi0520}
 								<!-- Section 7 – Impact Disponibilité (loi 05.20) – couleur selon échelle TG/G/M/L -->
-								<td class="px-2 py-1 border border-black" style="background-color: {getLoi0520ImpactBg(row.impactDispo0520) || '#ffffff'};">
+								<td class="px-2 py-1 border border-black min-w-[320px]" style="background-color: {getLoi0520ImpactBg(row.impactDispo0520) || '#ffffff'};">
 									<select
-										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent"
+										class="registre-loi0520-select w-full border border-gray-300 rounded px-2 py-2 bg-transparent"
 										bind:value={registreRows[i].impactDispo0520}
 										on:change={() => saveCustomMethodState()}
 									>
@@ -2863,9 +2875,9 @@
 									</select>
 								</td>
 								<!-- Section 7 – Impact Intégrité (loi 05.20) – couleur selon échelle TG/G/M/L -->
-								<td class="px-2 py-1 border border-black" style="background-color: {getLoi0520ImpactBg(row.impactIntegrite0520) || '#ffffff'};">
+								<td class="px-2 py-1 border border-black min-w-[320px]" style="background-color: {getLoi0520ImpactBg(row.impactIntegrite0520) || '#ffffff'};">
 									<select
-										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent"
+										class="registre-loi0520-select w-full border border-gray-300 rounded px-2 py-2 bg-transparent"
 										bind:value={registreRows[i].impactIntegrite0520}
 										on:change={() => saveCustomMethodState()}
 									>
@@ -2876,9 +2888,9 @@
 									</select>
 								</td>
 								<!-- Section 7 – Impact Confidentialité (loi 05.20) – couleur selon échelle TG/G/M/L -->
-								<td class="px-2 py-1 border border-black" style="background-color: {getLoi0520ImpactBg(row.impactConfid0520) || '#ffffff'};">
+								<td class="px-2 py-1 border border-black min-w-[320px]" style="background-color: {getLoi0520ImpactBg(row.impactConfid0520) || '#ffffff'};">
 									<select
-										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent"
+										class="registre-loi0520-select w-full border border-gray-300 rounded px-2 py-2 bg-transparent"
 										bind:value={registreRows[i].impactConfid0520}
 										on:change={() => saveCustomMethodState()}
 									>
