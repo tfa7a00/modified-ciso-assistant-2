@@ -499,7 +499,24 @@
 	/** Afficher la section 7 (Classification selon la loi n° 05.20) dans le registre */
 	let showRegistreLoi0520 = false;
 
-	const REGISTRE_LOI0520_OPTIONS = ['Très Grave', 'Grave', 'Modéré', 'Limité'] as const;
+	/** Échelle d'impact du référentiel fixé par la loi n° 05.20 et son décret d'application (Section 7 – options pour Impact D/I/C) */
+	const REGISTRE_LOI0520_OPTIONS: string[] = [
+		'TG: nuire au maintien des capacités de sécurité et de défense de l\'Etat',
+		'TG: porter préjudice aux intérêts stratégiques de l\'Etat',
+		'TG: porter atteinte à la santé et à la sécurité de la population',
+		'TG: perturber ou nuire au fonctionnement de l\'économie nationale',
+		'TG: engendrer une incapacité totale ou partielle de plusieurs infrastructures d\'importance vitale à assurer leurs fonctions essentielles',
+		'G: une incapacité totale ou partielle d\'une infrastructure d\'importance vitale à assurer ses fonctions essentielles',
+		'G: une incapacité totale d\'une ou plusieurs entités non considérées comme infrastructures d\'importance vitale à assurer leurs fonctions critiques',
+		'G: des pertes financières importantes pour une ou plusieurs entités ou infrastructures d\'importance vitale',
+		'M: une gêne ou perturbation mineure dans les fonctions d\'une infrastructure d\'importance vitale',
+		'M: une incapacité partielle d\'une ou de plusieurs entités non considérées comme infrastructures d\'importance vitale, à assurer leurs fonctions',
+		'M: des pertes financières modérées',
+		'M: ou toute autre conséquence de nature analogue',
+		'L: une gêne ou perturbation dans les fonctions de l\'entité non considérée comme infrastructure d\'importance vitale',
+		'L: des pertes financières limitées',
+		'L: ou toute autre conséquence de nature analogue'
+	];
 
 	let registreRows: RegistreRow[] = [
 		{
