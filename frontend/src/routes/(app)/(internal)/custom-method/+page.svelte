@@ -1863,6 +1863,10 @@
     .view-net tbody tr td:nth-child(n+39):nth-child(-n+45) {
         display: none;
     }
+    /* Version B (avec efficacité) : en vue Degré & Risque net, ne pas afficher la colonne Action PTR (col 38) */
+    .view-net.net-version-b tbody tr td:nth-child(38) {
+        display: none;
+    }
 
     /* PTR + Résiduel view: show cols 4-5 + Action PTR + Décision + Résiduel + Actions.
        Version A (46 cols): Action PTR = col 39 → hide 1-3 and 6-38.
@@ -3031,7 +3035,7 @@
 				<p class="text-xs text-gray-500">Affiche uniquement la sous-partie sélectionnée pour une meilleure lisibilité.</p>
 			</div>
 
-			<div class="overflow-x-auto rounded-lg border border-black bg-white shadow-sm" class:view-all={cartoView==='all'} class:view-identification={cartoView==='identification'} class:view-brut={cartoView==='brut'} class:view-net={cartoView==='net'} class:view-ptr={cartoView==='ptr'} class:ptr-version-b={cartoView==='ptr' && cartoVersion==='B'}>
+			<div class="overflow-x-auto rounded-lg border border-black bg-white shadow-sm" class:view-all={cartoView==='all'} class:view-identification={cartoView==='identification'} class:view-brut={cartoView==='brut'} class:view-net={cartoView==='net'} class:view-ptr={cartoView==='ptr'} class:ptr-version-b={cartoView==='ptr' && cartoVersion==='B'} class:net-version-b={cartoView==='net' && cartoVersion==='B'}>
 				<table class="min-w-full text-xs border-collapse border border-black" class:carto-version-b-table={cartoView==='all' && cartoVersion==='B'}>
 					<!-- Colgroup: 45 colonnes (removed empty Code Risques & F.R), classes par groupe pour masquage via CSS -->
 					<colgroup>
