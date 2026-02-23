@@ -2068,9 +2068,16 @@
         vertical-align: middle;
     }
 
-    /* Section 7 – cellules Impact D/I/C : select même hauteur que la cellule */
+    /* Section 7 – cellules Impact D/I/C : select + meilleure visibilité du choix */
     .registre-classification-table tbody tr .registre-loi0520-cell .registre-loi0520-select {
-        min-height: 96px;
+        min-height: 2.25rem;
+        font-size: 0.9375rem;
+    }
+    .registre-classification-table .registre-loi0520-readout {
+        font-size: 0.8125rem;
+        line-height: 1.35;
+        max-height: 6em;
+        overflow-y: auto;
     }
 
     /* Hide/show table cells (only tbody td/data cells, NOT headers).
@@ -2855,10 +2862,11 @@
 									<span class="text-xs font-semibold">{row.sensibilite || '--'}</span>
 								</td>
 								{#if showRegistreLoi0520}
-								<!-- Section 7 – Impact Disponibilité (loi 05.20) – couleur selon échelle TG/G/M/L -->
-								<td class="px-2 py-1 border border-black registre-loi0520-cell" style="background-color: {getLoi0520ImpactBg(row.impactDispo0520) || '#ffffff'};">
+								<!-- Section 7 – Impact Disponibilité (loi 05.20) – select + lecture du choix en entier -->
+								<td class="px-2 py-1 border border-black registre-loi0520-cell align-top" style="background-color: {getLoi0520ImpactBg(row.impactDispo0520) || '#ffffff'};">
 									<select
-										class="registre-loi0520-select w-full border border-gray-300 rounded px-2 py-1 bg-transparent text-sm"
+										class="registre-loi0520-select w-full border border-gray-300 rounded px-2 py-1.5 bg-transparent font-medium"
+										title={row.impactDispo0520 || ''}
 										bind:value={registreRows[i].impactDispo0520}
 										on:change={() => saveCustomMethodState()}
 									>
@@ -2867,11 +2875,17 @@
 											<option value={opt}>{opt}</option>
 										{/each}
 									</select>
+									{#if row.impactDispo0520}
+										<div class="registre-loi0520-readout mt-1.5 px-1.5 py-1 rounded bg-white/80 text-gray-800 whitespace-normal leading-snug" title={row.impactDispo0520}>
+											{row.impactDispo0520}
+										</div>
+									{/if}
 								</td>
 								<!-- Section 7 – Impact Intégrité (loi 05.20) -->
-								<td class="px-2 py-1 border border-black registre-loi0520-cell" style="background-color: {getLoi0520ImpactBg(row.impactIntegrite0520) || '#ffffff'};">
+								<td class="px-2 py-1 border border-black registre-loi0520-cell align-top" style="background-color: {getLoi0520ImpactBg(row.impactIntegrite0520) || '#ffffff'};">
 									<select
-										class="registre-loi0520-select w-full border border-gray-300 rounded px-2 py-1 bg-transparent text-sm"
+										class="registre-loi0520-select w-full border border-gray-300 rounded px-2 py-1.5 bg-transparent font-medium"
+										title={row.impactIntegrite0520 || ''}
 										bind:value={registreRows[i].impactIntegrite0520}
 										on:change={() => saveCustomMethodState()}
 									>
@@ -2880,11 +2894,17 @@
 											<option value={opt}>{opt}</option>
 										{/each}
 									</select>
+									{#if row.impactIntegrite0520}
+										<div class="registre-loi0520-readout mt-1.5 px-1.5 py-1 rounded bg-white/80 text-gray-800 whitespace-normal leading-snug" title={row.impactIntegrite0520}>
+											{row.impactIntegrite0520}
+										</div>
+									{/if}
 								</td>
 								<!-- Section 7 – Impact Confidentialité (loi 05.20) -->
-								<td class="px-2 py-1 border border-black registre-loi0520-cell" style="background-color: {getLoi0520ImpactBg(row.impactConfid0520) || '#ffffff'};">
+								<td class="px-2 py-1 border border-black registre-loi0520-cell align-top" style="background-color: {getLoi0520ImpactBg(row.impactConfid0520) || '#ffffff'};">
 									<select
-										class="registre-loi0520-select w-full border border-gray-300 rounded px-2 py-1 bg-transparent text-sm"
+										class="registre-loi0520-select w-full border border-gray-300 rounded px-2 py-1.5 bg-transparent font-medium"
+										title={row.impactConfid0520 || ''}
 										bind:value={registreRows[i].impactConfid0520}
 										on:change={() => saveCustomMethodState()}
 									>
@@ -2893,6 +2913,11 @@
 											<option value={opt}>{opt}</option>
 										{/each}
 									</select>
+									{#if row.impactConfid0520}
+										<div class="registre-loi0520-readout mt-1.5 px-1.5 py-1 rounded bg-white/80 text-gray-800 whitespace-normal leading-snug" title={row.impactConfid0520}>
+											{row.impactConfid0520}
+										</div>
+									{/if}
 								</td>
 								<!-- Section 7 – Sensibilité (Classe A/B/C/D, calculée) – rouge / orange / jaune / vert -->
 								<td class="px-2 py-1 text-center border border-black font-semibold text-xs" style="background-color: {getSensibiliteClasse0520Bg(getSensibiliteClasse0520(row)) || '#f5f5f5'};">
