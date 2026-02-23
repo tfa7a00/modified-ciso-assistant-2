@@ -1838,6 +1838,16 @@
 		return 'Diffusion Restreinte';
 	}
 
+	/** Couleur de fond de l'échelle loi 05.20 : TG → rouge pâle, G → orange saumon, M → jaune, L → vert clair */
+	function getLoi0520ImpactBg(val: string | undefined): string {
+		const letter = firstLetter0520(val);
+		if (letter === 'T') return '#FFEFEF';
+		if (letter === 'G') return '#F5AC8B';
+		if (letter === 'M') return '#FFFF00';
+		if (letter === 'L') return '#A1FB7D';
+		return '';
+	}
+
 	function calculerSensibilite(index: number) {
 		const row = registreRows[index];
 		const niveaux = [row.disponibilite, row.integrite, row.confidentialite];
@@ -2821,10 +2831,10 @@
 									<span class="text-xs font-semibold">{row.sensibilite || '--'}</span>
 								</td>
 								{#if showRegistreLoi0520}
-								<!-- Section 7 – Impact Disponibilité (loi 05.20) -->
-								<td class="px-2 py-1 border border-black bg-white">
+								<!-- Section 7 – Impact Disponibilité (loi 05.20) – couleur selon échelle TG/G/M/L -->
+								<td class="px-2 py-1 border border-black" style="background-color: {getLoi0520ImpactBg(row.impactDispo0520) || '#ffffff'};">
 									<select
-										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent"
 										bind:value={registreRows[i].impactDispo0520}
 										on:change={() => saveCustomMethodState()}
 									>
@@ -2834,10 +2844,10 @@
 										{/each}
 									</select>
 								</td>
-								<!-- Section 7 – Impact Intégrité (loi 05.20) -->
-								<td class="px-2 py-1 border border-black bg-white">
+								<!-- Section 7 – Impact Intégrité (loi 05.20) – couleur selon échelle TG/G/M/L -->
+								<td class="px-2 py-1 border border-black" style="background-color: {getLoi0520ImpactBg(row.impactIntegrite0520) || '#ffffff'};">
 									<select
-										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent"
 										bind:value={registreRows[i].impactIntegrite0520}
 										on:change={() => saveCustomMethodState()}
 									>
@@ -2847,10 +2857,10 @@
 										{/each}
 									</select>
 								</td>
-								<!-- Section 7 – Impact Confidentialité (loi 05.20) -->
-								<td class="px-2 py-1 border border-black bg-white">
+								<!-- Section 7 – Impact Confidentialité (loi 05.20) – couleur selon échelle TG/G/M/L -->
+								<td class="px-2 py-1 border border-black" style="background-color: {getLoi0520ImpactBg(row.impactConfid0520) || '#ffffff'};">
 									<select
-										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent"
 										bind:value={registreRows[i].impactConfid0520}
 										on:change={() => saveCustomMethodState()}
 									>
