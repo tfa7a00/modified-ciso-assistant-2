@@ -3257,8 +3257,8 @@
 							<tr>
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Code Risque</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Description du scénario</th>
-								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Action PTR</th>
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Décision</th>
+								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Action PTR</th>
 								{#if cartoVersion === 'A'}
 									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Criticité actif</th>
 									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact</th>
@@ -3411,8 +3411,8 @@
 							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Signif. risque net</th>
 						{/if}
 						<!-- PTR -->
-						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black" style="min-width: 200px;">Action à mettre en place</th>
 						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black" style="min-width: 100px;">Décision</th>
+						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black" style="min-width: 200px;">Action à mettre en place</th>
 						<!-- Risque Résiduel : Version A ou B -->
 						{#if cartoVersion === 'A'}
 							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 120px;">Criticité de l'actif - Besoin en SSI</th>
@@ -3584,9 +3584,6 @@
 							<!-- AM : Signification du risque net (calculée depuis AL, seuils ≤20 / ]20-36] / ]36-60] / >60) -->
 							<td class="carto-b-cell px-1 py-3 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getSignificationRisqueNetB(row))}" style="width: 130px; max-width: 130px;">{getSignificationRisqueNetB(row)}</td>
 						{/if}
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="6" placeholder="Action..." bind:value={row.actionPTR} on:blur={() => saveCustomMethodState()}></textarea>
-						</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
 							<select class="w-full text-xs p-1" bind:value={row.decision} on:change={() => saveCustomMethodState()}>
 								<option value="">--</option>
@@ -3595,6 +3592,9 @@
 								<option value="Transférer">Transférer</option>
 								<option value="Éviter">Éviter</option>
 							</select>
+						</td>
+						<td class="px-2 py-2 border border-black bg-white align-top">
+							<textarea class="w-full text-xs p-1 resize-none" rows="6" placeholder="Action..." bind:value={row.actionPTR} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
 						{#if cartoVersion === 'A'}
 							<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(row) ?? '-'}</td>
