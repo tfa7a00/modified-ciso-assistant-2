@@ -3112,131 +3112,101 @@
 			</section>
 
 			<!-- Classification selon la loi n° 05-20 -->
-			<section class="space-y-6">
+			<section class="space-y-8">
 				<h3 class="text-lg font-semibold text-gray-900">Classification selon la loi n° 05-20</h3>
-				<p class="text-sm text-gray-700">
-					<strong>Structure générale</strong> — deux tableaux distincts :<br/>
-					<strong>Tableau 1 (lignes 1–8)</strong> : Présentation qualitative de l'échelle d'impact.<br/>
-					<strong>Tableau 2 (lignes 11–26)</strong> : Version numérique/codée de la même échelle d'impact, avec des valeurs numériques et des indicateurs de couleur par catégorie.
-				</p>
 
-				<!-- Tableau 1 — Échelle qualitative (Lignes 1 à 8) -->
-				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
-					<h4 class="text-base font-semibold text-gray-800 mb-2">Tableau 1 — Échelle qualitative (Lignes 1 à 8)</h4>
-					<table class="min-w-full text-sm border-collapse border border-black">
-						<tbody>
-							<tr>
-								<td colspan="2" class="px-3 py-2 font-bold text-white border border-black" style="background-color: #E36C0A; color: #FFFFFF;">
-									Echelle d'impact selon la loi n° 05.20 et son décret d'application
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2" class="px-3 py-2 text-black border border-black bg-white whitespace-normal">
-									Si un incident de cybersécurité portant sur la confidentialité, la disponibilité ou l'intégrité d'un actif informationnel pourrait :
-								</td>
-							</tr>
-							<tr><td colspan="2" class="px-3 py-1 border border-black bg-white"></td></tr>
-							<tr>
-								<th class="px-3 py-2 font-bold text-white border border-black w-32" style="background-color: #E36C0A; color: #FFFFFF;">Valeur</th>
-								<th class="px-3 py-2 font-bold text-white border border-black text-left" style="background-color: #E36C0A; color: #FFFFFF;">Un incident cybersécurité peut :</th>
-							</tr>
-							<tr>
-								<td class="px-3 py-2 font-bold text-black border border-black bg-white align-top">Très Grave</td>
-								<td class="px-3 py-2 text-black border border-black bg-white align-top whitespace-normal">
-									- nuire au maintien des capacités de sécurité et de défense de l'Etat ;<br/>
-									- porter préjudice aux intérêts stratégiques de l'Etat ;<br/>
-									- porter atteinte à la santé et à la sécurité de la population ;<br/>
-									- perturber ou nuire au fonctionnement de l'économie nationale ;<br/>
-									- engendrer une incapacité totale ou partielle de plusieurs infrastructures d'importance vitale à assurer leurs fonctions essentielles.
-								</td>
-							</tr>
-							<tr>
-								<td class="px-3 py-2 font-bold text-black border border-black bg-white align-top">Grave</td>
-								<td class="px-3 py-2 text-black border border-black bg-white align-top whitespace-normal">
-									- une incapacité totale ou partielle d'une infrastructure d'importance vitale à assurer ses fonctions essentielles ;<br/>
-									- une incapacité totale d'une ou plusieurs entités non considérées comme infrastructures d'importance vitale à assurer leurs fonctions critiques ;<br/>
-									- des pertes financières importantes pour une ou plusieurs entités ou infrastructures d'importance vitale
-								</td>
-							</tr>
-							<tr>
-								<td class="px-3 py-2 font-bold text-black border border-black bg-white align-top">Modéré</td>
-								<td class="px-3 py-2 text-black border border-black bg-white align-top whitespace-normal">
-									- une gêne ou perturbation mineure dans les fonctions d'une infrastructure d'importance vitale ;<br/>
-									- une incapacité partielle d'une ou de plusieurs entités non considérées comme infrastructures d'importance vitale, à assurer leurs fonctions ;<br/>
-									- des pertes financières modérées ;<br/>
-									- ou toute autre conséquence de nature analogue.
-								</td>
-							</tr>
-							<tr>
-								<td class="px-3 py-2 font-bold text-black border border-black bg-white align-top">Limité</td>
-								<td class="px-3 py-2 text-black border border-black bg-white align-top whitespace-normal">
-									- une gêne ou perturbation dans les fonctions de l'entité non considérée comme infrastructure d'importance vitale ;<br/>
-									- des pertes financières limitées ;<br/>
-									- ou toute autre conséquence de nature analogue.
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+				<!-- Tableau 1 — Échelle qualitative -->
+				<section class="space-y-3">
+					<h4 class="text-lg font-semibold text-gray-900">Tableau 1 — Échelle qualitative</h4>
+					<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+						<table class="min-w-full text-sm border-collapse border border-black">
+							<tbody>
+								<tr>
+									<td colspan="2" class="px-4 py-2 font-bold text-white border border-black" style="background-color: #E36C0A; color: #FFFFFF;">
+										Echelle d'impact selon la loi n° 05.20 et son décret d'application
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2" class="px-4 py-2 text-black border border-black bg-white whitespace-normal">
+										Si un incident de cybersécurité portant sur la confidentialité, la disponibilité ou l'intégrité d'un actif informationnel pourrait :
+									</td>
+								</tr>
+								<tr><td colspan="2" class="px-4 py-1 border border-black bg-white"></td></tr>
+								<tr>
+									<th class="px-4 py-2 font-bold text-white border border-black w-36 text-left" style="background-color: #E36C0A; color: #FFFFFF;">Valeur</th>
+									<th class="px-4 py-2 font-bold text-white border border-black text-left" style="background-color: #E36C0A; color: #FFFFFF;">Un incident cybersécurité peut :</th>
+								</tr>
+								<tr>
+									<td class="px-4 py-2 font-semibold text-black border border-black bg-white align-top">Très Grave</td>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top whitespace-normal">
+										- nuire au maintien des capacités de sécurité et de défense de l'Etat ;<br/>
+										- porter préjudice aux intérêts stratégiques de l'Etat ;<br/>
+										- porter atteinte à la santé et à la sécurité de la population ;<br/>
+										- perturber ou nuire au fonctionnement de l'économie nationale ;<br/>
+										- engendrer une incapacité totale ou partielle de plusieurs infrastructures d'importance vitale à assurer leurs fonctions essentielles.
+									</td>
+								</tr>
+								<tr>
+									<td class="px-4 py-2 font-semibold text-black border border-black bg-white align-top">Grave</td>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top whitespace-normal">
+										- une incapacité totale ou partielle d'une infrastructure d'importance vitale à assurer ses fonctions essentielles ;<br/>
+										- une incapacité totale d'une ou plusieurs entités non considérées comme infrastructures d'importance vitale à assurer leurs fonctions critiques ;<br/>
+										- des pertes financières importantes pour une ou plusieurs entités ou infrastructures d'importance vitale
+									</td>
+								</tr>
+								<tr>
+									<td class="px-4 py-2 font-semibold text-black border border-black bg-white align-top">Modéré</td>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top whitespace-normal">
+										- une gêne ou perturbation mineure dans les fonctions d'une infrastructure d'importance vitale ;<br/>
+										- une incapacité partielle d'une ou de plusieurs entités non considérées comme infrastructures d'importance vitale, à assurer leurs fonctions ;<br/>
+										- des pertes financières modérées ;<br/>
+										- ou toute autre conséquence de nature analogue.
+									</td>
+								</tr>
+								<tr>
+									<td class="px-4 py-2 font-semibold text-black border border-black bg-white align-top">Limité</td>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top whitespace-normal">
+										- une gêne ou perturbation dans les fonctions de l'entité non considérée comme infrastructure d'importance vitale ;<br/>
+										- des pertes financières limitées ;<br/>
+										- ou toute autre conséquence de nature analogue.
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
 
-				<!-- Tableau 2 — Échelle numérique avec code couleur (Lignes 11 à 26) -->
-				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
-					<h4 class="text-base font-semibold text-gray-800 mb-2">Tableau 2 — Échelle numérique avec code couleur (Lignes 11 à 26)</h4>
-					<table class="min-w-full text-sm border-collapse border border-black">
-						<thead>
-							<tr>
-								<th class="px-3 py-2 font-bold text-black border border-black w-16" style="background-color: #FFC000;">VALEUR</th>
-								<th colspan="2" class="px-3 py-2 font-bold text-black border border-black text-left" style="background-color: #FFC000;">Echelle d'impact du référentiel fixé par la loi n° 05.20 et son décret d'application</th>
-							</tr>
-						</thead>
-						<tbody>
-							<!-- TG — Valeur 4 -->
-							<tr><td class="px-3 py-1 text-center font-semibold border border-black bg-white">4</td><td colspan="2" class="px-3 py-1 text-black border border-black whitespace-normal" style="background-color: #FFEFEF;">TG: nuire au maintien des capacités de sécurité et de défense de l'Etat ;</td></tr>
-							<tr><td class="px-3 py-1 text-center font-semibold border border-black bg-white">4</td><td colspan="2" class="px-3 py-1 text-black border border-black whitespace-normal" style="background-color: #FFEFEF;">TG: porter préjudice aux intérêts stratégiques de l'Etat ;</td></tr>
-							<tr><td class="px-3 py-1 text-center font-semibold border border-black bg-white">4</td><td colspan="2" class="px-3 py-1 text-black border border-black whitespace-normal" style="background-color: #FFEFEF;">TG: porter atteinte à la santé et à la sécurité de la population ;</td></tr>
-							<tr><td class="px-3 py-1 text-center font-semibold border border-black bg-white">4</td><td colspan="2" class="px-3 py-1 text-black border border-black whitespace-normal" style="background-color: #FFEFEF;">TG: perturber ou nuire au fonctionnement de l'économie nationale ;</td></tr>
-							<tr><td class="px-3 py-1 text-center font-semibold border border-black bg-white">4</td><td colspan="2" class="px-3 py-1 text-black border border-black whitespace-normal" style="background-color: #FFEFEF;">TG: engendrer une incapacité totale ou partielle de plusieurs infrastructures d'importance vitale à assurer leurs fonctions essentielles.</td></tr>
-							<!-- G — Valeur 3 -->
-							<tr><td class="px-3 py-1 text-center font-semibold border border-black bg-white">3</td><td colspan="2" class="px-3 py-1 text-black border border-black whitespace-normal" style="background-color: #F5AC8B;">G: une incapacité totale ou partielle d'une infrastructure d'importance vitale à assurer ses fonctions essentielles ;</td></tr>
-							<tr><td class="px-3 py-1 text-center font-semibold border border-black bg-white">3</td><td colspan="2" class="px-3 py-1 text-black border border-black whitespace-normal" style="background-color: #F5AC8B;">G: une incapacité totale d'une ou plusieurs entités non considérées comme infrastructures d'importance vitale à assurer leurs fonctions critiques ;</td></tr>
-							<tr><td class="px-3 py-1 text-center font-semibold border border-black bg-white">3</td><td colspan="2" class="px-3 py-1 text-black border border-black whitespace-normal" style="background-color: #F5AC8B;">G: des pertes financières importantes pour une ou plusieurs entités ou infrastructures d'importance vitale</td></tr>
-							<!-- M — Valeur 2 -->
-							<tr><td class="px-3 py-1 text-center font-semibold border border-black bg-white">2</td><td colspan="2" class="px-3 py-1 text-black border border-black whitespace-normal" style="background-color: #FFFF00;">M: une gêne ou perturbation mineure dans les fonctions d'une infrastructure d'importance vitale ;</td></tr>
-							<tr><td class="px-3 py-1 text-center font-semibold border border-black bg-white">2</td><td colspan="2" class="px-3 py-1 text-black border border-black whitespace-normal" style="background-color: #FFFF00;">M: une incapacité partielle d'une ou de plusieurs entités non considérées comme infrastructures d'importance vitale, à assurer leurs fonctions ;</td></tr>
-							<tr><td class="px-3 py-1 text-center font-semibold border border-black bg-white">2</td><td colspan="2" class="px-3 py-1 text-black border border-black whitespace-normal" style="background-color: #FFFF00;">M: des pertes financières modérées ;</td></tr>
-							<tr><td class="px-3 py-1 text-center font-semibold border border-black bg-white">2</td><td colspan="2" class="px-3 py-1 text-black border border-black whitespace-normal" style="background-color: #FFFF00;">M: ou toute autre conséquence de nature analogue</td></tr>
-							<!-- L — Valeur 1 -->
-							<tr><td class="px-3 py-1 text-center font-semibold border border-black bg-white">1</td><td colspan="2" class="px-3 py-1 text-black border border-black whitespace-normal" style="background-color: #A1FB7D;">L: une gêne ou perturbation dans les fonctions de l'entité non considérée comme infrastructure d'importance vitale ;</td></tr>
-							<tr><td class="px-3 py-1 text-center font-semibold border border-black bg-white">1</td><td colspan="2" class="px-3 py-1 text-black border border-black whitespace-normal" style="background-color: #A1FB7D;">L: des pertes financières limitées ;</td></tr>
-							<tr><td class="px-3 py-1 text-center font-semibold border border-black bg-white">1</td><td colspan="2" class="px-3 py-1 text-black border border-black whitespace-normal" style="background-color: #A1FB7D;">L: ou toute autre conséquence de nature analogue.</td></tr>
-						</tbody>
-					</table>
-				</div>
-
-				<!-- Résumé du codage couleur -->
-				<div class="rounded-lg border border-gray-300 bg-gray-50 p-4">
-					<h4 class="text-base font-semibold text-gray-800 mb-2">Résumé du codage couleur</h4>
-					<table class="min-w-full text-sm border-collapse border border-gray-400">
-						<thead>
-							<tr class="bg-gray-200">
-								<th class="px-3 py-2 text-left font-semibold border border-gray-400">Niveau</th>
-								<th class="px-3 py-2 text-left font-semibold border border-gray-400">Abréviation</th>
-								<th class="px-3 py-2 text-left font-semibold border border-gray-400">Valeur numérique</th>
-								<th class="px-3 py-2 text-left font-semibold border border-gray-400">Couleur (Tableau 2)</th>
-								<th class="px-3 py-2 text-left font-semibold border border-gray-400">Code Hex</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr><td class="px-3 py-2 border border-gray-400">Très Grave</td><td class="px-3 py-2 border border-gray-400">TG</td><td class="px-3 py-2 border border-gray-400">4</td><td class="px-3 py-2 border border-gray-400" style="background-color: #FFEFEF;">Rouge pâle</td><td class="px-3 py-2 border border-gray-400 font-mono">#FFEFEF</td></tr>
-							<tr><td class="px-3 py-2 border border-gray-400">Grave</td><td class="px-3 py-2 border border-gray-400">G</td><td class="px-3 py-2 border border-gray-400">3</td><td class="px-3 py-2 border border-gray-400" style="background-color: #F5AC8B;">Orange saumon</td><td class="px-3 py-2 border border-gray-400 font-mono">#F5AC8B</td></tr>
-							<tr><td class="px-3 py-2 border border-gray-400">Modéré</td><td class="px-3 py-2 border border-gray-400">M</td><td class="px-3 py-2 border border-gray-400">2</td><td class="px-3 py-2 border border-gray-400" style="background-color: #FFFF00;">Jaune vif</td><td class="px-3 py-2 border border-gray-400 font-mono">#FFFF00</td></tr>
-							<tr><td class="px-3 py-2 border border-gray-400">Limité</td><td class="px-3 py-2 border border-gray-400">L</td><td class="px-3 py-2 border border-gray-400">1</td><td class="px-3 py-2 border border-gray-400" style="background-color: #A1FB7D;">Vert clair</td><td class="px-3 py-2 border border-gray-400 font-mono">#A1FB7D</td></tr>
-						</tbody>
-					</table>
-					<p class="text-xs text-gray-600 mt-2">
-						En-têtes : Tableau 1 — orange foncé (#E36C0A) avec texte blanc ; Tableau 2 — jaune/or (#FFC000).
-					</p>
-				</div>
+				<!-- Tableau 2 — Échelle numérique avec code couleur -->
+				<section class="space-y-3">
+					<h4 class="text-lg font-semibold text-gray-900">Tableau 2 — Échelle numérique avec code couleur</h4>
+					<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+						<table class="min-w-full text-sm border-collapse border border-black">
+							<thead>
+								<tr>
+									<th class="px-4 py-2 font-bold text-black border border-black w-20 text-center" style="background-color: #FFC000;">VALEUR</th>
+									<th colspan="2" class="px-4 py-2 font-bold text-black border border-black text-left" style="background-color: #FFC000;">Echelle d'impact du référentiel fixé par la loi n° 05.20 et son décret d'application</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">4</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #FFEFEF;">TG: nuire au maintien des capacités de sécurité et de défense de l'Etat ;</td></tr>
+								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">4</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #FFEFEF;">TG: porter préjudice aux intérêts stratégiques de l'Etat ;</td></tr>
+								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">4</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #FFEFEF;">TG: porter atteinte à la santé et à la sécurité de la population ;</td></tr>
+								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">4</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #FFEFEF;">TG: perturber ou nuire au fonctionnement de l'économie nationale ;</td></tr>
+								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">4</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #FFEFEF;">TG: engendrer une incapacité totale ou partielle de plusieurs infrastructures d'importance vitale à assurer leurs fonctions essentielles.</td></tr>
+								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">3</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #F5AC8B;">G: une incapacité totale ou partielle d'une infrastructure d'importance vitale à assurer ses fonctions essentielles ;</td></tr>
+								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">3</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #F5AC8B;">G: une incapacité totale d'une ou plusieurs entités non considérées comme infrastructures d'importance vitale à assurer leurs fonctions critiques ;</td></tr>
+								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">3</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #F5AC8B;">G: des pertes financières importantes pour une ou plusieurs entités ou infrastructures d'importance vitale</td></tr>
+								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">2</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #FFFF00;">M: une gêne ou perturbation mineure dans les fonctions d'une infrastructure d'importance vitale ;</td></tr>
+								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">2</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #FFFF00;">M: une incapacité partielle d'une ou de plusieurs entités non considérées comme infrastructures d'importance vitale, à assurer leurs fonctions ;</td></tr>
+								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">2</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #FFFF00;">M: des pertes financières modérées ;</td></tr>
+								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">2</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #FFFF00;">M: ou toute autre conséquence de nature analogue</td></tr>
+								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">1</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #A1FB7D;">L: une gêne ou perturbation dans les fonctions de l'entité non considérée comme infrastructure d'importance vitale ;</td></tr>
+								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">1</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #A1FB7D;">L: des pertes financières limitées ;</td></tr>
+								<tr><td class="px-4 py-2 text-center font-semibold border border-black bg-white">1</td><td colspan="2" class="px-4 py-2 text-black border border-black whitespace-normal align-top" style="background-color: #A1FB7D;">L: ou toute autre conséquence de nature analogue.</td></tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
 			</section>
 		</section>
 
