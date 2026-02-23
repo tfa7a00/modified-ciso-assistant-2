@@ -1262,6 +1262,8 @@
 				etatAvancement: String(r.etatAvancement ?? '')
 			}));
 		}
+		// Reconstruire le PTR à partir de la cartographie (une ligne PTR par ligne dans "Action à mettre en place")
+		syncPtrFromCartographie();
 	}
 
 	function getProbaDefBg(definition: string): string {
@@ -1907,6 +1909,67 @@
 					}
 		);
 		saveCustomMethodState();
+	}
+
+	/** Construit le tableau PTR à partir de la cartographie : une ligne PTR par ligne de texte dans "Action à mettre en place" (chaque retour à la ligne = une action). */
+	function syncPtrFromCartographie() {
+		type PtrRow = (typeof ptrData)[number];
+		const defaultPtrRow = (id: number): PtrRow => ({
+			id,
+			refRisque: '',
+			correspISO: '',
+			proprietaire: '',
+			niveauRisque: '',
+			decision: '',
+			idPTR: '',
+			action: '',
+			typeAction: '',
+			porteur: '',
+			priorite: '',
+			periodicite: '',
+			complexite: '',
+			echeance: '',
+			etatAvancement: ''
+		});
+
+		const newRows: PtrRow[] = [];
+		let nextId = 1;
+
+		for (const carto of cartoRows) {
+			const text = (carto.actionPTR ?? '').trim();
+			const lines = text ? text.split(/\r?\n/).map((l) => l.trim()).filter((l) => l.length > 0) : [];
+
+			for (const actionLine of lines) {
+				const refNorm = normalizeCodeRisque(carto.codeRisque ?? '');
+				const existing = ptrData.find(
+					(r) => normalizeCodeRisque(r.refRisque) === refNorm && (r.action ?? '').trim() === actionLine
+				);
+				if (existing) {
+					newRows.push({
+						...existing,
+						id: nextId++,
+						refRisque: (carto.codeRisque ?? '').trim(),
+						correspISO: (carto.mesureISO ?? existing.correspISO ?? '').toString().replace(/\n/g, ' '),
+						proprietaire: (carto.proprietaireRisque ?? existing.proprietaire ?? '').trim(),
+						niveauRisque: getNiveauNet(carto) || existing.niveauRisque || '',
+						decision: (carto.decision ?? existing.decision ?? '').trim(),
+						action: actionLine
+					});
+				} else {
+					newRows.push({
+						...defaultPtrRow(nextId++),
+						refRisque: (carto.codeRisque ?? '').trim(),
+						correspISO: (carto.mesureISO ?? '').toString().replace(/\n/g, ' '),
+						proprietaire: (carto.proprietaireRisque ?? '').trim(),
+						niveauRisque: getNiveauNet(carto) || '',
+						decision: (carto.decision ?? '').trim(),
+						action: actionLine
+					});
+				}
+			}
+		}
+
+		ptrData = newRows.length > 0 ? newRows : [defaultPtrRow(1)];
 	}
 
 </script>
@@ -3594,7 +3657,7 @@
 							</select>
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="6" placeholder="Action..." bind:value={row.actionPTR} on:blur={() => saveCustomMethodState()}></textarea>
+							<textarea class="w-full text-xs p-1 resize-none" rows="6" placeholder="Action... (une ligne = une action PTR)" bind:value={row.actionPTR} on:blur={() => { syncPtrFromCartographie(); saveCustomMethodState(); }}></textarea>
 						</td>
 						{#if cartoVersion === 'A'}
 							<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(row) ?? '-'}</td>
