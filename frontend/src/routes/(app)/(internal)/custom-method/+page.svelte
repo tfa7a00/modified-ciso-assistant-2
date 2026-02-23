@@ -3292,7 +3292,7 @@
 					<thead>
 					<!-- Ligne 1: Titre principal -->
 					<tr>
-						<th colspan={cartoVersion === 'B' ? 43 : 45} class="px-4 py-3 text-center font-bold text-lg text-black border border-black bg-white">
+						<th colspan={cartoVersion === 'B' ? 47 : 49} class="px-4 py-3 text-center font-bold text-lg text-black border border-black bg-white">
 							CARTOGRAPHIE DES RISQUES DE SECURITÉ DES SYSTÈMES D'INFORMATION
 						</th>
 					</tr>
@@ -3305,7 +3305,7 @@
 						<th colspan="17" class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">
 							Identification des risques inhérents
 						</th>
-						<th colspan="12" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">
+						<th colspan="16" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">
 							Évaluation de la Criticité du Risque Brut
 						</th>
 						<th class="px-2 py-3 text-center font-bold text-white bg-teal-600 border border-black">
@@ -3376,18 +3376,9 @@
 						<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 100px;">
 							Criticité de l'actif - Besoin en SSI
 						</th>
-						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black" style="min-width: 80px;">
-							Impact Financier
-						</th>
-						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black" style="min-width: 80px;">
-							Impact Parties prenantes
-						</th>
-						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black" style="min-width: 80px;">
-							Impact sur la Réputation
-						</th>
-						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black" style="min-width: 80px;">
-							Impacts Réglementaire
-						</th>
+						{#each Array(8) as _, idx}
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black {idx >= impactDefinitionsRows.length ? 'carto-impact-col-hidden' : ''}" style="min-width: 80px;">{impactDefinitionsRows[idx]?.libelle || 'Impact'}</th>
+						{/each}
 						<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 80px;">
 							Gravité des impacts
 						</th>
