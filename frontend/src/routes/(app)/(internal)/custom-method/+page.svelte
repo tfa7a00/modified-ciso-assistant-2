@@ -452,7 +452,6 @@
 	// --- Données pour Registre de classification ---
 	type RegistreRow = {
 		id: string;
-		id_ps: string;
 		processus_metier: string;
 		activite_sous_processus: string;
 		designation_actif: string;
@@ -470,7 +469,6 @@
 	let registreRows: RegistreRow[] = [
 		{
 			id: '',
-			id_ps: '',
 			processus_metier: '',
 			activite_sous_processus: '',
 			designation_actif: '',
@@ -1687,7 +1685,6 @@
 	// Fonctions pour le registre de classification
 	const defaultRegistreRow = (): RegistreRow => ({
 		id: '',
-		id_ps: '',
 		processus_metier: '',
 		activite_sous_processus: '',
 		designation_actif: '',
@@ -2406,9 +2403,6 @@
 							<th rowspan="2" class="px-2 py-2 text-center font-semibold text-black bg-yellow-400 border border-black min-w-[50px]">
 								ID
 							</th>
-							<th rowspan="2" class="px-2 py-2 text-center font-semibold text-black bg-yellow-400 border border-black min-w-[50px]">
-								ID PS
-							</th>
 							<th class="px-2 py-2 text-center font-semibold text-black bg-yellow-400 border border-black min-w-[150px]">
 								1 – Identification du processus métier
 							</th>
@@ -2482,14 +2476,6 @@
 										class="w-full text-center border border-gray-300 rounded px-1 py-0.5 text-xs"
 										type="text"
 										bind:value={registreRows[i].id}
-									/>
-								</td>
-								<!-- ID PS -->
-								<td class="px-2 py-1 text-center border border-black bg-white">
-									<input
-										class="w-full text-center border border-gray-300 rounded px-1 py-0.5 text-xs"
-										type="text"
-										bind:value={registreRows[i].id_ps}
 									/>
 								</td>
 								<!-- Processus métier -->
