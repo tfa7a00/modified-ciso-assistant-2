@@ -3324,8 +3324,8 @@
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">Action PTR</th>
 								{#if cartoVersion === 'A'}
 									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Criticité actif</th>
-									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact</th>
-									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Vraissemblance</th>
+									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Gravité des impacts</th>
+									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Probabilité d'occurrence</th>
 									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">I*P*C</th>
 									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Risque Résiduel</th>
 								{:else}
@@ -3479,8 +3479,8 @@
 						<!-- Risque Résiduel : Version A ou B -->
 						{#if cartoVersion === 'A'}
 							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 120px;">Criticité de l'actif - Besoin en SSI</th>
-							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 85px;">Impact</th>
-							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 95px;">Vraissemblance</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 85px;">Gravité des impacts</th>
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 95px;">Probabilité d'occurrence</th>
 							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 85px;">I*P*C</th>
 							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 120px;">Niveau du risque résiduel</th>
 						{:else}
