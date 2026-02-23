@@ -80,6 +80,15 @@
 		efficacitePTR: string; // niveau 1-5 (référence tableau efficacité)
 	};
 
+	/** Définition des impacts (Évaluation de la Criticité du Risque Brut) – doit être déclaré avant defaultCartoRow/cartoRows */
+	type ImpactDefinition = { libelle: string; definition: string };
+	let impactDefinitionsRows: ImpactDefinition[] = [
+		{ libelle: 'Impact Financier', definition: 'Impact financier direct ou indirect (pertes, coûts de remédiation, amendes, etc.).' },
+		{ libelle: 'Impact Parties prenantes', definition: 'Impact sur les parties prenantes (clients, partenaires, fournisseurs, employés).' },
+		{ libelle: 'Impact sur la Réputation', definition: 'Impact sur l\'image et la réputation de l\'organisation (médiatisation, confiance).' },
+		{ libelle: 'Impact Réglementaire', definition: 'Impact réglementaire (non-conformité, sanctions, contrôles).' }
+	];
+
 	function parseNum(s: string | number | null | undefined): number | null {
 		if (s === '' || s === null || s === undefined) return null;
 		const n = Number(s);
@@ -972,15 +981,6 @@
 		reglementaire: string;
 		bgColor?: string;
 	};
-
-	/** Définition des impacts (Évaluation de la Criticité du Risque Brut) – modifiable, reflétée dans la cartographie */
-	type ImpactDefinition = { libelle: string; definition: string };
-	let impactDefinitionsRows: ImpactDefinition[] = [
-		{ libelle: 'Impact Financier', definition: 'Impact financier direct ou indirect (pertes, coûts de remédiation, amendes, etc.).' },
-		{ libelle: 'Impact Parties prenantes', definition: 'Impact sur les parties prenantes (clients, partenaires, fournisseurs, employés).' },
-		{ libelle: 'Impact sur la Réputation', definition: 'Impact sur l\'image et la réputation de l\'organisation (médiatisation, confiance).' },
-		{ libelle: 'Impact Réglementaire', definition: 'Impact réglementaire (non-conformité, sanctions, contrôles).' }
-	];
 
 	let impactRows: ImpactRow[] = [
 		{
