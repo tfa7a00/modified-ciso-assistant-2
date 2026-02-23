@@ -1839,7 +1839,7 @@
 		return 'Diffusion Restreinte';
 	}
 
-	/** Couleur de fond de l'échelle loi 05.20 : TG → rouge pâle, G → orange saumon, M → jaune, L → vert clair */
+	/** Couleur de fond de l'échelle loi 05.20 : TG → rouge, G → orange, M → jaune, L → vert */
 	function getLoi0520ImpactBg(val: string | undefined): string {
 		const letter = firstLetter0520(val);
 		if (letter === 'T') return '#f87171';
@@ -1847,6 +1847,22 @@
 		if (letter === 'M') return '#FFFF00';
 		if (letter === 'L') return '#A1FB7D';
 		return '';
+	}
+
+	/** Libellé court du niveau (badge) : TG, G, M, L */
+	function getLoi0520LevelLabel(val: string | undefined): string {
+		const letter = firstLetter0520(val);
+		if (letter === 'T') return 'TG';
+		if (letter === 'G') return 'G';
+		if (letter === 'M') return 'M';
+		if (letter === 'L') return 'L';
+		return '';
+	}
+
+	/** Couleur du texte du badge : blanc sur TG/G (foncé), noir sur M/L (clair) */
+	function getLoi0520BadgeTextColor(val: string | undefined): string {
+		const letter = firstLetter0520(val);
+		return letter === 'M' || letter === 'L' ? '#111827' : '#fff';
 	}
 
 	/** Couleur de fond des classes de sensibilité (réf. loi 05.20) : A → rouge, B → orange, C → jaune, D → vert */
@@ -2862,60 +2878,78 @@
 									<span class="text-xs font-semibold">{row.sensibilite || '--'}</span>
 								</td>
 								{#if showRegistreLoi0520}
-								<!-- Section 7 – Impact Disponibilité (loi 05.20) – select + lecture du choix en entier -->
-								<td class="px-2 py-1 border border-black registre-loi0520-cell align-top" style="background-color: {getLoi0520ImpactBg(row.impactDispo0520) || '#ffffff'};">
-									<select
-										class="registre-loi0520-select w-full border border-gray-300 rounded px-2 py-1.5 bg-transparent font-medium"
-										title={row.impactDispo0520 || ''}
-										bind:value={registreRows[i].impactDispo0520}
-										on:change={() => saveCustomMethodState()}
-									>
-										<option value="">--</option>
-										{#each REGISTRE_LOI0520_OPTIONS as opt}
-											<option value={opt}>{opt}</option>
-										{/each}
-									</select>
+								<!-- Section 7 – Impact Disponibilité (loi 05.20) -->
+								<td class="px-2 py-1.5 border border-black registre-loi0520-cell align-top" style="background-color: {getLoi0520ImpactBg(row.impactDispo0520) || '#fafafa'};">
+									<div class="flex items-center gap-2 flex-wrap">
+										{#if row.impactDispo0520}
+											<span class="registre-loi0520-badge shrink-0 px-2 py-0.5 rounded text-xs font-bold shadow-sm" style="background-color: {getLoi0520ImpactBg(row.impactDispo0520)}; color: {getLoi0520BadgeTextColor(row.impactDispo0520)};">{getLoi0520LevelLabel(row.impactDispo0520)}</span>
+										{/if}
+										<select
+											class="registre-loi0520-select flex-1 min-w-0 border border-gray-300 rounded px-2 py-1 bg-white/90 text-sm"
+											title={row.impactDispo0520 || ''}
+											bind:value={registreRows[i].impactDispo0520}
+											on:change={() => saveCustomMethodState()}
+										>
+											<option value="">Choisir…</option>
+											{#each REGISTRE_LOI0520_OPTIONS as opt}
+												<option value={opt}>{opt}</option>
+											{/each}
+										</select>
+									</div>
 									{#if row.impactDispo0520}
-										<div class="registre-loi0520-readout mt-1.5 px-1.5 py-1 rounded bg-white/80 text-gray-800 whitespace-normal leading-snug" title={row.impactDispo0520}>
-											{row.impactDispo0520}
+										<div class="registre-loi0520-readout mt-2 rounded-r border border-gray-200 border-l-4 bg-white/95 py-2 px-2.5 text-gray-800 shadow-sm" style="border-left-color: {getLoi0520ImpactBg(row.impactDispo0520)};">
+											<p class="text-xs font-medium uppercase tracking-wide text-gray-500 mb-0.5">Détail</p>
+											<p class="text-sm leading-snug whitespace-normal m-0">{row.impactDispo0520}</p>
 										</div>
 									{/if}
 								</td>
 								<!-- Section 7 – Impact Intégrité (loi 05.20) -->
-								<td class="px-2 py-1 border border-black registre-loi0520-cell align-top" style="background-color: {getLoi0520ImpactBg(row.impactIntegrite0520) || '#ffffff'};">
-									<select
-										class="registre-loi0520-select w-full border border-gray-300 rounded px-2 py-1.5 bg-transparent font-medium"
-										title={row.impactIntegrite0520 || ''}
-										bind:value={registreRows[i].impactIntegrite0520}
-										on:change={() => saveCustomMethodState()}
-									>
-										<option value="">--</option>
-										{#each REGISTRE_LOI0520_OPTIONS as opt}
-											<option value={opt}>{opt}</option>
-										{/each}
-									</select>
+								<td class="px-2 py-1.5 border border-black registre-loi0520-cell align-top" style="background-color: {getLoi0520ImpactBg(row.impactIntegrite0520) || '#fafafa'};">
+									<div class="flex items-center gap-2 flex-wrap">
+										{#if row.impactIntegrite0520}
+											<span class="registre-loi0520-badge shrink-0 px-2 py-0.5 rounded text-xs font-bold shadow-sm" style="background-color: {getLoi0520ImpactBg(row.impactIntegrite0520)}; color: {getLoi0520BadgeTextColor(row.impactIntegrite0520)};">{getLoi0520LevelLabel(row.impactIntegrite0520)}</span>
+										{/if}
+										<select
+											class="registre-loi0520-select flex-1 min-w-0 border border-gray-300 rounded px-2 py-1 bg-white/90 text-sm"
+											title={row.impactIntegrite0520 || ''}
+											bind:value={registreRows[i].impactIntegrite0520}
+											on:change={() => saveCustomMethodState()}
+										>
+											<option value="">Choisir…</option>
+											{#each REGISTRE_LOI0520_OPTIONS as opt}
+												<option value={opt}>{opt}</option>
+											{/each}
+										</select>
+									</div>
 									{#if row.impactIntegrite0520}
-										<div class="registre-loi0520-readout mt-1.5 px-1.5 py-1 rounded bg-white/80 text-gray-800 whitespace-normal leading-snug" title={row.impactIntegrite0520}>
-											{row.impactIntegrite0520}
+										<div class="registre-loi0520-readout mt-2 rounded-r border border-gray-200 border-l-4 bg-white/95 py-2 px-2.5 text-gray-800 shadow-sm" style="border-left-color: {getLoi0520ImpactBg(row.impactIntegrite0520)};">
+											<p class="text-xs font-medium uppercase tracking-wide text-gray-500 mb-0.5">Détail</p>
+											<p class="text-sm leading-snug whitespace-normal m-0">{row.impactIntegrite0520}</p>
 										</div>
 									{/if}
 								</td>
 								<!-- Section 7 – Impact Confidentialité (loi 05.20) -->
-								<td class="px-2 py-1 border border-black registre-loi0520-cell align-top" style="background-color: {getLoi0520ImpactBg(row.impactConfid0520) || '#ffffff'};">
-									<select
-										class="registre-loi0520-select w-full border border-gray-300 rounded px-2 py-1.5 bg-transparent font-medium"
-										title={row.impactConfid0520 || ''}
-										bind:value={registreRows[i].impactConfid0520}
-										on:change={() => saveCustomMethodState()}
-									>
-										<option value="">--</option>
-										{#each REGISTRE_LOI0520_OPTIONS as opt}
-											<option value={opt}>{opt}</option>
-										{/each}
-									</select>
+								<td class="px-2 py-1.5 border border-black registre-loi0520-cell align-top" style="background-color: {getLoi0520ImpactBg(row.impactConfid0520) || '#fafafa'};">
+									<div class="flex items-center gap-2 flex-wrap">
+										{#if row.impactConfid0520}
+											<span class="registre-loi0520-badge shrink-0 px-2 py-0.5 rounded text-xs font-bold shadow-sm" style="background-color: {getLoi0520ImpactBg(row.impactConfid0520)}; color: {getLoi0520BadgeTextColor(row.impactConfid0520)};">{getLoi0520LevelLabel(row.impactConfid0520)}</span>
+										{/if}
+										<select
+											class="registre-loi0520-select flex-1 min-w-0 border border-gray-300 rounded px-2 py-1 bg-white/90 text-sm"
+											title={row.impactConfid0520 || ''}
+											bind:value={registreRows[i].impactConfid0520}
+											on:change={() => saveCustomMethodState()}
+										>
+											<option value="">Choisir…</option>
+											{#each REGISTRE_LOI0520_OPTIONS as opt}
+												<option value={opt}>{opt}</option>
+											{/each}
+										</select>
+									</div>
 									{#if row.impactConfid0520}
-										<div class="registre-loi0520-readout mt-1.5 px-1.5 py-1 rounded bg-white/80 text-gray-800 whitespace-normal leading-snug" title={row.impactConfid0520}>
-											{row.impactConfid0520}
+										<div class="registre-loi0520-readout mt-2 rounded-r border border-gray-200 border-l-4 bg-white/95 py-2 px-2.5 text-gray-800 shadow-sm" style="border-left-color: {getLoi0520ImpactBg(row.impactConfid0520)};">
+											<p class="text-xs font-medium uppercase tracking-wide text-gray-500 mb-0.5">Détail</p>
+											<p class="text-sm leading-snug whitespace-normal m-0">{row.impactConfid0520}</p>
 										</div>
 									{/if}
 								</td>
