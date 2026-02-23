@@ -499,26 +499,6 @@
 	/** Afficher la section 7 (Classification selon la loi n° 05.20) dans le registre */
 	let showRegistreLoi0520 = false;
 
-	/** Menu personnalisé Section 7 ouvert : afficher les options en entier dans un panneau */
-	type Loi0520Field = 'impactDispo0520' | 'impactIntegrite0520' | 'impactConfid0520';
-	let openLoi0520Dropdown: { rowIndex: number; field: Loi0520Field; top: number; left: number } | null = null;
-
-	function openLoi0520(e: MouseEvent, rowIndex: number, field: Loi0520Field) {
-		const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-		openLoi0520Dropdown = { rowIndex, field, top: rect.bottom, left: rect.left };
-	}
-	function chooseLoi0520(opt: string) {
-		if (!openLoi0520Dropdown) return;
-		const { rowIndex, field } = openLoi0520Dropdown;
-		const r = registreRows[rowIndex];
-		if (r) {
-			if (field === 'impactDispo0520') r.impactDispo0520 = opt;
-			else if (field === 'impactIntegrite0520') r.impactIntegrite0520 = opt;
-			else r.impactConfid0520 = opt;
-		}
-		openLoi0520Dropdown = null;
-		saveCustomMethodState();
-	}
 
 	/** Échelle d'impact du référentiel fixé par la loi n° 05.20 et son décret d'application (Section 7 – options pour Impact D/I/C) */
 	const REGISTRE_LOI0520_OPTIONS: string[] = [
@@ -2088,8 +2068,8 @@
         vertical-align: middle;
     }
 
-    /* Section 7 – cellules Impact D/I/C : bouton trigger même hauteur que la cellule */
-    .registre-classification-table tbody tr .registre-loi0520-cell .registre-loi0520-trigger {
+    /* Section 7 – cellules Impact D/I/C : select même hauteur que la cellule */
+    .registre-classification-table tbody tr .registre-loi0520-cell .registre-loi0520-select {
         min-height: 96px;
     }
 
@@ -2875,35 +2855,44 @@
 									<span class="text-xs font-semibold">{row.sensibilite || '--'}</span>
 								</td>
 								{#if showRegistreLoi0520}
-								<!-- Section 7 – Impact Disponibilité (loi 05.20) – menu personnalisé pour options lisibles -->
+								<!-- Section 7 – Impact Disponibilité (loi 05.20) – couleur selon échelle TG/G/M/L -->
 								<td class="px-2 py-1 border border-black registre-loi0520-cell" style="background-color: {getLoi0520ImpactBg(row.impactDispo0520) || '#ffffff'};">
-									<button
-										type="button"
-										class="registre-loi0520-trigger w-full text-left border border-gray-300 rounded px-2 py-1.5 text-sm min-h-[2rem] bg-transparent"
-										on:click={(e) => openLoi0520(e, i, 'impactDispo0520')}
+									<select
+										class="registre-loi0520-select w-full border border-gray-300 rounded px-2 py-1 bg-transparent text-sm"
+										bind:value={registreRows[i].impactDispo0520}
+										on:change={() => saveCustomMethodState()}
 									>
-										<span class="line-clamp-2">{row.impactDispo0520 || '--'}</span>
-									</button>
+										<option value="">--</option>
+										{#each REGISTRE_LOI0520_OPTIONS as opt}
+											<option value={opt}>{opt}</option>
+										{/each}
+									</select>
 								</td>
 								<!-- Section 7 – Impact Intégrité (loi 05.20) -->
 								<td class="px-2 py-1 border border-black registre-loi0520-cell" style="background-color: {getLoi0520ImpactBg(row.impactIntegrite0520) || '#ffffff'};">
-									<button
-										type="button"
-										class="registre-loi0520-trigger w-full text-left border border-gray-300 rounded px-2 py-1.5 text-sm min-h-[2rem] bg-transparent"
-										on:click={(e) => openLoi0520(e, i, 'impactIntegrite0520')}
+									<select
+										class="registre-loi0520-select w-full border border-gray-300 rounded px-2 py-1 bg-transparent text-sm"
+										bind:value={registreRows[i].impactIntegrite0520}
+										on:change={() => saveCustomMethodState()}
 									>
-										<span class="line-clamp-2">{row.impactIntegrite0520 || '--'}</span>
-									</button>
+										<option value="">--</option>
+										{#each REGISTRE_LOI0520_OPTIONS as opt}
+											<option value={opt}>{opt}</option>
+										{/each}
+									</select>
 								</td>
 								<!-- Section 7 – Impact Confidentialité (loi 05.20) -->
 								<td class="px-2 py-1 border border-black registre-loi0520-cell" style="background-color: {getLoi0520ImpactBg(row.impactConfid0520) || '#ffffff'};">
-									<button
-										type="button"
-										class="registre-loi0520-trigger w-full text-left border border-gray-300 rounded px-2 py-1.5 text-sm min-h-[2rem] bg-transparent"
-										on:click={(e) => openLoi0520(e, i, 'impactConfid0520')}
+									<select
+										class="registre-loi0520-select w-full border border-gray-300 rounded px-2 py-1 bg-transparent text-sm"
+										bind:value={registreRows[i].impactConfid0520}
+										on:change={() => saveCustomMethodState()}
 									>
-										<span class="line-clamp-2">{row.impactConfid0520 || '--'}</span>
-									</button>
+										<option value="">--</option>
+										{#each REGISTRE_LOI0520_OPTIONS as opt}
+											<option value={opt}>{opt}</option>
+										{/each}
+									</select>
 								</td>
 								<!-- Section 7 – Sensibilité (Classe A/B/C/D, calculée) – rouge / orange / jaune / vert -->
 								<td class="px-2 py-1 text-center border border-black font-semibold text-xs" style="background-color: {getSensibiliteClasse0520Bg(getSensibiliteClasse0520(row)) || '#f5f5f5'};">
@@ -2939,44 +2928,6 @@
 				</table>
 			</div>
 
-			<!-- Panneau flottant Section 7 : options lisibles en entier (TG/G/M/L) -->
-			{#if openLoi0520Dropdown}
-				<!-- Fond pour fermer au clic extérieur -->
-				<div
-					class="fixed inset-0 z-40"
-					role="button"
-					tabindex="-1"
-					on:click={() => (openLoi0520Dropdown = null)}
-					on:keydown={(e) => e.key === 'Escape' && (openLoi0520Dropdown = null)}
-				></div>
-				<div
-					class="registre-loi0520-panel fixed z-50 rounded-lg border-2 border-amber-500 bg-white shadow-xl overflow-hidden flex flex-col"
-					style="top: {openLoi0520Dropdown.top}px; left: {openLoi0520Dropdown.left}px; width: 520px; max-height: 85vh;"
-					role="listbox"
-				>
-					<div class="px-3 py-2 bg-amber-100 border-b border-amber-300 text-sm font-semibold text-gray-800">
-						Choisir une option (échelle loi 05.20)
-					</div>
-					<div class="overflow-y-auto p-2">
-						<button
-							type="button"
-							class="registre-loi0520-option block w-full text-left px-3 py-2.5 rounded text-sm border border-transparent hover:border-amber-400 hover:bg-amber-50 mb-1"
-							on:click={() => chooseLoi0520('')}
-						>
-							--
-						</button>
-						{#each REGISTRE_LOI0520_OPTIONS as opt}
-							<button
-								type="button"
-								class="registre-loi0520-option block w-full text-left px-3 py-2.5 rounded text-sm border border-transparent hover:border-amber-400 hover:bg-amber-50 mb-1 whitespace-normal leading-snug"
-								on:click={() => chooseLoi0520(opt)}
-							>
-								{opt}
-							</button>
-						{/each}
-					</div>
-				</div>
-			{/if}
 
 			
 		</section>
