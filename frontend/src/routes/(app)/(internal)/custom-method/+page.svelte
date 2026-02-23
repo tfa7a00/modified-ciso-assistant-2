@@ -2059,6 +2059,14 @@
 </script>
 
 <style>
+    /* Registre de classification : cellules plus hautes */
+    .registre-classification-table tbody td {
+        min-height: 52px;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        vertical-align: middle;
+    }
+
     /* Hide/show table cells (only tbody td/data cells, NOT headers).
        Keep all <thead> cells visible so headers display correctly for each view.
        Columns 4-5 (Description, Code Risque) always stay visible in ALL views.
@@ -2644,7 +2652,7 @@
 
 			<!-- Tableau principal du registre -->
 			<div class="overflow-x-auto rounded-lg border border-black bg-white shadow-sm">
-				<table class="min-w-full text-xs border-collapse border border-black">
+				<table class="registre-classification-table min-w-full text-xs border-collapse border border-black">
 					<thead>
 						<!-- Ligne des titres principaux (1 à 6) -->
 						<tr>
