@@ -2896,12 +2896,6 @@
 											{/each}
 										</select>
 									</div>
-									{#if row.impactDispo0520}
-										<div class="registre-loi0520-readout mt-2 rounded-r border border-gray-200 border-l-4 bg-white/95 py-2 px-2.5 text-gray-800 shadow-sm" style="border-left-color: {getLoi0520ImpactBg(row.impactDispo0520)};">
-											<p class="text-xs font-medium uppercase tracking-wide text-gray-500 mb-0.5">Détail</p>
-											<p class="text-sm leading-snug whitespace-normal m-0">{row.impactDispo0520}</p>
-										</div>
-									{/if}
 								</td>
 								<!-- Section 7 – Impact Intégrité (loi 05.20) -->
 								<td class="px-2 py-1.5 border border-black registre-loi0520-cell align-top" style="background-color: {getLoi0520ImpactBg(row.impactIntegrite0520) || '#fafafa'};">
@@ -2921,12 +2915,6 @@
 											{/each}
 										</select>
 									</div>
-									{#if row.impactIntegrite0520}
-										<div class="registre-loi0520-readout mt-2 rounded-r border border-gray-200 border-l-4 bg-white/95 py-2 px-2.5 text-gray-800 shadow-sm" style="border-left-color: {getLoi0520ImpactBg(row.impactIntegrite0520)};">
-											<p class="text-xs font-medium uppercase tracking-wide text-gray-500 mb-0.5">Détail</p>
-											<p class="text-sm leading-snug whitespace-normal m-0">{row.impactIntegrite0520}</p>
-										</div>
-									{/if}
 								</td>
 								<!-- Section 7 – Impact Confidentialité (loi 05.20) -->
 								<td class="px-2 py-1.5 border border-black registre-loi0520-cell align-top" style="background-color: {getLoi0520ImpactBg(row.impactConfid0520) || '#fafafa'};">
@@ -2946,12 +2934,6 @@
 											{/each}
 										</select>
 									</div>
-									{#if row.impactConfid0520}
-										<div class="registre-loi0520-readout mt-2 rounded-r border border-gray-200 border-l-4 bg-white/95 py-2 px-2.5 text-gray-800 shadow-sm" style="border-left-color: {getLoi0520ImpactBg(row.impactConfid0520)};">
-											<p class="text-xs font-medium uppercase tracking-wide text-gray-500 mb-0.5">Détail</p>
-											<p class="text-sm leading-snug whitespace-normal m-0">{row.impactConfid0520}</p>
-										</div>
-									{/if}
 								</td>
 								<!-- Section 7 – Sensibilité (Classe A/B/C/D, calculée) – rouge / orange / jaune / vert -->
 								<td class="px-2 py-1 text-center border border-black font-semibold text-xs" style="background-color: {getSensibiliteClasse0520Bg(getSensibiliteClasse0520(row)) || '#f5f5f5'};">
