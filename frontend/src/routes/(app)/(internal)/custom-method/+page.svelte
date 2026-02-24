@@ -2103,15 +2103,15 @@
        Views: identification (1-20 + 46), brut (21-32 + 46), net (33-38 + 46), ptr (39-45 + 46).
     */
 
-    /* Identification view: hide data columns 21-45, keep 1-20 and 46 (Actions) */
-    .view-identification tbody tr td:nth-child(n+21):nth-child(-n+50) {
+    /* Identification view: hide data columns 21-45, keep 1-20 and 46 (Actions). Keep part header row visible. */
+    .view-identification tbody tr:not(.carto-part-header) td:nth-child(n+21):nth-child(-n+50) {
         display: none;
     }
 
-    /* Risque Brut view: show cols 4-5 + 21-36 (3 DIC + 1 crit + 8 impacts + 4) + 51 Actions; hide 1-3, 6-20, 37-50 */
-    .view-brut tbody tr td:nth-child(n+1):nth-child(-n+3),
-    .view-brut tbody tr td:nth-child(n+6):nth-child(-n+20),
-    .view-brut tbody tr td:nth-child(n+37):nth-child(-n+50) {
+    /* Risque Brut view: show cols 4-5 + 21-36 (3 DIC + 1 crit + 8 impacts + 4) + 51 Actions; hide 1-3, 6-20, 37-50. Keep part header row visible. */
+    .view-brut tbody tr:not(.carto-part-header) td:nth-child(n+1):nth-child(-n+3),
+    .view-brut tbody tr:not(.carto-part-header) td:nth-child(n+6):nth-child(-n+20),
+    .view-brut tbody tr:not(.carto-part-header) td:nth-child(n+37):nth-child(-n+50) {
         display: none;
     }
     /* Colonnes d'impact en trop (au-delà de impactDefinitionsRows.length) : masquées */
@@ -2119,26 +2119,26 @@
         display: none !important;
     }
 
-    /* Degré + Risque Net view: show cols 4-5 + 37-42 + 51 (Actions), hide 1-3, 6-36, 43-50 */
-    .view-net tbody tr td:nth-child(n+1):nth-child(-n+3),
-    .view-net tbody tr td:nth-child(n+6):nth-child(-n+36),
-    .view-net tbody tr td:nth-child(n+43):nth-child(-n+50) {
+    /* Degré + Risque Net view: show cols 4-5 + 37-42 + 51 (Actions), hide 1-3, 6-36, 43-50. Keep part header row visible. */
+    .view-net tbody tr:not(.carto-part-header) td:nth-child(n+1):nth-child(-n+3),
+    .view-net tbody tr:not(.carto-part-header) td:nth-child(n+6):nth-child(-n+36),
+    .view-net tbody tr:not(.carto-part-header) td:nth-child(n+43):nth-child(-n+50) {
         display: none;
     }
     /* Version B (avec efficacité) : en vue Degré & Risque net, ne pas afficher la colonne Action PTR (col 38) */
-    .view-net.net-version-b tbody tr td:nth-child(38) {
+    .view-net.net-version-b tbody tr:not(.carto-part-header) td:nth-child(38) {
         display: none;
     }
 
-    /* PTR + Résiduel view: brut section now 16 cols (21-36), net 6 (37-42), ptr 7 (43-49), actions 50. Show 4-5 + 43-49 + 51. */
-    .view-ptr tbody tr td:nth-child(n+1):nth-child(-n+3),
-    .view-ptr tbody tr td:nth-child(n+6):nth-child(-n+42) {
+    /* PTR + Résiduel view: brut section now 16 cols (21-36), net 6 (37-42), ptr 7 (43-49), actions 50. Show 4-5 + 43-49 + 51. Keep part header row visible. */
+    .view-ptr tbody tr:not(.carto-part-header) td:nth-child(n+1):nth-child(-n+3),
+    .view-ptr tbody tr:not(.carto-part-header) td:nth-child(n+6):nth-child(-n+42) {
         display: none;
     }
-    .view-ptr.ptr-version-b tbody tr td:nth-child(n+6):nth-child(-n+42) {
+    .view-ptr.ptr-version-b tbody tr:not(.carto-part-header) td:nth-child(n+6):nth-child(-n+42) {
         display: table-cell;
     }
-    .view-ptr.ptr-version-b tbody tr td:nth-child(n+6):nth-child(-n+41) {
+    .view-ptr.ptr-version-b tbody tr:not(.carto-part-header) td:nth-child(n+6):nth-child(-n+41) {
         display: none;
     }
 
@@ -3873,7 +3873,7 @@
 						{@const part = getPartFromCodeRisque(row.codeRisque) || (i > 0 ? getPartFromCodeRisque(cartoRows[i - 1].codeRisque) : 1) || 1}
 						{@const prevPart = i > 0 ? (getPartFromCodeRisque(cartoRows[i - 1].codeRisque) || 1) : 0}
 						{#if part !== prevPart}
-							<tr class="bg-teal-700">
+							<tr class="bg-teal-700 carto-part-header">
 								<td colspan={(cartoVersion === 'B' ? 47 : 49) + (editModeCarto ? 1 : 0)} class="px-3 py-3 font-bold text-white border border-black">{CARTO_PART_TITLES[part] || 'Autres'}</td>
 							</tr>
 						{/if}
