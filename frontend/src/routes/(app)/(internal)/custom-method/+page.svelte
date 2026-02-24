@@ -1820,14 +1820,25 @@
 	}
 
 	/** Recalcule et met à jour impactD, impactI, impactC pour une ligne de cartographie à partir du registre. */
-	function recalcImpactDICForCartoRow(index: number) {
+	function recalcImpactDICForCartoRow(index: number, options?: { skipSave?: boolean }) {
 		const row = cartoRows[index];
 		if (!row) return;
 		const { d, i, c } = computeImpactDICFromRegistre(row);
 		cartoRows[index].impactD = d > 0 ? d : '';
 		cartoRows[index].impactI = i > 0 ? i : '';
 		cartoRows[index].impactC = c > 0 ? c : '';
-		saveCustomMethodState();
+		if (!options?.skipSave) saveCustomMethodState();
+	}
+
+	/** Recalcule D/I/C pour toutes les lignes de cartographie qui ont la catégorie d’actif donnée dans leurs cases cochées (après modification d’un besoin dans le registre). N’appelle pas save. */
+	function recalcCartoImpactDICForRegistreCategory(categorieActif: string) {
+		const cat = (categorieActif || '').trim();
+		if (!cat) return;
+		cartoRows.forEach((row, idx) => {
+			if (getCategoriesFromCartoRow(row).indexOf(cat) >= 0) {
+				recalcImpactDICForCartoRow(idx, { skipSave: true });
+			}
+		});
 	}
 
 	// Fonctions pour le registre de classification
@@ -2921,7 +2932,7 @@
 									<select
 										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent"
 										bind:value={registreRows[i].disponibilite}
-										on:change={() => calculerSensibilite(i)}
+										on:change={() => { calculerSensibilite(i); recalcCartoImpactDICForRegistreCategory(registreRows[i].categorie_actif); saveCustomMethodState(); }}
 									>
 										<option value="">--</option>
 										{#each dicNiveauxRows as niv}
@@ -2934,7 +2945,7 @@
 									<select
 										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent"
 										bind:value={registreRows[i].integrite}
-										on:change={() => calculerSensibilite(i)}
+										on:change={() => { calculerSensibilite(i); recalcCartoImpactDICForRegistreCategory(registreRows[i].categorie_actif); saveCustomMethodState(); }}
 									>
 										<option value="">--</option>
 										{#each dicNiveauxRows as niv}
@@ -2947,7 +2958,7 @@
 									<select
 										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent"
 										bind:value={registreRows[i].confidentialite}
-										on:change={() => calculerSensibilite(i)}
+										on:change={() => { calculerSensibilite(i); recalcCartoImpactDICForRegistreCategory(registreRows[i].categorie_actif); saveCustomMethodState(); }}
 									>
 										<option value="">--</option>
 										{#each dicNiveauxRows as niv}
