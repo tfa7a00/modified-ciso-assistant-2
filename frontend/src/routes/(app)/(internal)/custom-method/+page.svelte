@@ -1021,7 +1021,20 @@
 		// Ligne 3 : En-têtes détaillés (une colonne par champ)
 		const rowCartoHeader = wsCarto.addRow(cartoHeaders);
 		applyHeaderRow(wsCarto, rowCartoHeader, 'FF0284C7');
-		cartoRows.forEach((row) => {
+		// Répartition par sections (1 à 8) : insérer une ligne de titre de section avant chaque changement de partie
+		let prevPartExport = 0;
+		cartoRows.forEach((row, i) => {
+			const part = getPartFromCodeRisque(row.codeRisque) || (i > 0 ? getPartFromCodeRisque(cartoRows[i - 1].codeRisque) : 1) || 1;
+			if (part !== prevPartExport) {
+				const partTitle = CARTO_PART_TITLES[part] || 'Autres';
+				const rowPart = wsCarto.addRow([partTitle]);
+				rowPart.getCell(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
+				rowPart.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF0D9488' } };
+				rowPart.getCell(1).border = EXCEL_BORDER_THIN;
+				rowPart.getCell(1).alignment = { vertical: 'middle', wrapText: true };
+				if (numCartoCols > 1) wsCarto.mergeCells(rowPart.number, 1, rowPart.number, numCartoCols);
+				prevPartExport = part;
+			}
 			const impacts = getRowImpacts(row);
 			const rowData = [
 				row.entite ?? '', row.domaineProcessus ?? '', row.activites ?? '', row.codeRisque ?? '',
