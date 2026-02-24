@@ -2092,19 +2092,19 @@
         vertical-align: middle;
     }
 
-    /* Section 7 – colonnes Impact Disponibilité / Intégrité / Confidentialité : largeur modérée */
+    /* Section 7 – colonnes Impact Disponibilité / Intégrité / Confidentialité */
     .registre-classification-table th.registre-impact-dic-th {
-        min-width: 75px;
-        max-width: 85px;
-        width: 82px;
+        min-width: 90px;
+        max-width: 100px;
+        width: 95px;
         white-space: normal;
         overflow-wrap: break-word;
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         line-height: 1.25;
     }
     .registre-classification-table td.registre-loi0520-cell {
-        max-width: 85px;
-        width: 82px;
+        max-width: 100px;
+        width: 95px;
     }
     /* Section 7 – cellules Impact D/I/C : select + meilleure visibilité du choix */
     .registre-classification-table tbody tr .registre-loi0520-cell .registre-loi0520-select {
