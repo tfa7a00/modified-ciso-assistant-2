@@ -2094,17 +2094,17 @@
 
     /* Section 7 – colonnes Impact Disponibilité / Intégrité / Confidentialité */
     .registre-classification-table th.registre-impact-dic-th {
-        min-width: 90px;
-        max-width: 100px;
-        width: 95px;
+        min-width: 110px;
+        max-width: 130px;
+        width: 120px;
         white-space: normal;
         overflow-wrap: break-word;
-        font-size: 0.8rem;
+        font-size: 0.875rem;
         line-height: 1.25;
     }
     .registre-classification-table td.registre-loi0520-cell {
-        max-width: 100px;
-        width: 95px;
+        max-width: 130px;
+        width: 120px;
     }
     /* Section 7 – cellules Impact D/I/C : select + meilleure visibilité du choix */
     .registre-classification-table tbody tr .registre-loi0520-cell .registre-loi0520-select {
