@@ -2092,6 +2092,20 @@
         vertical-align: middle;
     }
 
+    /* Section 7 – colonnes Impact Disponibilité / Intégrité / Confidentialité : largeur réduite */
+    .registre-classification-table th.registre-impact-dic-th {
+        min-width: 58px;
+        max-width: 72px;
+        width: 70px;
+        white-space: normal;
+        overflow-wrap: break-word;
+        font-size: 0.7rem;
+        line-height: 1.2;
+    }
+    .registre-classification-table td.registre-loi0520-cell {
+        max-width: 72px;
+        width: 70px;
+    }
     /* Section 7 – cellules Impact D/I/C : select + meilleure visibilité du choix */
     .registre-classification-table tbody tr .registre-loi0520-cell .registre-loi0520-select {
         min-height: 2.25rem;
@@ -2764,9 +2778,9 @@
 								Sensibilité de l'actif
 							</th>
 							{#if showRegistreLoi0520}
-							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[90px]">Impact Disponibilité</th>
-							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[90px]">Impact Intégrité</th>
-							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[90px]">Impact Confidentialité</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black registre-impact-dic-th">Impact Disponibilité</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black registre-impact-dic-th">Impact Intégrité</th>
+							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black registre-impact-dic-th">Impact Confidentialité</th>
 							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[90px]">Sensibilité (réf. loi 05.20)</th>
 							<th class="px-2 py-2 text-center font-semibold text-black bg-amber-200 border border-black min-w-[100px]">Confidentialité (décret 05-20)</th>
 							{/if}
