@@ -14,7 +14,7 @@
 		return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 	}
 
-	/** Mapping Tailwind bg-* / bg-[#xxx] vers ARGB Excel (FF + RRGGBB) */
+	/** Mapping Tailwind bg-* / bg-[#xxx] vers ARGB Excel (FF + RRGGBB) — mêmes couleurs qu'à l'écran */
 	const TAILWIND_TO_ARGB: Record<string, string> = {
 		'bg-green-400': 'FF4ADE80',
 		'bg-green-500': 'FF22C55E',
@@ -22,6 +22,7 @@
 		'bg-green-100': 'FFDCFCE7',
 		'bg-yellow-300': 'FFFDE047',
 		'bg-yellow-400': 'FFFACC15',
+		'bg-yellow-500': 'FFEAB308',
 		'bg-orange-400': 'FFFB923C',
 		'bg-orange-500': 'FFF97316',
 		'bg-orange-100': 'FFFFEDD5',
@@ -29,11 +30,18 @@
 		'bg-red-600': 'FFDC2626',
 		'bg-rose-900': 'FF881337',
 		'bg-blue-600': 'FF2563EB',
+		'bg-blue-400': 'FF60A5FA',
+		'bg-sky-200': 'FFBAE6FD',
 		'bg-sky-100': 'FFE0F2FE',
 		'bg-sky-600': 'FF0284C7',
 		'bg-gray-100': 'FFF3F4F6',
 		'bg-gray-500': 'FF6B7280',
+		'bg-gray-600': 'FF4B5563',
+		'bg-slate-900': 'FF0F172A',
 		'bg-amber-100': 'FFFEF3C7',
+		'bg-amber-200': 'FFFDE68A',
+		'bg-amber-500': 'FFF59E0B',
+		'bg-amber-50': 'FFFFFBEB',
 		'bg-white': 'FFFFFFFF',
 		'bg-[#FFC000]': 'FFFFC000',
 		'bg-[#ffc000]': 'FFFFC000',
@@ -49,26 +57,47 @@
 		return TAILWIND_TO_ARGB[key] ?? (key.startsWith('bg-[#') ? 'FF' + key.replace(/^bg-\[#|\]$/g, '') : null);
 	}
 
-	const EXCEL_HEADER_FILL = { type: 'pattern' as const, pattern: 'solid' as const, fgColor: { argb: 'FF0284C7' } };
-	const EXCEL_HEADER_FONT = { bold: true, color: { argb: 'FFFFFFFF' } };
+	/** Couleur hex (#RRGGBB ou RRGGBB) vers ARGB Excel */
+	function hexToExcelArgb(hex: string | undefined): string | null {
+		if (!hex) return null;
+		const h = hex.replace(/^#/, '');
+		if (/^[0-9A-Fa-f]{6}$/.test(h)) return 'FF' + h.toUpperCase();
+		return null;
+	}
+
 	const EXCEL_BORDER_THIN = { top: { style: 'thin' as const }, left: { style: 'thin' as const }, bottom: { style: 'thin' as const }, right: { style: 'thin' as const } };
 
-	function applyCellStyle(cell: ExcelJS.Cell, opts: { fill?: string; bold?: boolean; border?: boolean }) {
+	function applyCellStyle(cell: ExcelJS.Cell, opts: { fill?: string; bold?: boolean; border?: boolean; fontColor?: string }) {
 		if (opts.fill) {
 			cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: opts.fill } };
 		}
 		if (opts.bold) {
-			cell.font = { ...cell.font, bold: true };
+			cell.font = { ...(cell.font as object), bold: true } as ExcelJS.Font;
+		}
+		if (opts.fontColor) {
+			cell.font = { ...(cell.font as object), color: { argb: opts.fontColor }, bold: opts.bold ?? cell.font?.bold } as ExcelJS.Font;
 		}
 		if (opts.border) {
 			cell.border = EXCEL_BORDER_THIN;
 		}
+		cell.alignment = { vertical: 'middle', wrapText: true };
 	}
 
-	function applyHeaderRow(worksheet: ExcelJS.Worksheet, row: ExcelJS.Row) {
+	/** En-tête de tableau : fond + texte blanc gras + bordures. fillArgb optionnel (défaut bleu sky-600). */
+	function applyHeaderRow(worksheet: ExcelJS.Worksheet, row: ExcelJS.Row, fillArgb: string = 'FF0284C7') {
 		row.eachCell((cell) => {
-			cell.fill = EXCEL_HEADER_FILL;
-			cell.font = EXCEL_HEADER_FONT;
+			cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: fillArgb } };
+			cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+			cell.border = EXCEL_BORDER_THIN;
+			cell.alignment = { vertical: 'middle', wrapText: true };
+		});
+	}
+
+	/** Ligne titre (ex: RÉDACTION DU DOCUMENT) : fond slate-900, texte blanc. */
+	function applyTitleRow(row: ExcelJS.Row) {
+		row.eachCell((cell) => {
+			cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF0F172A' } };
+			cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
 			cell.border = EXCEL_BORDER_THIN;
 			cell.alignment = { vertical: 'middle', wrapText: true };
 		});
@@ -696,87 +725,129 @@
 		_prevSection = activeSection;
 	}
 
-	/** Export de tout le contenu de la page en fichier Excel (plusieurs feuilles, avec couleurs et bordures) */
+	/** Export de tout le contenu de la page en fichier Excel — même présentation et mêmes couleurs qu'à l'écran */
 	async function exportToExcel() {
 		const wb = new ExcelJS.Workbook();
 		wb.creator = 'CISO Assistant - La méthode NearSecure';
 
-		// --- Feuille 1 : Contrôle du document ---
+		// --- Feuille 1 : Contrôle du document (structure identique à la page) ---
 		const wsControle = wb.addWorksheet('Controle du document', { views: [{ showGridLines: true }] });
 		wsControle.addRow(['Contrôle du document']).font = { bold: true, size: 14 };
 		wsControle.addRow([]);
-		wsControle.addRow(['Rédaction']).font = { bold: true };
+		wsControle.addRow(['1. Rédaction du document']).font = { bold: true };
+		const rowRedacTitle = wsControle.addRow(['RÉDACTION DU DOCUMENT']);
+		applyTitleRow(rowRedacTitle);
 		const rowRedacHeader = wsControle.addRow(['Rôle', 'Nom', 'Fonction', 'Date']);
-		applyHeaderRow(wsControle, rowRedacHeader);
+		applyHeaderRow(wsControle, rowRedacHeader, 'FF4B5563'); // bg-gray-600 comme à l'écran
 		redactionRows.forEach((r) => {
 			const row = wsControle.addRow([r.role, r.nom, r.fonction, r.date]);
 			applyDataRowBorder(wsControle, row);
+			// Première colonne (rôle) : fond gris, texte blanc comme à l'écran
+			const firstCell = row.getCell(1);
+			applyCellStyle(firstCell, { fill: 'FF4B5563', border: true, fontColor: 'FFFFFFFF', bold: true });
 		});
 		wsControle.addRow([]);
-		wsControle.addRow(['Diffusion']).font = { bold: true };
+		wsControle.addRow(['2. Diffusion du document']).font = { bold: true };
+		const rowDiffTitle = wsControle.addRow(['DIFFUSION DU DOCUMENT']);
+		applyTitleRow(rowDiffTitle);
 		const rowDiffHeader = wsControle.addRow(['Nom', 'Entité / Fonction', 'Date']);
-		applyHeaderRow(wsControle, rowDiffHeader);
+		applyHeaderRow(wsControle, rowDiffHeader, 'FF4B5563');
 		diffusionRows.forEach((r) => {
 			const row = wsControle.addRow([r.nom, r.entite_fonction, r.date]);
 			applyDataRowBorder(wsControle, row);
 		});
 		wsControle.addRow([]);
-		wsControle.addRow(['Versions']).font = { bold: true };
+		wsControle.addRow(['3. Contrôle des versions du document']).font = { bold: true };
+		const rowVersTitle = wsControle.addRow(['CONTRÔLE DES VERSIONS DU DOCUMENT']);
+		applyTitleRow(rowVersTitle);
 		const rowVersHeader = wsControle.addRow(['Version', 'Date', 'Modification']);
-		applyHeaderRow(wsControle, rowVersHeader);
+		applyHeaderRow(wsControle, rowVersHeader, 'FF4B5563');
 		versionRows.forEach((r) => {
 			const row = wsControle.addRow([r.version, r.date, r.modification]);
 			applyDataRowBorder(wsControle, row);
 		});
 
-		// --- Feuille 2 : Registre de classification ---
+		// --- Feuille 2 : Registre de classification (colonnes et couleurs comme à l'écran) ---
 		const wsRegistre = wb.addWorksheet('Registre de classification', { views: [{ showGridLines: true }] });
 		wsRegistre.addRow(['Registre de classification des actifs informationnels']).font = { bold: true, size: 14 };
 		wsRegistre.addRow([]);
-		const registreHeaders = [
-			'Processus métier', 'Activité sous-processus', 'Désignation actif', 'Description actif',
-			'Catégorie actif', 'Type actif', 'Propriétaire actif', 'Disponibilité', 'Intégrité', 'Confidentialité',
-			'Sensibilité', 'Commentaire'
+		// Ligne des sous-titres (identique à la page : jaune clair)
+		const registreSubHeaders = [
+			'Processus métier', 'Activité/Sous‑processus', 'Désignation de l\'actif informationnel', 'Description de l\'actif',
+			'Catégorie de l\'actif', 'Type de l\'actif', 'Propriétaire de l\'actif',
+			'Besoin en terme de Disponibilité', 'Besoin en terme d\'Intégrité', 'Besoin en terme de Confidentialité', 'Sensibilité de l\'actif'
 		];
 		if (showRegistreLoi0520) {
-			registreHeaders.push('Impact Dispo 05.20', 'Impact Intégrité 05.20', 'Impact Confid 05.20');
+			registreSubHeaders.push('Impact Disponibilité', 'Impact Intégrité', 'Impact Confidentialité', 'Sensibilité (réf. loi 05.20)', 'Confidentialité (décret 05-20)');
 		}
-		const rowRegHeader = wsRegistre.addRow(registreHeaders);
-		applyHeaderRow(wsRegistre, rowRegHeader);
+		registreSubHeaders.push('Commentaire');
+		const fullHeaders = ['ID', ...registreSubHeaders];
+		const rowRegHeader = wsRegistre.addRow(fullHeaders);
+		rowRegHeader.eachCell((cell, colNumber) => {
+			cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFDE047' } }; // bg-yellow-300
+			cell.font = { bold: true, color: { argb: 'FF000000' } };
+			cell.border = EXCEL_BORDER_THIN;
+			cell.alignment = { vertical: 'middle', wrapText: true };
+		});
 		registreRows.forEach((r) => {
 			const rowData: (string | number)[] = [
+				r.id ?? '',
 				r.processus_metier, r.activite_sous_processus, r.designation_actif, r.description_actif,
-				r.categorie_actif, r.type_actif, r.proprietaire_actif, r.disponibilite, r.integrite, r.confidentialite,
-				r.sensibilite, r.commentaire
+				r.categorie_actif, getTypeActifLabel(r.type_actif), r.proprietaire_actif,
+				r.disponibilite, r.integrite, r.confidentialite, r.sensibilite
 			];
 			if (showRegistreLoi0520) {
-				rowData.push(r.impactDispo0520 ?? '', r.impactIntegrite0520 ?? '', r.impactConfid0520 ?? '');
+				rowData.push(r.impactDispo0520 ?? '', r.impactIntegrite0520 ?? '', r.impactConfid0520 ?? '', getSensibiliteClasse0520(r), getConfidentialite0520(r));
 			}
+			rowData.push(r.commentaire ?? '');
 			const row = wsRegistre.addRow(rowData);
 			applyDataRowBorder(wsRegistre, row);
+			// Couleurs D/I/C/Sensibilité (colonnes 9-12) selon getNiveauBesoinBg
+			const dicCols = [9, 10, 11, 12];
+			const dicVals = [r.disponibilite, r.integrite, r.confidentialite, r.sensibilite];
+			dicCols.forEach((colIndex, i) => {
+				const tw = getNiveauBesoinBg(dicVals[i]);
+				const argb = tailwindToExcelArgb(tw);
+				if (argb) applyCellStyle(row.getCell(colIndex), { fill: argb, border: true });
+			});
+			if (showRegistreLoi0520) {
+				const hexDispo = getLoi0520ImpactBg(r.impactDispo0520);
+				const hexInteg = getLoi0520ImpactBg(r.impactIntegrite0520);
+				const hexConf = getLoi0520ImpactBg(r.impactConfid0520);
+				const sensClasse = getSensibiliteClasse0520(r);
+				const hexSens = getSensibiliteClasse0520Bg(sensClasse);
+				if (hexToExcelArgb(hexDispo)) applyCellStyle(row.getCell(13), { fill: hexToExcelArgb(hexDispo)!, border: true });
+				if (hexToExcelArgb(hexInteg)) applyCellStyle(row.getCell(14), { fill: hexToExcelArgb(hexInteg)!, border: true });
+				if (hexToExcelArgb(hexConf)) applyCellStyle(row.getCell(15), { fill: hexToExcelArgb(hexConf)!, border: true });
+				if (hexToExcelArgb(hexSens)) applyCellStyle(row.getCell(16), { fill: hexToExcelArgb(hexSens)!, border: true });
+				// Colonne 17 = Confidentialité (décret) : amber-50
+				applyCellStyle(row.getCell(17), { fill: 'FFFFFBEB', border: true });
+			}
 		});
 
-		// --- Feuille 3 : Aide-Classification (avec couleurs DIC) ---
+		// --- Feuille 3 : Aide-Classification (structure identique à la page) ---
 		const wsAideClass = wb.addWorksheet('Aide-Classification', { views: [{ showGridLines: true }] });
 		wsAideClass.addRow(['Aide-Classification']).font = { bold: true, size: 14 };
 		wsAideClass.addRow([]);
-		wsAideClass.addRow(['Critères DIC']).font = { bold: true };
-		const rowDicCritHeader = wsAideClass.addRow(['Critère', 'Définition']);
-		applyHeaderRow(wsAideClass, rowDicCritHeader);
-		dicCriteriaRows.forEach((r) => {
-			const row = wsAideClass.addRow([r.critere, r.definition]);
-			applyDataRowBorder(wsAideClass, row);
-			const argb = tailwindToExcelArgb(r.bgColor);
-			if (argb) {
-				row.eachCell((cell, colNumber) => {
-					if (colNumber <= 2) applyCellStyle(cell, { fill: argb, border: true });
-				});
-			}
+		wsAideClass.addRow(['Tableau 1 – Disponibilité, Intégrité, Confidentialité (définitions générales)']).font = { bold: true };
+		// Comme à l'écran : une ligne d'en-têtes = les 3 critères (chaque cellule avec sa couleur), une ligne = les définitions
+		const rowCritNames = wsAideClass.addRow(dicCriteriaRows.map((r) => r.critere));
+		applyDataRowBorder(wsAideClass, rowCritNames);
+		rowCritNames.eachCell((cell, colNumber) => {
+			const argb = tailwindToExcelArgb(dicCriteriaRows[colNumber - 1]?.bgColor);
+			if (argb) applyCellStyle(cell, { fill: argb, border: true, bold: true });
 		});
+		const rowCritDefs = wsAideClass.addRow(dicCriteriaRows.map((r) => stripHtml(r.definition)));
+		applyDataRowBorder(wsAideClass, rowCritDefs);
 		wsAideClass.addRow([]);
-		wsAideClass.addRow(['Niveaux DIC']).font = { bold: true };
-		const rowDicNivHeader = wsAideClass.addRow(['Valeur', 'Disponibilité', 'Intégrité', 'Confidentialité']);
-		applyHeaderRow(wsAideClass, rowDicNivHeader);
+		wsAideClass.addRow(['Tableau 1.2 – Niveaux de valeur par critère (D / I / C)']).font = { bold: true };
+		const rowDicNivHeader = wsAideClass.addRow(['Valeur', 'Disponibilité (D)', 'Intégrité (I)', 'Confidentialité (C)']);
+		rowDicNivHeader.eachCell((cell) => {
+			cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFBAE6FD' } }; // bg-sky-200
+			cell.font = { bold: true, color: { argb: 'FF000000' } };
+			cell.border = EXCEL_BORDER_THIN;
+			cell.alignment = { vertical: 'middle', wrapText: true };
+		});
 		dicNiveauxRows.forEach((r) => {
 			const row = wsAideClass.addRow([
 				r.valeur,
@@ -787,11 +858,13 @@
 			applyDataRowBorder(wsAideClass, row);
 			const argb = tailwindToExcelArgb(r.bgColor);
 			if (argb) {
-				row.eachCell((c) => applyCellStyle(c, { fill: argb, border: true }));
+				row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb } };
+				row.getCell(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
+				row.getCell(1).border = EXCEL_BORDER_THIN;
 			}
 		});
 		wsAideClass.addRow([]);
-		wsAideClass.addRow(['Catégories d\'actifs']).font = { bold: true };
+		wsAideClass.addRow(['Tableau 2 – Catégories d\'actifs']).font = { bold: true };
 		categoriesActifsRows.forEach((c) => {
 			const row = wsAideClass.addRow([c]);
 			applyDataRowBorder(wsAideClass, row);
@@ -889,16 +962,21 @@
 			applyDataRowBorder(wsAideRisque, row);
 		});
 
-		// --- Feuille 6 : PTR (en-tête couleur type UI) ---
+		// --- Feuille 6 : PTR (libellés et couleur d'en-tête comme à l'écran : #FFC000) ---
 		const ptrHeaders = [
-			'REF Risque', 'Corresp. ISO27001', 'Propriétaire', 'Niveau risque', 'Décision', 'ID PTR', 'Action',
-			'Type action', 'Porteur', 'Priorité', 'Périodicité', 'Complexité', 'Échéance', 'État avancement'
+			'REF Risque', 'Corresp. ISO27001, annexe A', 'Propriétaire du risque', 'Niveau du risque net', 'Décision', 'ID PTR', 'Action à mettre en place',
+			'Type de l\'action', 'Porteur de l\'action', 'Priorité', 'Périodicité', 'Complexité', 'Echéance', 'Etat d\'avancement'
 		];
 		const wsPTR = wb.addWorksheet('PTR', { views: [{ showGridLines: true }] });
 		wsPTR.addRow(['PTR - Plan de traitement des risques']).font = { bold: true, size: 14 };
 		wsPTR.addRow([]);
 		const rowPtrHeader = wsPTR.addRow(ptrHeaders);
-		applyHeaderRow(wsPTR, rowPtrHeader);
+		rowPtrHeader.eachCell((cell) => {
+			cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFC000' } };
+			cell.font = { bold: true, color: { argb: 'FF000000' } };
+			cell.border = EXCEL_BORDER_THIN;
+			cell.alignment = { vertical: 'middle', wrapText: true };
+		});
 		ptrData.forEach((r) => {
 			const row = wsPTR.addRow([
 				r.refRisque, r.correspISO, r.proprietaire, r.niveauRisque, r.decision, r.idPTR, r.action,
@@ -935,52 +1013,69 @@
 			}
 		});
 
-		// --- Feuille 7 : Echelle-PTR (tables avec couleurs) ---
+		// --- Feuille 7 : Echelle-PTR (Tables 1 à 4 — titres et colonnes comme à l'écran, en-têtes jaune) ---
 		const wsEchelle = wb.addWorksheet('Echelle-PTR', { views: [{ showGridLines: true }] });
-		wsEchelle.addRow(['Echelle-PTR - Tables 1 à 4']).font = { bold: true, size: 14 };
+		wsEchelle.addRow(['Échelle-PTR : Tables 1 à 4']).font = { bold: true, size: 14 };
 		wsEchelle.addRow([]);
-		wsEchelle.addRow(['Périodicité']).font = { bold: true };
-		const rowPerHeader = wsEchelle.addRow(['Périodicité', 'Durée', 'Couleur']);
-		applyHeaderRow(wsEchelle, rowPerHeader);
+		const YELLOW_500_HEADER = 'FFEAB308'; // bg-yellow-500, texte blanc comme à l'écran
+		wsEchelle.addRow(['Table 1 : Périodicité / Durée']).font = { bold: true };
+		const rowPerHeader = wsEchelle.addRow(['Périodicité', 'Durée']);
+		rowPerHeader.eachCell((cell) => {
+			cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: YELLOW_500_HEADER } };
+			cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+			cell.border = EXCEL_BORDER_THIN;
+			cell.alignment = { vertical: 'middle', wrapText: true };
+		});
 		periodiciteRows.forEach((r) => {
-			const row = wsEchelle.addRow([r.periodicite, (r as Row & { duree?: string }).duree ?? '', r.bgColor ?? '']);
+			const row = wsEchelle.addRow([r.periodicite, (r as Row & { duree?: string }).duree ?? '']);
 			applyDataRowBorder(wsEchelle, row);
 			const argb = tailwindToExcelArgb(r.bgColor);
-			if (argb) {
-				row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb } };
-				row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb } };
-				row.eachCell((c) => { c.border = EXCEL_BORDER_THIN; });
-			}
+			if (argb) applyCellStyle(row.getCell(1), { fill: argb, border: true });
 		});
 		wsEchelle.addRow([]);
-		wsEchelle.addRow(['Complexité']).font = { bold: true };
-		const rowCompHeader = wsEchelle.addRow(['Complexité', 'Couleur']);
-		applyHeaderRow(wsEchelle, rowCompHeader);
+		wsEchelle.addRow(['Table 2 : Niveau de complexité']).font = { bold: true };
+		const rowCompHeader = wsEchelle.addRow(['Complexité', 'Définition du niveau de complexité supposé']);
+		rowCompHeader.eachCell((cell) => {
+			cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: YELLOW_500_HEADER } };
+			cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+			cell.border = EXCEL_BORDER_THIN;
+			cell.alignment = { vertical: 'middle', wrapText: true };
+		});
 		complexiteRows.forEach((r) => {
-			const row = wsEchelle.addRow([r.complexite, r.bgColor ?? '']);
+			const row = wsEchelle.addRow([r.complexite, (r as Row & { definition?: string }).definition ?? '']);
 			applyDataRowBorder(wsEchelle, row);
 			const argb = tailwindToExcelArgb(r.bgColor);
-			if (argb) row.eachCell((c) => applyCellStyle(c, { fill: argb, border: true }));
+			if (argb) applyCellStyle(row.getCell(1), { fill: argb, border: true });
 		});
 		wsEchelle.addRow([]);
-		wsEchelle.addRow(['Type d\'action']).font = { bold: true };
-		const rowTypeHeader = wsEchelle.addRow(['Type action', 'Couleur']);
-		applyHeaderRow(wsEchelle, rowTypeHeader);
+		wsEchelle.addRow(['Table 3 : Type de l\'action']).font = { bold: true };
+		const rowTypeHeader = wsEchelle.addRow(['Type de l\'action', 'Description']);
+		rowTypeHeader.eachCell((cell) => {
+			cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: YELLOW_500_HEADER } };
+			cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+			cell.border = EXCEL_BORDER_THIN;
+			cell.alignment = { vertical: 'middle', wrapText: true };
+		});
 		typeActionRows.forEach((r) => {
-			const row = wsEchelle.addRow([r.type_action, r.bgColor ?? '']);
+			const row = wsEchelle.addRow([r.type_action, (r as Row & { description?: string }).description ?? '']);
 			applyDataRowBorder(wsEchelle, row);
 			const argb = tailwindToExcelArgb(r.bgColor);
-			if (argb) row.eachCell((c) => applyCellStyle(c, { fill: argb, border: true }));
+			if (argb) applyCellStyle(row.getCell(1), { fill: argb, border: true });
 		});
 		wsEchelle.addRow([]);
-		wsEchelle.addRow(['Priorité']).font = { bold: true };
-		const rowPriorHeader = wsEchelle.addRow(['Échelle', 'Couleur']);
-		applyHeaderRow(wsEchelle, rowPriorHeader);
+		wsEchelle.addRow(['Table 4 : Priorité']).font = { bold: true };
+		const rowPriorHeader = wsEchelle.addRow(['Échelle', 'Définition', 'Signification']);
+		rowPriorHeader.eachCell((cell) => {
+			cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: YELLOW_500_HEADER } };
+			cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+			cell.border = EXCEL_BORDER_THIN;
+			cell.alignment = { vertical: 'middle', wrapText: true };
+		});
 		prioriteRows.forEach((r) => {
-			const row = wsEchelle.addRow([r.echelle, r.bgColor ?? '']);
+			const row = wsEchelle.addRow([r.echelle, r.definition ?? '', (r as Row & { signification?: string }).signification ?? '']);
 			applyDataRowBorder(wsEchelle, row);
 			const argb = tailwindToExcelArgb(r.bgColor);
-			if (argb) row.eachCell((c) => applyCellStyle(c, { fill: argb, border: true }));
+			if (argb) applyCellStyle(row.getCell(1), { fill: argb, border: true });
 		});
 
 		const fileName = `La-methode-NearSecure-${new Date().toISOString().slice(0, 10)}.xlsx`;
