@@ -1770,6 +1770,66 @@
 		saveCustomMethodState();
 	}
 
+	/** Ordre des 7 cases "Catégorie d'actifs" de la carto → indices dans categoriesActifsRows (0..6) */
+	const CARTO_ACTIF_CHECKBOX_TO_CATEGORY_INDEX = [0, 1, 2, 3, 4, 5, 6] as const;
+
+	/** Retourne les libellés de catégories d'actifs sélectionnés pour une ligne de cartographie (cases cochées). */
+	function getCategoriesFromCartoRow(row: CartoRow): string[] {
+		const checks = [
+			row.actifMateriel,
+			row.actifApplication,
+			row.actifEquipementsSecurite,
+			row.actifEquipementsReseaux,
+			row.actifRessourcesHumaines,
+			row.actifDocument,
+			row.actifDonnees
+		];
+		const out: string[] = [];
+		for (let k = 0; k < CARTO_ACTIF_CHECKBOX_TO_CATEGORY_INDEX.length && k < categoriesActifsRows.length; k++) {
+			if (checks[k] && categoriesActifsRows[k]) {
+				out.push(categoriesActifsRows[k].trim());
+			}
+		}
+		return out.filter(Boolean);
+	}
+
+	/** Niveau numérique (1..n) pour un besoin D/I/C à partir de la valeur du registre (ex. "Faible", "Moyen", "Élevé"). */
+	function getNiveauLevelForDIC(valeur: string): number {
+		const v = (valeur || '').trim();
+		if (!v) return 0;
+		const idx = dicNiveauxRows.findIndex((r) => (r.valeur || '').trim() === v);
+		return idx >= 0 ? idx + 1 : 0;
+	}
+
+	/** Calcule D, I, C pour une ligne de carto à partir du registre : filtre par catégories cochées, puis max des besoins D/I/C. */
+	function computeImpactDICFromRegistre(row: CartoRow): { d: number; i: number; c: number } {
+		const categories = getCategoriesFromCartoRow(row);
+		if (categories.length === 0) return { d: 0, i: 0, c: 0 };
+		const filtered = registreRows.filter(
+			(r) => categories.indexOf((r.categorie_actif || '').trim()) >= 0
+		);
+		let d = 0,
+			i = 0,
+			c = 0;
+		for (const r of filtered) {
+			d = Math.max(d, getNiveauLevelForDIC(r.disponibilite));
+			i = Math.max(i, getNiveauLevelForDIC(r.integrite));
+			c = Math.max(c, getNiveauLevelForDIC(r.confidentialite));
+		}
+		return { d, i, c };
+	}
+
+	/** Recalcule et met à jour impactD, impactI, impactC pour une ligne de cartographie à partir du registre. */
+	function recalcImpactDICForCartoRow(index: number) {
+		const row = cartoRows[index];
+		if (!row) return;
+		const { d, i, c } = computeImpactDICFromRegistre(row);
+		cartoRows[index].impactD = d > 0 ? d : '';
+		cartoRows[index].impactI = i > 0 ? i : '';
+		cartoRows[index].impactC = c > 0 ? c : '';
+		saveCustomMethodState();
+	}
+
 	// Fonctions pour le registre de classification
 	const defaultRegistreRow = (): RegistreRow => ({
 		id: '',
@@ -3930,13 +3990,13 @@
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 font-bold resize-none" rows="4" bind:value={row.proprietaireRisque} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.actifMateriel} on:change={() => saveCustomMethodState()} /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.actifApplication} on:change={() => saveCustomMethodState()} /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.actifEquipementsSecurite} on:change={() => saveCustomMethodState()} /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.actifEquipementsReseaux} on:change={() => saveCustomMethodState()} /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.actifRessourcesHumaines} on:change={() => saveCustomMethodState()} /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.actifDocument} on:change={() => saveCustomMethodState()} /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.actifDonnees} on:change={() => saveCustomMethodState()} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.actifMateriel} on:change={() => recalcImpactDICForCartoRow(i)} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.actifApplication} on:change={() => recalcImpactDICForCartoRow(i)} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.actifEquipementsSecurite} on:change={() => recalcImpactDICForCartoRow(i)} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.actifEquipementsReseaux} on:change={() => recalcImpactDICForCartoRow(i)} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.actifRessourcesHumaines} on:change={() => recalcImpactDICForCartoRow(i)} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.actifDocument} on:change={() => recalcImpactDICForCartoRow(i)} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.actifDonnees} on:change={() => recalcImpactDICForCartoRow(i)} /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.dicD} on:change={() => saveCustomMethodState()} /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.dicI} on:change={() => saveCustomMethodState()} /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.dicC} on:change={() => saveCustomMethodState()} /></td>
