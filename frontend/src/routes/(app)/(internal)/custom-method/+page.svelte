@@ -129,6 +129,28 @@
 	// Version du tableau cartographie : A (criticité/gravité/proba/IPC) ou B (efficacité DMR/PTR)
 	let cartoVersion: 'A' | 'B' = 'A';
 
+	/** Colspans dynamiques pour la vue "all" : le regroupement reste correct quand on ajoute/supprime des impacts (Aide-Risque) */
+	$: cartoRisqueBrutColspan = 3 + 1 + impactDefinitionsRows.length + 4; // Impact DIC (3) + Criticité (1) + N impacts + Gravité + Proba + I*P*C + Signification (4)
+	$: cartoTotalCols = 3 + 17 + cartoRisqueBrutColspan + 1 + (cartoVersion === 'B' ? 4 : 5) + 2 + (cartoVersion === 'B' ? 4 : 5) + (editModeCarto ? 1 : 0);
+
+	/** Indices de colonnes pour les vues filtrées (brut / net / ptr) : recalculés quand le nombre d'impacts change */
+	$: cartoColEndId = 20;
+	$: cartoColEndBrut = 20 + cartoRisqueBrutColspan;
+	$: cartoColEndDMR = cartoColEndBrut + 1;
+	$: cartoColEndNet = cartoColEndDMR + (cartoVersion === 'B' ? 4 : 5);
+	$: cartoColEndPTR = cartoColEndNet + 2;
+	$: cartoColEndRes = cartoColEndPTR + (cartoVersion === 'B' ? 4 : 5);
+	$: cartoViewDynamicCss =
+		`.view-brut tbody tr:not(.carto-part-header) td:nth-child(n+1):nth-child(-n+3),
+.view-brut tbody tr:not(.carto-part-header) td:nth-child(n+6):nth-child(-n+${cartoColEndId}),
+.view-brut tbody tr:not(.carto-part-header) td:nth-child(n+${cartoColEndBrut + 1}):nth-child(-n+${cartoTotalCols}){display:none}
+.view-net tbody tr:not(.carto-part-header) td:nth-child(n+1):nth-child(-n+3),
+.view-net tbody tr:not(.carto-part-header) td:nth-child(n+6):nth-child(-n+${cartoColEndBrut}),
+.view-net tbody tr:not(.carto-part-header) td:nth-child(n+${cartoColEndNet + 1}):nth-child(-n+${cartoTotalCols}){display:none}
+.view-ptr tbody tr:not(.carto-part-header) td:nth-child(n+1):nth-child(-n+3),
+.view-ptr tbody tr:not(.carto-part-header) td:nth-child(n+6):nth-child(-n+${cartoColEndPTR - 1}),
+.view-ptr tbody tr:not(.carto-part-header) td:nth-child(n+${cartoColEndRes + 1}):nth-child(-n+${cartoTotalCols}){display:none}`;
+
 	// Données et formules pour la cartographie des risques (une ligne = un objet)
 	type CartoRow = {
 		// Identification (colonnes 1–10)
@@ -2070,7 +2092,6 @@
 	}
 
 	function ajouterDefinitionImpact() {
-		if (impactDefinitionsRows.length >= 8) return; /* max 8 pour la cartographie (colonnes fixes) */
 		impactDefinitionsRows = [...impactDefinitionsRows, { libelle: 'Nouvel impact', definition: '' }];
 		syncCartoRowsImpacts();
 		saveCustomMethodState();
@@ -2668,39 +2689,7 @@
         display: none;
     }
 
-    /* Risque Brut view: show cols 4-5 + 21-36 (3 DIC + 1 crit + 8 impacts + 4) + 51 Actions; hide 1-3, 6-20, 37-50. Keep part header row visible. */
-    .view-brut tbody tr:not(.carto-part-header) td:nth-child(n+1):nth-child(-n+3),
-    .view-brut tbody tr:not(.carto-part-header) td:nth-child(n+6):nth-child(-n+20),
-    .view-brut tbody tr:not(.carto-part-header) td:nth-child(n+37):nth-child(-n+50) {
-        display: none;
-    }
-    /* Colonnes d'impact en trop (au-delà de impactDefinitionsRows.length) : masquées */
-    .carto-impact-col-hidden {
-        display: none !important;
-    }
-
-    /* Degré + Risque Net view: show cols 4-5 + 37-42 + 51 (Actions), hide 1-3, 6-36, 43-50. Keep part header row visible. */
-    .view-net tbody tr:not(.carto-part-header) td:nth-child(n+1):nth-child(-n+3),
-    .view-net tbody tr:not(.carto-part-header) td:nth-child(n+6):nth-child(-n+36),
-    .view-net tbody tr:not(.carto-part-header) td:nth-child(n+43):nth-child(-n+50) {
-        display: none;
-    }
-    /* Version B (avec efficacité) : en vue Degré & Risque net, ne pas afficher la colonne Action PTR (col 38) */
-    .view-net.net-version-b tbody tr:not(.carto-part-header) td:nth-child(38) {
-        display: none;
-    }
-
-    /* PTR + Résiduel view: brut section now 16 cols (21-36), net 6 (37-42), ptr 7 (43-49), actions 50. Show 4-5 + 43-49 + 51. Keep part header row visible. */
-    .view-ptr tbody tr:not(.carto-part-header) td:nth-child(n+1):nth-child(-n+3),
-    .view-ptr tbody tr:not(.carto-part-header) td:nth-child(n+6):nth-child(-n+42) {
-        display: none;
-    }
-    .view-ptr.ptr-version-b tbody tr:not(.carto-part-header) td:nth-child(n+6):nth-child(-n+42) {
-        display: table-cell;
-    }
-    .view-ptr.ptr-version-b tbody tr:not(.carto-part-header) td:nth-child(n+6):nth-child(-n+41) {
-        display: none;
-    }
+    /* Vues filtrées (brut / net / ptr) : règles dynamiques injectées via cartoViewDynamicCss (svelte:head) pour respecter le nombre variable de colonnes d'impact */
 
     /* Keep table layout predictable */
     table {
@@ -2761,6 +2750,10 @@
         box-shadow: 0 0 0 1px #d1d5db;
     }
 </style>
+
+<svelte:head>
+	{@html `<style id="carto-dynamic-view-style">${cartoViewDynamicCss}</style>`}
+</svelte:head>
 
 <main class="p-6 space-y-8">
 	<section class="space-y-2">
@@ -4076,7 +4069,7 @@
 					{:else if cartoView === 'brut'}
 						<thead>
 							<tr>
-								<th colspan={11 + 8 + (editModeCarto ? 1 : 0)} class="px-4 py-3 text-center font-bold text-lg text-black bg-yellow-400 border border-black">
+								<th colspan={2 + cartoRisqueBrutColspan + (editModeCarto ? 1 : 0)} class="px-4 py-3 text-center font-bold text-lg text-black bg-yellow-400 border border-black">
 									RISQUE BRUT - ÉVALUATION DE LA CRITICITÉ
 								</th>
 							</tr>
@@ -4087,8 +4080,8 @@
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact intégrité </th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Impact confidentialité</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Criticité actif</th>
-								{#each Array(8) as _, idx}
-									<th class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black col-brut-impact {idx >= impactDefinitionsRows.length ? 'carto-impact-col-hidden' : ''}" style="min-width: 90px;">{impactDefinitionsRows[idx]?.libelle || 'Impact'}</th>
+								{#each impactDefinitionsRows as imp}
+									<th class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black col-brut-impact" style="min-width: 90px;">{imp.libelle || 'Impact'}</th>
 								{/each}
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Gravité des impacts</th>
 								<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Probabilité</th>
@@ -4118,9 +4111,9 @@
 									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Risque Net</th>
 								{:else}
 									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Efficacité DMR</th>
-									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niveau d'eff.</th>
-									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niveau risque</th>
-									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Signif. risque net</th>
+									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niveau d'efficacité</th>
+									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niveau de risque</th>
+									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Signification du risque net</th>
 								{/if}
 								{#if editModeCarto}
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black min-w-[90px]">Actions</th>
@@ -4147,9 +4140,9 @@
 									<th class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">Risque Résiduel</th>
 								{:else}
 									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Efficacité PTR</th>
-									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">% efficacité</th>
-									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niveau risque</th>
-									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niv. risque résiduel</th>
+									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Pourcentage d'efficacité</th>
+									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niveau de risque</th>
+									<th class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niveau du risque résiduel</th>
 								{/if}
 								{#if editModeCarto}
 								<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black min-w-[90px]">Actions</th>
@@ -4160,7 +4153,7 @@
 						<!-- View 'all': show original complex headers (hidden by default, shown when cartoView === 'all') -->
 						<thead style="display: none;">
 							<tr>
-								<th colspan={(cartoVersion === 'B' ? 47 : 49) + (editModeCarto ? 1 : 0)} class="px-4 py-3 text-center font-bold text-lg text-black border border-black bg-white">
+								<th colspan={cartoTotalCols} class="px-4 py-3 text-center font-bold text-lg text-black border border-black bg-white">
 									CARTOGRAPHIE DES RISQUES DE SECURITÉ DES SYSTÈMES D'INFORMATION
 								</th>
 							</tr>
@@ -4172,12 +4165,12 @@
 					<thead>
 					<!-- Ligne 1: Titre principal -->
 					<tr>
-						<th colspan={(cartoVersion === 'B' ? 47 : 49) + (editModeCarto ? 1 : 0)} class="px-4 py-3 text-center font-bold text-lg text-black border border-black bg-white">
+						<th colspan={cartoTotalCols} class="px-4 py-3 text-center font-bold text-lg text-black border border-black bg-white">
 							CARTOGRAPHIE DES RISQUES DE SECURITÉ DES SYSTÈMES D'INFORMATION
 						</th>
 					</tr>
 					
-					<!-- Ligne 5: Sections principales -->
+					<!-- Ligne 5: Sections principales (regroupement Version B cohérent ; colspans dynamiques si impacts ajoutés/supprimés) -->
 					<tr>
 						<th colspan="3" class="px-2 py-3 text-center font-bold text-black bg-white border border-black">
 							Cartographie des Processus
@@ -4185,7 +4178,7 @@
 						<th colspan="17" class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black">
 							Identification des risques inhérents
 						</th>
-						<th colspan="16" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">
+						<th colspan={cartoRisqueBrutColspan} class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black">
 							Évaluation de la Criticité du Risque Brut
 						</th>
 						<th class="px-2 py-3 text-center font-bold text-white bg-teal-600 border border-black">
@@ -4200,6 +4193,11 @@
 						<th colspan={cartoVersion === 'B' ? 4 : 5} class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 520px;">
 							Évaluation du Risque Résiduel
 						</th>
+						{#if editModeCarto}
+						<th class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black">
+							Actions
+						</th>
+						{/if}
 					</tr>
 					
 					<!-- Ligne 6-7: Headers détaillés -->
@@ -4256,8 +4254,8 @@
 						<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 100px;">
 							Criticité de l'actif - Besoin en SSI
 						</th>
-						{#each Array(8) as _, idx}
-							<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black {idx >= impactDefinitionsRows.length ? 'carto-impact-col-hidden' : ''}" style="min-width: 80px;">{impactDefinitionsRows[idx]?.libelle || 'Impact'}</th>
+						{#each impactDefinitionsRows as imp}
+							<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-orange-600 border border-black" style="min-width: 80px;">{imp.libelle || 'Impact'}</th>
 						{/each}
 						<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 80px;">
 							Gravité des impacts
@@ -4272,12 +4270,12 @@
 							Signification du risque brut
 						</th>
 						
-						<!-- Dispositif -->
+						<!-- Détermination du degré d'exposition : DMR -->
 						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-teal-700 border border-black" style="min-width: 200px;">
-							Description du Dispositif de Maitrise des Risques
+							Description du Dispositif de Maitrise des Risques (DMR) existant
 						</th>
 						
-						<!-- Risque Net : Version A ou B -->
+						<!-- Évaluation de la Criticité du Risque Net -->
 						{#if cartoVersion === 'A'}
 							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 120px;">Criticité de l'actif - Besoin en SSI</th>
 							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 95px;">Gravité des impacts</th>
@@ -4286,14 +4284,14 @@
 							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 120px;">Signification du risque net</th>
 						{:else}
 							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs whitespace-nowrap" style="width: 130px; max-width: 130px;">Efficacité DMR</th>
-							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niveau d'eff.</th>
-							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niveau risque</th>
-							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Signif. risque net</th>
+							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niveau d'efficacité</th>
+							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niveau de risque</th>
+							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Signification du risque net</th>
 						{/if}
-						<!-- PTR -->
+						<!-- Plan de traitement des risques (PTR) -->
 						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black" style="min-width: 100px;">Décision</th>
 						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black" style="min-width: 200px;">Action à mettre en place</th>
-						<!-- Risque Résiduel : Version A ou B -->
+						<!-- Évaluation du Risque Résiduel -->
 						{#if cartoVersion === 'A'}
 							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 120px;">Criticité de l'actif - Besoin en SSI</th>
 							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 85px;">Gravité des impacts</th>
@@ -4302,9 +4300,9 @@
 							<th rowspan="2" class="px-2 py-3 text-center font-bold text-black bg-yellow-400 border border-black" style="min-width: 120px;">Niveau du risque résiduel</th>
 						{:else}
 							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Efficacité PTR</th>
-							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niveau d'efficacité</th>
-							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niveau risque</th>
-							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niv. risque résiduel</th>
+							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Pourcentage d'efficacité</th>
+							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niveau de risque</th>
+							<th rowspan="2" class="carto-b-th px-1 py-1 text-center font-bold text-black bg-yellow-400 border border-black text-xs" style="width: 130px; max-width: 130px;">Niveau du risque résiduel</th>
 						{/if}
 						{#if editModeCarto}
 						<th rowspan="2" class="px-2 py-3 text-center font-bold text-white bg-gray-600 border border-black" style="min-width: 90px;">
@@ -4370,7 +4368,7 @@
 						{@const prevPart = i > 0 ? (getPartFromCodeRisque(cartoRows[i - 1].codeRisque) || 1) : 0}
 						{#if part !== prevPart}
 							<tr class="bg-teal-700 carto-part-header">
-								<td colspan={(cartoVersion === 'B' ? 47 : 49) + (editModeCarto ? 1 : 0)} class="px-3 py-3 font-bold text-white border border-black">{CARTO_PART_TITLES[part] || 'Autres'}</td>
+								<td colspan={cartoTotalCols} class="px-3 py-3 font-bold text-white border border-black">{CARTO_PART_TITLES[part] || 'Autres'}</td>
 							</tr>
 						{/if}
 					<tr class="hover:bg-gray-50">
@@ -4424,13 +4422,9 @@
 							<span class="inline-block min-w-[2rem] text-xs font-medium">{row.impactC ?? '—'}</span>
 						</td>
 						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(row) ?? '-'}</td>
-						{#each Array(8) as _, idx}
-							<td class="px-2 py-2 border border-black bg-white align-middle col-brut-impact {idx >= impactDefinitionsRows.length ? 'carto-impact-col-hidden' : ''}">
-								{#if idx < impactDefinitionsRows.length}
-									<input type="number" class="w-full text-xs p-1 text-center min-w-[2rem]" min="1" max="6" value={getRowImpacts(row)[idx]} on:input={(e) => { const v = (e.target as HTMLInputElement).value; if (!row.impacts || row.impacts.length !== impactDefinitionsRows.length) row.impacts = getRowImpacts(row); row.impacts[idx] = v; saveCustomMethodState(); }} />
-								{:else}
-									<span></span>
-								{/if}
+						{#each impactDefinitionsRows as imp, idx}
+							<td class="px-2 py-2 border border-black bg-white align-middle col-brut-impact">
+								<input type="number" class="w-full text-xs p-1 text-center min-w-[2rem]" min="1" max="6" value={getRowImpacts(row)[idx]} on:input={(e) => { const v = (e.target as HTMLInputElement).value; if (!row.impacts || row.impacts.length !== impactDefinitionsRows.length) row.impacts = getRowImpacts(row); row.impacts[idx] = v; saveCustomMethodState(); }} />
 							</td>
 						{/each}
 						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(row) ?? '-'}</td>
@@ -4744,7 +4738,7 @@
 				</div>
 				{#if editModeAideRisque}
 					<div class="flex gap-2 mt-2">
-						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed" on:click={ajouterDefinitionImpact} disabled={impactDefinitionsRows.length >= 8} title={impactDefinitionsRows.length >= 8 ? 'Maximum 8 impacts (colonnes cartographie)' : ''}>+ Ajouter une ligne</button>
+						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterDefinitionImpact}>+ Ajouter une ligne</button>
 						{#if impactDefinitionsRows.length > 1}
 							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerDefinitionImpact(impactDefinitionsRows.length - 1)}>- Supprimer la dernière ligne</button>
 						{/if}
