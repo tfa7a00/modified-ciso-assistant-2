@@ -110,6 +110,15 @@
 		});
 	}
 
+	/** Active le retour à la ligne (wrap text) sur toutes les cellules d'une feuille. */
+	function applyWrapTextToSheet(ws: ExcelJS.Worksheet) {
+		ws.eachRow({ includeEmpty: false }, (row) => {
+			row.eachCell({ includeEmpty: true }, (cell) => {
+				cell.alignment = { ...(cell.alignment as object || {}), vertical: 'middle', wrapText: true } as ExcelJS.Alignment;
+			});
+		});
+	}
+
 	type Row = Record<string, string>;
 
 	// Gestion des 7 sous-parties de la méthode personnalisée (ajout de controle-document)
@@ -892,7 +901,71 @@
 			applyDataRowBorder(wsAideClass, row);
 		});
 
-		// --- Feuille 4 : Cartographie des risques ---
+		// --- Aide-Classification : Classification selon la loi n° 05-20 ---
+		wsAideClass.addRow([]);
+		wsAideClass.addRow(['Classification selon la loi n° 05-20']).font = { bold: true, size: 12 };
+		wsAideClass.addRow(['Tableau 1 — Échelle qualitative']).font = { bold: true };
+		const rowLoi1Title = wsAideClass.addRow(["Echelle d'impact selon la loi n° 05.20 et son décret d'application"]);
+		rowLoi1Title.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE36C0A' } };
+		rowLoi1Title.getCell(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
+		rowLoi1Title.getCell(1).border = EXCEL_BORDER_THIN;
+		rowLoi1Title.getCell(1).alignment = { vertical: 'middle', wrapText: true };
+		wsAideClass.addRow(["Si un incident de cybersécurité portant sur la confidentialité, la disponibilité ou l'intégrité d'un actif informationnel pourrait :"]);
+		applyDataRowBorder(wsAideClass, wsAideClass.lastRow!);
+		wsAideClass.addRow([]);
+		const rowLoi1Header = wsAideClass.addRow(['Valeur', "Un incident cybersécurité peut :"]);
+		rowLoi1Header.eachCell((c) => {
+			c.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE36C0A' } };
+			c.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+			c.border = EXCEL_BORDER_THIN;
+			c.alignment = { vertical: 'middle', wrapText: true };
+		});
+		const loi0520Qualitative = [
+			['Très Grave', "- nuire au maintien des capacités de sécurité et de défense de l'Etat ;\n- porter préjudice aux intérêts stratégiques de l'Etat ;\n- porter atteinte à la santé et à la sécurité de la population ;\n- perturber ou nuire au fonctionnement de l'économie nationale ;\n- engendrer une incapacité totale ou partielle de plusieurs infrastructures d'importance vitale à assurer leurs fonctions essentielles."],
+			['Grave', "- une incapacité totale ou partielle d'une infrastructure d'importance vitale à assurer ses fonctions essentielles ;\n- une incapacité totale d'une ou plusieurs entités non considérées comme infrastructures d'importance vitale à assurer leurs fonctions critiques ;\n- des pertes financières importantes pour une ou plusieurs entités ou infrastructures d'importance vitale"],
+			['Modéré', "- une gêne ou perturbation mineure dans les fonctions d'une infrastructure d'importance vitale ;\n- une incapacité partielle d'une ou de plusieurs entités non considérées comme infrastructures d'importance vitale, à assurer leurs fonctions ;\n- des pertes financières modérées ;\n- ou toute autre conséquence de nature analogue."],
+			['Limité', "- une gêne ou perturbation dans les fonctions de l'entité non considérée comme infrastructure d'importance vitale ;\n- des pertes financières limitées ;\n- ou toute autre conséquence de nature analogue."]
+		];
+		loi0520Qualitative.forEach(([val, desc]) => {
+			const r = wsAideClass.addRow([val, desc]);
+			applyDataRowBorder(wsAideClass, r);
+			r.getCell(1).font = { bold: true };
+		});
+		wsAideClass.addRow([]);
+		wsAideClass.addRow(['Tableau 2 — Échelle numérique avec code couleur']).font = { bold: true };
+		const rowLoi2Header = wsAideClass.addRow(['VALEUR', "Echelle d'impact du référentiel fixé par la loi n° 05.20 et son décret d'application"]);
+		rowLoi2Header.eachCell((c) => {
+			c.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFC000' } };
+			c.font = { bold: true, color: { argb: 'FF000000' } };
+			c.border = EXCEL_BORDER_THIN;
+			c.alignment = { vertical: 'middle', wrapText: true };
+		});
+		const loi0520Numerique = [
+			[4, "TG: nuire au maintien des capacités de sécurité et de défense de l'Etat ;"],
+			[4, "TG: porter préjudice aux intérêts stratégiques de l'Etat ;"],
+			[4, "TG: porter atteinte à la santé et à la sécurité de la population ;"],
+			[4, "TG: perturber ou nuire au fonctionnement de l'économie nationale ;"],
+			[4, "TG: engendrer une incapacité totale ou partielle de plusieurs infrastructures d'importance vitale à assurer leurs fonctions essentielles."],
+			[3, "G: une incapacité totale ou partielle d'une infrastructure d'importance vitale à assurer ses fonctions essentielles ;"],
+			[3, "G: une incapacité totale d'une ou plusieurs entités non considérées comme infrastructures d'importance vitale à assurer leurs fonctions critiques ;"],
+			[3, "G: des pertes financières importantes pour une ou plusieurs entités ou infrastructures d'importance vitale"],
+			[2, "M: une gêne ou perturbation mineure dans les fonctions d'une infrastructure d'importance vitale ;"],
+			[2, "M: une incapacité partielle d'une ou de plusieurs entités non considérées comme infrastructures d'importance vitale, à assurer leurs fonctions ;"],
+			[2, "M: des pertes financières modérées ;"],
+			[2, "M: ou toute autre conséquence de nature analogue"],
+			[1, "L: une gêne ou perturbation dans les fonctions de l'entité non considérée comme infrastructure d'importance vitale ;"],
+			[1, "L: des pertes financières limitées ;"],
+			[1, "L: ou toute autre conséquence de nature analogue."]
+		];
+		const loi0520Colors = ['FFF87171', 'FFF87171', 'FFF87171', 'FFF87171', 'FFF87171', 'FFFB923C', 'FFFB923C', 'FFFB923C', 'FFFFFF00', 'FFFFFF00', 'FFFFFF00', 'FFFFFF00', 'FFA1FB7D', 'FFA1FB7D', 'FFA1FB7D'];
+		loi0520Numerique.forEach(([num, text], idx) => {
+			const r = wsAideClass.addRow([num, text]);
+			applyDataRowBorder(wsAideClass, r);
+			r.getCell(1).font = { bold: true };
+			if (loi0520Colors[idx]) r.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: loi0520Colors[idx] } };
+		});
+
+		// --- Feuille 4 : Cartographie des risques (en-têtes et répartition comme à l'écran) ---
 		const impactLabels = impactDefinitionsRows.map((d) => d.libelle);
 		const cartoHeaders = [
 			'Entité', 'Domaine / Processus', 'Activités', 'Code risque', 'Description scénario', 'Mesure ISO',
@@ -901,11 +974,51 @@
 			'Dispositif maîtrise', 'Gravité nette', 'Probabilité nette', 'Efficacité DMR', 'Décision',
 			'Action PTR', 'Impact résiduel', 'Vraisemblance résiduel', 'Efficacité PTR'
 		];
+		const numCartoCols = cartoHeaders.length;
 		const wsCarto = wb.addWorksheet('Cartographie des risques', { views: [{ showGridLines: true }] });
-		wsCarto.addRow(['Cartographie des risques']).font = { bold: true, size: 14 };
-		wsCarto.addRow([]);
+		// Ligne 1 : Titre principal (fusionné sur toute la largeur)
+		const rowCartoTitle = wsCarto.addRow(['CARTOGRAPHIE DES RISQUES DE SECURITÉ DES SYSTÈMES D\'INFORMATION']);
+		rowCartoTitle.getCell(1).font = { bold: true, size: 14 };
+		rowCartoTitle.getCell(1).alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+		if (numCartoCols > 1) wsCarto.mergeCells(1, 1, 1, numCartoCols);
+		// Ligne 2 : Sections principales (fusion de cellules par bloc)
+		const cartoSectionColspans = [
+			3,   // Cartographie des Processus (Entité, Domaine, Activités)
+			7,   // Identification des risques inhérents (Code à Propriétaire)
+			3 + impactDefinitionsRows.length + 1,  // Évaluation Risque Brut (DIC + N impacts + Probabilité)
+			1,   // Détermination du degré d'exposition (DMR)
+			3,   // Évaluation Criticité du Risque Net (Gravité nette, Probabilité nette, Efficacité DMR)
+			2,   // PTR (Décision, Action)
+			3    // Évaluation du Risque Résiduel
+		];
+		const cartoSectionLabels = [
+			'Cartographie des Processus',
+			'Identification des risques inhérents',
+			'Évaluation de la Criticité du Risque Brut',
+			'Détermination du degré d\'exposition aux risques',
+			'Évaluation de la Criticité du Risque Net',
+			'Plan de traitement des risques (PTR)',
+			'Évaluation du Risque Résiduel'
+		];
+		const cartoSectionFills = ['FFFFFFFF', 'FF0D9488', 'FFFACC15', 'FF0891B2', 'FFFACC15', 'FF4B5563', 'FFFACC15']; // blanc, teal, yellow, teal-600, yellow, gray, yellow
+		let colAcc = 0;
+		const rowCartoSections = wsCarto.addRow(cartoHeaders.map(() => ''));
+		cartoSectionColspans.forEach((span, i) => {
+			const startCol = colAcc + 1;
+			const endCol = colAcc + span;
+			colAcc = endCol;
+			if (endCol > startCol) wsCarto.mergeCells(2, startCol, 2, endCol);
+			const cell = rowCartoSections.getCell(startCol);
+			cell.value = cartoSectionLabels[i];
+			cell.font = { bold: true };
+			cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+			cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: cartoSectionFills[i] } };
+			cell.border = EXCEL_BORDER_THIN;
+			if (i === 1 || i === 3) cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+		});
+		// Ligne 3 : En-têtes détaillés (une colonne par champ)
 		const rowCartoHeader = wsCarto.addRow(cartoHeaders);
-		applyHeaderRow(wsCarto, rowCartoHeader);
+		applyHeaderRow(wsCarto, rowCartoHeader, 'FF0284C7');
 		cartoRows.forEach((row) => {
 			const impacts = getRowImpacts(row);
 			const rowData = [
@@ -1099,6 +1212,9 @@
 			const argb = tailwindToExcelArgb(r.bgColor);
 			if (argb) applyCellStyle(row.getCell(1), { fill: argb, border: true });
 		});
+
+		// Activer wrap text sur toutes les feuilles
+		wb.eachSheet((ws) => applyWrapTextToSheet(ws));
 
 		const fileName = `La-methode-NearSecure-${new Date().toISOString().slice(0, 10)}.xlsx`;
 		const buffer = await wb.xlsx.writeBuffer();
