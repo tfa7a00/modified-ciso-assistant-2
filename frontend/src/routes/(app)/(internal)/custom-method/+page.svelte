@@ -1,11 +1,18 @@
 <script lang="ts">
-	// Page simple pour afficher une "méthode personnalisée"
+	// Page simple pour afficher La méthode NearSecure
 	// avec des tableaux statiques basés sur tes définitions en français.
 
 	import { onMount } from 'svelte';
 	import { beforeNavigate } from '$app/navigation';
+	import * as XLSX from 'xlsx';
 
 	const CUSTOM_METHOD_STORAGE_KEY = 'ciso-assistant-custom-method';
+
+	/** Retire les balises HTML pour l'export Excel */
+	function stripHtml(html: string): string {
+		if (typeof html !== 'string') return String(html ?? '');
+		return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+	}
 
 	type Row = Record<string, string>;
 
@@ -620,6 +627,168 @@
 			saveCustomMethodState();
 		}
 		_prevSection = activeSection;
+	}
+
+	/** Export de tout le contenu de la page en fichier Excel (plusieurs feuilles) */
+	function exportToExcel() {
+		const wb = XLSX.utils.book_new();
+
+		// 1. Contrôle du document
+		const controleData: (string | number)[][] = [
+			['Contrôle du document'],
+			[],
+			['Rédaction'],
+			['Rôle', 'Nom', 'Fonction', 'Date'],
+			...redactionRows.map((r) => [r.role, r.nom, r.fonction, r.date]),
+			[],
+			['Diffusion'],
+			['Nom', 'Entité / Fonction', 'Date'],
+			...diffusionRows.map((r) => [r.nom, r.entite_fonction, r.date]),
+			[],
+			['Versions'],
+			['Version', 'Date', 'Modification'],
+			...versionRows.map((r) => [r.version, r.date, r.modification])
+		];
+		XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(controleData), 'Controle du document');
+
+		// 2. Registre de classification
+		const registreHeaders = [
+			'Processus métier', 'Activité sous-processus', 'Désignation actif', 'Description actif',
+			'Catégorie actif', 'Type actif', 'Propriétaire actif', 'Disponibilité', 'Intégrité', 'Confidentialité',
+			'Sensibilité', 'Commentaire'
+		];
+		if (showRegistreLoi0520) {
+			registreHeaders.push('Impact Dispo 05.20', 'Impact Intégrité 05.20', 'Impact Confid 05.20');
+		}
+		const registreData: (string | number)[][] = [
+			['Registre de classification des actifs informationnels'],
+			[],
+			registreHeaders,
+			...registreRows.map((r) => {
+				const row = [
+					r.processus_metier, r.activite_sous_processus, r.designation_actif, r.description_actif,
+					r.categorie_actif, r.type_actif, r.proprietaire_actif, r.disponibilite, r.integrite, r.confidentialite,
+					r.sensibilite, r.commentaire
+				];
+				if (showRegistreLoi0520) {
+					row.push(r.impactDispo0520 ?? '', r.impactIntegrite0520 ?? '', r.impactConfid0520 ?? '');
+				}
+				return row;
+			})
+		];
+		XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(registreData), 'Registre de classification');
+
+		// 3. Aide-Classification
+		const aideClassData: (string | number)[][] = [
+			['Aide-Classification'],
+			[],
+			['Critères DIC', 'Définition', 'Couleur'],
+			...dicCriteriaRows.map((r) => [r.critere, r.definition, r.bgColor ?? '']),
+			[],
+			['Niveaux DIC', 'Valeur', 'Disponibilité', 'Intégrité', 'Confidentialité'],
+			...dicNiveauxRows.map((r) => [
+				r.valeur,
+				stripHtml(r.disponibilite),
+				stripHtml(r.integrite),
+				stripHtml(r.confidentialite)
+			]),
+			[],
+			['Catégories d\'actifs'],
+			...categoriesActifsRows.map((c) => [c])
+		];
+		XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aideClassData), 'Aide-Classification');
+
+		// 4. Cartographie des risques
+		const impactLabels = impactDefinitionsRows.map((d) => d.libelle);
+		const cartoHeaders = [
+			'Entité', 'Domaine / Processus', 'Activités', 'Code risque', 'Description scénario', 'Mesure ISO',
+			'Famille risque', 'Source', 'Famille causes', 'Propriétaire risque',
+			'DIC D', 'DIC I', 'DIC C', ...impactLabels, 'Probabilité',
+			'Dispositif maîtrise', 'Gravité nette', 'Probabilité nette', 'Efficacité DMR', 'Décision',
+			'Action PTR', 'Impact résiduel', 'Vraisemblance résiduel', 'Efficacité PTR'
+		];
+		const cartoData: (string | number)[][] = [
+			['Cartographie des risques'],
+			[],
+			cartoHeaders,
+			...cartoRows.map((row) => {
+				const impacts = getRowImpacts(row);
+				return [
+					row.entite ?? '', row.domaineProcessus ?? '', row.activites ?? '', row.codeRisque ?? '',
+					row.descriptionScenario ?? '', row.mesureISO ?? '', row.familleRisque ?? '', row.source ?? '',
+					row.familleCauses ?? '', row.proprietaireRisque ?? '',
+					row.dicD ? 'Oui' : 'Non', row.dicI ? 'Oui' : 'Non', row.dicC ? 'Oui' : 'Non',
+					...impacts,
+					row.probabilite ?? '',
+					row.dispositifMaitrise ?? '', row.graviteNet ?? '', row.probabiliteNet ?? '', row.efficaciteDMR ?? '',
+					row.decision ?? '', row.actionPTR ?? '', row.impactResiduel ?? '', row.vraisemblanceResiduel ?? '',
+					row.efficacitePTR ?? ''
+				];
+			})
+		];
+		XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(cartoData), 'Cartographie des risques');
+
+		// 5. Aide-Risque
+		const aideRisqueData: (string | number)[][] = [
+			['Aide-Risque'],
+			[],
+			['Probabilité', 'Échelle', 'Définition', 'Fréquence', 'Historique'],
+			...(probaRows as { echelle: string; definition: string; frequence: string; historique: string }[]).map((r) => [r.echelle, r.definition, r.frequence, r.historique]),
+			[],
+			['Impact', 'Échelle', 'Définition', 'Financier', 'Réputation', 'Parties prenantes', 'Réglementaire'],
+			...(impactRows as ImpactRow[]).map((r) => [r.echelle, r.definition, r.financier, r.reputation, r.parties_prenantes, r.reglementaire]),
+			[],
+			['Fréquence risque', 'Échelle', 'Définition', 'Signification'],
+			...frequenceRisqueRows.map((r) => [r.echelle, r.definition, (r as Row & { signification?: string }).signification ?? '']),
+			[],
+			['Définitions des impacts (Cartographie)'],
+			['Libellé', 'Définition'],
+			...impactDefinitionsRows.map((r) => [r.libelle, r.definition]),
+			[],
+			['Efficacité (DMR/PTR)', 'Niveau', 'Signification', 'Descriptif', 'Intervalle', 'Valeur'],
+			...efficaciteRows.map((r) => [r.niveau, r.signification, r.descriptif, r.intervalle, r.valeur])
+		];
+		// Matrice risque (grille)
+		const matriceHeaders = ['Libellé', ...(matriceRisqueRows[0]?.valeurs.map((_, i) => `Col${i + 1}`) ?? [])];
+		aideRisqueData.push([], ['Matrice risque'], matriceHeaders, ...matriceRisqueRows.map((r) => [r.libelle, ...r.valeurs]));
+		XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aideRisqueData), 'Aide-Risque');
+
+		// 6. PTR
+		const ptrHeaders = [
+			'REF Risque', 'Corresp. ISO27001', 'Propriétaire', 'Niveau risque', 'Décision', 'ID PTR', 'Action',
+			'Type action', 'Porteur', 'Priorité', 'Périodicité', 'Complexité', 'Échéance', 'État avancement'
+		];
+		const ptrDataExport = [
+			['PTR - Plan de traitement des risques'],
+			[],
+			ptrHeaders,
+			...ptrData.map((r) => [
+				r.refRisque, r.correspISO, r.proprietaire, r.niveauRisque, r.decision, r.idPTR, r.action,
+				r.typeAction, r.porteur, r.priorite, r.periodicite, r.complexite, r.echeance, r.etatAvancement
+			])
+		];
+		XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(ptrDataExport), 'PTR');
+
+		// 7. Echelle-PTR (Tables 1 à 4)
+		const echelleData: (string | number)[][] = [
+			['Echelle-PTR - Tables 1 à 4'],
+			[],
+			['Périodicité', 'Périodicité', 'Couleur'],
+			...periodiciteRows.map((r) => [r.periodicite, r.periodicite, r.bgColor ?? '']),
+			[],
+			['Complexité', 'Complexité', 'Couleur'],
+			...complexiteRows.map((r) => [r.complexite, r.complexite, r.bgColor ?? '']),
+			[],
+			['Type d\'action', 'Type action', 'Couleur'],
+			...typeActionRows.map((r) => [r.type_action, r.type_action, r.bgColor ?? '']),
+			[],
+			['Priorité', 'Échelle', 'Couleur'],
+			...prioriteRows.map((r) => [r.echelle, r.echelle, r.bgColor ?? ''])
+		];
+		XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(echelleData), 'Echelle-PTR');
+
+		const fileName = `La-methode-NearSecure-${new Date().toISOString().slice(0, 10)}.xlsx`;
+		XLSX.writeFile(wb, fileName);
 	}
 
 	onMount(() => {
@@ -2297,12 +2466,23 @@
 
 <main class="p-6 space-y-8">
 	<section class="space-y-2">
-		<h1 class="text-2xl font-bold text-gray-900">Méthode personnalisée</h1>
+		<div class="flex flex-wrap items-center justify-between gap-4">
+			<h1 class="text-2xl font-bold text-gray-900">La méthode NearSecure</h1>
+			<button
+				type="button"
+				class="px-4 py-2 text-sm font-medium rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors flex items-center gap-2"
+				on:click={exportToExcel}
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+				</svg>
+				Télécharger en Excel
+			</button>
+		</div>
 		<p class="text-gray-600 max-w-3xl">
-			Cette page regroupe les éléments de ta méthode personnalisée (contrôle du document, registre de classification,
+			Cette page regroupe les éléments de La méthode NearSecure (contrôle du document, registre de classification,
 			aides, cartographie des risques, PTR et échelle PTR). Les sections ci-dessous ne modifient
-			pas le moteur de scoring standard de CISO Assistant, mais servent de guide pour la méthode de
-			NearSecure.
+			pas le moteur de scoring standard de CISO Assistant, mais servent de guide pour la méthode NearSecure.
 		</p>
 	</section>
 

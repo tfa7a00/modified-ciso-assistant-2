@@ -139,6 +139,7 @@
 	"xRays": "X-rays",
 	"inspect": "Inspecter",
 	"scoringAssistant": "Assistant d'évaluation",
+	"customMethod": "La méthode NearSecure",
 	"scoringAssistantNoMatrixError": "Veuillez importer une matrice de risque depuis le magasin de bibliothèques pour pouvoir accéder à cette page",
 	"libraries": "Bibliothèques",
 	"backupRestore": "Sauvegarde et restauration",

@@ -146,6 +146,7 @@
 	"xRays": "X-rays",
 	"inspect": "Inspect",
 	"scoringAssistant": "Scoring assistant",
+	"customMethod": "La méthode NearSecure",
 	"scoringAssistantDescription": "Score a risk scenario using a risk matrix based on threat agent and vulnerability factors",
 	"scoringAssistantNoMatrixError": "Please import a risk matrix from the libraries store to get access to this page",
 	"libraries": "Libraries",
