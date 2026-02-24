@@ -972,9 +972,9 @@
 		const cartoHeaders = [
 			'Entité', 'Domaine / Processus', 'Activités', 'Code risque', 'Description scénario', 'Mesure ISO',
 			'Famille risque', 'Source', 'Famille causes', 'Propriétaire risque',
-			'DIC D', 'DIC I', 'DIC C', ...impactLabels, 'Probabilité',
-			'Dispositif maîtrise', 'Gravité nette', 'Probabilité nette', 'Efficacité DMR', 'Décision',
-			'Action PTR', 'Impact résiduel', 'Vraisemblance résiduel', 'Efficacité PTR'
+			'DIC D', 'DIC I', 'DIC C', ...impactLabels, 'Probabilité', 'Signification du risque brut',
+			'Dispositif maîtrise', 'Gravité nette', 'Probabilité nette', 'Efficacité DMR', 'Signification du risque net', 'Décision',
+			'Action PTR', 'Impact résiduel', 'Vraisemblance résiduel', 'Signification du risque résiduel', 'Efficacité PTR'
 		];
 		const numCartoCols = cartoHeaders.length;
 		const wsCarto = wb.addWorksheet('Cartographie des risques', { views: [{ showGridLines: true }] });
@@ -987,11 +987,11 @@
 		const cartoSectionColspans = [
 			3,   // Cartographie des Processus (Entité, Domaine, Activités)
 			7,   // Identification des risques inhérents (Code à Propriétaire)
-			3 + impactDefinitionsRows.length + 1,  // Évaluation Risque Brut (DIC + N impacts + Probabilité)
+			3 + impactDefinitionsRows.length + 2,  // Évaluation Risque Brut (DIC + N impacts + Probabilité + Signification brut)
 			1,   // Détermination du degré d'exposition (DMR)
-			3,   // Évaluation Criticité du Risque Net (Gravité nette, Probabilité nette, Efficacité DMR)
+			4,   // Évaluation Criticité du Risque Net (Gravité nette, Probabilité nette, Efficacité DMR, Signification net)
 			2,   // PTR (Décision, Action)
-			3    // Évaluation du Risque Résiduel
+			4    // Évaluation du Risque Résiduel (Impact rés., Vraisemblance, Signification résiduel, Efficacité PTR)
 		];
 		const cartoSectionLabels = [
 			'Cartographie des Processus',
@@ -1040,6 +1040,9 @@
 			const dicDVal = row.dicD ? '☑' : '☐';
 			const dicIVal = row.dicI ? '☑' : '☐';
 			const dicCVal = row.dicC ? '☑' : '☐';
+			const signifBrut = getNiveauBrut(row);
+			const signifNet = cartoVersion === 'B' ? getSignificationRisqueNetB(row) : getNiveauNet(row);
+			const signifResiduel = cartoVersion === 'B' ? getNiveauFromIpc(getNiveauRisqueResiduelB(row)) : getNiveauResiduel(row);
 			const rowData = [
 				row.entite ?? '', row.domaineProcessus ?? '', row.activites ?? '', row.codeRisque ?? '',
 				row.descriptionScenario ?? '', row.mesureISO ?? '', row.familleRisque ?? '', row.source ?? '',
@@ -1047,8 +1050,11 @@
 				dicDVal, dicIVal, dicCVal,
 				...impacts,
 				row.probabilite ?? '',
+				signifBrut,
 				row.dispositifMaitrise ?? '', row.graviteNet ?? '', row.probabiliteNet ?? '', row.efficaciteDMR ?? '',
+				signifNet,
 				row.decision ?? '', row.actionPTR ?? '', row.impactResiduel ?? '', row.vraisemblanceResiduel ?? '',
+				signifResiduel,
 				row.efficacitePTR ?? ''
 			];
 			const r = wsCarto.addRow(rowData);
@@ -1060,10 +1066,19 @@
 			if (row.dicD) { applyCellStyle(r.getCell(11), { fill: FILL_OUI, border: true }); }
 			if (row.dicI) { applyCellStyle(r.getCell(12), { fill: FILL_OUI, border: true }); }
 			if (row.dicC) { applyCellStyle(r.getCell(13), { fill: FILL_OUI, border: true }); }
-			applyCellStyle(r.getCell(16 + nImp), { fill: FILL_JAUNE_200, border: true }); // Gravité nette
-			applyCellStyle(r.getCell(17 + nImp), { fill: FILL_JAUNE_200, border: true }); // Probabilité nette
+			// Signification du risque brut / net / résiduel : couleur selon niveau (Faible=vert, Modéré=jaune, Élevé=orange, Extrême=rouge)
+			const colSignifBrut = 15 + nImp;
+			const colSignifNet = 20 + nImp;
+			const colSignifResiduel = 25 + nImp;
+			[colSignifBrut, colSignifNet, colSignifResiduel].forEach((colIdx, i) => {
+				const niveau = [signifBrut, signifNet, signifResiduel][i];
+				const argb = tailwindToExcelArgb(getNiveauRisqueBg(niveau));
+				if (argb) applyCellStyle(r.getCell(colIdx), { fill: argb, border: true });
+			});
+			applyCellStyle(r.getCell(17 + nImp), { fill: FILL_JAUNE_200, border: true }); // Gravité nette
+			applyCellStyle(r.getCell(18 + nImp), { fill: FILL_JAUNE_200, border: true }); // Probabilité nette
 			// Colonne Décision : liste de choix (Accepter, Réduire, Transférer, Éviter)
-			const colDecision = 19 + nImp;
+			const colDecision = 21 + nImp;
 			r.getCell(colDecision).dataValidation = {
 				type: 'list',
 				allowBlank: true,
