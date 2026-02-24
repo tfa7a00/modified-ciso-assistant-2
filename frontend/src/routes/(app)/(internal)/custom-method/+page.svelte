@@ -4012,13 +4012,13 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.dicI} on:change={() => saveCustomMethodState()} /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.dicC} on:change={() => saveCustomMethodState()} /></td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={row.impactD} on:change={() => saveCustomMethodState()} />
+							<span class="inline-block min-w-[2rem] text-xs font-medium">{row.impactD ?? '—'}</span>
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={row.impactI} on:change={() => saveCustomMethodState()} />
+							<span class="inline-block min-w-[2rem] text-xs font-medium">{row.impactI ?? '—'}</span>
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<input type="number" class="w-full min-w-12 text-xs p-1 text-center bg-transparent" min="1" max="4" bind:value={row.impactC} on:change={() => saveCustomMethodState()} />
+							<span class="inline-block min-w-[2rem] text-xs font-medium">{row.impactC ?? '—'}</span>
 						</td>
 						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(row) ?? '-'}</td>
 						{#each Array(8) as _, idx}
