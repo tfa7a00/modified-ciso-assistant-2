@@ -1892,10 +1892,18 @@
 		registreRows[index].sensibilite = dicNiveauxRows[clamped].valeur;
 	}
 
-	/** Quand la catégorie de l'actif est Document ou Données => Type = Primaire, sinon Secondaire */
+	/** Quand la catégorie de l'actif est Document ou Donnée(s) => Type = Actif primaire, sinon Actif support */
 	function mettreAJourTypeActif(index: number) {
 		const cat = (registreRows[index].categorie_actif || '').trim().toLowerCase();
-		registreRows[index].type_actif = cat === 'document' || cat === 'données' ? 'Primaire' : 'Secondaire';
+		registreRows[index].type_actif = cat === 'document' || cat === 'données' || cat === 'donnée' ? 'Actif primaire' : 'Actif support';
+	}
+
+	/** Libellé affiché pour le type d'actif (compatibilité anciennes valeurs Primaire/Secondaire) */
+	function getTypeActifLabel(type: string): string {
+		const t = (type || '').trim();
+		if (t === 'Primaire' || t === 'Actif primaire') return 'Actif primaire';
+		if (t === 'Secondaire' || t === 'Actif support') return 'Actif support';
+		return t || '—';
 	}
 
 
@@ -2821,9 +2829,9 @@
 										{/each}
 									</select>
 								</td>
-								<!-- Type de l'actif (automatique : Primaire si catégorie Document/Données, sinon Secondaire) -->
+								<!-- Type de l'actif (automatique : Actif primaire si catégorie Document/Donnée(s), sinon Actif support) -->
 								<td class="px-2 py-1 border border-black bg-gray-50 text-xs">
-									{registreRows[i].type_actif || '—'}
+									{getTypeActifLabel(registreRows[i].type_actif)}
 								</td>
 								<!-- Propriétaire de l'actif (Section 5) -->
 								<td class="px-2 py-1 border border-black bg-white">
