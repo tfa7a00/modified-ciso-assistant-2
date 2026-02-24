@@ -28,6 +28,8 @@
 		'bg-orange-100': 'FFFFEDD5',
 		'bg-red-500': 'FFEF4444',
 		'bg-red-600': 'FFDC2626',
+		'bg-red-700': 'FFB91C1C',
+		'bg-red-900': 'FF7F1D1D',
 		'bg-rose-900': 'FF881337',
 		'bg-blue-600': 'FF2563EB',
 		'bg-blue-400': 'FF60A5FA',
@@ -1046,7 +1048,8 @@
 		(probaRows as ProbaRow[]).forEach((r) => {
 			const row = wsAideRisque.addRow([r.echelle, r.definition, r.frequence, r.historique]);
 			applyDataRowBorder(wsAideRisque, row);
-			const argb = tailwindToExcelArgb(r.bgColor);
+			const fillColor = r.bgColor ?? getProbaDefBg(r.definition);
+			const argb = tailwindToExcelArgb(fillColor);
 			if (argb) row.eachCell((c) => applyCellStyle(c, { fill: argb, border: true }));
 		});
 		wsAideRisque.addRow([]);
@@ -1056,7 +1059,8 @@
 		(impactRows as ImpactRow[]).forEach((r) => {
 			const row = wsAideRisque.addRow([r.echelle, r.definition, r.financier, r.reputation, r.parties_prenantes, r.reglementaire]);
 			applyDataRowBorder(wsAideRisque, row);
-			const argb = tailwindToExcelArgb(r.bgColor);
+			const fillColor = r.bgColor ?? getImpactDefBg(r.definition);
+			const argb = tailwindToExcelArgb(fillColor);
 			if (argb) row.eachCell((c) => applyCellStyle(c, { fill: argb, border: true }));
 		});
 		wsAideRisque.addRow([]);
