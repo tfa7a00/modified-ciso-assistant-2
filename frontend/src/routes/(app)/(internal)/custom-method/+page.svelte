@@ -4,7 +4,7 @@
 
 	import { onMount } from 'svelte';
 	import { beforeNavigate } from '$app/navigation';
-	import * as XLSX from 'xlsx';
+	import ExcelJS from 'exceljs';
 
 	const CUSTOM_METHOD_STORAGE_KEY = 'ciso-assistant-custom-method';
 
@@ -12,6 +12,73 @@
 	function stripHtml(html: string): string {
 		if (typeof html !== 'string') return String(html ?? '');
 		return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+	}
+
+	/** Mapping Tailwind bg-* / bg-[#xxx] vers ARGB Excel (FF + RRGGBB) */
+	const TAILWIND_TO_ARGB: Record<string, string> = {
+		'bg-green-400': 'FF4ADE80',
+		'bg-green-500': 'FF22C55E',
+		'bg-green-600': 'FF16A34A',
+		'bg-green-100': 'FFDCFCE7',
+		'bg-yellow-300': 'FFFDE047',
+		'bg-yellow-400': 'FFFACC15',
+		'bg-orange-400': 'FFFB923C',
+		'bg-orange-500': 'FFF97316',
+		'bg-orange-100': 'FFFFEDD5',
+		'bg-red-500': 'FFEF4444',
+		'bg-red-600': 'FFDC2626',
+		'bg-rose-900': 'FF881337',
+		'bg-blue-600': 'FF2563EB',
+		'bg-sky-100': 'FFE0F2FE',
+		'bg-sky-600': 'FF0284C7',
+		'bg-gray-100': 'FFF3F4F6',
+		'bg-gray-500': 'FF6B7280',
+		'bg-amber-100': 'FFFEF3C7',
+		'bg-white': 'FFFFFFFF',
+		'bg-[#FFC000]': 'FFFFC000',
+		'bg-[#ffc000]': 'FFFFC000',
+		'bg-[#ff0000]': 'FFFF0000',
+		'bg-[#ffff00]': 'FFFFFF00',
+		'bg-[#92d050]': 'FF92D050',
+		'bg-[#00b050]': 'FF00B050'
+	};
+
+	function tailwindToExcelArgb(bgColor: string | undefined): string | null {
+		if (!bgColor) return null;
+		const key = bgColor.replace(/ text-black| text-white/gi, '').trim();
+		return TAILWIND_TO_ARGB[key] ?? (key.startsWith('bg-[#') ? 'FF' + key.replace(/^bg-\[#|\]$/g, '') : null);
+	}
+
+	const EXCEL_HEADER_FILL = { type: 'pattern' as const, pattern: 'solid' as const, fgColor: { argb: 'FF0284C7' } };
+	const EXCEL_HEADER_FONT = { bold: true, color: { argb: 'FFFFFFFF' } };
+	const EXCEL_BORDER_THIN = { top: { style: 'thin' as const }, left: { style: 'thin' as const }, bottom: { style: 'thin' as const }, right: { style: 'thin' as const } };
+
+	function applyCellStyle(cell: ExcelJS.Cell, opts: { fill?: string; bold?: boolean; border?: boolean }) {
+		if (opts.fill) {
+			cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: opts.fill } };
+		}
+		if (opts.bold) {
+			cell.font = { ...cell.font, bold: true };
+		}
+		if (opts.border) {
+			cell.border = EXCEL_BORDER_THIN;
+		}
+	}
+
+	function applyHeaderRow(worksheet: ExcelJS.Worksheet, row: ExcelJS.Row) {
+		row.eachCell((cell) => {
+			cell.fill = EXCEL_HEADER_FILL;
+			cell.font = EXCEL_HEADER_FONT;
+			cell.border = EXCEL_BORDER_THIN;
+			cell.alignment = { vertical: 'middle', wrapText: true };
+		});
+	}
+
+	function applyDataRowBorder(worksheet: ExcelJS.Worksheet, row: ExcelJS.Row) {
+		row.eachCell((cell) => {
+			cell.border = EXCEL_BORDER_THIN;
+			cell.alignment = { vertical: 'middle', wrapText: true };
+		});
 	}
 
 	type Row = Record<string, string>;
@@ -629,29 +696,43 @@
 		_prevSection = activeSection;
 	}
 
-	/** Export de tout le contenu de la page en fichier Excel (plusieurs feuilles) */
-	function exportToExcel() {
-		const wb = XLSX.utils.book_new();
+	/** Export de tout le contenu de la page en fichier Excel (plusieurs feuilles, avec couleurs et bordures) */
+	async function exportToExcel() {
+		const wb = new ExcelJS.Workbook();
+		wb.creator = 'CISO Assistant - La méthode NearSecure';
 
-		// 1. Contrôle du document
-		const controleData: (string | number)[][] = [
-			['Contrôle du document'],
-			[],
-			['Rédaction'],
-			['Rôle', 'Nom', 'Fonction', 'Date'],
-			...redactionRows.map((r) => [r.role, r.nom, r.fonction, r.date]),
-			[],
-			['Diffusion'],
-			['Nom', 'Entité / Fonction', 'Date'],
-			...diffusionRows.map((r) => [r.nom, r.entite_fonction, r.date]),
-			[],
-			['Versions'],
-			['Version', 'Date', 'Modification'],
-			...versionRows.map((r) => [r.version, r.date, r.modification])
-		];
-		XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(controleData), 'Controle du document');
+		// --- Feuille 1 : Contrôle du document ---
+		const wsControle = wb.addWorksheet('Controle du document', { views: [{ showGridLines: true }] });
+		wsControle.addRow(['Contrôle du document']).font = { bold: true, size: 14 };
+		wsControle.addRow([]);
+		wsControle.addRow(['Rédaction']).font = { bold: true };
+		const rowRedacHeader = wsControle.addRow(['Rôle', 'Nom', 'Fonction', 'Date']);
+		applyHeaderRow(wsControle, rowRedacHeader);
+		redactionRows.forEach((r) => {
+			const row = wsControle.addRow([r.role, r.nom, r.fonction, r.date]);
+			applyDataRowBorder(wsControle, row);
+		});
+		wsControle.addRow([]);
+		wsControle.addRow(['Diffusion']).font = { bold: true };
+		const rowDiffHeader = wsControle.addRow(['Nom', 'Entité / Fonction', 'Date']);
+		applyHeaderRow(wsControle, rowDiffHeader);
+		diffusionRows.forEach((r) => {
+			const row = wsControle.addRow([r.nom, r.entite_fonction, r.date]);
+			applyDataRowBorder(wsControle, row);
+		});
+		wsControle.addRow([]);
+		wsControle.addRow(['Versions']).font = { bold: true };
+		const rowVersHeader = wsControle.addRow(['Version', 'Date', 'Modification']);
+		applyHeaderRow(wsControle, rowVersHeader);
+		versionRows.forEach((r) => {
+			const row = wsControle.addRow([r.version, r.date, r.modification]);
+			applyDataRowBorder(wsControle, row);
+		});
 
-		// 2. Registre de classification
+		// --- Feuille 2 : Registre de classification ---
+		const wsRegistre = wb.addWorksheet('Registre de classification', { views: [{ showGridLines: true }] });
+		wsRegistre.addRow(['Registre de classification des actifs informationnels']).font = { bold: true, size: 14 };
+		wsRegistre.addRow([]);
 		const registreHeaders = [
 			'Processus métier', 'Activité sous-processus', 'Désignation actif', 'Description actif',
 			'Catégorie actif', 'Type actif', 'Propriétaire actif', 'Disponibilité', 'Intégrité', 'Confidentialité',
@@ -660,45 +741,63 @@
 		if (showRegistreLoi0520) {
 			registreHeaders.push('Impact Dispo 05.20', 'Impact Intégrité 05.20', 'Impact Confid 05.20');
 		}
-		const registreData: (string | number)[][] = [
-			['Registre de classification des actifs informationnels'],
-			[],
-			registreHeaders,
-			...registreRows.map((r) => {
-				const row = [
-					r.processus_metier, r.activite_sous_processus, r.designation_actif, r.description_actif,
-					r.categorie_actif, r.type_actif, r.proprietaire_actif, r.disponibilite, r.integrite, r.confidentialite,
-					r.sensibilite, r.commentaire
-				];
-				if (showRegistreLoi0520) {
-					row.push(r.impactDispo0520 ?? '', r.impactIntegrite0520 ?? '', r.impactConfid0520 ?? '');
-				}
-				return row;
-			})
-		];
-		XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(registreData), 'Registre de classification');
+		const rowRegHeader = wsRegistre.addRow(registreHeaders);
+		applyHeaderRow(wsRegistre, rowRegHeader);
+		registreRows.forEach((r) => {
+			const rowData: (string | number)[] = [
+				r.processus_metier, r.activite_sous_processus, r.designation_actif, r.description_actif,
+				r.categorie_actif, r.type_actif, r.proprietaire_actif, r.disponibilite, r.integrite, r.confidentialite,
+				r.sensibilite, r.commentaire
+			];
+			if (showRegistreLoi0520) {
+				rowData.push(r.impactDispo0520 ?? '', r.impactIntegrite0520 ?? '', r.impactConfid0520 ?? '');
+			}
+			const row = wsRegistre.addRow(rowData);
+			applyDataRowBorder(wsRegistre, row);
+		});
 
-		// 3. Aide-Classification
-		const aideClassData: (string | number)[][] = [
-			['Aide-Classification'],
-			[],
-			['Critères DIC', 'Définition', 'Couleur'],
-			...dicCriteriaRows.map((r) => [r.critere, r.definition, r.bgColor ?? '']),
-			[],
-			['Niveaux DIC', 'Valeur', 'Disponibilité', 'Intégrité', 'Confidentialité'],
-			...dicNiveauxRows.map((r) => [
+		// --- Feuille 3 : Aide-Classification (avec couleurs DIC) ---
+		const wsAideClass = wb.addWorksheet('Aide-Classification', { views: [{ showGridLines: true }] });
+		wsAideClass.addRow(['Aide-Classification']).font = { bold: true, size: 14 };
+		wsAideClass.addRow([]);
+		wsAideClass.addRow(['Critères DIC']).font = { bold: true };
+		const rowDicCritHeader = wsAideClass.addRow(['Critère', 'Définition']);
+		applyHeaderRow(wsAideClass, rowDicCritHeader);
+		dicCriteriaRows.forEach((r) => {
+			const row = wsAideClass.addRow([r.critere, r.definition]);
+			applyDataRowBorder(wsAideClass, row);
+			const argb = tailwindToExcelArgb(r.bgColor);
+			if (argb) {
+				row.eachCell((cell, colNumber) => {
+					if (colNumber <= 2) applyCellStyle(cell, { fill: argb, border: true });
+				});
+			}
+		});
+		wsAideClass.addRow([]);
+		wsAideClass.addRow(['Niveaux DIC']).font = { bold: true };
+		const rowDicNivHeader = wsAideClass.addRow(['Valeur', 'Disponibilité', 'Intégrité', 'Confidentialité']);
+		applyHeaderRow(wsAideClass, rowDicNivHeader);
+		dicNiveauxRows.forEach((r) => {
+			const row = wsAideClass.addRow([
 				r.valeur,
 				stripHtml(r.disponibilite),
 				stripHtml(r.integrite),
 				stripHtml(r.confidentialite)
-			]),
-			[],
-			['Catégories d\'actifs'],
-			...categoriesActifsRows.map((c) => [c])
-		];
-		XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aideClassData), 'Aide-Classification');
+			]);
+			applyDataRowBorder(wsAideClass, row);
+			const argb = tailwindToExcelArgb(r.bgColor);
+			if (argb) {
+				row.eachCell((c) => applyCellStyle(c, { fill: argb, border: true }));
+			}
+		});
+		wsAideClass.addRow([]);
+		wsAideClass.addRow(['Catégories d\'actifs']).font = { bold: true };
+		categoriesActifsRows.forEach((c) => {
+			const row = wsAideClass.addRow([c]);
+			applyDataRowBorder(wsAideClass, row);
+		});
 
-		// 4. Cartographie des risques
+		// --- Feuille 4 : Cartographie des risques ---
 		const impactLabels = impactDefinitionsRows.map((d) => d.libelle);
 		const cartoHeaders = [
 			'Entité', 'Domaine / Processus', 'Activités', 'Code risque', 'Description scénario', 'Mesure ISO',
@@ -707,88 +806,192 @@
 			'Dispositif maîtrise', 'Gravité nette', 'Probabilité nette', 'Efficacité DMR', 'Décision',
 			'Action PTR', 'Impact résiduel', 'Vraisemblance résiduel', 'Efficacité PTR'
 		];
-		const cartoData: (string | number)[][] = [
-			['Cartographie des risques'],
-			[],
-			cartoHeaders,
-			...cartoRows.map((row) => {
-				const impacts = getRowImpacts(row);
-				return [
-					row.entite ?? '', row.domaineProcessus ?? '', row.activites ?? '', row.codeRisque ?? '',
-					row.descriptionScenario ?? '', row.mesureISO ?? '', row.familleRisque ?? '', row.source ?? '',
-					row.familleCauses ?? '', row.proprietaireRisque ?? '',
-					row.dicD ? 'Oui' : 'Non', row.dicI ? 'Oui' : 'Non', row.dicC ? 'Oui' : 'Non',
-					...impacts,
-					row.probabilite ?? '',
-					row.dispositifMaitrise ?? '', row.graviteNet ?? '', row.probabiliteNet ?? '', row.efficaciteDMR ?? '',
-					row.decision ?? '', row.actionPTR ?? '', row.impactResiduel ?? '', row.vraisemblanceResiduel ?? '',
-					row.efficacitePTR ?? ''
-				];
-			})
-		];
-		XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(cartoData), 'Cartographie des risques');
+		const wsCarto = wb.addWorksheet('Cartographie des risques', { views: [{ showGridLines: true }] });
+		wsCarto.addRow(['Cartographie des risques']).font = { bold: true, size: 14 };
+		wsCarto.addRow([]);
+		const rowCartoHeader = wsCarto.addRow(cartoHeaders);
+		applyHeaderRow(wsCarto, rowCartoHeader);
+		cartoRows.forEach((row) => {
+			const impacts = getRowImpacts(row);
+			const rowData = [
+				row.entite ?? '', row.domaineProcessus ?? '', row.activites ?? '', row.codeRisque ?? '',
+				row.descriptionScenario ?? '', row.mesureISO ?? '', row.familleRisque ?? '', row.source ?? '',
+				row.familleCauses ?? '', row.proprietaireRisque ?? '',
+				row.dicD ? 'Oui' : 'Non', row.dicI ? 'Oui' : 'Non', row.dicC ? 'Oui' : 'Non',
+				...impacts,
+				row.probabilite ?? '',
+				row.dispositifMaitrise ?? '', row.graviteNet ?? '', row.probabiliteNet ?? '', row.efficaciteDMR ?? '',
+				row.decision ?? '', row.actionPTR ?? '', row.impactResiduel ?? '', row.vraisemblanceResiduel ?? '',
+				row.efficacitePTR ?? ''
+			];
+			const r = wsCarto.addRow(rowData);
+			applyDataRowBorder(wsCarto, r);
+		});
 
-		// 5. Aide-Risque
-		const aideRisqueData: (string | number)[][] = [
-			['Aide-Risque'],
-			[],
-			['Probabilité', 'Échelle', 'Définition', 'Fréquence', 'Historique'],
-			...(probaRows as { echelle: string; definition: string; frequence: string; historique: string }[]).map((r) => [r.echelle, r.definition, r.frequence, r.historique]),
-			[],
-			['Impact', 'Échelle', 'Définition', 'Financier', 'Réputation', 'Parties prenantes', 'Réglementaire'],
-			...(impactRows as ImpactRow[]).map((r) => [r.echelle, r.definition, r.financier, r.reputation, r.parties_prenantes, r.reglementaire]),
-			[],
-			['Fréquence risque', 'Échelle', 'Définition', 'Signification'],
-			...frequenceRisqueRows.map((r) => [r.echelle, r.definition, (r as Row & { signification?: string }).signification ?? '']),
-			[],
-			['Définitions des impacts (Cartographie)'],
-			['Libellé', 'Définition'],
-			...impactDefinitionsRows.map((r) => [r.libelle, r.definition]),
-			[],
-			['Efficacité (DMR/PTR)', 'Niveau', 'Signification', 'Descriptif', 'Intervalle', 'Valeur'],
-			...efficaciteRows.map((r) => [r.niveau, r.signification, r.descriptif, r.intervalle, r.valeur])
-		];
-		// Matrice risque (grille)
+		// --- Feuille 5 : Aide-Risque (probabilité, impact, fréquence, efficacité avec couleurs) ---
+		const wsAideRisque = wb.addWorksheet('Aide-Risque', { views: [{ showGridLines: true }] });
+		wsAideRisque.addRow(['Aide-Risque']).font = { bold: true, size: 14 };
+		wsAideRisque.addRow([]);
+		wsAideRisque.addRow(['Probabilité']).font = { bold: true };
+		const rowProbaHeader = wsAideRisque.addRow(['Échelle', 'Définition', 'Fréquence', 'Historique']);
+		applyHeaderRow(wsAideRisque, rowProbaHeader);
+		(probaRows as ProbaRow[]).forEach((r) => {
+			const row = wsAideRisque.addRow([r.echelle, r.definition, r.frequence, r.historique]);
+			applyDataRowBorder(wsAideRisque, row);
+			const argb = tailwindToExcelArgb(r.bgColor);
+			if (argb) row.eachCell((c) => applyCellStyle(c, { fill: argb, border: true }));
+		});
+		wsAideRisque.addRow([]);
+		wsAideRisque.addRow(['Impact']).font = { bold: true };
+		const rowImpactHeader = wsAideRisque.addRow(['Échelle', 'Définition', 'Financier', 'Réputation', 'Parties prenantes', 'Réglementaire']);
+		applyHeaderRow(wsAideRisque, rowImpactHeader);
+		(impactRows as ImpactRow[]).forEach((r) => {
+			const row = wsAideRisque.addRow([r.echelle, r.definition, r.financier, r.reputation, r.parties_prenantes, r.reglementaire]);
+			applyDataRowBorder(wsAideRisque, row);
+			const argb = tailwindToExcelArgb(r.bgColor);
+			if (argb) row.eachCell((c) => applyCellStyle(c, { fill: argb, border: true }));
+		});
+		wsAideRisque.addRow([]);
+		wsAideRisque.addRow(['Fréquence risque']).font = { bold: true };
+		const rowFreqHeader = wsAideRisque.addRow(['Échelle', 'Définition', 'Signification']);
+		applyHeaderRow(wsAideRisque, rowFreqHeader);
+		frequenceRisqueRows.forEach((r) => {
+			const row = wsAideRisque.addRow([r.echelle, r.definition, (r as Row & { signification?: string }).signification ?? '']);
+			applyDataRowBorder(wsAideRisque, row);
+			const argb = tailwindToExcelArgb((r as Row & { bgColor?: string }).bgColor);
+			if (argb) row.eachCell((c) => applyCellStyle(c, { fill: argb, border: true }));
+		});
+		wsAideRisque.addRow([]);
+		wsAideRisque.addRow(['Définitions des impacts (Cartographie)']).font = { bold: true };
+		const rowImpDefHeader = wsAideRisque.addRow(['Libellé', 'Définition']);
+		applyHeaderRow(wsAideRisque, rowImpDefHeader);
+		impactDefinitionsRows.forEach((r) => {
+			const row = wsAideRisque.addRow([r.libelle, r.definition]);
+			applyDataRowBorder(wsAideRisque, row);
+		});
+		wsAideRisque.addRow([]);
+		wsAideRisque.addRow(['Efficacité (DMR/PTR)']).font = { bold: true };
+		const rowEffHeader = wsAideRisque.addRow(['Niveau', 'Signification', 'Descriptif', 'Intervalle', 'Valeur']);
+		applyHeaderRow(wsAideRisque, rowEffHeader);
+		efficaciteRows.forEach((r) => {
+			const row = wsAideRisque.addRow([r.niveau, r.signification, r.descriptif, r.intervalle, r.valeur]);
+			applyDataRowBorder(wsAideRisque, row);
+			const argb = tailwindToExcelArgb(r.bgColor);
+			if (argb) row.eachCell((c) => applyCellStyle(c, { fill: argb, border: true }));
+		});
+		wsAideRisque.addRow([]);
+		wsAideRisque.addRow(['Matrice risque']).font = { bold: true };
 		const matriceHeaders = ['Libellé', ...(matriceRisqueRows[0]?.valeurs.map((_, i) => `Col${i + 1}`) ?? [])];
-		aideRisqueData.push([], ['Matrice risque'], matriceHeaders, ...matriceRisqueRows.map((r) => [r.libelle, ...r.valeurs]));
-		XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aideRisqueData), 'Aide-Risque');
+		const rowMatHeader = wsAideRisque.addRow(matriceHeaders);
+		applyHeaderRow(wsAideRisque, rowMatHeader);
+		matriceRisqueRows.forEach((r) => {
+			const row = wsAideRisque.addRow([r.libelle, ...r.valeurs]);
+			applyDataRowBorder(wsAideRisque, row);
+		});
 
-		// 6. PTR
+		// --- Feuille 6 : PTR (en-tête couleur type UI) ---
 		const ptrHeaders = [
 			'REF Risque', 'Corresp. ISO27001', 'Propriétaire', 'Niveau risque', 'Décision', 'ID PTR', 'Action',
 			'Type action', 'Porteur', 'Priorité', 'Périodicité', 'Complexité', 'Échéance', 'État avancement'
 		];
-		const ptrDataExport = [
-			['PTR - Plan de traitement des risques'],
-			[],
-			ptrHeaders,
-			...ptrData.map((r) => [
+		const wsPTR = wb.addWorksheet('PTR', { views: [{ showGridLines: true }] });
+		wsPTR.addRow(['PTR - Plan de traitement des risques']).font = { bold: true, size: 14 };
+		wsPTR.addRow([]);
+		const rowPtrHeader = wsPTR.addRow(ptrHeaders);
+		applyHeaderRow(wsPTR, rowPtrHeader);
+		ptrData.forEach((r) => {
+			const row = wsPTR.addRow([
 				r.refRisque, r.correspISO, r.proprietaire, r.niveauRisque, r.decision, r.idPTR, r.action,
 				r.typeAction, r.porteur, r.priorite, r.periodicite, r.complexite, r.echeance, r.etatAvancement
-			])
-		];
-		XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(ptrDataExport), 'PTR');
+			]);
+			applyDataRowBorder(wsPTR, row);
+			// Couleur type action (col 8)
+			const typeActionRow = typeActionRows.find((t) => t.type_action === r.typeAction);
+			const argbType = typeActionRow ? tailwindToExcelArgb(typeActionRow.bgColor) : null;
+			if (argbType) {
+				const cell = row.getCell(8);
+				applyCellStyle(cell, { fill: argbType, border: true });
+			}
+			// Couleur priorité (col 10)
+			const prioriteRow = prioriteRows.find((p) => p.echelle === r.priorite);
+			const argbPriorite = prioriteRow ? tailwindToExcelArgb(prioriteRow.bgColor) : null;
+			if (argbPriorite) {
+				const cell = row.getCell(10);
+				applyCellStyle(cell, { fill: argbPriorite, border: true });
+			}
+			// Couleur périodicité (col 11)
+			const perRow = periodiciteRows.find((p) => p.periodicite === r.periodicite);
+			const argbPer = perRow ? tailwindToExcelArgb(perRow.bgColor) : null;
+			if (argbPer) {
+				const cell = row.getCell(11);
+				applyCellStyle(cell, { fill: argbPer, border: true });
+			}
+			// Couleur complexité (col 12)
+			const compRow = complexiteRows.find((c) => c.complexite === r.complexite);
+			const argbComp = compRow ? tailwindToExcelArgb(compRow.bgColor) : null;
+			if (argbComp) {
+				const cell = row.getCell(12);
+				applyCellStyle(cell, { fill: argbComp, border: true });
+			}
+		});
 
-		// 7. Echelle-PTR (Tables 1 à 4)
-		const echelleData: (string | number)[][] = [
-			['Echelle-PTR - Tables 1 à 4'],
-			[],
-			['Périodicité', 'Périodicité', 'Couleur'],
-			...periodiciteRows.map((r) => [r.periodicite, r.periodicite, r.bgColor ?? '']),
-			[],
-			['Complexité', 'Complexité', 'Couleur'],
-			...complexiteRows.map((r) => [r.complexite, r.complexite, r.bgColor ?? '']),
-			[],
-			['Type d\'action', 'Type action', 'Couleur'],
-			...typeActionRows.map((r) => [r.type_action, r.type_action, r.bgColor ?? '']),
-			[],
-			['Priorité', 'Échelle', 'Couleur'],
-			...prioriteRows.map((r) => [r.echelle, r.echelle, r.bgColor ?? ''])
-		];
-		XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(echelleData), 'Echelle-PTR');
+		// --- Feuille 7 : Echelle-PTR (tables avec couleurs) ---
+		const wsEchelle = wb.addWorksheet('Echelle-PTR', { views: [{ showGridLines: true }] });
+		wsEchelle.addRow(['Echelle-PTR - Tables 1 à 4']).font = { bold: true, size: 14 };
+		wsEchelle.addRow([]);
+		wsEchelle.addRow(['Périodicité']).font = { bold: true };
+		const rowPerHeader = wsEchelle.addRow(['Périodicité', 'Durée', 'Couleur']);
+		applyHeaderRow(wsEchelle, rowPerHeader);
+		periodiciteRows.forEach((r) => {
+			const row = wsEchelle.addRow([r.periodicite, (r as Row & { duree?: string }).duree ?? '', r.bgColor ?? '']);
+			applyDataRowBorder(wsEchelle, row);
+			const argb = tailwindToExcelArgb(r.bgColor);
+			if (argb) {
+				row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb } };
+				row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb } };
+				row.eachCell((c) => { c.border = EXCEL_BORDER_THIN; });
+			}
+		});
+		wsEchelle.addRow([]);
+		wsEchelle.addRow(['Complexité']).font = { bold: true };
+		const rowCompHeader = wsEchelle.addRow(['Complexité', 'Couleur']);
+		applyHeaderRow(wsEchelle, rowCompHeader);
+		complexiteRows.forEach((r) => {
+			const row = wsEchelle.addRow([r.complexite, r.bgColor ?? '']);
+			applyDataRowBorder(wsEchelle, row);
+			const argb = tailwindToExcelArgb(r.bgColor);
+			if (argb) row.eachCell((c) => applyCellStyle(c, { fill: argb, border: true }));
+		});
+		wsEchelle.addRow([]);
+		wsEchelle.addRow(['Type d\'action']).font = { bold: true };
+		const rowTypeHeader = wsEchelle.addRow(['Type action', 'Couleur']);
+		applyHeaderRow(wsEchelle, rowTypeHeader);
+		typeActionRows.forEach((r) => {
+			const row = wsEchelle.addRow([r.type_action, r.bgColor ?? '']);
+			applyDataRowBorder(wsEchelle, row);
+			const argb = tailwindToExcelArgb(r.bgColor);
+			if (argb) row.eachCell((c) => applyCellStyle(c, { fill: argb, border: true }));
+		});
+		wsEchelle.addRow([]);
+		wsEchelle.addRow(['Priorité']).font = { bold: true };
+		const rowPriorHeader = wsEchelle.addRow(['Échelle', 'Couleur']);
+		applyHeaderRow(wsEchelle, rowPriorHeader);
+		prioriteRows.forEach((r) => {
+			const row = wsEchelle.addRow([r.echelle, r.bgColor ?? '']);
+			applyDataRowBorder(wsEchelle, row);
+			const argb = tailwindToExcelArgb(r.bgColor);
+			if (argb) row.eachCell((c) => applyCellStyle(c, { fill: argb, border: true }));
+		});
 
 		const fileName = `La-methode-NearSecure-${new Date().toISOString().slice(0, 10)}.xlsx`;
-		XLSX.writeFile(wb, fileName);
+		const buffer = await wb.xlsx.writeBuffer();
+		const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = fileName;
+		a.click();
+		URL.revokeObjectURL(url);
 	}
 
 	onMount(() => {
