@@ -2998,6 +2998,7 @@
 											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
 											type="text"
 											bind:value={diffusionRows[i].nom}
+											on:blur={() => saveCustomMethodState()}
 										/>
 									</td>
 									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
@@ -3005,6 +3006,7 @@
 											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
 											type="text"
 											bind:value={diffusionRows[i].entite_fonction}
+											on:blur={() => saveCustomMethodState()}
 										/>
 									</td>
 									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
@@ -3012,6 +3014,7 @@
 											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
 											type="text"
 											bind:value={diffusionRows[i].date}
+											on:blur={() => saveCustomMethodState()}
 										/>
 									</td>
 									{#if editModeControleDocument}
