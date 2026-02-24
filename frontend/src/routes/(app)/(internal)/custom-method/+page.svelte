@@ -2914,73 +2914,37 @@
 							{#each redactionRows as row, i}
 								<tr class="border border-gray-700">
 									<td class="px-4 py-2 font-semibold text-white bg-gray-600 border border-gray-700">
-										{row.role}
+										<input
+											class="w-full border border-transparent bg-transparent text-white placeholder-white/70 rounded px-2 py-1 text-sm font-semibold"
+											type="text"
+											bind:value={redactionRows[i].role}
+											on:blur={() => saveCustomMethodState()}
+											placeholder="Ex. Écrit par :"
+										/>
 									</td>
 									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
-										{#if isEditing('redaction', i, 'nom')}
-											<input
-												use:focusInputOnMount
-												class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
-												type="text"
-												bind:value={redactionRows[i].nom}
-												on:blur={stopEditing}
-												on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
-											/>
-										{:else}
-											<div
-												role="button"
-												tabindex="0"
-												class="w-full px-2 py-1 text-sm border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[28px]"
-												on:click={() => startEditing('redaction', i, 'nom')}
-												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('redaction', i, 'nom')) : null}
-											>
-												{row.nom || '\u00A0'}
-											</div>
-										{/if}
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={redactionRows[i].nom}
+											on:blur={() => saveCustomMethodState()}
+										/>
 									</td>
 									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
-										{#if isEditing('redaction', i, 'fonction')}
-											<input
-												use:focusInputOnMount
-												class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
-												type="text"
-												bind:value={redactionRows[i].fonction}
-												on:blur={stopEditing}
-												on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
-											/>
-										{:else}
-											<div
-												role="button"
-												tabindex="0"
-												class="w-full px-2 py-1 text-sm border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[28px]"
-												on:click={() => startEditing('redaction', i, 'fonction')}
-												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('redaction', i, 'fonction')) : null}
-											>
-												{row.fonction || '\u00A0'}
-											</div>
-										{/if}
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={redactionRows[i].fonction}
+											on:blur={() => saveCustomMethodState()}
+										/>
 									</td>
 									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
-										{#if isEditing('redaction', i, 'date')}
-											<input
-												use:focusInputOnMount
-												class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
-												type="text"
-												bind:value={redactionRows[i].date}
-												on:blur={stopEditing}
-												on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
-											/>
-										{:else}
-											<div
-												role="button"
-												tabindex="0"
-												class="w-full px-2 py-1 text-sm border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[28px]"
-												on:click={() => startEditing('redaction', i, 'date')}
-												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('redaction', i, 'date')) : null}
-											>
-												{row.date || '\u00A0'}
-											</div>
-										{/if}
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={redactionRows[i].date}
+											on:blur={() => saveCustomMethodState()}
+										/>
 									</td>
 									{#if editModeControleDocument}
 										<td class="px-4 py-2 border border-gray-700 bg-gray-100">
@@ -3098,70 +3062,28 @@
 							{#each versionRows as row, i}
 								<tr class="border border-gray-700">
 									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
-										{#if isEditing('version', i, 'version')}
-											<input
-												use:focusInputOnMount
-												class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
-												type="text"
-												bind:value={versionRows[i].version}
-												on:blur={stopEditing}
-												on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
-											/>
-										{:else}
-											<div
-												role="button"
-												tabindex="0"
-												class="w-full px-2 py-1 text-sm border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[28px]"
-												on:click={() => startEditing('version', i, 'version')}
-												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('version', i, 'version')) : null}
-											>
-												{row.version || '\u00A0'}
-											</div>
-										{/if}
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={versionRows[i].version}
+											on:blur={() => saveCustomMethodState()}
+										/>
 									</td>
 									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
-										{#if isEditing('version', i, 'date')}
-											<input
-												use:focusInputOnMount
-												class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
-												type="text"
-												bind:value={versionRows[i].date}
-												on:blur={stopEditing}
-												on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
-											/>
-										{:else}
-											<div
-												role="button"
-												tabindex="0"
-												class="w-full px-2 py-1 text-sm border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[28px]"
-												on:click={() => startEditing('version', i, 'date')}
-												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('version', i, 'date')) : null}
-											>
-												{row.date || '\u00A0'}
-											</div>
-										{/if}
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={versionRows[i].date}
+											on:blur={() => saveCustomMethodState()}
+										/>
 									</td>
 									<td class="px-4 py-2 text-black border border-gray-700 bg-white">
-										{#if isEditing('version', i, 'modification')}
-											<input
-												use:focusInputOnMount
-												class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
-												type="text"
-												bind:value={versionRows[i].modification}
-												on:blur={stopEditing}
-												on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
-											/>
-										{:else}
-											<div
-												role="button"
-												tabindex="0"
-												class="w-full px-2 py-1 text-sm border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[28px]"
-												on:click={() => startEditing('version', i, 'modification')}
-												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('version', i, 'modification')) : null}
-											>
-												{row.modification || '\u00A0'}
-											</div>
-										{/if}
+										<input
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											type="text"
+											bind:value={versionRows[i].modification}
+											on:blur={() => saveCustomMethodState()}
+										/>
 									</td>
 									{#if editModeControleDocument}
 										<td class="px-4 py-2 border border-gray-700 bg-gray-100">
