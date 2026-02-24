@@ -1036,11 +1036,14 @@
 				prevPartExport = part;
 			}
 			const impacts = getRowImpacts(row);
+			const dicOui = row.dicD ? 'Oui' : 'Non';
+			const dicOuiI = row.dicI ? 'Oui' : 'Non';
+			const dicOuiC = row.dicC ? 'Oui' : 'Non';
 			const rowData = [
 				row.entite ?? '', row.domaineProcessus ?? '', row.activites ?? '', row.codeRisque ?? '',
 				row.descriptionScenario ?? '', row.mesureISO ?? '', row.familleRisque ?? '', row.source ?? '',
 				row.familleCauses ?? '', row.proprietaireRisque ?? '',
-				row.dicD ? 'Oui' : 'Non', row.dicI ? 'Oui' : 'Non', row.dicC ? 'Oui' : 'Non',
+				dicOui, dicOuiI, dicOuiC,
 				...impacts,
 				row.probabilite ?? '',
 				row.dispositifMaitrise ?? '', row.graviteNet ?? '', row.probabiliteNet ?? '', row.efficaciteDMR ?? '',
@@ -1049,6 +1052,22 @@
 			];
 			const r = wsCarto.addRow(rowData);
 			applyDataRowBorder(wsCarto, r);
+			// Styles pour refléter checkboxes (Oui = fond vert clair), choix (Décision = liste), et couleurs de fond
+			const nImp = impactDefinitionsRows.length;
+			const FILL_OUI = 'FFDCFCE7';      // green-100 : case cochée (checkbox)
+			const FILL_JAUNE_200 = 'FFFEF08A'; // yellow-200 : Gravité / Proba nette
+			if (dicOui === 'Oui') { applyCellStyle(r.getCell(11), { fill: FILL_OUI, border: true }); }
+			if (dicOuiI === 'Oui') { applyCellStyle(r.getCell(12), { fill: FILL_OUI, border: true }); }
+			if (dicOuiC === 'Oui') { applyCellStyle(r.getCell(13), { fill: FILL_OUI, border: true }); }
+			applyCellStyle(r.getCell(16 + nImp), { fill: FILL_JAUNE_200, border: true }); // Gravité nette
+			applyCellStyle(r.getCell(17 + nImp), { fill: FILL_JAUNE_200, border: true }); // Probabilité nette
+			// Colonne Décision : liste de choix (Accepter, Réduire, Transférer, Éviter)
+			const colDecision = 19 + nImp;
+			r.getCell(colDecision).dataValidation = {
+				type: 'list',
+				allowBlank: true,
+				formulae: ['"Accepter,Réduire,Transférer,Éviter"']
+			};
 		});
 
 		// --- Feuille 5 : Aide-Risque (probabilité, impact, fréquence, efficacité avec couleurs) ---
