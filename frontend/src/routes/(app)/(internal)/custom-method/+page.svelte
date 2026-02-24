@@ -1133,8 +1133,8 @@
 
 	/** Édition au clic : quelle cellule est en cours d'édition (tous tableaux) */
 	let editingCell: { table: string; row: number; field: string } | null = null;
-	function focusTextareaOnMount(node: HTMLTextAreaElement) {
-		node.focus();
+	function focusTextareaOnMount(node: HTMLTextAreaElement, shouldFocus = true) {
+		if (shouldFocus) node.focus();
 	}
 	function focusInputOnMount(node: HTMLInputElement) {
 		node.focus();
@@ -3597,13 +3597,13 @@
 										</td>
 									{/if}
 									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs min-h-[100px]">
-										{#if isEditing('dicNiveaux', i, 'disponibilite')}
+										{#if editModeTable12 || isEditing('dicNiveaux', i, 'disponibilite')}
 											<textarea
-												use:focusTextareaOnMount
+												use:focusTextareaOnMount={!editModeTable12}
 												class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[100px]"
 												bind:value={dicNiveauxRows[i].disponibilite}
-												on:blur={stopEditing}
-												on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
+												on:blur={() => { if (!editModeTable12) stopEditing(); else saveCustomMethodState(); }}
+												on:keydown={(e) => e.key === 'Escape' && !editModeTable12 && (editingCell = null)}
 											></textarea>
 										{:else}
 											<div
@@ -3618,34 +3618,34 @@
 										{/if}
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs min-h-[100px]">
-										{#if isEditing('dicNiveaux', i, 'integrite')}
+										{#if editModeTable12 || isEditing('dicNiveaux', i, 'integrite')}
 											<textarea
-												use:focusTextareaOnMount
+												use:focusTextareaOnMount={!editModeTable12}
 												class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[100px]"
 												bind:value={dicNiveauxRows[i].integrite}
-												on:blur={() => { editingDicNiveaux = null; saveCustomMethodState(); }}
-												on:keydown={(e) => e.key === 'Escape' && (editingDicNiveaux = null)}
+												on:blur={() => { if (!editModeTable12) stopEditing(); else saveCustomMethodState(); }}
+												on:keydown={(e) => e.key === 'Escape' && !editModeTable12 && (editingCell = null)}
 											></textarea>
 										{:else}
 											<div
 												role="button"
 												tabindex="0"
 												class="w-full px-2 py-1 text-xs prose prose-sm max-w-none prose-p:my-1 text-left border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500"
-												on:click={() => editingDicNiveaux = { row: i, field: 'integrite' }}
-												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), editingDicNiveaux = { row: i, field: 'integrite' }) : null}
+												on:click={() => startEditing('dicNiveaux', i, 'integrite')}
+												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('dicNiveaux', i, 'integrite')) : null}
 											>
 												{@html row.integrite ?? ''}
 											</div>
 										{/if}
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs min-h-[100px]">
-										{#if isEditing('dicNiveaux', i, 'confidentialite')}
+										{#if editModeTable12 || isEditing('dicNiveaux', i, 'confidentialite')}
 											<textarea
-												use:focusTextareaOnMount
+												use:focusTextareaOnMount={!editModeTable12}
 												class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[100px]"
 												bind:value={dicNiveauxRows[i].confidentialite}
-												on:blur={stopEditing}
-												on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
+												on:blur={() => { if (!editModeTable12) stopEditing(); else saveCustomMethodState(); }}
+												on:keydown={(e) => e.key === 'Escape' && !editModeTable12 && (editingCell = null)}
 											></textarea>
 										{:else}
 											<div
