@@ -1086,6 +1086,20 @@
 			};
 		});
 
+		// Largeurs de colonnes pour afficher toutes les colonnes (éviter colonnes trop étroites)
+		for (let c = 1; c <= numCartoCols; c++) {
+			const col = wsCarto.getColumn(c);
+			// Description scénario (col 5) et colonnes texte long : plus large ; impacts et DIC : moyenne ; reste : lisible
+			if (c === 5) col.width = 38;   // Description scénario
+			else if (c === 2 || c === 3) col.width = 20;  // Domaine, Activités
+			else if (c === 7 || c === 8 || c === 9) col.width = 18;  // Famille risque, Source, Famille causes
+			else if (c === 10 || c === 16 + impactDefinitionsRows.length) col.width = 18;  // Propriétaire, Dispositif
+			else if (c === 22 + impactDefinitionsRows.length) col.width = 24;  // Action PTR
+			else col.width = 14;
+		}
+		// Figer les 3 premières lignes (titre + sections + en-têtes) pour garder les en-têtes visibles au défilement
+		wsCarto.views = [{ state: 'frozen', ySplit: 3, activeCell: 'A4', showGridLines: true }];
+
 		// --- Feuille 5 : Aide-Risque (probabilité, impact, fréquence, efficacité avec couleurs) ---
 		const wsAideRisque = wb.addWorksheet('Aide-Risque', { views: [{ showGridLines: true }] });
 		wsAideRisque.addRow(['Aide-Risque']).font = { bold: true, size: 14 };
