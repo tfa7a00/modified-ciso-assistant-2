@@ -1036,14 +1036,15 @@
 				prevPartExport = part;
 			}
 			const impacts = getRowImpacts(row);
-			const dicOui = row.dicD ? 'Oui' : 'Non';
-			const dicOuiI = row.dicI ? 'Oui' : 'Non';
-			const dicOuiC = row.dicC ? 'Oui' : 'Non';
+			// DIC D, I, C : symbole case cochée (☑) ou non cochée (☐)
+			const dicDVal = row.dicD ? '☑' : '☐';
+			const dicIVal = row.dicI ? '☑' : '☐';
+			const dicCVal = row.dicC ? '☑' : '☐';
 			const rowData = [
 				row.entite ?? '', row.domaineProcessus ?? '', row.activites ?? '', row.codeRisque ?? '',
 				row.descriptionScenario ?? '', row.mesureISO ?? '', row.familleRisque ?? '', row.source ?? '',
 				row.familleCauses ?? '', row.proprietaireRisque ?? '',
-				dicOui, dicOuiI, dicOuiC,
+				dicDVal, dicIVal, dicCVal,
 				...impacts,
 				row.probabilite ?? '',
 				row.dispositifMaitrise ?? '', row.graviteNet ?? '', row.probabiliteNet ?? '', row.efficaciteDMR ?? '',
@@ -1056,9 +1057,9 @@
 			const nImp = impactDefinitionsRows.length;
 			const FILL_OUI = 'FFDCFCE7';      // green-100 : case cochée (checkbox)
 			const FILL_JAUNE_200 = 'FFFEF08A'; // yellow-200 : Gravité / Proba nette
-			if (dicOui === 'Oui') { applyCellStyle(r.getCell(11), { fill: FILL_OUI, border: true }); }
-			if (dicOuiI === 'Oui') { applyCellStyle(r.getCell(12), { fill: FILL_OUI, border: true }); }
-			if (dicOuiC === 'Oui') { applyCellStyle(r.getCell(13), { fill: FILL_OUI, border: true }); }
+			if (row.dicD) { applyCellStyle(r.getCell(11), { fill: FILL_OUI, border: true }); }
+			if (row.dicI) { applyCellStyle(r.getCell(12), { fill: FILL_OUI, border: true }); }
+			if (row.dicC) { applyCellStyle(r.getCell(13), { fill: FILL_OUI, border: true }); }
 			applyCellStyle(r.getCell(16 + nImp), { fill: FILL_JAUNE_200, border: true }); // Gravité nette
 			applyCellStyle(r.getCell(17 + nImp), { fill: FILL_JAUNE_200, border: true }); // Probabilité nette
 			// Colonne Décision : liste de choix (Accepter, Réduire, Transférer, Éviter)
