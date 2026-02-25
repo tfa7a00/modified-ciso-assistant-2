@@ -1031,8 +1031,8 @@
 					'Évaluation du Risque Résiduel'
 				];
 
-		// Couleurs de sections comme sur la plateforme : blanc, teal, jaune, teal-600 (DMR), jaune, gris, jaune
-		const cartoSectionFills = ['FFFFFFFF', 'FF0D9488', 'FFFACC15', 'FF0891B2', 'FFFACC15', 'FF4B5563', 'FFFACC15'];
+		// Couleurs de sections (alignées sur l'interface) : blanc, teal-700 (Identification), jaune, teal-600 (DMR), jaune, gris, jaune
+		const cartoSectionFills = ['FFFFFFFF', 'FF0F766E', 'FFFACC15', 'FF0D9488', 'FFFACC15', 'FF4B5563', 'FFFACC15'];
 
 		const numCartoCols = cartoHeaders.length;
 		const wsCarto = wb.addWorksheet('Cartographie des risques', { views: [{ showGridLines: true }] });
@@ -1057,6 +1057,39 @@
 		});
 		const rowCartoHeader = wsCarto.addRow(cartoHeaders);
 		applyHeaderRow(wsCarto, rowCartoHeader, 'FF0284C7');
+		// Appliquer les couleurs d'en-têtes comme à l'interface (sans modifier le texte)
+		const W = 'FFFFFFFF', B = 'FF000000';
+		const cartoHeaderColors: { fill: string; font: string }[] = [];
+		if (isCartoVersionA) {
+			for (let c = 1; c <= numCartoCols; c++) {
+				if (c <= 3) cartoHeaderColors.push({ fill: 'FF4B5563', font: W }); // gray-600
+				else if (c <= 10) cartoHeaderColors.push({ fill: 'FF0F766E', font: W }); // teal-700
+				else if (c <= 17) cartoHeaderColors.push({ fill: 'FF0891B2', font: W }); // cyan-600
+				else if (c <= 20) cartoHeaderColors.push({ fill: 'FF16A34A', font: W }); // green-600
+				else if (c <= 23) cartoHeaderColors.push({ fill: 'FFEA580C', font: W }); // orange-600
+				else if (c === 24 || (c >= 25 + nImp && c <= 28 + nImp) || (c >= 30 + nImp && c <= 34 + nImp) || (c >= 37 + nImp)) cartoHeaderColors.push({ fill: 'FFFACC15', font: B }); // yellow-400
+				else if (c <= 24 + nImp) cartoHeaderColors.push({ fill: 'FFEA580C', font: W });
+				else if (c === 29 + nImp) cartoHeaderColors.push({ fill: 'FF0F766E', font: W });
+				else cartoHeaderColors.push({ fill: 'FF4B5563', font: W }); // PTR
+			}
+		} else {
+			for (let c = 1; c <= numCartoCols; c++) {
+				if (c <= 3) cartoHeaderColors.push({ fill: 'FF4B5563', font: W });
+				else if (c <= 10) cartoHeaderColors.push({ fill: 'FF0F766E', font: W });
+				else if (c <= 13) cartoHeaderColors.push({ fill: 'FF16A34A', font: W });
+				else if (c <= 13 + nImp) cartoHeaderColors.push({ fill: 'FFEA580C', font: W });
+				else if (c === 16 + nImp) cartoHeaderColors.push({ fill: 'FF0F766E', font: W }); // DMR
+				else if (c <= 15 + nImp || (c >= 17 + nImp && c <= 20 + nImp)) cartoHeaderColors.push({ fill: 'FFFACC15', font: B });
+				else if (c >= 21 + nImp && c <= 22 + nImp) cartoHeaderColors.push({ fill: 'FF4B5563', font: W }); // PTR
+				else cartoHeaderColors.push({ fill: 'FFFACC15', font: B }); // Résiduel
+			}
+		}
+		cartoHeaderColors.forEach((x, i) => {
+			if (i >= numCartoCols) return;
+			const cell = rowCartoHeader.getCell(i + 1);
+			cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: x.fill } };
+			cell.font = { ...(cell.font as object), color: { argb: x.font }, bold: true } as ExcelJS.Font;
+		});
 
 		const FILL_OUI = 'FFDCFCE7';
 		const FILL_JAUNE_200 = 'FFFEF08A';
