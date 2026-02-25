@@ -3023,12 +3023,25 @@
 </script>
 
 <style>
-    /* Registre de classification : cellules plus hautes */
+    /* Cellules flexibles en hauteur : la hauteur de chaque ligne = max des hauteurs des cellules (affichage de tout le contenu) */
+    main table td,
+    main table th {
+        height: auto !important;
+        min-height: 0;
+        overflow: visible;
+        white-space: normal;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    main table tr {
+        height: auto;
+    }
+
+    /* Registre de classification : cellules flexibles selon le contenu */
     .registre-classification-table tbody td {
-        min-height: 104px;
         padding-top: 1rem;
         padding-bottom: 1rem;
-        vertical-align: middle;
+        vertical-align: top;
     }
 
     /* Section 7 – colonnes Impact Disponibilité / Intégrité / Confidentialité */
@@ -3053,8 +3066,8 @@
     .registre-classification-table .registre-loi0520-readout {
         font-size: 0.8125rem;
         line-height: 1.35;
-        max-height: 6em;
-        overflow-y: auto;
+        min-height: 0;
+        overflow: visible;
     }
 
     /* Hide/show table cells (only tbody td/data cells, NOT headers).
@@ -3076,39 +3089,32 @@
         table-layout: auto;
     }
 
-    /* Increase cartographie table cell heights */
-    .view-identification tbody tr,
-    .view-brut tbody tr,
-    .view-net tbody tr,
-    .view-ptr tbody tr {
-        min-height: 100px; /* Adjust as needed */
-    }
-
+    /* Cartographie : lignes et cellules flexibles selon le contenu (hauteur = max des cellules de la ligne) */
     .view-identification tbody td,
     .view-brut tbody td,
     .view-net tbody td,
     .view-ptr tbody td {
-        padding: 8px; /* Increased from py-2 (0.5rem) to 0.5rem */
+        padding: 8px;
+        vertical-align: top;
     }
 
-    /* Increase textarea height */
+    /* Textarea : hauteur minimale raisonnable, peut grandir avec le contenu */
     .view-identification textarea,
     .view-brut textarea,
     .view-net textarea,
     .view-ptr textarea {
-        min-height: 120px;
+        min-height: 2.5rem;
     }
 
-    /* Version "Avec Efficacité" : aligner LARGEUR en-têtes et cellules */
+    /* Version "Avec Efficacité" : en-têtes et cellules affichent tout le contenu (pas de masquage) */
     .carto-b-th {
         box-sizing: border-box;
         line-height: 1.2;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        white-space: normal;
+        overflow-wrap: break-word;
     }
     .carto-b-cell {
         box-sizing: border-box;
-        overflow: hidden;
     }
 
     /* Modifiable text cells: no visible outline by default, show on hover/focus */
@@ -5300,7 +5306,7 @@
 									<td class={`px-3 py-2 text-center font-bold border border-black ${getEfficaciteRowBg(row)}`}>
 										<input class="w-full border border-transparent bg-transparent font-semibold text-center" type="text" bind:value={efficaciteRows[i].signification} />
 									</td>
-									<td colspan="3" class="px-3 py-3 text-left align-middle border border-black bg-white min-h-[140px] overflow-hidden">
+									<td colspan="3" class="px-3 py-3 text-left align-middle border border-black bg-white align-top">
 										<textarea class="w-full min-h-[120px] min-w-0 border border-gray-300 rounded px-2 py-1.5 text-base whitespace-pre-wrap" bind:value={efficaciteRows[i].descriptif} placeholder="Descriptif du niveau…"></textarea>									</td>
 									<td class="px-3 py-2 text-center border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold text-center" type="text" bind:value={efficaciteRows[i].intervalle} placeholder="0 % – 30 %" />
