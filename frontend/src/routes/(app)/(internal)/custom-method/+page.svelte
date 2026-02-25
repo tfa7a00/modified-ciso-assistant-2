@@ -1060,8 +1060,8 @@
 			cell.border = EXCEL_BORDER_THIN;
 			if (i === 1 || i === 3) cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };  // Identification + DMR (fond teal, texte blanc)
 		});
-		// Sous-regroupements (version A uniquement) : Catégorie d'actifs (11-17), Critères d'impact (18-20), Impact DIC (21-23)
-		if (isCartoVersionA && numCartoCols >= 23) {
+		// Sous-regroupements (version A et B) : Catégorie d'actifs (11-17), Critères d'impact (18-20), Impact DIC (21-23)
+		if (numCartoCols >= 23) {
 			const rowCartoSubGroup = wsCarto.addRow(Array(numCartoCols).fill(''));
 			rowCartoSubGroup.eachCell((cell) => { cell.border = EXCEL_BORDER_THIN; });
 			// Catégorie d'actifs informationnels directement concernés (au sein de "Identification des risques inhérents")
@@ -1077,7 +1077,7 @@
 			const cellCritImpact = rowCartoSubGroup.getCell(18);
 			cellCritImpact.value = 'Critères d\'impact';
 			cellCritImpact.font = { bold: true, color: { argb: 'FF000000' } };
-			cellCritImpact.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFACC15' } }; // yellow-400
+			cellCritImpact.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFACC15' } };
 			cellCritImpact.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
 			cellCritImpact.border = EXCEL_BORDER_THIN;
 			// Impact DIC : D, I, C (au sein de "Évaluation de la Criticité du Risque Brut")
@@ -1085,20 +1085,28 @@
 			const cellImpactDIC = rowCartoSubGroup.getCell(21);
 			cellImpactDIC.value = 'Impact DIC';
 			cellImpactDIC.font = { bold: true, color: { argb: 'FF000000' } };
-			cellImpactDIC.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFACC15' } }; // yellow-400
+			cellImpactDIC.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFACC15' } };
 			cellImpactDIC.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
 			cellImpactDIC.border = EXCEL_BORDER_THIN;
 			// Pour les autres colonnes (1-10 et 24 à la fin), même couleur que la ligne d'en-têtes en dessous
 			const W = 'FFFFFFFF', B = 'FF000000';
 			for (let c = 1; c <= numCartoCols; c++) {
-				if (c >= 11 && c <= 23) continue; // sous-regroupements déjà traités
+				if (c >= 11 && c <= 23) continue;
 				let fill: string, fontColor: string;
 				if (c <= 3) { fill = 'FF4B5563'; fontColor = W; }
 				else if (c <= 10) { fill = 'FF0F766E'; fontColor = W; }
-				else if (c === 24 || (c >= 25 + nImp && c <= 28 + nImp) || (c >= 30 + nImp && c <= 34 + nImp) || (c >= 37 + nImp)) { fill = 'FFFACC15'; fontColor = B; }
-				else if (c <= 24 + nImp) { fill = 'FFEA580C'; fontColor = W; }
-				else if (c === 29 + nImp) { fill = 'FF0F766E'; fontColor = W; }
-				else { fill = 'FF4B5563'; fontColor = W; }
+				else if (isCartoVersionA) {
+					if (c === 24 || (c >= 25 + nImp && c <= 28 + nImp) || (c >= 30 + nImp && c <= 34 + nImp) || (c >= 37 + nImp)) { fill = 'FFFACC15'; fontColor = B; }
+					else if (c <= 24 + nImp) { fill = 'FFEA580C'; fontColor = W; }
+					else if (c === 29 + nImp) { fill = 'FF0F766E'; fontColor = W; }
+					else { fill = 'FF4B5563'; fontColor = W; }
+				} else {
+					if (c === 24 || (c >= 25 + nImp && c <= 28 + nImp) || (c >= 30 + nImp && c <= 33 + nImp) || (c >= 36 + nImp)) { fill = 'FFFACC15'; fontColor = B; }
+					else if (c <= 24 + nImp) { fill = 'FFEA580C'; fontColor = W; }
+					else if (c === 29 + nImp) { fill = 'FF0F766E'; fontColor = W; }
+					else if (c >= 34 + nImp && c <= 35 + nImp) { fill = 'FF4B5563'; fontColor = W; }
+					else { fill = 'FFFACC15'; fontColor = B; }
+				}
 				const cell = rowCartoSubGroup.getCell(c);
 				cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: fill } };
 				cell.font = { bold: true, color: { argb: fontColor } };
@@ -1272,7 +1280,7 @@
 			else if (!isCartoVersionA && c === 35 + nImp) col.width = 24;  // Action PTR
 			else col.width = 14;
 		}
-		wsCarto.views = [{ state: 'frozen', ySplit: isCartoVersionA ? 4 : 3, activeCell: isCartoVersionA ? 'A5' : 'A4', showGridLines: true }];
+		wsCarto.views = [{ state: 'frozen', ySplit: numCartoCols >= 23 ? 4 : 3, activeCell: numCartoCols >= 23 ? 'A5' : 'A4', showGridLines: true }];
 
 		// --- Feuille 5 : Aide-Risque (probabilité, impact, fréquence, efficacité avec couleurs) ---
 		const wsAideRisque = wb.addWorksheet('Aide-Risque', { views: [{ showGridLines: true }] });
