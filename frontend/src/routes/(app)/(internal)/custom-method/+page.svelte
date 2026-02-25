@@ -1012,7 +1012,7 @@
 			: [
 					3,
 					20,  // Identification (10 ident. + 7 catégories actifs + 3 critères D/I/C)
-					3 + 1 + nImp + 4,  // Évaluation de la Criticité du Risque Brut (Impact DIC 3 + Criticité 1 + nImp + Gravité, Proba, I*P*C, Signif brut 4)
+					1 + nImp + 4,  // Évaluation de la Criticité du Risque Brut (Criticité 1 + nImp impacts + Gravité, Proba, I*P*C, Signification du risque brut 4) — s'arrête à Signification du risque brut
 					1, 4, 2, 4
 				];
 
