@@ -967,42 +967,81 @@
 			if (loi0520Colors[idx]) r.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: loi0520Colors[idx] } };
 		});
 
-		// --- Feuille 4 : Cartographie des risques (en-têtes et répartition comme à l'écran) ---
+		// --- Feuille 4 : Cartographie des risques (colonnes selon vue SANS Efficacité / AVEC Efficacité) ---
 		const impactLabels = impactDefinitionsRows.map((d) => d.libelle);
-		const cartoHeaders = [
-			'Entité', 'Domaine / Processus', 'Activités', 'Code risque', 'Description scénario', 'Mesure ISO',
-			'Famille risque', 'Source', 'Famille causes', 'Propriétaire risque',
-			'DIC D', 'DIC I', 'DIC C', ...impactLabels, 'Probabilité', 'Signification du risque brut',
-			'Dispositif maîtrise', 'Gravité nette', 'Probabilité nette', 'Efficacité DMR', 'Signification du risque net', 'Décision',
-			'Action PTR', 'Impact résiduel', 'Vraisemblance résiduel', 'Signification du risque résiduel', 'Efficacité PTR'
-		];
+		const nImp = impactDefinitionsRows.length;
+		const isCartoVersionA = cartoVersion === 'A';
+
+		// En-têtes et sections selon la vue sélectionnée
+		const cartoHeaders = isCartoVersionA
+			? [
+					'Entité', 'Domaine / Processus', 'Activités', 'Code risque', 'Description scénario', 'Mesure ISO',
+					'Famille risque', 'Source', 'Famille causes', 'Propriétaire risque',
+					'Matériel informatique', 'Application', 'Équipements sécurité', 'Équipements réseaux', 'Ressources humaines', 'Document', 'Données',
+					'DIC D', 'DIC I', 'DIC C',
+					'Impact D', 'Impact I', 'Impact C',
+					'Criticité de l\'actif - Besoin en SSI', ...impactLabels, 'Gravité des impacts', 'Probabilité', 'I*P*C', 'Signification du risque brut',
+					'Dispositif maîtrise',
+					'Criticité (net)', 'Gravité nette', 'Probabilité nette', 'I*P*C net', 'Signification du risque net',
+					'Décision', 'Action PTR',
+					'Criticité (résiduel)', 'Impact résiduel', 'Vraisemblance résiduel', 'I*P*C résiduel', 'Niveau du risque résiduel'
+				]
+			: [
+					'Entité', 'Domaine / Processus', 'Activités', 'Code risque', 'Description scénario', 'Mesure ISO',
+					'Famille risque', 'Source', 'Famille causes', 'Propriétaire risque',
+					'DIC D', 'DIC I', 'DIC C', ...impactLabels, 'Probabilité', 'Signification du risque brut',
+					'Dispositif maîtrise', 'Gravité nette', 'Probabilité nette', 'Efficacité DMR', 'Signification du risque net', 'Décision',
+					'Action PTR', 'Impact résiduel', 'Vraisemblance résiduel', 'Signification du risque résiduel', 'Efficacité PTR'
+				];
+
+		const cartoSectionColspans = isCartoVersionA
+			? [
+					3,   // Cartographie des Processus
+					7,   // Identification des risques inhérents
+					7,   // Catégorie d'actifs informationnels directement concernés
+					3 + 3 + 1 + nImp + 4,  // Risque Brut (DIC + Impact D/I/C + Criticité + N impacts + Gravité + Proba + I*P*C + Signif brut)
+					1,   // DMR
+					5,   // Risque Net (Criticité, Gravité nette, Proba nette, I*P*C net, Signif net) — sans Efficacité DMR
+					2,   // PTR
+					5    // Risque Résiduel (Criticité, Impact rés., Vraisemblance, I*P*C rés., Niveau) — sans Signif résiduel / Efficacité PTR
+				]
+			: [
+					3, 7,
+					3 + nImp + 2,  // Risque Brut (DIC + N impacts + Probabilité + Signification brut)
+					1, 4, 2, 4
+				];
+
+		const cartoSectionLabels = isCartoVersionA
+			? [
+					'Cartographie des Processus',
+					'Identification des risques inhérents',
+					'Catégorie d\'actifs informationnels directement concernés',
+					'Évaluation de la Criticité du Risque Brut',
+					'Détermination du degré d\'exposition aux risques',
+					'Évaluation de la Criticité du Risque Net',
+					'Plan de traitement des risques (PTR)',
+					'Évaluation du Risque Résiduel'
+				]
+			: [
+					'Cartographie des Processus',
+					'Identification des risques inhérents',
+					'Évaluation de la Criticité du Risque Brut',
+					'Détermination du degré d\'exposition aux risques',
+					'Évaluation de la Criticité du Risque Net',
+					'Plan de traitement des risques (PTR)',
+					'Évaluation du Risque Résiduel'
+				];
+
+		const cartoSectionFills = isCartoVersionA
+			? ['FFFFFFFF', 'FF0D9488', 'FFB91C1C', 'FFFACC15', 'FF0891B2', 'FFFACC15', 'FF4B5563', 'FFFACC15']  // + rouge pour catégories actifs
+			: ['FFFFFFFF', 'FF0D9488', 'FFFACC15', 'FF0891B2', 'FFFACC15', 'FF4B5563', 'FFFACC15'];
+
 		const numCartoCols = cartoHeaders.length;
 		const wsCarto = wb.addWorksheet('Cartographie des risques', { views: [{ showGridLines: true }] });
-		// Ligne 1 : Titre principal (fusionné sur toute la largeur)
 		const rowCartoTitle = wsCarto.addRow(['CARTOGRAPHIE DES RISQUES DE SECURITÉ DES SYSTÈMES D\'INFORMATION']);
 		rowCartoTitle.getCell(1).font = { bold: true, size: 14 };
 		rowCartoTitle.getCell(1).alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
 		if (numCartoCols > 1) wsCarto.mergeCells(1, 1, 1, numCartoCols);
-		// Ligne 2 : Sections principales (fusion de cellules par bloc)
-		const cartoSectionColspans = [
-			3,   // Cartographie des Processus (Entité, Domaine, Activités)
-			7,   // Identification des risques inhérents (Code à Propriétaire)
-			3 + impactDefinitionsRows.length + 2,  // Évaluation Risque Brut (DIC + N impacts + Probabilité + Signification brut)
-			1,   // Détermination du degré d'exposition (DMR)
-			4,   // Évaluation Criticité du Risque Net (Gravité nette, Probabilité nette, Efficacité DMR, Signification net)
-			2,   // PTR (Décision, Action)
-			4    // Évaluation du Risque Résiduel (Impact rés., Vraisemblance, Signification résiduel, Efficacité PTR)
-		];
-		const cartoSectionLabels = [
-			'Cartographie des Processus',
-			'Identification des risques inhérents',
-			'Évaluation de la Criticité du Risque Brut',
-			'Détermination du degré d\'exposition aux risques',
-			'Évaluation de la Criticité du Risque Net',
-			'Plan de traitement des risques (PTR)',
-			'Évaluation du Risque Résiduel'
-		];
-		const cartoSectionFills = ['FFFFFFFF', 'FF0D9488', 'FFFACC15', 'FF0891B2', 'FFFACC15', 'FF4B5563', 'FFFACC15']; // blanc, teal, yellow, teal-600, yellow, gray, yellow
 		let colAcc = 0;
 		const rowCartoSections = wsCarto.addRow(cartoHeaders.map(() => ''));
 		cartoSectionColspans.forEach((span, i) => {
@@ -1016,18 +1055,18 @@
 			cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
 			cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: cartoSectionFills[i] } };
 			cell.border = EXCEL_BORDER_THIN;
-			if (i === 1 || i === 3) cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+			if (i === 1 || (isCartoVersionA ? i === 4 : i === 3)) cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
 		});
-		// Ligne 3 : En-têtes détaillés (une colonne par champ)
 		const rowCartoHeader = wsCarto.addRow(cartoHeaders);
 		applyHeaderRow(wsCarto, rowCartoHeader, 'FF0284C7');
-		// Répartition par sections (1 à 8) : insérer une ligne de titre de section avant chaque changement de partie
+
+		const FILL_OUI = 'FFDCFCE7';
+		const FILL_JAUNE_200 = 'FFFEF08A';
 		let prevPartExport = 0;
 		cartoRows.forEach((row, i) => {
 			const part = getPartFromCodeRisque(row.codeRisque) || (i > 0 ? getPartFromCodeRisque(cartoRows[i - 1].codeRisque) : 1) || 1;
 			if (part !== prevPartExport) {
-				const partTitle = CARTO_PART_TITLES[part] || 'Autres';
-				const rowPart = wsCarto.addRow([partTitle]);
+				const rowPart = wsCarto.addRow([CARTO_PART_TITLES[part] || 'Autres']);
 				rowPart.getCell(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
 				rowPart.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF0D9488' } };
 				rowPart.getCell(1).border = EXCEL_BORDER_THIN;
@@ -1036,68 +1075,107 @@
 				prevPartExport = part;
 			}
 			const impacts = getRowImpacts(row);
-			// DIC D, I, C : symbole case cochée (☑) ou non cochée (☐)
 			const dicDVal = row.dicD ? '☑' : '☐';
 			const dicIVal = row.dicI ? '☑' : '☐';
 			const dicCVal = row.dicC ? '☑' : '☐';
 			const signifBrut = getNiveauBrut(row);
-			const signifNet = cartoVersion === 'B' ? getSignificationRisqueNetB(row) : getNiveauNet(row);
-			const signifResiduel = cartoVersion === 'B' ? getNiveauFromIpc(getNiveauRisqueResiduelB(row)) : getNiveauResiduel(row);
-			const rowData = [
-				row.entite ?? '', row.domaineProcessus ?? '', row.activites ?? '', row.codeRisque ?? '',
-				row.descriptionScenario ?? '', row.mesureISO ?? '', row.familleRisque ?? '', row.source ?? '',
-				row.familleCauses ?? '', row.proprietaireRisque ?? '',
-				dicDVal, dicIVal, dicCVal,
-				...impacts,
-				row.probabilite ?? '',
-				signifBrut,
-				row.dispositifMaitrise ?? '', row.graviteNet ?? '', row.probabiliteNet ?? '', row.efficaciteDMR ?? '',
-				signifNet,
-				row.decision ?? '', row.actionPTR ?? '', row.impactResiduel ?? '', row.vraisemblanceResiduel ?? '',
-				signifResiduel,
-				row.efficacitePTR ?? ''
-			];
+			const signifNet = isCartoVersionA ? getNiveauNet(row) : getSignificationRisqueNetB(row);
+			const signifResiduel = isCartoVersionA ? getNiveauResiduel(row) : getNiveauFromIpc(getNiveauRisqueResiduelB(row));
+
+			const rowData = isCartoVersionA
+				? [
+						row.entite ?? '', row.domaineProcessus ?? '', row.activites ?? '', row.codeRisque ?? '',
+						row.descriptionScenario ?? '', row.mesureISO ?? '', row.familleRisque ?? '', row.source ?? '',
+						row.familleCauses ?? '', row.proprietaireRisque ?? '',
+						row.actifMateriel ? '☑' : '☐', row.actifApplication ? '☑' : '☐', row.actifEquipementsSecurite ? '☑' : '☐', row.actifEquipementsReseaux ? '☑' : '☐', row.actifRessourcesHumaines ? '☑' : '☐', row.actifDocument ? '☑' : '☐', row.actifDonnees ? '☑' : '☐',
+						dicDVal, dicIVal, dicCVal,
+						row.impactD ?? '', row.impactI ?? '', row.impactC ?? '',
+						getCriticite(row) ?? '', ...impacts, getGravite(row) ?? '', row.probabilite ?? '', getIpcBrut(row) ?? '', signifBrut,
+						row.dispositifMaitrise ?? '',
+						getCriticite(row) ?? '', row.graviteNet ?? '', row.probabiliteNet ?? '', getIpcNet(row) ?? '', signifNet,
+						row.decision ?? '', row.actionPTR ?? '',
+						getCriticite(row) ?? '', row.impactResiduel ?? '', row.vraisemblanceResiduel ?? '', getIpcResiduel(row) ?? '', signifResiduel
+					]
+				: [
+						row.entite ?? '', row.domaineProcessus ?? '', row.activites ?? '', row.codeRisque ?? '',
+						row.descriptionScenario ?? '', row.mesureISO ?? '', row.familleRisque ?? '', row.source ?? '',
+						row.familleCauses ?? '', row.proprietaireRisque ?? '',
+						dicDVal, dicIVal, dicCVal, ...impacts, row.probabilite ?? '', signifBrut,
+						row.dispositifMaitrise ?? '', row.graviteNet ?? '', row.probabiliteNet ?? '', row.efficaciteDMR ?? '', signifNet,
+						row.decision ?? '', row.actionPTR ?? '', row.impactResiduel ?? '', row.vraisemblanceResiduel ?? '', signifResiduel, row.efficacitePTR ?? ''
+					];
+
 			const r = wsCarto.addRow(rowData);
 			applyDataRowBorder(wsCarto, r);
-			// Styles pour refléter checkboxes (Oui = fond vert clair), choix (Décision = liste), et couleurs de fond
-			const nImp = impactDefinitionsRows.length;
-			const FILL_OUI = 'FFDCFCE7';      // green-100 : case cochée (checkbox)
-			const FILL_JAUNE_200 = 'FFFEF08A'; // yellow-200 : Gravité / Proba nette
-			if (row.dicD) { applyCellStyle(r.getCell(11), { fill: FILL_OUI, border: true }); }
-			if (row.dicI) { applyCellStyle(r.getCell(12), { fill: FILL_OUI, border: true }); }
-			if (row.dicC) { applyCellStyle(r.getCell(13), { fill: FILL_OUI, border: true }); }
-			// Signification du risque brut / net / résiduel : couleur selon niveau (Faible=vert, Modéré=jaune, Élevé=orange, Extrême=rouge)
-			const colSignifBrut = 15 + nImp;
-			const colSignifNet = 20 + nImp;
-			const colSignifResiduel = 25 + nImp;
-			[colSignifBrut, colSignifNet, colSignifResiduel].forEach((colIdx, i) => {
-				const niveau = [signifBrut, signifNet, signifResiduel][i];
-				const argb = tailwindToExcelArgb(getNiveauRisqueBg(niveau));
-				if (argb) applyCellStyle(r.getCell(colIdx), { fill: argb, border: true });
-			});
-			applyCellStyle(r.getCell(17 + nImp), { fill: FILL_JAUNE_200, border: true }); // Gravité nette
-			applyCellStyle(r.getCell(18 + nImp), { fill: FILL_JAUNE_200, border: true }); // Probabilité nette
-			// Colonne Décision : liste de choix (Accepter, Réduire, Transférer, Éviter)
-			const colDecision = 21 + nImp;
-			r.getCell(colDecision).dataValidation = {
-				type: 'list',
-				allowBlank: true,
-				formulae: ['"Accepter,Réduire,Transférer,Éviter"']
-			};
+
+			if (isCartoVersionA) {
+				// Catégories d'actifs (11-17)
+				if (row.actifMateriel) applyCellStyle(r.getCell(11), { fill: FILL_OUI, border: true });
+				if (row.actifApplication) applyCellStyle(r.getCell(12), { fill: FILL_OUI, border: true });
+				if (row.actifEquipementsSecurite) applyCellStyle(r.getCell(13), { fill: FILL_OUI, border: true });
+				if (row.actifEquipementsReseaux) applyCellStyle(r.getCell(14), { fill: FILL_OUI, border: true });
+				if (row.actifRessourcesHumaines) applyCellStyle(r.getCell(15), { fill: FILL_OUI, border: true });
+				if (row.actifDocument) applyCellStyle(r.getCell(16), { fill: FILL_OUI, border: true });
+				if (row.actifDonnees) applyCellStyle(r.getCell(17), { fill: FILL_OUI, border: true });
+				// DIC (18-20)
+				if (row.dicD) applyCellStyle(r.getCell(18), { fill: FILL_OUI, border: true });
+				if (row.dicI) applyCellStyle(r.getCell(19), { fill: FILL_OUI, border: true });
+				if (row.dicC) applyCellStyle(r.getCell(20), { fill: FILL_OUI, border: true });
+				// Criticité, Gravité (24, 25+nImp), Proba (26+nImp), I*P*C (27+nImp)
+				applyCellStyle(r.getCell(24), { fill: FILL_JAUNE_200, border: true });
+				applyCellStyle(r.getCell(25 + nImp), { fill: FILL_JAUNE_200, border: true });
+				applyCellStyle(r.getCell(26 + nImp), { fill: FILL_JAUNE_200, border: true });
+				applyCellStyle(r.getCell(27 + nImp), { fill: 'FFFB923C', border: true }); // orange-400 I*P*C
+				const colSignifBrutA = 28 + nImp;
+				const argbBrut = tailwindToExcelArgb(getNiveauRisqueBg(signifBrut));
+				if (argbBrut) applyCellStyle(r.getCell(colSignifBrutA), { fill: argbBrut, border: true });
+				// Risque Net: Criticité (30+nImp), Gravité nette (31), Proba nette (32), I*P*C net (33), Signif net (34)
+				applyCellStyle(r.getCell(30 + nImp), { fill: FILL_JAUNE_200, border: true });
+				applyCellStyle(r.getCell(31 + nImp), { fill: FILL_JAUNE_200, border: true });
+				applyCellStyle(r.getCell(32 + nImp), { fill: FILL_JAUNE_200, border: true });
+				applyCellStyle(r.getCell(33 + nImp), { fill: 'FFFB923C', border: true });
+				const colSignifNetA = 34 + nImp;
+				const argbNet = tailwindToExcelArgb(getNiveauRisqueBg(signifNet));
+				if (argbNet) applyCellStyle(r.getCell(colSignifNetA), { fill: argbNet, border: true });
+				const colDecisionA = 35 + nImp;
+				r.getCell(colDecisionA).dataValidation = { type: 'list', allowBlank: true, formulae: ['"Accepter,Réduire,Transférer,Éviter"'] };
+				// Risque Résiduel: Criticité, Impact rés., Vraisemblance, I*P*C rés., Niveau (39+nImp)
+				applyCellStyle(r.getCell(37 + nImp), { fill: FILL_JAUNE_200, border: true });
+				applyCellStyle(r.getCell(38 + nImp), { fill: FILL_JAUNE_200, border: true });
+				applyCellStyle(r.getCell(39 + nImp), { fill: 'FFFB923C', border: true });
+				const colNiveauResiduelA = 41 + nImp;
+				const argbRes = tailwindToExcelArgb(getNiveauRisqueBg(signifResiduel));
+				if (argbRes) applyCellStyle(r.getCell(colNiveauResiduelA), { fill: argbRes, border: true });
+			} else {
+				if (row.dicD) applyCellStyle(r.getCell(11), { fill: FILL_OUI, border: true });
+				if (row.dicI) applyCellStyle(r.getCell(12), { fill: FILL_OUI, border: true });
+				if (row.dicC) applyCellStyle(r.getCell(13), { fill: FILL_OUI, border: true });
+				const colSignifBrut = 15 + nImp;
+				const colSignifNet = 20 + nImp;
+				const colSignifResiduel = 25 + nImp;
+				[colSignifBrut, colSignifNet, colSignifResiduel].forEach((colIdx, idx) => {
+					const niveau = [signifBrut, signifNet, signifResiduel][idx];
+					const argb = tailwindToExcelArgb(getNiveauRisqueBg(niveau));
+					if (argb) applyCellStyle(r.getCell(colIdx), { fill: argb, border: true });
+				});
+				applyCellStyle(r.getCell(17 + nImp), { fill: FILL_JAUNE_200, border: true });
+				applyCellStyle(r.getCell(18 + nImp), { fill: FILL_JAUNE_200, border: true });
+				const colDecision = 21 + nImp;
+				r.getCell(colDecision).dataValidation = { type: 'list', allowBlank: true, formulae: ['"Accepter,Réduire,Transférer,Éviter"'] };
+			}
 		});
 
-		// Largeurs de colonnes pour afficher toutes les colonnes (éviter colonnes trop étroites)
 		for (let c = 1; c <= numCartoCols; c++) {
 			const col = wsCarto.getColumn(c);
-			// Description scénario (col 5) et colonnes texte long : plus large ; impacts et DIC : moyenne ; reste : lisible
-			if (c === 5) col.width = 38;   // Description scénario
-			else if (c === 2 || c === 3) col.width = 20;  // Domaine, Activités
-			else if (c === 7 || c === 8 || c === 9) col.width = 18;  // Famille risque, Source, Famille causes
-			else if (c === 10 || c === 16 + impactDefinitionsRows.length) col.width = 18;  // Propriétaire, Dispositif
-			else if (c === 22 + impactDefinitionsRows.length) col.width = 24;  // Action PTR
+			if (c === 5) col.width = 38;
+			else if (c === 2 || c === 3) col.width = 20;
+			else if (c === 7 || c === 8 || c === 9) col.width = 18;
+			else if (isCartoVersionA && (c === 10 || c === 29 + nImp)) col.width = 18;
+			else if (isCartoVersionA && c === 36 + nImp) col.width = 24;  // Action PTR
+			else if (!isCartoVersionA && (c === 10 || c === 16 + nImp)) col.width = 18;
+			else if (!isCartoVersionA && c === 22 + nImp) col.width = 24;  // Action PTR
 			else col.width = 14;
 		}
-		// Figer les 3 premières lignes (titre + sections + en-têtes) pour garder les en-têtes visibles au défilement
 		wsCarto.views = [{ state: 'frozen', ySplit: 3, activeCell: 'A4', showGridLines: true }];
 
 		// --- Feuille 5 : Aide-Risque (probabilité, impact, fréquence, efficacité avec couleurs) ---
