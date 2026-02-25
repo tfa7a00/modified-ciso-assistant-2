@@ -991,7 +991,7 @@
 					'Entité', 'Domaine / Processus', 'Activités', 'Code Risque', 'Description du scénario du Risque', 'Mesure ISO27001, annexe A',
 					'Famille de risque', 'Source', 'Famille de causes', 'Propriétaire du risque',
 					'D', 'I', 'C', ...impactLabels, 'Probabilité d\'Occurrence', 'Signification du risque brut',
-					'Description du Dispositif de Maitrise des Risques (DMR) existant', 'Gravité des impacts', 'Probabilité d\'Occurrence', 'Efficacité DMR', 'Signification du risque net', 'Décision',
+					'Description du Dispositif de Maitrise des Risques (DMR) existant', 'Efficacité DMR', 'Niveau d\'efficacité', 'Niveau de risque', 'Signification du risque net', 'Décision',
 					'Action à mettre en place', 'Efficacité PTR', 'Pourcentage d\'efficacité', 'Niveau de risque', 'Niveau du risque résiduel'
 				];
 
@@ -1178,7 +1178,7 @@
 						row.descriptionScenario ?? '', row.mesureISO ?? '', row.familleRisque ?? '', row.source ?? '',
 						row.familleCauses ?? '', row.proprietaireRisque ?? '',
 						dicDVal, dicIVal, dicCVal, ...impacts, row.probabilite ?? '', signifBrut,
-						row.dispositifMaitrise ?? '', row.graviteNet ?? '', row.probabiliteNet ?? '', row.efficaciteDMR ?? '', signifNet,
+						row.dispositifMaitrise ?? '', row.efficaciteDMR ?? '', getNiveauEfficaciteLabel(row.efficaciteDMR) || '', formatNiveauRisqueNetBDisplay(row), signifNet,
 						row.decision ?? '', row.actionPTR ?? '',
 						row.efficacitePTR ?? '', getSignificationEfficacitePTRDisplay(row.efficacitePTR), formatNiveauRisqueResiduelBDisplay(row), signifResiduel
 					];
