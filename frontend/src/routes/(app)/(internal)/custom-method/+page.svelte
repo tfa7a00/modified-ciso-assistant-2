@@ -3023,18 +3023,23 @@
 </script>
 
 <style>
-    /* Cellules flexibles en hauteur : la hauteur de chaque ligne = max des hauteurs des cellules (affichage de tout le contenu) */
-    main table td,
-    main table th {
+    /* Cellules flexibles en hauteur sur toute la page Custom method : ligne = max des hauteurs des cellules */
+    .custom-method-page table,
+    .custom-method-page table thead,
+    .custom-method-page table tbody,
+    .custom-method-page table tr {
         height: auto !important;
-        min-height: 0;
-        overflow: visible;
-        white-space: normal;
+    }
+    .custom-method-page table td,
+    .custom-method-page table th {
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+        white-space: normal !important;
         word-wrap: break-word;
         overflow-wrap: break-word;
-    }
-    main table tr {
-        height: auto;
+        vertical-align: top;
     }
 
     /* Registre de classification : cellules flexibles selon le contenu */
@@ -3118,21 +3123,21 @@
     }
 
     /* Modifiable text cells: no visible outline by default, show on hover/focus */
-    main table input:not([type="checkbox"]),
-    main table textarea {
+    .custom-method-page table input:not([type="checkbox"]),
+    .custom-method-page table textarea {
         border: 1px solid transparent !important;
         outline: none !important;
         transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
-    main table input:not([type="checkbox"]):hover,
-    main table input:not([type="checkbox"]):focus,
-    main table textarea:hover,
-    main table textarea:focus {
+    .custom-method-page table input:not([type="checkbox"]):hover,
+    .custom-method-page table input:not([type="checkbox"]):focus,
+    .custom-method-page table textarea:hover,
+    .custom-method-page table textarea:focus {
         border-color: #d1d5db !important; /* gray-300 */
         outline: none !important;
     }
-    main table input:not([type="checkbox"]):focus,
-    main table textarea:focus {
+    .custom-method-page table input:not([type="checkbox"]):focus,
+    .custom-method-page table textarea:focus {
         box-shadow: 0 0 0 1px #d1d5db;
     }
 </style>
@@ -3141,7 +3146,7 @@
 	{@html `<style id="carto-dynamic-view-style">${cartoViewDynamicCss}</style>`}
 </svelte:head>
 
-<main class="p-6 space-y-8">
+<main class="custom-method-page p-6 space-y-8">
 	<section class="space-y-2">
 		<div class="flex flex-wrap items-center justify-between gap-4">
 			<h1 class="text-2xl font-bold text-gray-900">La méthode NearSecure</h1>
@@ -5260,7 +5265,7 @@
 					Niveaux d'efficacité
 				</h3>
 				<div class="overflow-x-auto overflow-hidden rounded-lg border border-black bg-white shadow-sm">
-					<table class="min-w-full text-sm border-collapse border border-black" style="table-layout: fixed;">
+					<table class="min-w-full text-sm border-collapse border border-black">
 						<colgroup>
 							<col style="width: 3rem;" />
 							<col style="width: 6rem;" />
