@@ -231,13 +231,14 @@
 		return Number.isFinite(n) ? n : null;
 	}
 
-	/** Criticité = MAX(D, I, C) */
+	/** Criticité = MAX des impacts D, I, C pour lesquels le critère d'impact est sélectionné dans l'identification des risques inhérents (dicD, dicI, dicC). */
 	function getCriticite(row: CartoRow): number | null {
-		const d = parseNum(row.impactD);
-		const i = parseNum(row.impactI);
-		const c = parseNum(row.impactC);
-		if (d === null && i === null && c === null) return null;
-		return Math.max(d ?? 0, i ?? 0, c ?? 0);
+		const vals: number[] = [];
+		if (row.dicD) { const d = parseNum(row.impactD); if (d !== null) vals.push(d); }
+		if (row.dicI) { const i = parseNum(row.impactI); if (i !== null) vals.push(i); }
+		if (row.dicC) { const c = parseNum(row.impactC); if (c !== null) vals.push(c); }
+		if (vals.length === 0) return null;
+		return Math.max(...vals);
 	}
 
 	/** Retourne le tableau des impacts pour une ligne (longueur = impactDefinitionsRows.length), en migrant depuis les 4 champs si besoin */
@@ -2644,14 +2645,14 @@
 		return { d, i, c };
 	}
 
-	/** Recalcule et met à jour impactD, impactI, impactC pour une ligne de cartographie à partir du registre. */
+	/** Recalcule et met à jour impactD, impactI, impactC pour une ligne de cartographie à partir du registre. Ne remplit que les impacts dont le critère (D, I, C) est sélectionné dans l'identification des risques inhérents. */
 	function recalcImpactDICForCartoRow(index: number, options?: { skipSave?: boolean }) {
 		const row = cartoRows[index];
 		if (!row) return;
 		const { d, i, c } = computeImpactDICFromRegistre(row);
-		cartoRows[index].impactD = d > 0 ? d : '';
-		cartoRows[index].impactI = i > 0 ? i : '';
-		cartoRows[index].impactC = c > 0 ? c : '';
+		cartoRows[index].impactD = row.dicD && d > 0 ? d : '';
+		cartoRows[index].impactI = row.dicI && i > 0 ? i : '';
+		cartoRows[index].impactC = row.dicC && c > 0 ? c : '';
 		if (!options?.skipSave) saveCustomMethodState();
 	}
 
@@ -4746,17 +4747,17 @@
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.actifRessourcesHumaines} on:change={() => recalcImpactDICForCartoRow(i)} /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.actifDocument} on:change={() => recalcImpactDICForCartoRow(i)} /></td>
 						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.actifDonnees} on:change={() => recalcImpactDICForCartoRow(i)} /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.dicD} on:change={() => saveCustomMethodState()} /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.dicI} on:change={() => saveCustomMethodState()} /></td>
-						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.dicC} on:change={() => saveCustomMethodState()} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.dicD} on:change={() => recalcImpactDICForCartoRow(i)} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.dicI} on:change={() => recalcImpactDICForCartoRow(i)} /></td>
+						<td class="px-2 py-3 text-center border border-black bg-white align-middle"><input type="checkbox" class="w-4 h-4" bind:checked={row.dicC} on:change={() => recalcImpactDICForCartoRow(i)} /></td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<span class="inline-block min-w-[2rem] text-xs font-medium">{row.impactD ?? '—'}</span>
+							<span class="inline-block min-w-[2rem] text-xs font-medium">{row.dicD ? (row.impactD ?? '—') : '—'}</span>
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<span class="inline-block min-w-[2rem] text-xs font-medium">{row.impactI ?? '—'}</span>
+							<span class="inline-block min-w-[2rem] text-xs font-medium">{row.dicI ? (row.impactI ?? '—') : '—'}</span>
 						</td>
 						<td class="px-2 py-2 text-center border border-black bg-gray-100 align-middle">
-							<span class="inline-block min-w-[2rem] text-xs font-medium">{row.impactC ?? '—'}</span>
+							<span class="inline-block min-w-[2rem] text-xs font-medium">{row.dicC ? (row.impactC ?? '—') : '—'}</span>
 						</td>
 						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(row) ?? '-'}</td>
 						{#each impactDefinitionsRows as imp, idx}
