@@ -2,7 +2,7 @@
 	// Page simple pour afficher La méthode NearSecure
 	// avec des tableaux statiques basés sur tes définitions en français.
 
-	import { onMount } from 'svelte';
+	import { onMount, afterUpdate } from 'svelte';
 	import { beforeNavigate } from '$app/navigation';
 	import ExcelJS from 'exceljs';
 
@@ -1509,6 +1509,36 @@
 		if (from?.url?.pathname?.includes('custom-method')) {
 			saveCustomMethodState();
 		}
+	});
+
+	/** Redimensionne un textarea pour qu'il affiche tout son contenu (cellules flexibles en hauteur). */
+	function resizeTextarea(ta: HTMLTextAreaElement) {
+		ta.style.height = 'auto';
+		const minH = 52; // ~2.5rem
+		ta.style.height = Math.max(minH, ta.scrollHeight) + 'px';
+	}
+	/** Redimensionne tous les textareas de la page Custom method. */
+	function resizeAllTextareasInPage() {
+		const main = document.querySelector('.custom-method-page');
+		if (main) main.querySelectorAll('textarea').forEach((el) => resizeTextarea(el as HTMLTextAreaElement));
+	}
+	/** Action : écoute input/change sur les textareas du conteneur et redimensionne. */
+	function autoResizeTextareas(node: HTMLElement) {
+		const handler = (e: Event) => {
+			if (e.target instanceof HTMLTextAreaElement) resizeTextarea(e.target);
+		};
+		node.addEventListener('input', handler);
+		node.addEventListener('change', handler);
+		resizeAllTextareasInPage();
+		return {
+			destroy() {
+				node.removeEventListener('input', handler);
+				node.removeEventListener('change', handler);
+			}
+		};
+	}
+	afterUpdate(() => {
+		requestAnimationFrame(() => resizeAllTextareasInPage());
 	});
 
 	/** Édition au clic : quelle cellule est en cours d'édition (tous tableaux) */
@@ -3144,9 +3174,10 @@
 
 <svelte:head>
 	{@html `<style id="carto-dynamic-view-style">${cartoViewDynamicCss}</style>`}
+	{@html `<style id="custom-method-flexible-cells">.custom-method-page table,.custom-method-page table thead,.custom-method-page table tbody,.custom-method-page table tr{height:auto!important}.custom-method-page table td,.custom-method-page table th{height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;white-space:normal!important;word-wrap:break-word;overflow-wrap:break-word;vertical-align:top}.custom-method-page table textarea{min-height:2.5rem;overflow-y:hidden;resize:none}</style>`}
 </svelte:head>
 
-<main class="custom-method-page p-6 space-y-8">
+<main class="custom-method-page p-6 space-y-8" use:autoResizeTextareas>
 	<section class="space-y-2">
 		<div class="flex flex-wrap items-center justify-between gap-4">
 			<h1 class="text-2xl font-bold text-gray-900">La méthode NearSecure</h1>
