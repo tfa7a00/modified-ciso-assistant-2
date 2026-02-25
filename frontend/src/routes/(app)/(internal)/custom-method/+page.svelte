@@ -994,12 +994,12 @@
 					'Action à mettre en place', 'Efficacité PTR', 'Pourcentage d\'efficacité', 'Niveau de risque', 'Niveau du risque résiduel'
 				];
 
-		// Regroupements identiques à la plateforme : Processus (3), Identification (7 ou 17), Risque Brut, DMR (1), Risque Net, PTR (2), Risque Résiduel
+		// Regroupements identiques à la plateforme : Processus (3), Identification (17), Risque Brut (jusqu'à Signification du risque brut), DMR (1), Risque Net, PTR (2), Risque Résiduel
 		const cartoSectionColspans = isCartoVersionA
 			? [
 					3,   // Cartographie des Processus
 					17,  // Identification des risques inhérents (7 ident. + 7 catégories actifs + 3 critères D/I/C)
-					3 + 3 + 1 + nImp + 4,  // Évaluation de la Criticité du Risque Brut
+					3 + 1 + nImp + 4,  // Évaluation de la Criticité du Risque Brut (Impact DIC 3 + Criticité 1 + nImp impacts + Gravité, Proba, I*P*C, Signification du risque brut 4)
 					1,   // Détermination du degré d'exposition aux risques (DMR)
 					5,   // Évaluation de la Criticité du Risque Net
 					2,   // Plan de traitement des risques (PTR)
