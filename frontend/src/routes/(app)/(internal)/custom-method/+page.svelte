@@ -1464,6 +1464,14 @@
 		// Activer wrap text sur toutes les feuilles
 		wb.eachSheet((ws) => applyWrapTextToSheet(ws));
 
+		// Tailles par défaut des cellules (colonnes sans largeur explicite, toutes les lignes)
+		const EXCEL_DEFAULT_COL_WIDTH = 14;   // largeur en unités de caractères
+		const EXCEL_DEFAULT_ROW_HEIGHT = 18;  // hauteur en points
+		wb.eachSheet((ws) => {
+			ws.properties.defaultColWidth = EXCEL_DEFAULT_COL_WIDTH;
+			ws.properties.defaultRowHeight = EXCEL_DEFAULT_ROW_HEIGHT;
+		});
+
 		const fileName = `La-methode-NearSecure-${new Date().toISOString().slice(0, 10)}.xlsx`;
 		const buffer = await wb.xlsx.writeBuffer();
 		const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
