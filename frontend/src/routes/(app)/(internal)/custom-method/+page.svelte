@@ -1055,6 +1055,20 @@
 			cell.border = EXCEL_BORDER_THIN;
 			if (i === 1 || i === 3) cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };  // Identification + DMR (fond teal, texte blanc)
 		});
+		// Sous-regroupement "Catégorie d'actifs informationnels directement concernés" au sein de "Identification des risques inhérents" (version A uniquement, colonnes 11-17)
+		if (isCartoVersionA && numCartoCols >= 17) {
+			const rowCartoSubGroup = wsCarto.addRow(Array(numCartoCols).fill(''));
+			rowCartoSubGroup.eachCell((cell, colNumber) => {
+				cell.border = EXCEL_BORDER_THIN;
+			});
+			wsCarto.mergeCells(3, 11, 3, 17);
+			const subGroupCell = rowCartoSubGroup.getCell(11);
+			subGroupCell.value = 'Catégorie d\'actifs informationnels directement concernés';
+			subGroupCell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+			subGroupCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFB91C1C' } }; // bg-red-700 comme à l'interface
+			subGroupCell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+			subGroupCell.border = EXCEL_BORDER_THIN;
+		}
 		const rowCartoHeader = wsCarto.addRow(cartoHeaders);
 		applyHeaderRow(wsCarto, rowCartoHeader, 'FF0284C7');
 		// Appliquer les couleurs d'en-têtes comme à l'interface (sans modifier le texte)
@@ -1208,7 +1222,7 @@
 			else if (!isCartoVersionA && c === 22 + nImp) col.width = 24;  // Action PTR
 			else col.width = 14;
 		}
-		wsCarto.views = [{ state: 'frozen', ySplit: 3, activeCell: 'A4', showGridLines: true }];
+		wsCarto.views = [{ state: 'frozen', ySplit: isCartoVersionA ? 4 : 3, activeCell: isCartoVersionA ? 'A5' : 'A4', showGridLines: true }];
 
 		// --- Feuille 5 : Aide-Risque (probabilité, impact, fréquence, efficacité avec couleurs) ---
 		const wsAideRisque = wb.addWorksheet('Aide-Risque', { views: [{ showGridLines: true }] });
