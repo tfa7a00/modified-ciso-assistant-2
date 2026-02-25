@@ -1151,9 +1151,9 @@
 				prevPartExport = part;
 			}
 			const impacts = getRowImpacts(row);
-			const dicDVal = row.dicD ? '☑' : '☐';
-			const dicIVal = row.dicI ? '☑' : '☐';
-			const dicCVal = row.dicC ? '☑' : '☐';
+			const dicDVal = row.dicD ? 'X' : '';
+			const dicIVal = row.dicI ? 'X' : '';
+			const dicCVal = row.dicC ? 'X' : '';
 			const signifBrut = getNiveauBrut(row);
 			const signifNet = isCartoVersionA ? getNiveauNet(row) : getSignificationRisqueNetB(row);
 			const signifResiduel = isCartoVersionA ? getNiveauResiduel(row) : getNiveauFromIpc(getNiveauRisqueResiduelB(row));
@@ -1163,7 +1163,7 @@
 						row.entite ?? '', row.domaineProcessus ?? '', row.activites ?? '', row.codeRisque ?? '',
 						row.descriptionScenario ?? '', row.mesureISO ?? '', row.familleRisque ?? '', row.source ?? '',
 						row.familleCauses ?? '', row.proprietaireRisque ?? '',
-						row.actifMateriel ? '☑' : '☐', row.actifApplication ? '☑' : '☐', row.actifEquipementsSecurite ? '☑' : '☐', row.actifEquipementsReseaux ? '☑' : '☐', row.actifRessourcesHumaines ? '☑' : '☐', row.actifDocument ? '☑' : '☐', row.actifDonnees ? '☑' : '☐',
+						row.actifMateriel ? 'X' : '', row.actifApplication ? 'X' : '', row.actifEquipementsSecurite ? 'X' : '', row.actifEquipementsReseaux ? 'X' : '', row.actifRessourcesHumaines ? 'X' : '', row.actifDocument ? 'X' : '', row.actifDonnees ? 'X' : '',
 						dicDVal, dicIVal, dicCVal,
 						row.impactD ?? '', row.impactI ?? '', row.impactC ?? '',
 						getCriticite(row) ?? '', ...impacts, getGravite(row) ?? '', row.probabilite ?? '', getIpcBrut(row) ?? '', signifBrut,
