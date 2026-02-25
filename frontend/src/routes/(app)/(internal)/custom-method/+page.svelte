@@ -1083,6 +1083,22 @@
 			cellImpactDIC.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFACC15' } }; // yellow-400
 			cellImpactDIC.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
 			cellImpactDIC.border = EXCEL_BORDER_THIN;
+			// Pour les autres colonnes (1-10 et 24 à la fin), même couleur que la ligne d'en-têtes en dessous
+			const W = 'FFFFFFFF', B = 'FF000000';
+			for (let c = 1; c <= numCartoCols; c++) {
+				if (c >= 11 && c <= 23) continue; // sous-regroupements déjà traités
+				let fill: string, fontColor: string;
+				if (c <= 3) { fill = 'FF4B5563'; fontColor = W; }
+				else if (c <= 10) { fill = 'FF0F766E'; fontColor = W; }
+				else if (c === 24 || (c >= 25 + nImp && c <= 28 + nImp) || (c >= 30 + nImp && c <= 34 + nImp) || (c >= 37 + nImp)) { fill = 'FFFACC15'; fontColor = B; }
+				else if (c <= 24 + nImp) { fill = 'FFEA580C'; fontColor = W; }
+				else if (c === 29 + nImp) { fill = 'FF0F766E'; fontColor = W; }
+				else { fill = 'FF4B5563'; fontColor = W; }
+				const cell = rowCartoSubGroup.getCell(c);
+				cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: fill } };
+				cell.font = { bold: true, color: { argb: fontColor } };
+				cell.border = EXCEL_BORDER_THIN;
+			}
 		}
 		const rowCartoHeader = wsCarto.addRow(cartoHeaders);
 		applyHeaderRow(wsCarto, rowCartoHeader, 'FF0284C7');
