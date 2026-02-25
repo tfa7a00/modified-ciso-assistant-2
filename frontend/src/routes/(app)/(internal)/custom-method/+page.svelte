@@ -990,7 +990,10 @@
 			: [
 					'Entité', 'Domaine / Processus', 'Activités', 'Code Risque', 'Description du scénario du Risque', 'Mesure ISO27001, annexe A',
 					'Famille de risque', 'Source', 'Famille de causes', 'Propriétaire du risque',
-					'D', 'I', 'C', ...impactLabels, 'Probabilité d\'Occurrence', 'Signification du risque brut',
+					'Matériel informatique', 'Application', 'Equipements sécurité', 'Equipements réseaux', 'Ressources humaines', 'Document', 'Données',
+					'D', 'I', 'C',
+					'D', 'I', 'C',
+					'Criticité de l\'actif - Besoin en SSI', ...impactLabels, 'Gravité des impacts', 'Probabilité d\'Occurrence', 'I*P*C', 'Signification du risque brut',
 					'Description du Dispositif de Maitrise des Risques (DMR) existant', 'Efficacité DMR', 'Niveau d\'efficacité', 'Niveau de risque', 'Signification du risque net', 'Décision',
 					'Action à mettre en place', 'Efficacité PTR', 'Pourcentage d\'efficacité', 'Niveau de risque', 'Niveau du risque résiduel'
 				];
@@ -1007,8 +1010,9 @@
 					5    // Évaluation du Risque Résiduel
 				]
 			: [
-					3, 7,
-					3 + nImp + 2,  // Évaluation de la Criticité du Risque Brut
+					3,
+					20,  // Identification (10 ident. + 7 catégories actifs + 3 critères D/I/C)
+					3 + 1 + nImp + 4,  // Évaluation de la Criticité du Risque Brut (Impact DIC 3 + Criticité 1 + nImp + Gravité, Proba, I*P*C, Signif brut 4)
 					1, 4, 2, 4
 				];
 
@@ -1122,12 +1126,14 @@
 			for (let c = 1; c <= numCartoCols; c++) {
 				if (c <= 3) cartoHeaderColors.push({ fill: 'FF4B5563', font: W });
 				else if (c <= 10) cartoHeaderColors.push({ fill: 'FF0F766E', font: W });
-				else if (c <= 13) cartoHeaderColors.push({ fill: 'FF16A34A', font: W });
-				else if (c <= 13 + nImp) cartoHeaderColors.push({ fill: 'FFEA580C', font: W });
-				else if (c === 16 + nImp) cartoHeaderColors.push({ fill: 'FF0F766E', font: W }); // DMR
-				else if (c <= 15 + nImp || (c >= 17 + nImp && c <= 20 + nImp)) cartoHeaderColors.push({ fill: 'FFFACC15', font: B });
-				else if (c >= 21 + nImp && c <= 22 + nImp) cartoHeaderColors.push({ fill: 'FF4B5563', font: W }); // PTR
-				else cartoHeaderColors.push({ fill: 'FFFACC15', font: B }); // Résiduel
+				else if (c <= 17) cartoHeaderColors.push({ fill: 'FF0891B2', font: W }); // Catégories actifs
+				else if (c <= 20) cartoHeaderColors.push({ fill: 'FF16A34A', font: W }); // Critères D,I,C
+				else if (c <= 23) cartoHeaderColors.push({ fill: 'FFEA580C', font: W }); // Impact DIC
+				else if (c === 24 || (c >= 25 + nImp && c <= 28 + nImp) || (c >= 30 + nImp && c <= 33 + nImp) || (c >= 36 + nImp)) cartoHeaderColors.push({ fill: 'FFFACC15', font: B });
+				else if (c <= 24 + nImp) cartoHeaderColors.push({ fill: 'FFEA580C', font: W });
+				else if (c === 29 + nImp) cartoHeaderColors.push({ fill: 'FF0F766E', font: W }); // DMR
+				else if (c <= 35 + nImp && c >= 34 + nImp) cartoHeaderColors.push({ fill: 'FF4B5563', font: W }); // PTR (34+nImp, 35+nImp)
+				else cartoHeaderColors.push({ fill: 'FFFACC15', font: B });
 			}
 		}
 		cartoHeaderColors.forEach((x, i) => {
@@ -1177,7 +1183,10 @@
 						row.entite ?? '', row.domaineProcessus ?? '', row.activites ?? '', row.codeRisque ?? '',
 						row.descriptionScenario ?? '', row.mesureISO ?? '', row.familleRisque ?? '', row.source ?? '',
 						row.familleCauses ?? '', row.proprietaireRisque ?? '',
-						dicDVal, dicIVal, dicCVal, ...impacts, row.probabilite ?? '', signifBrut,
+						row.actifMateriel ? 'X' : '', row.actifApplication ? 'X' : '', row.actifEquipementsSecurite ? 'X' : '', row.actifEquipementsReseaux ? 'X' : '', row.actifRessourcesHumaines ? 'X' : '', row.actifDocument ? 'X' : '', row.actifDonnees ? 'X' : '',
+						dicDVal, dicIVal, dicCVal,
+						row.impactD ?? '', row.impactI ?? '', row.impactC ?? '',
+						getCriticite(row) ?? '', ...impacts, getGravite(row) ?? '', row.probabilite ?? '', getIpcBrut(row) ?? '', signifBrut,
 						row.dispositifMaitrise ?? '', row.efficaciteDMR ?? '', getNiveauEfficaciteLabel(row.efficaciteDMR) || '', formatNiveauRisqueNetBDisplay(row), signifNet,
 						row.decision ?? '', row.actionPTR ?? '',
 						row.efficacitePTR ?? '', getSignificationEfficacitePTRDisplay(row.efficacitePTR), formatNiveauRisqueResiduelBDisplay(row), signifResiduel
@@ -1225,20 +1234,29 @@
 				const argbRes = tailwindToExcelArgb(getNiveauRisqueBg(signifResiduel));
 				if (argbRes) applyCellStyle(r.getCell(colNiveauResiduelA), { fill: argbRes, border: true });
 			} else {
-				if (row.dicD) applyCellStyle(r.getCell(11), { fill: FILL_OUI, border: true });
-				if (row.dicI) applyCellStyle(r.getCell(12), { fill: FILL_OUI, border: true });
-				if (row.dicC) applyCellStyle(r.getCell(13), { fill: FILL_OUI, border: true });
-				const colSignifBrut = 15 + nImp;
-				const colSignifNet = 20 + nImp;
-				const colSignifResiduel = 26 + nImp;  // Niveau du risque résiduel (après Efficacité PTR, Pourcentage, Niveau de risque)
+				if (row.actifMateriel) applyCellStyle(r.getCell(11), { fill: FILL_OUI, border: true });
+				if (row.actifApplication) applyCellStyle(r.getCell(12), { fill: FILL_OUI, border: true });
+				if (row.actifEquipementsSecurite) applyCellStyle(r.getCell(13), { fill: FILL_OUI, border: true });
+				if (row.actifEquipementsReseaux) applyCellStyle(r.getCell(14), { fill: FILL_OUI, border: true });
+				if (row.actifRessourcesHumaines) applyCellStyle(r.getCell(15), { fill: FILL_OUI, border: true });
+				if (row.actifDocument) applyCellStyle(r.getCell(16), { fill: FILL_OUI, border: true });
+				if (row.actifDonnees) applyCellStyle(r.getCell(17), { fill: FILL_OUI, border: true });
+				if (row.dicD) applyCellStyle(r.getCell(18), { fill: FILL_OUI, border: true });
+				if (row.dicI) applyCellStyle(r.getCell(19), { fill: FILL_OUI, border: true });
+				if (row.dicC) applyCellStyle(r.getCell(20), { fill: FILL_OUI, border: true });
+				applyCellStyle(r.getCell(24), { fill: FILL_JAUNE_200, border: true });
+				applyCellStyle(r.getCell(25 + nImp), { fill: FILL_JAUNE_200, border: true });
+				applyCellStyle(r.getCell(26 + nImp), { fill: FILL_JAUNE_200, border: true });
+				applyCellStyle(r.getCell(27 + nImp), { fill: 'FFFB923C', border: true });
+				const colSignifBrut = 28 + nImp;
+				const colSignifNet = 33 + nImp;
+				const colSignifResiduel = 39 + nImp;
 				[colSignifBrut, colSignifNet, colSignifResiduel].forEach((colIdx, idx) => {
 					const niveau = [signifBrut, signifNet, signifResiduel][idx];
 					const argb = tailwindToExcelArgb(getNiveauRisqueBg(niveau));
 					if (argb) applyCellStyle(r.getCell(colIdx), { fill: argb, border: true });
 				});
-				applyCellStyle(r.getCell(17 + nImp), { fill: FILL_JAUNE_200, border: true });
-				applyCellStyle(r.getCell(18 + nImp), { fill: FILL_JAUNE_200, border: true });
-				const colDecision = 21 + nImp;
+				const colDecision = 34 + nImp;
 				r.getCell(colDecision).dataValidation = { type: 'list', allowBlank: true, formulae: ['"Accepter,Réduire,Transférer,Éviter"'] };
 			}
 		});
@@ -1250,8 +1268,8 @@
 			else if (c === 7 || c === 8 || c === 9) col.width = 18;
 			else if (isCartoVersionA && (c === 10 || c === 29 + nImp)) col.width = 18;
 			else if (isCartoVersionA && c === 36 + nImp) col.width = 24;  // Action PTR
-			else if (!isCartoVersionA && (c === 10 || c === 16 + nImp)) col.width = 18;
-			else if (!isCartoVersionA && c === 22 + nImp) col.width = 24;  // Action PTR
+			else if (!isCartoVersionA && (c === 10 || c === 29 + nImp)) col.width = 18;
+			else if (!isCartoVersionA && c === 35 + nImp) col.width = 24;  // Action PTR
 			else col.width = 14;
 		}
 		wsCarto.views = [{ state: 'frozen', ySplit: isCartoVersionA ? 4 : 3, activeCell: isCartoVersionA ? 'A5' : 'A4', showGridLines: true }];
