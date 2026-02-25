@@ -1343,6 +1343,14 @@
 		matriceRisqueRows.forEach((r) => {
 			const row = wsAideRisque.addRow([r.libelle, ...r.valeurs]);
 			applyDataRowBorder(wsAideRisque, row);
+			// Couleurs des cellules de la matrice (selon intervalles Fréquence risque)
+			r.valeurs.forEach((v, idx) => {
+				const tw = getMatriceCellBgFromFrequence(v);
+				const argb = tailwindToExcelArgb(tw);
+				if (argb) {
+					row.getCell(idx + 2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb } };
+				}
+			});
 		});
 
 		// --- Feuille 6 : PTR (libellés et couleur d'en-tête comme à l'écran : #FFC000) ---
@@ -1465,8 +1473,8 @@
 		wb.eachSheet((ws) => applyWrapTextToSheet(ws));
 
 		// Tailles par défaut des cellules (colonnes sans largeur explicite, toutes les lignes)
-		const EXCEL_DEFAULT_COL_WIDTH = 14;   // largeur en unités de caractères
-		const EXCEL_DEFAULT_ROW_HEIGHT = 18;  // hauteur en points
+		const EXCEL_DEFAULT_COL_WIDTH = 18;   // largeur en unités de caractères
+		const EXCEL_DEFAULT_ROW_HEIGHT = 22;  // hauteur en points
 		wb.eachSheet((ws) => {
 			ws.properties.defaultColWidth = EXCEL_DEFAULT_COL_WIDTH;
 			ws.properties.defaultRowHeight = EXCEL_DEFAULT_ROW_HEIGHT;
