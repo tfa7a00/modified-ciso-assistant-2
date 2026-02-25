@@ -972,42 +972,42 @@
 		const nImp = impactDefinitionsRows.length;
 		const isCartoVersionA = cartoVersion === 'A';
 
-		// En-têtes et sections selon la vue sélectionnée
+		// En-têtes et libellés identiques à la plateforme (vue cartographie)
 		const cartoHeaders = isCartoVersionA
 			? [
-					'Entité', 'Domaine / Processus', 'Activités', 'Code risque', 'Description scénario', 'Mesure ISO',
-					'Famille risque', 'Source', 'Famille causes', 'Propriétaire risque',
-					'Matériel informatique', 'Application', 'Équipements sécurité', 'Équipements réseaux', 'Ressources humaines', 'Document', 'Données',
-					'DIC D', 'DIC I', 'DIC C',
-					'Impact D', 'Impact I', 'Impact C',
-					'Criticité de l\'actif - Besoin en SSI', ...impactLabels, 'Gravité des impacts', 'Probabilité', 'I*P*C', 'Signification du risque brut',
-					'Dispositif maîtrise',
-					'Criticité (net)', 'Gravité nette', 'Probabilité nette', 'I*P*C net', 'Signification du risque net',
-					'Décision', 'Action PTR',
-					'Criticité (résiduel)', 'Impact résiduel', 'Vraisemblance résiduel', 'I*P*C résiduel', 'Niveau du risque résiduel'
+					'Entité', 'Domaine / Processus', 'Activités', 'Code Risque', 'Description du scénario du Risque', 'Mesure ISO27001, annexe A',
+					'Famille de risque', 'Source', 'Famille de causes', 'Propriétaire du risque',
+					'Matériel informatique', 'Application', 'Equipements sécurité', 'Equipements réseaux', 'Ressources humaines', 'Document', 'Données',
+					'D', 'I', 'C',
+					'D', 'I', 'C',
+					'Criticité de l\'actif - Besoin en SSI', ...impactLabels, 'Gravité des impacts', 'Probabilité d\'Occurrence', 'I*P*C', 'Signification du risque brut',
+					'Description du Dispositif de Maitrise des Risques (DMR) existant',
+					'Criticité de l\'actif - Besoin en SSI', 'Gravité des impacts', 'Probabilité d\'Occurrence', 'I*P*C', 'Signification du risque net',
+					'Décision', 'Action à mettre en place',
+					'Criticité de l\'actif - Besoin en SSI', 'Gravité des impacts', 'Probabilité d\'occurrence', 'I*P*C', 'Niveau du risque résiduel'
 				]
 			: [
-					'Entité', 'Domaine / Processus', 'Activités', 'Code risque', 'Description scénario', 'Mesure ISO',
-					'Famille risque', 'Source', 'Famille causes', 'Propriétaire risque',
-					'DIC D', 'DIC I', 'DIC C', ...impactLabels, 'Probabilité', 'Signification du risque brut',
-					'Dispositif maîtrise', 'Gravité nette', 'Probabilité nette', 'Efficacité DMR', 'Signification du risque net', 'Décision',
-					'Action PTR', 'Impact résiduel', 'Vraisemblance résiduel', 'Signification du risque résiduel', 'Efficacité PTR'
+					'Entité', 'Domaine / Processus', 'Activités', 'Code Risque', 'Description du scénario du Risque', 'Mesure ISO27001, annexe A',
+					'Famille de risque', 'Source', 'Famille de causes', 'Propriétaire du risque',
+					'D', 'I', 'C', ...impactLabels, 'Probabilité d\'Occurrence', 'Signification du risque brut',
+					'Description du Dispositif de Maitrise des Risques (DMR) existant', 'Gravité des impacts', 'Probabilité d\'Occurrence', 'Efficacité DMR', 'Signification du risque net', 'Décision',
+					'Action à mettre en place', 'Efficacité PTR', 'Pourcentage d\'efficacité', 'Niveau de risque', 'Niveau du risque résiduel'
 				];
 
+		// Regroupements identiques à la plateforme : Processus (3), Identification (7 ou 17), Risque Brut, DMR (1), Risque Net, PTR (2), Risque Résiduel
 		const cartoSectionColspans = isCartoVersionA
 			? [
 					3,   // Cartographie des Processus
-					7,   // Identification des risques inhérents
-					7,   // Catégorie d'actifs informationnels directement concernés
-					3 + 3 + 1 + nImp + 4,  // Risque Brut (DIC + Impact D/I/C + Criticité + N impacts + Gravité + Proba + I*P*C + Signif brut)
-					1,   // DMR
-					5,   // Risque Net (Criticité, Gravité nette, Proba nette, I*P*C net, Signif net) — sans Efficacité DMR
-					2,   // PTR
-					5    // Risque Résiduel (Criticité, Impact rés., Vraisemblance, I*P*C rés., Niveau) — sans Signif résiduel / Efficacité PTR
+					17,  // Identification des risques inhérents (7 ident. + 7 catégories actifs + 3 critères D/I/C)
+					3 + 3 + 1 + nImp + 4,  // Évaluation de la Criticité du Risque Brut
+					1,   // Détermination du degré d'exposition aux risques (DMR)
+					5,   // Évaluation de la Criticité du Risque Net
+					2,   // Plan de traitement des risques (PTR)
+					5    // Évaluation du Risque Résiduel
 				]
 			: [
 					3, 7,
-					3 + nImp + 2,  // Risque Brut (DIC + N impacts + Probabilité + Signification brut)
+					3 + nImp + 2,  // Évaluation de la Criticité du Risque Brut
 					1, 4, 2, 4
 				];
 
@@ -1015,7 +1015,6 @@
 			? [
 					'Cartographie des Processus',
 					'Identification des risques inhérents',
-					'Catégorie d\'actifs informationnels directement concernés',
 					'Évaluation de la Criticité du Risque Brut',
 					'Détermination du degré d\'exposition aux risques',
 					'Évaluation de la Criticité du Risque Net',
@@ -1032,9 +1031,8 @@
 					'Évaluation du Risque Résiduel'
 				];
 
-		const cartoSectionFills = isCartoVersionA
-			? ['FFFFFFFF', 'FF0D9488', 'FFB91C1C', 'FFFACC15', 'FF0891B2', 'FFFACC15', 'FF4B5563', 'FFFACC15']  // + rouge pour catégories actifs
-			: ['FFFFFFFF', 'FF0D9488', 'FFFACC15', 'FF0891B2', 'FFFACC15', 'FF4B5563', 'FFFACC15'];
+		// Couleurs de sections comme sur la plateforme : blanc, teal, jaune, teal-600 (DMR), jaune, gris, jaune
+		const cartoSectionFills = ['FFFFFFFF', 'FF0D9488', 'FFFACC15', 'FF0891B2', 'FFFACC15', 'FF4B5563', 'FFFACC15'];
 
 		const numCartoCols = cartoHeaders.length;
 		const wsCarto = wb.addWorksheet('Cartographie des risques', { views: [{ showGridLines: true }] });
@@ -1055,7 +1053,7 @@
 			cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
 			cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: cartoSectionFills[i] } };
 			cell.border = EXCEL_BORDER_THIN;
-			if (i === 1 || (isCartoVersionA ? i === 4 : i === 3)) cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+			if (i === 1 || i === 3) cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };  // Identification + DMR (fond teal, texte blanc)
 		});
 		const rowCartoHeader = wsCarto.addRow(cartoHeaders);
 		applyHeaderRow(wsCarto, rowCartoHeader, 'FF0284C7');
@@ -1102,7 +1100,8 @@
 						row.familleCauses ?? '', row.proprietaireRisque ?? '',
 						dicDVal, dicIVal, dicCVal, ...impacts, row.probabilite ?? '', signifBrut,
 						row.dispositifMaitrise ?? '', row.graviteNet ?? '', row.probabiliteNet ?? '', row.efficaciteDMR ?? '', signifNet,
-						row.decision ?? '', row.actionPTR ?? '', row.impactResiduel ?? '', row.vraisemblanceResiduel ?? '', signifResiduel, row.efficacitePTR ?? ''
+						row.decision ?? '', row.actionPTR ?? '',
+						row.efficacitePTR ?? '', getSignificationEfficacitePTRDisplay(row.efficacitePTR), formatNiveauRisqueResiduelBDisplay(row), signifResiduel
 					];
 
 			const r = wsCarto.addRow(rowData);
@@ -1152,7 +1151,7 @@
 				if (row.dicC) applyCellStyle(r.getCell(13), { fill: FILL_OUI, border: true });
 				const colSignifBrut = 15 + nImp;
 				const colSignifNet = 20 + nImp;
-				const colSignifResiduel = 25 + nImp;
+				const colSignifResiduel = 26 + nImp;  // Niveau du risque résiduel (après Efficacité PTR, Pourcentage, Niveau de risque)
 				[colSignifBrut, colSignifNet, colSignifResiduel].forEach((colIdx, idx) => {
 					const niveau = [signifBrut, signifNet, signifResiduel][idx];
 					const argb = tailwindToExcelArgb(getNiveauRisqueBg(niveau));
