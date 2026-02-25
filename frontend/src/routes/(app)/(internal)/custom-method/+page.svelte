@@ -1055,19 +1055,34 @@
 			cell.border = EXCEL_BORDER_THIN;
 			if (i === 1 || i === 3) cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };  // Identification + DMR (fond teal, texte blanc)
 		});
-		// Sous-regroupement "Catégorie d'actifs informationnels directement concernés" au sein de "Identification des risques inhérents" (version A uniquement, colonnes 11-17)
-		if (isCartoVersionA && numCartoCols >= 17) {
+		// Sous-regroupements (version A uniquement) : Catégorie d'actifs (11-17), Critères d'impact (18-20), Impact DIC (21-23)
+		if (isCartoVersionA && numCartoCols >= 23) {
 			const rowCartoSubGroup = wsCarto.addRow(Array(numCartoCols).fill(''));
-			rowCartoSubGroup.eachCell((cell, colNumber) => {
-				cell.border = EXCEL_BORDER_THIN;
-			});
+			rowCartoSubGroup.eachCell((cell) => { cell.border = EXCEL_BORDER_THIN; });
+			// Catégorie d'actifs informationnels directement concernés (au sein de "Identification des risques inhérents")
 			wsCarto.mergeCells(3, 11, 3, 17);
-			const subGroupCell = rowCartoSubGroup.getCell(11);
-			subGroupCell.value = 'Catégorie d\'actifs informationnels directement concernés';
-			subGroupCell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
-			subGroupCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFB91C1C' } }; // bg-red-700 comme à l'interface
-			subGroupCell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
-			subGroupCell.border = EXCEL_BORDER_THIN;
+			const cellCatActifs = rowCartoSubGroup.getCell(11);
+			cellCatActifs.value = 'Catégorie d\'actifs informationnels directement concernés';
+			cellCatActifs.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+			cellCatActifs.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFB91C1C' } };
+			cellCatActifs.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+			cellCatActifs.border = EXCEL_BORDER_THIN;
+			// Critères d'impact : D, I, C (au sein de "Identification des risques inhérents")
+			wsCarto.mergeCells(3, 18, 3, 20);
+			const cellCritImpact = rowCartoSubGroup.getCell(18);
+			cellCritImpact.value = 'Critères d\'impact';
+			cellCritImpact.font = { bold: true, color: { argb: 'FF000000' } };
+			cellCritImpact.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFACC15' } }; // yellow-400
+			cellCritImpact.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+			cellCritImpact.border = EXCEL_BORDER_THIN;
+			// Impact DIC : D, I, C (au sein de "Évaluation de la Criticité du Risque Brut")
+			wsCarto.mergeCells(3, 21, 3, 23);
+			const cellImpactDIC = rowCartoSubGroup.getCell(21);
+			cellImpactDIC.value = 'Impact DIC';
+			cellImpactDIC.font = { bold: true, color: { argb: 'FF000000' } };
+			cellImpactDIC.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFACC15' } }; // yellow-400
+			cellImpactDIC.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+			cellImpactDIC.border = EXCEL_BORDER_THIN;
 		}
 		const rowCartoHeader = wsCarto.addRow(cartoHeaders);
 		applyHeaderRow(wsCarto, rowCartoHeader, 'FF0284C7');
