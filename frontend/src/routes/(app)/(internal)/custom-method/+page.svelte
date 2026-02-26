@@ -3297,12 +3297,6 @@
 				</button>
 			</div>
 			
-			<div class="space-y-2">
-				<div class="p-4 bg-blue-50 border-l-4 border-blue-600">
-					<p class="font-bold text-gray-900">REGISTRE DE CLASSIFICATION DES ACTIFS INFORMATIONNELS</p>
-					<p class="font-bold text-gray-900">CARTOGRAPHIE D'ANALYSE DES RISQUES DE SÉCURITÉ SI</p>
-				</div>
-			</div>
 
 			<!-- Tableau 1: Rédaction du document -->
 			<section class="space-y-3">
@@ -5113,7 +5107,7 @@
 				{/if}
 				<p class="text-xs text-gray-600">
 					Les mots‑clés <strong>Financier</strong>, <strong>Réputation</strong>,
-					<strong>Parties prenantes</strong> et <strong>Réglementaire</strong> doivent être
+					<strong>Parties prenantes</strong> et <strong>Réglementaire</strong>  etc.. doivent être
 					considérés comme des axes d'analyse principaux.
 				</p>
 			</section>
@@ -5379,13 +5373,7 @@
 						{/if}
 					</div>
 				{/if}
-				<p class="text-xs text-gray-600">
-					Échelle de risque (feu tricolore étendu)&nbsp;: <span class="font-semibold" style="color: #ff0000;">Rouge</span> (Insuffisant) – Risque très élevé,
-					<span class="font-semibold" style="color: #c08000;">Orange</span> (Faible) – Risque élevé,
-					<span class="font-semibold" style="color: #b0b000;">Jaune</span> (Acceptable) – Risque modéré,
-					<span class="font-semibold" style="color: #70a030;">Vert clair</span> (Efficace) – Risque faible,
-					<span class="font-semibold" style="color: #00b050;">Vert foncé</span> (Exemplaire) – Risque minimal.
-				</p>
+				
 			</section>
 		</section>
 	{:else if activeSection === 'ptr'}
