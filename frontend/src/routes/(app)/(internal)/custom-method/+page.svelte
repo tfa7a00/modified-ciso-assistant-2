@@ -159,7 +159,7 @@
 .view-net tbody tr:not(.carto-part-header) td:nth-child(n+6):nth-child(-n+${cartoColEndBrut}),
 .view-net tbody tr:not(.carto-part-header) td:nth-child(n+${cartoColEndNet + 1}):nth-child(-n+${cartoTotalCols}){display:none}
 .view-ptr tbody tr:not(.carto-part-header) td:nth-child(n+1):nth-child(-n+3),
-.view-ptr tbody tr:not(.carto-part-header) td:nth-child(n+6):nth-child(-n+${cartoColEndPTR - 1}),
+.view-ptr tbody tr:not(.carto-part-header) td:nth-child(n+6):nth-child(-n+${cartoColEndNet}),
 .view-ptr tbody tr:not(.carto-part-header) td:nth-child(n+${cartoColEndRes + 1}):nth-child(-n+${cartoTotalCols}){display:none}`;
 
 	// Données et formules pour la cartographie des risques (une ligne = un objet)
@@ -3072,11 +3072,22 @@
         vertical-align: top;
     }
 
-    /* Registre de classification : cellules flexibles selon le contenu */
+    /* Registre de classification : cellules flexibles selon le contenu, pas de padding haut/bas */
     .registre-classification-table tbody td {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
         vertical-align: top;
+    }
+
+    /* Garder min-height 80px pour les textareas du registre (le style global custom-method-flexible-cells impose 2.5rem sinon) */
+    .registre-classification-table tbody td textarea {
+        min-height: 80px !important;
+    }
+
+    /* Tableau PTR : même mise en page que registre de classification (cellules à champs texte = textarea 80px) */
+    .ptr-table tbody td {
+        vertical-align: top;
+    }
+    .ptr-table tbody td textarea {
+        min-height: 80px !important;
     }
 
     /* Section 7 – colonnes Impact Disponibilité / Intégrité / Confidentialité */
@@ -3672,37 +3683,40 @@
 					<tbody>
 						{#each registreRows as row, i}
 							<tr class="border border-black">
-								<!-- ID -->
-								<td class="px-2 py-1 text-center border border-black bg-white">
-									<input
-										class="w-full text-center border border-gray-300 rounded px-1 py-0.5 text-xs"
-										type="text"
+								<!-- ID – même mise en page que les autres colonnes (textarea 80px) -->
+								<td class="px-2 py-1 text-center border border-black bg-white min-h-[80px]">
+									<textarea
+										class="w-full text-center border border-gray-300 rounded px-1 py-0.5 text-xs min-h-[80px] resize-y"
 										bind:value={registreRows[i].id}
-									/>
+										on:blur={() => saveCustomMethodState()}
+									></textarea>
 								</td>
-								<!-- Processus métier -->
-								<td class="px-2 py-1 border border-black bg-white">
-									<input
-										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
-										type="text"
+								<!-- Processus métier – textarea comme Description de l'actif (input ignore min-height dans beaucoup de navigateurs) -->
+								<td class="px-2 py-1 border border-black bg-white min-h-[80px]">
+									<textarea
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs min-h-[80px] resize-y"
 										bind:value={registreRows[i].processus_metier}
-									/>
+										on:blur={() => saveCustomMethodState()}
+										placeholder="Processus métier"
+									></textarea>
 								</td>
 								<!-- Activité/Sous-processus -->
-								<td class="px-2 py-1 border border-black bg-white">
-									<input
-										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
-										type="text"
+								<td class="px-2 py-1 border border-black bg-white min-h-[80px]">
+									<textarea
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs min-h-[80px] resize-y"
 										bind:value={registreRows[i].activite_sous_processus}
-									/>
+										on:blur={() => saveCustomMethodState()}
+										placeholder="Activité/Sous-processus"
+									></textarea>
 								</td>
 								<!-- Désignation de l'actif -->
-								<td class="px-2 py-1 border border-black bg-white">
-									<input
-										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
-										type="text"
+								<td class="px-2 py-1 border border-black bg-white min-h-[80px]">
+									<textarea
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs min-h-[80px] resize-y"
 										bind:value={registreRows[i].designation_actif}
-									/>
+										on:blur={() => saveCustomMethodState()}
+										placeholder="Désignation de l'actif"
+									></textarea>
 								</td>
 								<!-- Description de l'actif -->
 								<td class="px-2 py-1 border border-black bg-white min-h-[80px]">
@@ -3730,14 +3744,14 @@
 								<td class="px-2 py-1 border border-black bg-gray-50 text-xs">
 									{getTypeActifLabel(registreRows[i].type_actif)}
 								</td>
-								<!-- Propriétaire de l'actif (Section 5) -->
-								<td class="px-2 py-1 border border-black bg-white">
-									<input
-										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
-										type="text"
+								<!-- Propriétaire de l'actif (Section 5) – textarea comme Description de l'actif -->
+								<td class="px-2 py-1 border border-black bg-white min-h-[80px]">
+									<textarea
+										class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs min-h-[80px] resize-y"
 										bind:value={registreRows[i].proprietaire_actif}
+										on:blur={() => saveCustomMethodState()}
 										placeholder="Nom du propriétaire"
-									/>
+									></textarea>
 								</td>
 								<!-- Disponibilité (Section 6) – options issues du Tableau 1.2 Aide-Classification -->
 								<td class={`px-2 py-1 border border-black ${getNiveauBesoinBg(row.disponibilite)}`}>
@@ -5395,7 +5409,7 @@
 			</p>
 
 			<div class="overflow-x-auto border border-gray-300 rounded-lg">
-				<table class="min-w-full bg-white">
+				<table class="ptr-table min-w-full bg-white">
 					<thead>
 						<tr class="bg-[#FFC000]">
 							<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
@@ -5450,34 +5464,33 @@
 					<tbody>
 						{#each ptrData as row, index}
 							<tr class="hover:bg-gray-50">
-								<td class="px-2 py-2 border border-gray-300">
-									<input
-										type="text"
+								<td class="px-2 py-1 border border-gray-300 min-h-[80px]">
+									<textarea
 										value={row.refRisque}
 										on:input={(e) => updateCell(index, 'refRisque', e)}
-										on:blur={() => fillPtrFromCartographie(index)}
-										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+										on:blur={() => { fillPtrFromCartographie(index); saveCustomMethodState(); }}
+										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded min-h-[80px] resize-y"
 										placeholder="Code risque (ex. DSI-R-SP-001)"
 										title="Saisir le code risque puis quitter le champ pour importer les données de la cartographie"
-									/>
+									></textarea>
 								</td>
-								<td class="px-2 py-2 border border-gray-300">
-									<input
-										type="text"
+								<td class="px-2 py-1 border border-gray-300 min-h-[80px]">
+									<textarea
 										value={row.correspISO}
 										on:input={(e) => updateCell(index, 'correspISO', e)}
-										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+										on:blur={() => saveCustomMethodState()}
+										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded min-h-[80px] resize-y"
 										placeholder=""
-									/>
+									></textarea>
 								</td>
-								<td class="px-2 py-2 border border-gray-300">
-									<input
-										type="text"
+								<td class="px-2 py-1 border border-gray-300 min-h-[80px]">
+									<textarea
 										value={row.proprietaire}
 										on:input={(e) => updateCell(index, 'proprietaire', e)}
-										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+										on:blur={() => saveCustomMethodState()}
+										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded min-h-[80px] resize-y"
 										placeholder=""
-									/>
+									></textarea>
 								</td>
 								<td class="px-2 py-2 border border-gray-300">
 									<select
@@ -5508,23 +5521,23 @@
 										<option value="Éviter">Éviter</option>
 									</select>
 								</td>
-								<td class="px-2 py-2 border border-gray-300">
-									<input
-										type="text"
+								<td class="px-2 py-1 border border-gray-300 min-h-[80px]">
+									<textarea
 										value={row.idPTR}
 										on:input={(e) => updateCell(index, 'idPTR', e)}
-										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+										on:blur={() => saveCustomMethodState()}
+										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded min-h-[80px] resize-y"
 										placeholder=""
-									/>
+									></textarea>
 								</td>
-								<td class="px-2 py-2 border border-gray-300">
-									<input
-										type="text"
+								<td class="px-2 py-1 border border-gray-300 min-h-[80px]">
+									<textarea
 										value={row.action}
 										on:input={(e) => updateCell(index, 'action', e)}
-										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+										on:blur={() => saveCustomMethodState()}
+										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded min-h-[80px] resize-y"
 										placeholder=""
-									/>
+									></textarea>
 								</td>
 								<td class="px-2 py-2 border border-gray-300 {getTypeActionBg(row.typeAction)}">
 									<select
@@ -5538,14 +5551,14 @@
 										{/each}
 									</select>
 								</td>
-								<td class="px-2 py-2 border border-gray-300">
-									<input
-										type="text"
+								<td class="px-2 py-1 border border-gray-300 min-h-[80px]">
+									<textarea
 										value={row.porteur}
 										on:input={(e) => updateCell(index, 'porteur', e)}
-										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+										on:blur={() => saveCustomMethodState()}
+										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded min-h-[80px] resize-y"
 										placeholder=""
-									/>
+									></textarea>
 								</td>
 								<td class="px-2 py-2 border border-gray-300 {getPrioriteDefinitionBg(row.priorite)}">
 									<select
