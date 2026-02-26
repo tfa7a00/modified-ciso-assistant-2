@@ -7,6 +7,7 @@
 	import ExcelJS from 'exceljs';
 
 	const CUSTOM_METHOD_STORAGE_KEY = 'ciso-assistant-custom-method';
+	const CUSTOM_METHOD_BACKUP_KEY = 'ciso-assistant-custom-method-backup';
 
 	/** Retire les balises HTML pour l'export Excel */
 	function stripHtml(html: string): string {
@@ -674,13 +675,22 @@
 		}
 	];
 
-	// --- Persistence: localStorage + server (shared for all users in the same folder) ---
+	// --- Persistence: localStorage (toujours, pour survivre à l’arrêt backend/frontend) + server (partagé) ---
+	let lastSavedAt: Date | null = null;
+	let saveFeedback: 'idle' | 'saved' | 'restored' = 'idle';
+	let saveFeedbackTimeout: ReturnType<typeof setTimeout> | null = null;
+
 	function saveCustomMethodState() {
 		try {
-			// Always read current state at save time (cartoRows is mutated in place by bind:value)
+			// Toujours lire l’état actuel au moment de la sauvegarde (cartoRows est muté en place par bind:value)
 			const state = getFullState();
+			// Rotation backup : l’état actuel devient la « version précédente » avant d’écraser
+			const previous = localStorage.getItem(CUSTOM_METHOD_STORAGE_KEY);
+			if (previous) localStorage.setItem(CUSTOM_METHOD_BACKUP_KEY, previous);
+			// Sauvegarde locale : garantit la persistance même si le backend est arrêté ou le navigateur fermé
 			localStorage.setItem(CUSTOM_METHOD_STORAGE_KEY, JSON.stringify(state));
-			// Save to server so others can view/edit
+			lastSavedAt = new Date();
+			// Envoi au serveur pour partage / persistance côté backend (ignoré si backend indisponible)
 			fetch('/fe-api/custom-method-state', {
 				method: 'PATCH',
 				headers: { 'Content-Type': 'application/json' },
@@ -690,6 +700,62 @@
 			console.warn('Could not save custom method state:', e);
 		}
 	}
+
+	function saveWithFeedback() {
+		saveCustomMethodState();
+		saveFeedback = 'saved';
+		if (saveFeedbackTimeout) clearTimeout(saveFeedbackTimeout);
+		saveFeedbackTimeout = setTimeout(() => {
+			saveFeedbackTimeout = null;
+			saveFeedback = 'idle';
+		}, 3000);
+	}
+
+	function formatLastSaved(date: Date): string {
+		const now = new Date();
+		const sec = Math.floor((now.getTime() - date.getTime()) / 1000);
+		if (sec < 10) return "à l'instant";
+		if (sec < 60) return `il y a ${sec} s`;
+		const min = Math.floor(sec / 60);
+		if (min < 60) return `il y a ${min} min`;
+		const h = Math.floor(min / 60);
+		return `il y a ${h} h`;
+	}
+
+	function downloadBackupJson() {
+		const state = getFullState();
+		const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `methode-nearsecure-backup-${new Date().toISOString().slice(0, 10)}.json`;
+		a.click();
+		URL.revokeObjectURL(url);
+	}
+
+	function restorePreviousVersion() {
+		try {
+			const raw = typeof window !== 'undefined' ? localStorage.getItem(CUSTOM_METHOD_BACKUP_KEY) : null;
+			if (!raw || raw.length < 2) {
+				alert('Aucune version précédente disponible.');
+				return;
+			}
+			const state = JSON.parse(raw) as Record<string, unknown>;
+			applyFullState(state);
+			saveCustomMethodState();
+			saveFeedback = 'restored';
+			if (saveFeedbackTimeout) clearTimeout(saveFeedbackTimeout);
+			saveFeedbackTimeout = setTimeout(() => {
+				saveFeedbackTimeout = null;
+				saveFeedback = 'idle';
+			}, 3000);
+		} catch (e) {
+			console.warn('Could not restore previous version:', e);
+			alert('Impossible de restaurer la version précédente (données invalides).');
+		}
+	}
+
+	$: hasPreviousVersion = (lastSavedAt, typeof window !== 'undefined') && !!localStorage.getItem(CUSTOM_METHOD_BACKUP_KEY);
 
 	function loadCustomMethodStateFromStorage() {
 		try {
@@ -711,9 +777,13 @@
 				return;
 			}
 		} catch (e) {
+			// Backend arrêté ou indisponible : charger depuis le localStorage (données conservées)
 			console.warn('Could not load custom method state from server:', e);
 		}
+		// Fallback localStorage (toujours utilisé si le serveur échoue ou renvoie vide)
 		loadCustomMethodStateFromStorage();
+		// Re-sync : pousser l’état local vers le serveur s’il est de nouveau disponible
+		saveCustomMethodState();
 	}
 
 	let persistTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -1495,13 +1565,23 @@
 		loadCustomMethodState();
 		const saveOnUnload = () => saveCustomMethodState();
 		window.addEventListener('beforeunload', saveOnUnload);
+		// Sauvegarde dès que l’utilisateur quitte l’onglet ou ferme la fenêtre (plus fiable que beforeunload seul)
+		const saveOnVisibilityHidden = () => {
+			if (typeof document !== 'undefined' && document.visibilityState === 'hidden') saveCustomMethodState();
+		};
+		document.addEventListener('visibilitychange', saveOnVisibilityHidden);
 		// Cartographie: bind:value mutates in place so reactivity never fires. Save directly every 2s when on that section.
 		const cartoPersistInterval = setInterval(() => {
 			if (activeSection === 'cartographie-risques') saveCustomMethodState();
 		}, 2000);
+		// Sauvegarde périodique toutes les 20s pour limiter la perte de données en cas de fermeture brutale
+		const globalPersistInterval = setInterval(() => saveCustomMethodState(), 20_000);
 		return () => {
 			window.removeEventListener('beforeunload', saveOnUnload);
+			document.removeEventListener('visibilitychange', saveOnVisibilityHidden);
 			clearInterval(cartoPersistInterval);
+			clearInterval(globalPersistInterval);
+			if (saveFeedbackTimeout) clearTimeout(saveFeedbackTimeout);
 		};
 	});
 
@@ -2968,6 +3048,11 @@
 		return cartoRows.find((r) => normalizeCodeRisque(r.codeRisque) === ref);
 	}
 
+	/** Niveau du risque net affiché dans la carto (version A ou B) — utilisé pour l’import PTR et les couleurs */
+	function getNiveauRisqueNetCarto(carto: CartoRow): string {
+		return cartoVersion === 'B' ? getSignificationRisqueNetB(carto) : getNiveauNet(carto);
+	}
+
 	/** Remplit les champs de la ligne PTR à partir de la cartographie lorsque la REF Risque correspond à un Code Risque */
 	function fillPtrFromCartographie(ptrIndex: number) {
 		const row = ptrData[ptrIndex];
@@ -2981,7 +3066,7 @@
 						...r,
 						correspISO: carto.mesureISO ?? r.correspISO,
 						proprietaire: carto.proprietaireRisque ?? r.proprietaire,
-						niveauRisque: getNiveauNet(carto) || r.niveauRisque,
+						niveauRisque: getNiveauRisqueNetCarto(carto) || r.niveauRisque,
 						decision: carto.decision ?? r.decision,
 						action: carto.actionPTR ?? r.action
 					}
@@ -3029,7 +3114,7 @@
 						refRisque: (carto.codeRisque ?? '').trim(),
 						correspISO: (carto.mesureISO ?? existing.correspISO ?? '').toString().replace(/\n/g, ' '),
 						proprietaire: (carto.proprietaireRisque ?? existing.proprietaire ?? '').trim(),
-						niveauRisque: getNiveauNet(carto) || existing.niveauRisque || '',
+						niveauRisque: getNiveauRisqueNetCarto(carto) || existing.niveauRisque || '',
 						decision: (carto.decision ?? existing.decision ?? '').trim(),
 						action: actionLine
 					});
@@ -3039,7 +3124,7 @@
 						refRisque: (carto.codeRisque ?? '').trim(),
 						correspISO: (carto.mesureISO ?? '').toString().replace(/\n/g, ' '),
 						proprietaire: (carto.proprietaireRisque ?? '').trim(),
-						niveauRisque: getNiveauNet(carto) || '',
+						niveauRisque: getNiveauRisqueNetCarto(carto) || '',
 						decision: (carto.decision ?? '').trim(),
 						action: actionLine
 					});
@@ -3192,16 +3277,59 @@
 	<section class="space-y-2">
 		<div class="flex flex-wrap items-center justify-between gap-4">
 			<h1 class="text-2xl font-bold text-gray-900">La méthode NearSecure</h1>
-			<button
-				type="button"
-				class="px-4 py-2 text-sm font-medium rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors flex items-center gap-2"
-				on:click={exportToExcel}
-			>
-				<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-				</svg>
-				Télécharger en Excel
-			</button>
+			<div class="flex flex-wrap items-center gap-2">
+				<button
+					type="button"
+					class="px-3 py-2 text-sm font-medium rounded-lg bg-sky-600 text-white hover:bg-sky-700 transition-colors flex items-center gap-2"
+					on:click={saveWithFeedback}
+					title="Sauvegarder maintenant (local + serveur si disponible)"
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+					</svg>
+					{saveFeedback === 'saved' ? 'Sauvegardé ✓' : 'Sauvegarder'}
+				</button>
+				<button
+					type="button"
+					class="px-4 py-2 text-sm font-medium rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors flex items-center gap-2"
+					on:click={exportToExcel}
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+					</svg>
+					Télécharger en Excel
+				</button>
+				<button
+					type="button"
+					class="px-3 py-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2"
+					on:click={downloadBackupJson}
+					title="Télécharger une copie de sauvegarde (JSON) à conserver hors du navigateur"
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+					</svg>
+					Backup JSON
+				</button>
+				<button
+					type="button"
+					class="px-3 py-2 text-sm font-medium rounded-lg border border-amber-300 bg-amber-50 text-amber-800 hover:bg-amber-100 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+					on:click={restorePreviousVersion}
+					disabled={!hasPreviousVersion}
+					title={hasPreviousVersion ? 'Revenir à l’état avant la dernière sauvegarde' : 'Aucune version précédente (effectuez au moins une sauvegarde)'}
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+					</svg>
+					{saveFeedback === 'restored' ? 'Restauré ✓' : 'Restaurer la version précédente'}
+				</button>
+			</div>
+		</div>
+		<div class="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+			{#if lastSavedAt}
+				<span class="tabular-nums">Dernière sauvegarde : {formatLastSaved(lastSavedAt)}</span>
+			{:else}
+				<span>Sauvegarde automatique (local + serveur)</span>
+			{/if}
 		</div>
 		<p class="text-gray-600 max-w-3xl">
 			Cette page regroupe les éléments de La méthode NearSecure (contrôle du document, registre de classification,
@@ -5492,11 +5620,11 @@
 										placeholder=""
 									></textarea>
 								</td>
-								<td class="px-2 py-2 border border-gray-300">
+								<td class="px-2 py-2 border border-gray-300 {getNiveauRisqueBg(row.niveauRisque)}">
 									<select
 										value={row.niveauRisque}
 										on:change={(e) => updateCell(index, 'niveauRisque', e)}
-										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded bg-transparent"
 									>
 										<option value="">-</option>
 										<option value="Très faible">Très faible</option>
