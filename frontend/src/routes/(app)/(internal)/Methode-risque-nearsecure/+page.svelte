@@ -164,6 +164,17 @@
 	let showExportExcelModal = false;
 	let exportExcelSheets: Record<string, boolean> = EXPORT_EXCEL_SHEET_IDS.reduce((acc, id) => ({ ...acc, [id]: true }), {});
 
+	/** Vue de la cartographie à exporter : TOUT ou une vue ciblée */
+	type ExportCartoView = 'all' | 'identification' | 'brut' | 'net' | 'ptr';
+	let exportCartoView: ExportCartoView = 'all';
+	const EXPORT_CARTO_VIEW_LABELS: Record<ExportCartoView, string> = {
+		all: 'TOUT',
+		identification: 'Identification',
+		brut: 'Risque Brut',
+		net: 'Degré & Risque Net',
+		ptr: 'PTR + Résiduel'
+	};
+
 	function setAllExportSheets(value: boolean) {
 		exportExcelSheets = EXPORT_EXCEL_SHEET_IDS.reduce((acc, id) => ({ ...acc, [id]: value }), {});
 	}
@@ -1197,6 +1208,26 @@
 		const nImp = impactDefinitionsRows.length;
 		const isCartoVersionA = cartoVersion === 'A';
 
+		// Colonnes à inclure selon la vue choisie (indices 1-based)
+		const endId = 20;
+		const endBrut = cartoColEndBrut;
+		const endNet = cartoColEndNet;
+		const endRes = cartoColEndRes;
+		let includedCols: number[];
+		if (exportCartoView === 'all') {
+			includedCols = []; // rempli après numCartoCols
+		} else if (exportCartoView === 'identification') {
+			includedCols = Array.from({ length: endId }, (_, i) => i + 1);
+		} else if (exportCartoView === 'brut') {
+			includedCols = Array.from({ length: endBrut }, (_, i) => i + 1);
+		} else if (exportCartoView === 'net') {
+			includedCols = Array.from({ length: endNet }, (_, i) => i + 1);
+		} else {
+			// ptr: identifiants 1-5 + PTR et Risque Résiduel (endNet+1 à endRes)
+			includedCols = [1, 2, 3, 4, 5];
+			for (let c = endNet + 1; c <= endRes; c++) includedCols.push(c);
+		}
+
 		// En-têtes et libellés identiques à la plateforme (vue cartographie)
 		const cartoHeaders = isCartoVersionA
 			? [
@@ -1264,11 +1295,18 @@
 		const cartoSectionFills = ['FFFFFFFF', 'FF0F766E', 'FFFACC15', 'FF0D9488', 'FFFACC15', 'FF4B5563', 'FFFACC15'];
 
 		const numCartoCols = cartoHeaders.length;
+		if (exportCartoView === 'all') includedCols = Array.from({ length: numCartoCols }, (_, i) => i + 1);
+
+		const cartoViewPartial = exportCartoView !== 'all';
+		const numCartoColsExport = cartoViewPartial ? includedCols.length : numCartoCols;
+		const filteredHeaders = cartoViewPartial ? includedCols.map((c) => cartoHeaders[c - 1]) : cartoHeaders;
+
 		const wsCarto = wb.addWorksheet('Cartographie des risques', { views: [{ showGridLines: true }] });
-		const rowCartoTitle = wsCarto.addRow(['CARTOGRAPHIE DES RISQUES DE SECURITÉ DES SYSTÈMES D\'INFORMATION']);
+		const rowCartoTitle = wsCarto.addRow(['CARTOGRAPHIE DES RISQUES DE SECURITÉ DES SYSTÈMES D\'INFORMATION' + (cartoViewPartial ? ` (Vue : ${EXPORT_CARTO_VIEW_LABELS[exportCartoView]})` : '')]);
 		rowCartoTitle.getCell(1).font = { bold: true, size: 14 };
 		rowCartoTitle.getCell(1).alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
-		if (numCartoCols > 1) wsCarto.mergeCells(1, 1, 1, numCartoCols);
+		if (numCartoColsExport > 1) wsCarto.mergeCells(1, 1, 1, numCartoColsExport);
+		if (!cartoViewPartial) {
 		let colAcc = 0;
 		const rowCartoSections = wsCarto.addRow(cartoHeaders.map(() => ''));
 		cartoSectionColspans.forEach((span, i) => {
@@ -1337,9 +1375,8 @@
 				cell.border = EXCEL_BORDER_THIN;
 			}
 		}
-		const rowCartoHeader = wsCarto.addRow(cartoHeaders);
-		applyHeaderRow(wsCarto, rowCartoHeader, 'FF0284C7');
-		// Appliquer les couleurs d'en-têtes comme à l'interface (sans modifier le texte)
+		}
+		// Couleurs d'en-têtes (calculées pour toutes les colonnes, puis filtrées si vue partielle)
 		const W = 'FFFFFFFF', B = 'FF000000';
 		const cartoHeaderColors: { fill: string; font: string }[] = [];
 		if (isCartoVersionA) {
@@ -1368,12 +1405,26 @@
 				else cartoHeaderColors.push({ fill: 'FFFACC15', font: B });
 			}
 		}
-		cartoHeaderColors.forEach((x, i) => {
-			if (i >= numCartoCols) return;
-			const cell = rowCartoHeader.getCell(i + 1);
-			cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: x.fill } };
-			cell.font = { ...(cell.font as object), color: { argb: x.font }, bold: true } as ExcelJS.Font;
-		});
+		const rowCartoHeader = wsCarto.addRow(filteredHeaders);
+		if (cartoViewPartial) {
+			rowCartoHeader.eachCell((cell, colNumber) => {
+				const x = cartoHeaderColors[includedCols[colNumber - 1] - 1];
+				if (x) {
+					cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: x.fill } };
+					cell.font = { bold: true, color: { argb: x.font } };
+					cell.border = EXCEL_BORDER_THIN;
+					cell.alignment = { vertical: 'middle', wrapText: true };
+				}
+			});
+		} else {
+			applyHeaderRow(wsCarto, rowCartoHeader, 'FF0284C7');
+			cartoHeaderColors.forEach((x, i) => {
+				if (i >= numCartoCols) return;
+				const cell = rowCartoHeader.getCell(i + 1);
+				cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: x.fill } };
+				cell.font = { ...(cell.font as object), color: { argb: x.font }, bold: true } as ExcelJS.Font;
+			});
+		}
 
 		const FILL_OUI = 'FFDCFCE7';
 		const FILL_JAUNE_200 = 'FFFEF08A';
@@ -1386,7 +1437,7 @@
 				rowPart.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF0D9488' } };
 				rowPart.getCell(1).border = EXCEL_BORDER_THIN;
 				rowPart.getCell(1).alignment = { vertical: 'middle', wrapText: true };
-				if (numCartoCols > 1) wsCarto.mergeCells(rowPart.number, 1, rowPart.number, numCartoCols);
+				if (numCartoColsExport > 1) wsCarto.mergeCells(rowPart.number, 1, rowPart.number, numCartoColsExport);
 				prevPartExport = part;
 			}
 			const impacts = getRowImpacts(row);
@@ -1397,7 +1448,7 @@
 			const signifNet = isCartoVersionA ? getNiveauNet(row) : getSignificationRisqueNetB(row);
 			const signifResiduel = isCartoVersionA ? getNiveauResiduel(row) : getNiveauFromIpc(getNiveauRisqueResiduelB(row));
 
-			const rowData = isCartoVersionA
+			const rowDataFull = isCartoVersionA
 				? [
 						row.entite ?? '', row.domaineProcessus ?? '', row.activites ?? '', row.codeRisque ?? '',
 						row.descriptionScenario ?? '', row.mesureISO ?? '', row.familleRisque ?? '', row.source ?? '',
@@ -1423,11 +1474,11 @@
 						row.decision ?? '', row.actionPTR ?? '',
 						row.efficacitePTR ?? '', getSignificationEfficacitePTRDisplay(row.efficacitePTR), formatNiveauRisqueResiduelBDisplay(row), signifResiduel
 					];
-
+			const rowData = cartoViewPartial ? includedCols.map((c) => rowDataFull[c - 1]) : rowDataFull;
 			const r = wsCarto.addRow(rowData);
 			applyDataRowBorder(wsCarto, r);
 
-			if (isCartoVersionA) {
+			if (!cartoViewPartial && isCartoVersionA) {
 				// Catégories d'actifs (11-17)
 				if (row.actifMateriel) applyCellStyle(r.getCell(11), { fill: FILL_OUI, border: true });
 				if (row.actifApplication) applyCellStyle(r.getCell(12), { fill: FILL_OUI, border: true });
@@ -1465,7 +1516,7 @@
 				const colNiveauResiduelA = 41 + nImp;
 				const argbRes = tailwindToExcelArgb(getNiveauRisqueBg(signifResiduel));
 				if (argbRes) applyCellStyle(r.getCell(colNiveauResiduelA), { fill: argbRes, border: true });
-			} else {
+			} else if (!cartoViewPartial) {
 				if (row.actifMateriel) applyCellStyle(r.getCell(11), { fill: FILL_OUI, border: true });
 				if (row.actifApplication) applyCellStyle(r.getCell(12), { fill: FILL_OUI, border: true });
 				if (row.actifEquipementsSecurite) applyCellStyle(r.getCell(13), { fill: FILL_OUI, border: true });
@@ -1493,18 +1544,19 @@
 			}
 		});
 
-		for (let c = 1; c <= numCartoCols; c++) {
+		for (let c = 1; c <= numCartoColsExport; c++) {
+			const origCol = cartoViewPartial ? includedCols[c - 1] : c;
 			const col = wsCarto.getColumn(c);
-			if (c === 5) col.width = 38;
-			else if (c === 2 || c === 3) col.width = 20;
-			else if (c === 7 || c === 8 || c === 9) col.width = 18;
-			else if (isCartoVersionA && (c === 10 || c === 29 + nImp)) col.width = 18;
-			else if (isCartoVersionA && c === 36 + nImp) col.width = 24;  // Action PTR
-			else if (!isCartoVersionA && (c === 10 || c === 29 + nImp)) col.width = 18;
-			else if (!isCartoVersionA && c === 35 + nImp) col.width = 24;  // Action PTR
+			if (origCol === 5) col.width = 38;
+			else if (origCol === 2 || origCol === 3) col.width = 20;
+			else if (origCol === 7 || origCol === 8 || origCol === 9) col.width = 18;
+			else if (isCartoVersionA && (origCol === 10 || origCol === 29 + nImp)) col.width = 18;
+			else if (isCartoVersionA && origCol === 36 + nImp) col.width = 24;  // Action PTR
+			else if (!isCartoVersionA && (origCol === 10 || origCol === 29 + nImp)) col.width = 18;
+			else if (!isCartoVersionA && origCol === 35 + nImp) col.width = 24;  // Action PTR
 			else col.width = 14;
 		}
-		wsCarto.views = [{ state: 'frozen', ySplit: numCartoCols >= 23 ? 4 : 3, activeCell: numCartoCols >= 23 ? 'A5' : 'A4', showGridLines: true }];
+		wsCarto.views = [{ state: 'frozen', ySplit: cartoViewPartial ? 2 : (numCartoCols >= 23 ? 4 : 3), activeCell: cartoViewPartial ? 'A3' : (numCartoCols >= 23 ? 'A5' : 'A4'), showGridLines: true }];
 		}
 
 		// --- Feuille 5 : Aide-Risque (probabilité, impact, fréquence, efficacité avec couleurs) ---
@@ -3624,7 +3676,7 @@
 			>
 				<h2 id="export-excel-modal-title" class="text-lg font-semibold text-gray-900 mb-2">Choisir les éléments à exporter</h2>
 				<p class="text-sm text-gray-600 mb-4">Cochez les feuilles (ou vues) à inclure dans le fichier Excel.</p>
-				<div class="space-y-2 mb-6 max-h-64 overflow-y-auto">
+				<div class="space-y-2 mb-4 max-h-64 overflow-y-auto">
 					{#each EXPORT_EXCEL_SHEET_IDS as sheetId}
 						<label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 rounded px-2 py-1.5">
 							<input type="checkbox" bind:checked={exportExcelSheets[sheetId]} class="rounded border-gray-300 text-sky-600" />
@@ -3632,6 +3684,20 @@
 						</label>
 					{/each}
 				</div>
+				{#if exportExcelSheets['cartographie-risques']}
+					<div class="mb-4 pl-6 border-l-2 border-sky-200">
+						<label for="export-carto-view" class="block text-sm font-medium text-gray-700 mb-1">Vue Cartographie des risques</label>
+						<select
+							id="export-carto-view"
+							bind:value={exportCartoView}
+							class="w-full text-sm rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-800 focus:border-sky-500 focus:ring-sky-500"
+						>
+{#each ['all', 'identification', 'brut', 'net', 'ptr'] as viewId}
+									<option value={viewId}>{EXPORT_CARTO_VIEW_LABELS[viewId]}</option>
+								{/each}
+						</select>
+					</div>
+				{/if}
 				<div class="flex flex-wrap gap-2 mb-4">
 					<button type="button" class="text-sm text-sky-600 hover:underline" on:click={() => setAllExportSheets(true)}>Tout sélectionner</button>
 					<span class="text-gray-300">|</span>
