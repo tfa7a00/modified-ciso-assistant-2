@@ -5455,11 +5455,61 @@
 				{/if}
 			</section>
 
-			<!-- Tableau 2 – Échelle d'impact (colonnes = critères d'impact, synchronisées avec le tableau 2.1) -->
+			<!-- Critères d'impact (définit les types d'impacts ; affiché avant le Tableau 2 pour enchaîner logiquement) -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">Critères d'impact</h3>
+				<p class="text-sm text-gray-600">
+					Ce tableau définit les types d'impacts utilisés dans l'évaluation de la criticité du risque brut. Les libellés et définitions sont repris dans la cartographie des risques (colonnes Impact). Modifier ce tableau ajoute ou supprime des colonnes dans la cartographie et dans le Tableau 2 ci‑dessous.
+				</p>
+				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+					<table class="min-w-full text-sm border-collapse border border-black">
+						<thead>
+							<tr>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-orange-600 border border-black">Libellé (Impact)</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-orange-600 border border-black">Définition</th>
+								{#if editModeAideRisque}
+									<th class="px-4 py-2 text-center font-semibold text-white bg-orange-600 border border-black">Actions</th>
+								{/if}
+							</tr>
+						</thead>
+						<tbody>
+							{#each impactDefinitionsRows as def, i}
+								<tr class="border border-black">
+									<td class="px-4 py-2 text-black border border-black bg-white">
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={impactDefinitionsRows[i].libelle} placeholder="Ex. Impact Financier" on:change={() => saveCustomMethodState()} />
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white align-top">
+										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]" bind:value={impactDefinitionsRows[i].definition} placeholder="Explication de l'impact..." on:blur={() => saveCustomMethodState()}></textarea>
+									</td>
+									{#if editModeAideRisque}
+										<td class="px-4 py-2 border border-black bg-gray-100 text-center">
+											<div class="flex gap-1 justify-center flex-wrap">
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => { impactDefinitionsRows = insererLigneAvant(impactDefinitionsRows, i, { libelle: '', definition: '' }); syncCartoRowsImpacts(); syncImpactRowsCriteres(); saveCustomMethodState(); }} title="Ajouter avant">↑+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => { impactDefinitionsRows = insererLigneApres(impactDefinitionsRows, i, { libelle: '', definition: '' }); syncCartoRowsImpacts(); syncImpactRowsCriteres(); saveCustomMethodState(); }} title="Ajouter après">↓+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerDefinitionImpact(i)} title="Supprimer" disabled={impactDefinitionsRows.length <= 1}>✕</button>
+											</div>
+										</td>
+									{/if}
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+				{#if editModeAideRisque}
+					<div class="flex gap-2 mt-2">
+						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterDefinitionImpact}>+ Ajouter une ligne</button>
+						{#if impactDefinitionsRows.length > 1}
+							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerDefinitionImpact(impactDefinitionsRows.length - 1)}>- Supprimer la dernière ligne</button>
+						{/if}
+					</div>
+				{/if}
+			</section>
+
+			<!-- Tableau 2 – Échelle d'impact (colonnes = critères d'impact, synchronisées avec le tableau Critères d'impact ci‑dessus) -->
 			<section class="space-y-3">
 				<h3 class="text-lg font-semibold text-gray-900">Tableau 2&nbsp;: Échelle d'impact</h3>
 				<p class="text-xs text-gray-600">
-					Les colonnes d'impact sont synchronisées avec le tableau «&nbsp;Critères d'impact&nbsp;»&nbsp;: ajouter un critère ci‑dessous ajoute une colonne ici (données par niveau à renseigner ou «&nbsp;À déterminer&nbsp;»).
+					Les colonnes d'impact sont synchronisées avec le tableau «&nbsp;Critères d'impact&nbsp;» ci‑dessus&nbsp;: ajouter un critère ajoute une colonne ici (données par niveau à renseigner ou «&nbsp;À déterminer&nbsp;»).
 				</p>
 				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
 					<table class="min-w-full text-sm border-collapse border border-black">
@@ -5532,58 +5582,8 @@
 					</div>
 				{/if}
 				<p class="text-xs text-gray-600">
-					Les libellés des colonnes (Financier, Réputation, Parties prenantes, Réglementaire, etc.) sont des axes d'analyse principaux à adapter dans «&nbsp;Critères d'impact&nbsp;».
+					Les libellés des colonnes (Financier, Réputation, Parties prenantes, Réglementaire, etc.) sont des axes d'analyse principaux à adapter dans «&nbsp;Critères d'impact&nbsp;» ci‑dessus.
 				</p>
-			</section>
-
-			<!-- Tableau 2.1 – Critères d'impact (Évaluation de la Criticité du Risque Brut) -->
-			<section class="space-y-3">
-				<h3 class="text-lg font-semibold text-gray-900">Critères d'impact</h3>
-				<p class="text-sm text-gray-600">
-					Ce tableau définit les types d'impacts utilisés dans l'évaluation de la criticité du risque brut. Les libellés et définitions sont repris dans la cartographie des risques (colonnes Impact). Modifier ce tableau ajoute ou supprime des colonnes dans la cartographie.
-				</p>
-				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
-					<table class="min-w-full text-sm border-collapse border border-black">
-						<thead>
-							<tr>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-orange-600 border border-black">Libellé (Impact)</th>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-orange-600 border border-black">Définition</th>
-								{#if editModeAideRisque}
-									<th class="px-4 py-2 text-center font-semibold text-white bg-orange-600 border border-black">Actions</th>
-								{/if}
-							</tr>
-						</thead>
-						<tbody>
-							{#each impactDefinitionsRows as def, i}
-								<tr class="border border-black">
-									<td class="px-4 py-2 text-black border border-black bg-white">
-										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={impactDefinitionsRows[i].libelle} placeholder="Ex. Impact Financier" on:change={() => saveCustomMethodState()} />
-									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white align-top">
-										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]" bind:value={impactDefinitionsRows[i].definition} placeholder="Explication de l'impact..." on:blur={() => saveCustomMethodState()}></textarea>
-									</td>
-									{#if editModeAideRisque}
-										<td class="px-4 py-2 border border-black bg-gray-100 text-center">
-											<div class="flex gap-1 justify-center flex-wrap">
-												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => { impactDefinitionsRows = insererLigneAvant(impactDefinitionsRows, i, { libelle: '', definition: '' }); syncCartoRowsImpacts(); syncImpactRowsCriteres(); saveCustomMethodState(); }} title="Ajouter avant">↑+</button>
-												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => { impactDefinitionsRows = insererLigneApres(impactDefinitionsRows, i, { libelle: '', definition: '' }); syncCartoRowsImpacts(); syncImpactRowsCriteres(); saveCustomMethodState(); }} title="Ajouter après">↓+</button>
-												<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerDefinitionImpact(i)} title="Supprimer" disabled={impactDefinitionsRows.length <= 1}>✕</button>
-											</div>
-										</td>
-									{/if}
-								</tr>
-							{/each}
-						</tbody>
-					</table>
-				</div>
-				{#if editModeAideRisque}
-					<div class="flex gap-2 mt-2">
-						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterDefinitionImpact}>+ Ajouter une ligne</button>
-						{#if impactDefinitionsRows.length > 1}
-							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerDefinitionImpact(impactDefinitionsRows.length - 1)}>- Supprimer la dernière ligne</button>
-						{/if}
-					</div>
-				{/if}
 			</section>
 
 			<!-- Tableau 3.1 – Fréquence / probabilité d'occurrence (échelle de risque) -->
