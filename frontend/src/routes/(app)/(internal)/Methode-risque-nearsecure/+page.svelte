@@ -142,6 +142,32 @@
 	// Version du tableau cartographie : A (criticité/gravité/proba/IPC) ou B (efficacité DMR/PTR)
 	let cartoVersion: 'A' | 'B' = 'A';
 
+	/** Options d'export Excel : quelles feuilles/vues exporter */
+	const EXPORT_EXCEL_SHEET_IDS: SectionId[] = [
+		'controle-document',
+		'registre-classification',
+		'aide-classification',
+		'cartographie-risques',
+		'aide-risque',
+		'ptr',
+		'echelle-ptr'
+	];
+	const EXPORT_EXCEL_SHEET_LABELS: Record<SectionId, string> = {
+		'controle-document': 'Contrôle du document',
+		'registre-classification': 'Registre de classification',
+		'aide-classification': 'Aide-Classification',
+		'cartographie-risques': 'Cartographie des risques',
+		'aide-risque': 'Aide-Risque',
+		'ptr': 'PTR',
+		'echelle-ptr': 'Échelle-PTR'
+	};
+	let showExportExcelModal = false;
+	let exportExcelSheets: Record<string, boolean> = EXPORT_EXCEL_SHEET_IDS.reduce((acc, id) => ({ ...acc, [id]: true }), {});
+
+	function setAllExportSheets(value: boolean) {
+		exportExcelSheets = EXPORT_EXCEL_SHEET_IDS.reduce((acc, id) => ({ ...acc, [id]: value }), {});
+	}
+
 	/** Colspans dynamiques pour la vue "all" : le regroupement reste correct quand on ajoute/supprime des impacts (Aide-Risque) */
 	$: cartoRisqueBrutColspan = 3 + 1 + impactDefinitionsRows.length + 4; // Impact DIC (3) + Criticité (1) + N impacts + Gravité + Proba + I*P*C + Signification (4)
 	$: cartoTotalCols = 3 + 17 + cartoRisqueBrutColspan + 1 + (cartoVersion === 'B' ? 4 : 5) + 2 + (cartoVersion === 'B' ? 4 : 5) + (editModeCarto ? 1 : 0);
@@ -945,12 +971,14 @@
 		_prevSection = activeSection;
 	}
 
-	/** Export de tout le contenu de la page en fichier Excel — même présentation et mêmes couleurs qu'à l'écran */
+	/** Export en fichier Excel — même présentation et couleurs qu'à l'écran. N'inclut que les feuilles sélectionnées dans exportExcelSheets. */
 	async function exportToExcel() {
 		const wb = new ExcelJS.Workbook();
 		wb.creator = 'CISO Assistant - La méthode NearSecure';
+		const selectedSheets = new Set(EXPORT_EXCEL_SHEET_IDS.filter((id) => exportExcelSheets[id]));
 
 		// --- Feuille 1 : Contrôle du document (structure identique à la page) ---
+		if (selectedSheets.has('controle-document')) {
 		const wsControle = wb.addWorksheet('Controle du document', { views: [{ showGridLines: true }] });
 		wsControle.addRow(['Contrôle du document']).font = { bold: true, size: 14 };
 		wsControle.addRow([]);
@@ -986,8 +1014,10 @@
 			const row = wsControle.addRow([r.version, r.date, r.modification]);
 			applyDataRowBorder(wsControle, row);
 		});
+		}
 
 		// --- Feuille 2 : Registre de classification (colonnes et couleurs comme à l'écran) ---
+		if (selectedSheets.has('registre-classification')) {
 		const wsRegistre = wb.addWorksheet('Registre de classification', { views: [{ showGridLines: true }] });
 		wsRegistre.addRow(['Registre de classification des actifs informationnels']).font = { bold: true, size: 14 };
 		wsRegistre.addRow([]);
@@ -1044,8 +1074,10 @@
 				applyCellStyle(row.getCell(17), { fill: 'FFFFFBEB', border: true });
 			}
 		});
+		}
 
 		// --- Feuille 3 : Aide-Classification (structure identique à la page) ---
+		if (selectedSheets.has('aide-classification')) {
 		const wsAideClass = wb.addWorksheet('Aide-Classification', { views: [{ showGridLines: true }] });
 		wsAideClass.addRow(['Aide-Classification']).font = { bold: true, size: 14 };
 		wsAideClass.addRow([]);
@@ -1157,8 +1189,10 @@
 			r.getCell(1).font = { bold: true };
 			if (loi0520Colors[idx]) r.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: loi0520Colors[idx] } };
 		});
+		}
 
 		// --- Feuille 4 : Cartographie des risques (colonnes selon vue SANS Efficacité / AVEC Efficacité) ---
+		if (selectedSheets.has('cartographie-risques')) {
 		const impactLabels = impactDefinitionsRows.map((d) => d.libelle);
 		const nImp = impactDefinitionsRows.length;
 		const isCartoVersionA = cartoVersion === 'A';
@@ -1471,8 +1505,10 @@
 			else col.width = 14;
 		}
 		wsCarto.views = [{ state: 'frozen', ySplit: numCartoCols >= 23 ? 4 : 3, activeCell: numCartoCols >= 23 ? 'A5' : 'A4', showGridLines: true }];
+		}
 
 		// --- Feuille 5 : Aide-Risque (probabilité, impact, fréquence, efficacité avec couleurs) ---
+		if (selectedSheets.has('aide-risque')) {
 		const wsAideRisque = wb.addWorksheet('Aide-Risque', { views: [{ showGridLines: true }] });
 		wsAideRisque.addRow(['Aide-Risque']).font = { bold: true, size: 14 };
 		wsAideRisque.addRow([]);
@@ -1543,8 +1579,10 @@
 				}
 			});
 		});
+		}
 
 		// --- Feuille 6 : PTR (libellés et couleur d'en-tête comme à l'écran : #FFC000) ---
+		if (selectedSheets.has('ptr')) {
 		const ptrHeaders = [
 			'REF Risque', 'Corresp. ISO27001, annexe A', 'Propriétaire du risque', 'Niveau du risque net', 'Décision', 'ID PTR', 'Action à mettre en place',
 			'Type de l\'action', 'Porteur de l\'action', 'Priorité', 'Périodicité', 'Complexité', 'Echéance', 'Etat d\'avancement'
@@ -1595,8 +1633,10 @@
 				applyCellStyle(cell, { fill: argbComp, border: true });
 			}
 		});
+		}
 
 		// --- Feuille 7 : Echelle-PTR (Tables 1 à 4 — titres et colonnes comme à l'écran, en-têtes jaune) ---
+		if (selectedSheets.has('echelle-ptr')) {
 		const wsEchelle = wb.addWorksheet('Echelle-PTR', { views: [{ showGridLines: true }] });
 		wsEchelle.addRow(['Échelle-PTR : Tables 1 à 4']).font = { bold: true, size: 14 };
 		wsEchelle.addRow([]);
@@ -1660,6 +1700,7 @@
 			const argb = tailwindToExcelArgb(r.bgColor);
 			if (argb) applyCellStyle(row.getCell(1), { fill: argb, border: true });
 		});
+		}
 
 		// Activer wrap text sur toutes les feuilles
 		wb.eachSheet((ws) => applyWrapTextToSheet(ws));
@@ -3520,7 +3561,7 @@
 				<button
 					type="button"
 					class="px-4 py-2 text-sm font-medium rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors flex items-center gap-2"
-					on:click={exportToExcel}
+					on:click={() => (showExportExcelModal = true)}
 				>
 					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -3565,6 +3606,60 @@
 			pas le moteur de scoring standard de CISO Assistant, mais servent de guide pour la méthode NearSecure.
 		</p>
 	</section>
+
+	<!-- Modale de sélection des feuilles/vues pour l'export Excel -->
+	{#if showExportExcelModal}
+		<div
+			class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby="export-excel-modal-title"
+			on:click|self={() => (showExportExcelModal = false)}
+			on:keydown={(e) => e.key === 'Escape' && (showExportExcelModal = false)}
+		>
+			<div
+				class="bg-white rounded-xl shadow-xl max-w-md w-full p-6"
+				on:click|stopPropagation
+				on:keydown|stopPropagation
+			>
+				<h2 id="export-excel-modal-title" class="text-lg font-semibold text-gray-900 mb-2">Choisir les éléments à exporter</h2>
+				<p class="text-sm text-gray-600 mb-4">Cochez les feuilles (ou vues) à inclure dans le fichier Excel.</p>
+				<div class="space-y-2 mb-6 max-h-64 overflow-y-auto">
+					{#each EXPORT_EXCEL_SHEET_IDS as sheetId}
+						<label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 rounded px-2 py-1.5">
+							<input type="checkbox" bind:checked={exportExcelSheets[sheetId]} class="rounded border-gray-300 text-sky-600" />
+							<span class="text-sm text-gray-800">{EXPORT_EXCEL_SHEET_LABELS[sheetId]}</span>
+						</label>
+					{/each}
+				</div>
+				<div class="flex flex-wrap gap-2 mb-4">
+					<button type="button" class="text-sm text-sky-600 hover:underline" on:click={() => setAllExportSheets(true)}>Tout sélectionner</button>
+					<span class="text-gray-300">|</span>
+					<button type="button" class="text-sm text-sky-600 hover:underline" on:click={() => setAllExportSheets(false)}>Tout désélectionner</button>
+				</div>
+				<div class="flex justify-end gap-2">
+					<button
+						type="button"
+						class="px-4 py-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+						on:click={() => (showExportExcelModal = false)}
+					>
+						Annuler
+					</button>
+					<button
+						type="button"
+						class="px-4 py-2 text-sm font-medium rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
+						disabled={!EXPORT_EXCEL_SHEET_IDS.some((id) => exportExcelSheets[id])}
+						on:click={() => {
+							showExportExcelModal = false;
+							exportToExcel();
+						}}
+					>
+						Exporter
+					</button>
+				</div>
+			</div>
+		</div>
+	{/if}
 
 	<!-- Navigation entre les 7 sous-parties -->
 	<nav class="flex flex-wrap gap-2 border-b border-gray-200 pb-2">
