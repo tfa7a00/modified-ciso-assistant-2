@@ -252,7 +252,7 @@ export const navData = {
 				{
 					name: 'customMethod',
 					fa_icon: 'fa-solid fa-table-list',
-					href: '/custom-method'
+					href: '/Methode-risque-nearsecure'
 				},
 				{
 					name: 'vulnerabilities',

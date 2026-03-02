@@ -6,8 +6,8 @@
 	import { beforeNavigate } from '$app/navigation';
 	import ExcelJS from 'exceljs';
 
-	const CUSTOM_METHOD_STORAGE_KEY = 'ciso-assistant-custom-method';
-	const CUSTOM_METHOD_BACKUP_KEY = 'ciso-assistant-custom-method-backup';
+	const METHODE_RISQUE_NEARSECURE_STORAGE_KEY = 'ciso-assistant-methode-risque-nearsecure';
+	const METHODE_RISQUE_NEARSECURE_BACKUP_KEY = 'ciso-assistant-methode-risque-nearsecure-backup';
 
 	/** Retire les balises HTML pour l'export Excel */
 	function stripHtml(html: string): string {
@@ -800,13 +800,13 @@
 			// Toujours lire l’état actuel au moment de la sauvegarde (cartoRows est muté en place par bind:value)
 			const state = getFullState();
 			// Rotation backup : l’état actuel devient la « version précédente » avant d’écraser
-			const previous = localStorage.getItem(CUSTOM_METHOD_STORAGE_KEY);
-			if (previous) localStorage.setItem(CUSTOM_METHOD_BACKUP_KEY, previous);
+			const previous = localStorage.getItem(METHODE_RISQUE_NEARSECURE_STORAGE_KEY);
+			if (previous) localStorage.setItem(METHODE_RISQUE_NEARSECURE_BACKUP_KEY, previous);
 			// Sauvegarde locale : garantit la persistance même si le backend est arrêté ou le navigateur fermé
-			localStorage.setItem(CUSTOM_METHOD_STORAGE_KEY, JSON.stringify(state));
+			localStorage.setItem(METHODE_RISQUE_NEARSECURE_STORAGE_KEY, JSON.stringify(state));
 			lastSavedAt = new Date();
 			// Envoi au serveur pour partage / persistance côté backend (ignoré si backend indisponible)
-			fetch('/fe-api/custom-method-state', {
+			fetch('/fe-api/Methode-risque-nearsecure-state', {
 				method: 'PATCH',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(state)
@@ -850,7 +850,7 @@
 
 	function restorePreviousVersion() {
 		try {
-			const raw = typeof window !== 'undefined' ? localStorage.getItem(CUSTOM_METHOD_BACKUP_KEY) : null;
+			const raw = typeof window !== 'undefined' ? localStorage.getItem(METHODE_RISQUE_NEARSECURE_BACKUP_KEY) : null;
 			if (!raw || raw.length < 2) {
 				alert('Aucune version précédente disponible.');
 				return;
@@ -870,11 +870,11 @@
 		}
 	}
 
-	$: hasPreviousVersion = (lastSavedAt, typeof window !== 'undefined') && !!localStorage.getItem(CUSTOM_METHOD_BACKUP_KEY);
+	$: hasPreviousVersion = (lastSavedAt, typeof window !== 'undefined') && !!localStorage.getItem(METHODE_RISQUE_NEARSECURE_BACKUP_KEY);
 
 	function loadCustomMethodStateFromStorage() {
 		try {
-			const raw = localStorage.getItem(CUSTOM_METHOD_STORAGE_KEY);
+			const raw = localStorage.getItem(METHODE_RISQUE_NEARSECURE_STORAGE_KEY);
 			if (!raw) return;
 			const state = JSON.parse(raw) as Record<string, unknown>;
 			applyFullState(state);
@@ -885,7 +885,7 @@
 
 	async function loadCustomMethodState() {
 		try {
-			const res = await fetch('/fe-api/custom-method-state');
+			const res = await fetch('/fe-api/Methode-risque-nearsecure-state');
 			const data = await res.json();
 			if (res.ok && data && typeof data === 'object' && Object.keys(data).length > 0) {
 				applyFullState(data);
@@ -1706,7 +1706,7 @@
 	});
 
 	beforeNavigate(({ from }) => {
-		if (from?.url?.pathname?.includes('custom-method')) {
+		if (from?.url?.pathname?.includes('Methode-risque-nearsecure')) {
 			saveCustomMethodState();
 		}
 	});
@@ -1719,7 +1719,7 @@
 	}
 	/** Redimensionne tous les textareas de la page Custom method. */
 	function resizeAllTextareasInPage() {
-		const main = document.querySelector('.custom-method-page');
+		const main = document.querySelector('.methode-risque-nearsecure-page');
 		if (main) main.querySelectorAll('textarea').forEach((el) => resizeTextarea(el as HTMLTextAreaElement));
 	}
 	/** Action : écoute input/change sur les textareas du conteneur et redimensionne. */
@@ -3296,14 +3296,14 @@
 
 <style>
     /* Cellules flexibles en hauteur sur toute la page Custom method : ligne = max des hauteurs des cellules */
-    .custom-method-page table,
-    .custom-method-page table thead,
-    .custom-method-page table tbody,
-    .custom-method-page table tr {
+    .methode-risque-nearsecure-page table,
+    .methode-risque-nearsecure-page table thead,
+    .methode-risque-nearsecure-page table tbody,
+    .methode-risque-nearsecure-page table tr {
         height: auto !important;
     }
-    .custom-method-page table td,
-    .custom-method-page table th {
+    .methode-risque-nearsecure-page table td,
+    .methode-risque-nearsecure-page table th {
         height: auto !important;
         min-height: 0 !important;
         max-height: none !important;
@@ -3319,7 +3319,7 @@
         vertical-align: top;
     }
 
-    /* Garder min-height 80px pour les textareas du registre (le style global custom-method-flexible-cells impose 2.5rem sinon) */
+    /* Garder min-height 80px pour les textareas du registre (le style global methode-risque-nearsecure-flexible-cells impose 2.5rem sinon) */
     .registre-classification-table tbody td textarea {
         min-height: 80px !important;
     }
@@ -3406,31 +3406,31 @@
     }
 
     /* Modifiable text cells: no visible outline by default, show on hover/focus */
-    .custom-method-page table input:not([type="checkbox"]),
-    .custom-method-page table textarea {
+    .methode-risque-nearsecure-page table input:not([type="checkbox"]),
+    .methode-risque-nearsecure-page table textarea {
         border: 1px solid transparent !important;
         outline: none !important;
         transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
-    .custom-method-page table input:not([type="checkbox"]):hover,
-    .custom-method-page table input:not([type="checkbox"]):focus,
-    .custom-method-page table textarea:hover,
-    .custom-method-page table textarea:focus {
+    .methode-risque-nearsecure-page table input:not([type="checkbox"]):hover,
+    .methode-risque-nearsecure-page table input:not([type="checkbox"]):focus,
+    .methode-risque-nearsecure-page table textarea:hover,
+    .methode-risque-nearsecure-page table textarea:focus {
         border-color: #d1d5db !important; /* gray-300 */
         outline: none !important;
     }
-    .custom-method-page table input:not([type="checkbox"]):focus,
-    .custom-method-page table textarea:focus {
+    .methode-risque-nearsecure-page table input:not([type="checkbox"]):focus,
+    .methode-risque-nearsecure-page table textarea:focus {
         box-shadow: 0 0 0 1px #d1d5db;
     }
 </style>
 
 <svelte:head>
 	{@html `<style id="carto-dynamic-view-style">${cartoViewDynamicCss}</style>`}
-	{@html `<style id="custom-method-flexible-cells">.custom-method-page table,.custom-method-page table thead,.custom-method-page table tbody,.custom-method-page table tr{height:auto!important}.custom-method-page table td,.custom-method-page table th{height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;white-space:normal!important;word-wrap:break-word;overflow-wrap:break-word;vertical-align:top}.custom-method-page table textarea{min-height:2.5rem;overflow-y:hidden;resize:none}</style>`}
+	{@html `<style id="methode-risque-nearsecure-flexible-cells">.methode-risque-nearsecure-page table,.methode-risque-nearsecure-page table thead,.methode-risque-nearsecure-page table tbody,.methode-risque-nearsecure-page table tr{height:auto!important}.methode-risque-nearsecure-page table td,.methode-risque-nearsecure-page table th{height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;white-space:normal!important;word-wrap:break-word;overflow-wrap:break-word;vertical-align:top}.methode-risque-nearsecure-page table textarea{min-height:2.5rem;overflow-y:hidden;resize:none}</style>`}
 </svelte:head>
 
-<main class="custom-method-page p-6 space-y-8" use:autoResizeTextareas>
+<main class="methode-risque-nearsecure-page p-6 space-y-8" use:autoResizeTextareas>
 	<section class="space-y-2">
 		<div class="flex flex-wrap items-center justify-between gap-4">
 			<h1 class="text-2xl font-bold text-gray-900">La méthode NearSecure</h1>

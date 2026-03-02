@@ -295,7 +295,7 @@ export const navData = {
 				{
 					name: 'customMethod',
 					fa_icon: 'fa-solid fa-table-list',
-					href: '/custom-method',
+					href: '/Methode-risque-nearsecure',
 					permissions: ['view_riskassessment'] // ou autre permission que ton user a
 
 					},

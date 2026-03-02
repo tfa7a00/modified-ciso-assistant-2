@@ -8,7 +8,7 @@ import type { RequestHandler } from './$types';
 // This keeps behavior consistent with other `/fe-api` endpoints like `user-preferences`.
 
 export const GET: RequestHandler = async ({ fetch }) => {
-	const endpoint = `${BASE_API_URL}/custom-method-state/`;
+	const endpoint = `${BASE_API_URL}/Methode-risque-nearsecure-state/`;
 	const req = await fetch(endpoint);
 	const status = req.status;
 	const responseData = await req.json();
@@ -20,7 +20,7 @@ export const GET: RequestHandler = async ({ fetch }) => {
 
 export const PATCH: RequestHandler = async ({ fetch, request }) => {
 	const body = await request.text();
-	const endpoint = `${BASE_API_URL}/custom-method-state/`;
+	const endpoint = `${BASE_API_URL}/Methode-risque-nearsecure-state/`;
 	const req = await fetch(endpoint, {
 		method: 'PATCH',
 		body
