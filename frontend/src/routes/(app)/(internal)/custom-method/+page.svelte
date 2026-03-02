@@ -1084,8 +1084,12 @@
 		});
 		wsAideClass.addRow([]);
 		wsAideClass.addRow(['Tableau 2 – Catégories d\'actifs']).font = { bold: true };
+		const headerTable2 = wsAideClass.addRow(['Catégories d\'actifs', "Type d'actif"]);
+		headerTable2.eachCell((c) => { c.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF87CEEB' } }; c.border = EXCEL_BORDER_THIN; });
 		categoriesActifsRows.forEach((c) => {
-			const row = wsAideClass.addRow([c]);
+			const lib = typeof c === 'string' ? c : (c.libelle ?? '');
+			const typ = typeof c === 'string' ? '' : (c.type_actif ?? '');
+			const row = wsAideClass.addRow([lib, typ]);
 			applyDataRowBorder(wsAideClass, row);
 		});
 
@@ -1982,15 +1986,26 @@
 		saveCustomMethodState();
 	}
 
-	let categoriesActifsRows: string[] = [
-		'Matériel informatique',
-		'Application',
-		'Equipements sécurité',
-		'Equipements réseaux',
-		'Ressources humaines',
-		'Document',
-		'Données',
-		'Site'
+	/** Type pour Tableau 2 – Catégories d'actifs (Aide-Classification) : libellé + type primaire/support */
+	type CategorieActifRow = { libelle: string; type_actif: string };
+
+	function defaultCategorieActifRow(libelle: string, type_actif?: string): CategorieActifRow {
+		const t = (type_actif || '').trim();
+		if (t === 'Actif primaire' || t === 'Actif support') return { libelle, type_actif: t };
+		// Défaut : Document / Données → Actif primaire, sinon Actif support
+		const l = libelle.trim().toLowerCase();
+		return { libelle, type_actif: l === 'document' || l === 'données' || l === 'donnée' ? 'Actif primaire' : 'Actif support' };
+	}
+
+	let categoriesActifsRows: CategorieActifRow[] = [
+		defaultCategorieActifRow('Matériel informatique'),
+		defaultCategorieActifRow('Application'),
+		defaultCategorieActifRow('Equipements sécurité'),
+		defaultCategorieActifRow('Equipements réseaux'),
+		defaultCategorieActifRow('Ressources humaines'),
+		defaultCategorieActifRow('Document', 'Actif primaire'),
+		defaultCategorieActifRow('Données', 'Actif primaire'),
+		defaultCategorieActifRow('Site')
 	];
 
 	function getPeriodiciteBgDefault(periodicite: string): string {
@@ -2347,7 +2362,17 @@
 			}));
 		}
 		if (state.categoriesActifsRows && Array.isArray(state.categoriesActifsRows)) {
-			categoriesActifsRows = state.categoriesActifsRows as string[];
+			const raw = state.categoriesActifsRows as (string | CategorieActifRow)[];
+			categoriesActifsRows = raw.map((c) => {
+				if (typeof c === 'object' && c !== null && 'libelle' in c) {
+					const row = c as CategorieActifRow;
+					const lib = row.libelle ?? '';
+					const t = (row.type_actif || '').trim();
+					const typeOk = t === 'Actif primaire' || t === 'Actif support' ? t : defaultCategorieActifRow(lib).type_actif;
+					return { libelle: lib, type_actif: typeOk };
+				}
+				return defaultCategorieActifRow(typeof c === 'string' ? c : '');
+			});
 		}
 		if (state.probaRows && Array.isArray(state.probaRows) && state.probaRows.length > 0) {
 			const rows = state.probaRows as ProbaRow[];
@@ -2575,7 +2600,7 @@
 	}
 
 	function ajouterCategorieActif() {
-		categoriesActifsRows = [...categoriesActifsRows, ''];
+		categoriesActifsRows = [...categoriesActifsRows, defaultCategorieActifRow('')];
 	}
 
 	function supprimerCategorieActif(index: number) {
@@ -2583,11 +2608,11 @@
 	}
 
 	function insererCategorieActifAvant(index: number) {
-		categoriesActifsRows = insererLigneAvant(categoriesActifsRows, index, '');
+		categoriesActifsRows = insererLigneAvant(categoriesActifsRows, index, defaultCategorieActifRow(''));
 	}
 
 	function insererCategorieActifApres(index: number) {
-		categoriesActifsRows = insererLigneApres(categoriesActifsRows, index, '');
+		categoriesActifsRows = insererLigneApres(categoriesActifsRows, index, defaultCategorieActifRow(''));
 	}
 
 	// Fonctions pour tableaux Aide-Risque (Probabilité, Impact)
@@ -2880,9 +2905,9 @@
 		];
 		const out: string[] = [];
 		for (let k = 0; k < CARTO_ACTIF_CHECKBOX_TO_CATEGORY_INDEX.length && k < categoriesActifsRows.length; k++) {
-			if (checks[k] && categoriesActifsRows[k]) {
-				out.push(categoriesActifsRows[k].trim());
-			}
+			const cat = categoriesActifsRows[k];
+			const lib = typeof cat === 'string' ? cat : (cat?.libelle ?? '');
+			if (checks[k] && lib.trim()) out.push(lib.trim());
 		}
 		return out.filter(Boolean);
 	}
@@ -3057,10 +3082,26 @@
 		registreRows[index].sensibilite = dicNiveauxRows[clamped].valeur;
 	}
 
-	/** Quand la catégorie de l'actif est Document ou Donnée(s) => Type = Actif primaire, sinon Actif support */
+	/** Type d'actif pour une catégorie : depuis Tableau 2 (Catégories d'actifs) Aide-Classification */
+	function getTypeActifForCategorie(categorieLibelle: string): string {
+		const cat = (categorieLibelle || '').trim();
+		const row = categoriesActifsRows.find((r) => (r.libelle || '').trim() === cat);
+		return row?.type_actif ? getTypeActifLabel(row.type_actif) : '';
+	}
+
+	/** Quand la catégorie de l'actif change : mettre à jour le type depuis Tableau 2 (Catégories d'actifs) */
 	function mettreAJourTypeActif(index: number) {
-		const cat = (registreRows[index].categorie_actif || '').trim().toLowerCase();
-		registreRows[index].type_actif = cat === 'document' || cat === 'données' || cat === 'donnée' ? 'Actif primaire' : 'Actif support';
+		const cat = (registreRows[index].categorie_actif || '').trim();
+		registreRows[index].type_actif = getTypeActifForCategorie(cat) || (cat.toLowerCase() === 'document' || cat.toLowerCase() === 'données' || cat.toLowerCase() === 'donnée' ? 'Actif primaire' : 'Actif support');
+	}
+
+	/** Quand le type d'une catégorie est modifié dans Tableau 2 : mettre à jour toutes les lignes du registre ayant cette catégorie */
+	function syncRegistreTypeActifPourCategorie(libelleCategorie: string, nouveauType: string) {
+		const lib = (libelleCategorie || '').trim();
+		const typeNorm = nouveauType === 'Actif primaire' || nouveauType === 'Actif support' ? nouveauType : getTypeActifLabel(nouveauType);
+		registreRows.forEach((r) => {
+			if ((r.categorie_actif || '').trim() === lib) r.type_actif = typeNorm;
+		});
 	}
 
 	/** Libellé affiché pour le type d'actif (compatibilité anciennes valeurs Primaire/Secondaire) */
@@ -3979,12 +4020,12 @@
 										on:change={() => { mettreAJourTypeActif(i); saveCustomMethodState(); }}
 									>
 										<option value="">--</option>
-										{#each categoriesActifsRows as categorie}
-											<option value={categorie}>{categorie || '(vide)'}</option>
+										{#each categoriesActifsRows as cat}
+											<option value={cat.libelle}>{cat.libelle || '(vide)'}</option>
 										{/each}
 									</select>
 								</td>
-								<!-- Type de l'actif (automatique : Actif primaire si catégorie Document/Donnée(s), sinon Actif support) -->
+								<!-- Type de l'actif (depuis Tableau 2 – mis à jour automatiquement quand la catégorie ou le type dans Tableau 2 change) -->
 								<td class="px-2 py-1 border border-black bg-gray-50 text-xs">
 									{getTypeActifLabel(registreRows[i].type_actif)}
 								</td>
@@ -4400,10 +4441,11 @@
 					<table class="min-w-full text-sm border-collapse border border-black">
 						<thead>
 							<tr>
-								<th
-									class="px-4 py-3 text-left font-semibold text-black bg-sky-200 border border-black"
-								>
+								<th class="px-4 py-3 text-left font-semibold text-black bg-sky-200 border border-black">
 									Catégories d'actifs
+								</th>
+								<th class="px-4 py-3 text-left font-semibold text-black bg-sky-200 border border-black">
+									Type d'actif
 								</th>
 								{#if editModeTable2Categories}
 								<th class="px-4 py-3 text-left font-semibold text-black bg-sky-200 border border-black">Actions</th>
@@ -4417,8 +4459,24 @@
 										<input
 											class="w-full border border-gray-300 rounded px-2 py-1 text-sm text-center"
 											type="text"
-											bind:value={categoriesActifsRows[i]}
+											bind:value={categoriesActifsRows[i].libelle}
+											on:blur={() => saveCustomMethodState()}
 										/>
+									</td>
+									<td class="px-4 py-2 text-black border border-black bg-white text-center">
+										<select
+											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+											value={categoriesActifsRows[i].type_actif}
+											on:change={(e) => {
+												const v = (e.target as HTMLSelectElement).value;
+												categoriesActifsRows[i].type_actif = v;
+												syncRegistreTypeActifPourCategorie(categoriesActifsRows[i].libelle, v);
+												saveCustomMethodState();
+											}}
+										>
+											<option value="Actif primaire">Actif primaire</option>
+											<option value="Actif support">Actif support</option>
+										</select>
 									</td>
 									{#if editModeTable2Categories}
 									<td class="px-4 py-2 border border-black bg-gray-100">
