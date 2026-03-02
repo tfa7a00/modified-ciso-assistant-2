@@ -5098,12 +5098,30 @@
 						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(row) ?? '-'}</td>
 						{#each impactDefinitionsRows as imp, idx}
 							<td class="px-2 py-2 border border-black bg-white align-middle col-brut-impact">
-								<input type="number" class="w-full text-xs p-1 text-center min-w-[2rem]" min="1" max="6" value={getRowImpacts(row)[idx]} on:input={(e) => { const v = (e.target as HTMLInputElement).value; if (!row.impacts || row.impacts.length !== impactDefinitionsRows.length) row.impacts = getRowImpacts(row); row.impacts[idx] = v; saveCustomMethodState(); }} />
+								{#if cartoVersion === 'A'}
+									<select class="w-full text-xs p-1 text-center min-w-[2rem]" value={getRowImpacts(row)[idx]} on:change={(e) => { const v = (e.target as HTMLSelectElement).value; if (!row.impacts || row.impacts.length !== impactDefinitionsRows.length) row.impacts = getRowImpacts(row); row.impacts[idx] = v; saveCustomMethodState(); }}>
+										<option value="">--</option>
+										{#each impactRows as ir}
+											<option value={ir.echelle}>{ir.echelle} – {ir.definition}</option>
+										{/each}
+									</select>
+								{:else}
+									<input type="number" class="w-full text-xs p-1 text-center min-w-[2rem]" min="1" max="6" value={getRowImpacts(row)[idx]} on:input={(e) => { const v = (e.target as HTMLInputElement).value; if (!row.impacts || row.impacts.length !== impactDefinitionsRows.length) row.impacts = getRowImpacts(row); row.impacts[idx] = v; saveCustomMethodState(); }} />
+								{/if}
 							</td>
 						{/each}
 						<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getGravite(row) ?? '-'}</td>
 						<td class="px-2 py-2 border border-black bg-white align-middle">
-							<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={row.probabilite} on:change={() => saveCustomMethodState()} />
+							{#if cartoVersion === 'A'}
+								<select class="w-full text-xs p-1 text-center" value={row.probabilite} on:change={(e) => { row.probabilite = (e.target as HTMLSelectElement).value; saveCustomMethodState(); }}>
+									<option value="">--</option>
+									{#each probaRows as pr}
+										<option value={pr.echelle}>{pr.echelle} – {pr.definition}</option>
+									{/each}
+								</select>
+							{:else}
+								<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={row.probabilite} on:change={() => saveCustomMethodState()} />
+							{/if}
 						</td>
 						<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcBrut(row) ?? '-'}</td>
 						<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauBrut(row))}">{getNiveauBrut(row)}</td>
@@ -5113,10 +5131,20 @@
 						{#if cartoVersion === 'A'}
 							<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(row) ?? '-'}</td>
 							<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-								<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="6" bind:value={row.graviteNet} on:change={() => saveCustomMethodState()} />
+								<select class="w-full text-xs p-1 text-center bg-transparent" value={row.graviteNet} on:change={(e) => { row.graviteNet = (e.target as HTMLSelectElement).value; saveCustomMethodState(); }}>
+									<option value="">--</option>
+									{#each impactRows as ir}
+										<option value={ir.echelle}>{ir.echelle} – {ir.definition}</option>
+									{/each}
+								</select>
 							</td>
 							<td class="px-2 py-2 border border-black bg-yellow-200 align-middle">
-								<input type="number" class="w-full text-xs p-1 text-center bg-transparent" min="1" max="5" bind:value={row.probabiliteNet} on:change={() => saveCustomMethodState()} />
+								<select class="w-full text-xs p-1 text-center bg-transparent" value={row.probabiliteNet} on:change={(e) => { row.probabiliteNet = (e.target as HTMLSelectElement).value; saveCustomMethodState(); }}>
+									<option value="">--</option>
+									{#each probaRows as pr}
+										<option value={pr.echelle}>{pr.echelle} – {pr.definition}</option>
+									{/each}
+								</select>
 							</td>
 							<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcNet(row) ?? '-'}</td>
 							<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauNet(row))}">{getNiveauNet(row)}</td>
@@ -5147,10 +5175,20 @@
 						{#if cartoVersion === 'A'}
 							<td class="px-2 py-2 text-center font-bold border border-black bg-yellow-200 align-middle">{getCriticite(row) ?? '-'}</td>
 							<td class="px-2 py-2 border border-black bg-white align-middle">
-								<input type="number" class="w-full text-xs p-1 text-center" min="1" max="6" bind:value={row.impactResiduel} on:change={() => saveCustomMethodState()} />
+								<select class="w-full text-xs p-1 text-center" value={row.impactResiduel} on:change={(e) => { row.impactResiduel = (e.target as HTMLSelectElement).value; saveCustomMethodState(); }}>
+									<option value="">--</option>
+									{#each impactRows as ir}
+										<option value={ir.echelle}>{ir.echelle} – {ir.definition}</option>
+									{/each}
+								</select>
 							</td>
 							<td class="px-2 py-2 border border-black bg-white align-middle">
-								<input type="number" class="w-full text-xs p-1 text-center" min="1" max="5" bind:value={row.vraisemblanceResiduel} on:change={() => saveCustomMethodState()} />
+								<select class="w-full text-xs p-1 text-center" value={row.vraisemblanceResiduel} on:change={(e) => { row.vraisemblanceResiduel = (e.target as HTMLSelectElement).value; saveCustomMethodState(); }}>
+									<option value="">--</option>
+									{#each probaRows as pr}
+										<option value={pr.echelle}>{pr.echelle} – {pr.definition}</option>
+									{/each}
+								</select>
 							</td>
 							<td class="px-2 py-2 text-center font-bold border border-black bg-orange-200 align-middle">{getIpcResiduel(row) ?? '-'}</td>
 							<td class="px-2 py-2 text-center font-bold border border-black text-xs align-middle {getNiveauRisqueBg(getNiveauResiduel(row))}">{getNiveauResiduel(row)}</td>
