@@ -217,6 +217,121 @@
 		efficacitePTR: string; // niveau 1-5 (référence tableau efficacité)
 	};
 
+	/** Table des contrôles de l'Annexe A ISO 27001:2022 : ID → titre en français (pour infobulles) */
+	const ISO27001_ANNEX_A_CONTROLS_FR: Record<string, string> = {
+		'5.1': "Politiques pour la sécurité de l'information",
+		'5.2': "Rôles et responsabilités en matière de sécurité de l'information",
+		'5.3': 'Séparation des tâches',
+		'5.4': 'Responsabilités de la direction',
+		'5.5': 'Contact avec les autorités',
+		'5.6': 'Contact avec les groupes d\'intérêt spéciaux',
+		'5.7': 'Veille sur les menaces (threat intelligence)',
+		'5.8': "Sécurité de l'information dans la gestion de projet",
+		'5.9': "Inventaire des informations et autres actifs associés",
+		'5.10': "Usage acceptable des informations et autres actifs associés",
+		'5.11': 'Restitution des actifs',
+		'5.12': "Classification de l'information",
+		'5.13': "Étiquetage de l'information",
+		'5.14': "Transfert d'information",
+		'5.15': "Contrôle d'accès",
+		'5.16': "Gestion des identités",
+		'5.17': "Informations d'authentification",
+		'5.18': "Droits d'accès",
+		'5.19': "Sécurité de l'information dans les relations avec les fournisseurs",
+		'5.20': "Prise en compte de la sécurité dans les accords avec les fournisseurs",
+		'5.21': "Gestion de la sécurité dans la chaîne d'approvisionnement TIC",
+		'5.22': "Surveillance, revue et gestion des changements des services fournisseurs",
+		'5.23': "Sécurité de l'information pour l'utilisation des services de cloud",
+		'5.24': "Planification et préparation de la gestion des incidents de sécurité",
+		'5.25': "Évaluation et décision sur les événements de sécurité",
+		'5.26': "Réponse aux incidents de sécurité",
+		'5.27': "Apprentissage des incidents de sécurité",
+		'5.28': "Collecte de preuves",
+		'5.29': "Sécurité de l'information pendant les perturbations",
+		'5.30': "Préparation des TIC à la continuité d'activité",
+		'5.31': "Identification des exigences légales, réglementaires et contractuelles",
+		'5.32': 'Droits de propriété intellectuelle',
+		'5.33': 'Protection des enregistrements',
+		'5.34': 'Vie privée et protection des données personnelles',
+		'5.35': "Revue indépendante de la sécurité de l'information",
+		'5.36': "Conformité aux politiques et normes de sécurité de l'information",
+		'5.37': "Procédures d'exploitation documentées",
+		'6.1': 'Vérification des antécédents (screening)',
+		'6.2': "Conditions d'emploi relatives à la sécurité de l'information",
+		'6.3': "Sensibilisation, formation et éducation à la sécurité de l'information",
+		'6.4': 'Processus disciplinaire',
+		'6.5': "Responsabilités après cessation ou changement d'emploi",
+		'6.6': 'Accords de confidentialité ou de non-divulgation',
+		'6.7': 'Télétravail',
+		'6.8': "Signalement des événements de sécurité",
+		'7.1': 'Périmètre de sécurité physique',
+		'7.2': "Contrôles d'accès physiques",
+		'7.3': 'Sécurisation des bureaux, salles et locaux',
+		'7.4': 'Surveillance de la sécurité physique',
+		'7.5': 'Protection contre les menaces physiques et environnementales',
+		'7.6': 'Travail en zones sécurisées',
+		'7.7': 'Bureau rangé et écran verrouillé',
+		'7.8': 'Implantation et protection des équipements',
+		'7.9': 'Sécurité des actifs hors site',
+		'7.10': 'Supports de stockage',
+		'7.11': 'Utilitaires de support',
+		'7.12': 'Sécurité des câblages',
+		'7.13': 'Maintenance des équipements',
+		'7.14': 'Élimination ou réutilisation des équipements',
+		'8.1': 'Dispositifs utilisateur',
+		'8.2': "Droits d'accès privilégiés",
+		'8.3': "Restriction d'accès à l'information",
+		'8.4': 'Accès au code source',
+		'8.5': 'Authentification sécurisée',
+		'8.6': 'Gestion des capacités',
+		'8.7': 'Protection contre les logiciels malveillants',
+		'8.8': 'Gestion des vulnérabilités techniques',
+		'8.9': 'Gestion de la configuration',
+		'8.10': 'Suppression des informations',
+		'8.11': 'Masquage des données',
+		'8.12': 'Prévention de la fuite de données',
+		'8.13': 'Sauvegarde des informations',
+		'8.14': "Installations de traitement de l'information",
+		'8.15': 'Journalisation',
+		'8.16': 'Activités de surveillance',
+		'8.17': 'Synchronisation des horloges',
+		'8.18': "Utilisation de programmes utilitaires privilégiés",
+		'8.19': 'Installation de logiciels sur les systèmes opérationnels',
+		'8.20': 'Sécurité des réseaux',
+		'8.21': 'Sécurité des services réseau',
+		'8.22': 'Séparation des réseaux',
+		'8.23': 'Filtrage web',
+		'8.24': 'Utilisation de la cryptographie',
+		'8.25': 'Cycle de vie du développement sécurisé',
+		'8.26': "Sécurité des applications",
+		'8.27': "Architecture sécurisée et principes de conception des systèmes",
+		'8.28': 'Développement sécurisé (secure coding)',
+		'8.29': "Tests de sécurité en développement et acceptation",
+		'8.30': "Développement externalisé",
+		'8.31': "Séparation des environnements de développement, test et production",
+		'8.32': 'Gestion des changements',
+		'8.33': "Informations de test",
+		'8.34': "Audit des systèmes d'information"
+	};
+
+	/** Retourne le texte d'infobulle pour les contrôles ISO 27001 Annexe A (titres en français). */
+	function getIso27001ControlTooltip(value: string | null | undefined): string {
+		if (value == null || String(value).trim() === '') return '';
+		const parts = String(value)
+			.split(/[\n,;\s]+/)
+			.map((p) => p.replace(/^A\.?/i, '').trim())
+			.filter((p) => /^\d+\.\d+$/.test(p));
+		const seen = new Set<string>();
+		const lines: string[] = [];
+		for (const id of parts) {
+			if (seen.has(id)) continue;
+			seen.add(id);
+			const title = ISO27001_ANNEX_A_CONTROLS_FR[id];
+			lines.push(title ? `A.${id} : ${title}` : `A.${id}`);
+		}
+		return lines.join('\n');
+	}
+
 	/** Définition des impacts (Évaluation de la Criticité du Risque Brut) – doit être déclaré avant defaultCartoRow/cartoRows */
 	type ImpactDefinition = { libelle: string; definition: string };
 	let impactDefinitionsRows: ImpactDefinition[] = [
@@ -4945,8 +5060,8 @@
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="6" bind:value={row.descriptionScenario} on:blur={() => saveCustomMethodState()}></textarea>
 						</td>
-						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 font-bold resize-none" rows="4" bind:value={row.mesureISO} on:blur={() => saveCustomMethodState()}></textarea>
+						<td class="px-2 py-2 border border-black bg-white align-top" title={getIso27001ControlTooltip(row.mesureISO)}>
+							<textarea class="w-full text-xs p-1 font-bold resize-none" rows="4" bind:value={row.mesureISO} on:blur={() => saveCustomMethodState()} title={getIso27001ControlTooltip(row.mesureISO)}></textarea>
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4" bind:value={row.familleRisque} on:blur={() => saveCustomMethodState()}></textarea>
@@ -5602,13 +5717,14 @@
 										title="Saisir le code risque puis quitter le champ pour importer les données de la cartographie"
 									></textarea>
 								</td>
-								<td class="px-2 py-1 border border-gray-300 min-h-[80px]">
+								<td class="px-2 py-1 border border-gray-300 min-h-[80px]" title={getIso27001ControlTooltip(row.correspISO)}>
 									<textarea
 										value={row.correspISO}
 										on:input={(e) => updateCell(index, 'correspISO', e)}
 										on:blur={() => saveCustomMethodState()}
 										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded min-h-[80px] resize-y"
 										placeholder=""
+										title={getIso27001ControlTooltip(row.correspISO)}
 									></textarea>
 								</td>
 								<td class="px-2 py-1 border border-gray-300 min-h-[80px]">
