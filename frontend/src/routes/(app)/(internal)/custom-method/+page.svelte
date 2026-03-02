@@ -1553,9 +1553,10 @@
 			cell.border = EXCEL_BORDER_THIN;
 			cell.alignment = { vertical: 'middle', wrapText: true };
 		});
-		ptrData.forEach((r) => {
+		ptrData.forEach((r, i) => {
+			const idPTR = 'PTR-' + String(i + 1).padStart(3, '0');
 			const row = wsPTR.addRow([
-				r.refRisque, r.correspISO, r.proprietaire, r.niveauRisque, r.decision, r.idPTR, r.action,
+				r.refRisque, r.correspISO, r.proprietaire, r.niveauRisque, r.decision, idPTR, r.action,
 				r.typeAction, r.porteur, r.priorite, r.periodicite, r.complexite, r.echeance, r.etatAvancement
 			]);
 			applyDataRowBorder(wsPTR, row);
@@ -5766,13 +5767,9 @@
 									</select>
 								</td>
 								<td class="px-2 py-1 border border-gray-300 min-h-[80px]">
-									<textarea
-										value={row.idPTR}
-										on:input={(e) => updateCell(index, 'idPTR', e)}
-										on:blur={() => saveCustomMethodState()}
-										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded min-h-[80px] resize-y"
-										placeholder=""
-									></textarea>
+									<div class="w-full px-2 py-1 text-sm font-medium text-gray-700" title="ID PTR (automatique selon la position de la ligne)">
+										PTR-{String(index + 1).padStart(3, '0')}
+									</div>
 								</td>
 								<td class="px-2 py-1 border border-gray-300 min-h-[80px]">
 									<textarea
