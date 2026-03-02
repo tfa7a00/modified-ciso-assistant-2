@@ -1687,10 +1687,10 @@
 		});
 		}
 
-		// --- Feuille 7 : Echelle-PTR (Tables 1 à 4 — titres et colonnes comme à l'écran, en-têtes jaune) ---
+		// --- Feuille 7 : Echelle-PTR ( titres et colonnes comme à l'écran, en-têtes jaune) ---
 		if (selectedSheets.has('echelle-ptr')) {
 		const wsEchelle = wb.addWorksheet('Echelle-PTR', { views: [{ showGridLines: true }] });
-		wsEchelle.addRow(['Échelle-PTR : Tables 1 à 4']).font = { bold: true, size: 14 };
+		wsEchelle.addRow(['Échelle-PTR ']).font = { bold: true, size: 14 };
 		wsEchelle.addRow([]);
 		const YELLOW_500_HEADER = 'FFEAB308'; // bg-yellow-500, texte blanc comme à l'écran
 		wsEchelle.addRow(['Table 1 : Périodicité / Durée']).font = { bold: true };
@@ -3804,7 +3804,7 @@
 			}`}
 			on:click={() => (activeSection = 'echelle-ptr')}
 		>
-			Échelle-PTR (Tables 1 à 4)
+			Échelle-PTR 
 		</button>
 	</nav>
 
@@ -6288,7 +6288,7 @@
 		<!-- Échelle PTR : les 4 tables déjà définies -->
 		<section class="space-y-6">
 			<div class="flex items-center justify-between gap-4 flex-wrap">
-				<h2 class="text-xl font-semibold text-gray-900">Échelle-PTR&nbsp;: Tables 1 à 4</h2>
+				<h2 class="text-xl font-semibold text-gray-900">Échelle-PTR&nbsp;: </h2>
 				<button
 					type="button"
 					class="px-3 py-1.5 text-sm rounded {editModeEchellePtr
