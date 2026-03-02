@@ -1488,10 +1488,11 @@
 		});
 		wsAideRisque.addRow([]);
 		wsAideRisque.addRow(['Impact']).font = { bold: true };
-		const rowImpactHeader = wsAideRisque.addRow(['Échelle', 'Définition', 'Financier', 'Réputation', 'Parties prenantes', 'Réglementaire']);
+		const rowImpactHeader = wsAideRisque.addRow(['Échelle', 'Définition', ...impactLabels]);
 		applyHeaderRow(wsAideRisque, rowImpactHeader);
 		(impactRows as ImpactRow[]).forEach((r) => {
-			const row = wsAideRisque.addRow([r.echelle, r.definition, r.financier, r.reputation, r.parties_prenantes, r.reglementaire]);
+			const criteres = getImpactRowCriteres(r);
+			const row = wsAideRisque.addRow([r.echelle, r.definition, ...criteres]);
 			applyDataRowBorder(wsAideRisque, row);
 			const fillColor = r.bgColor ?? getImpactDefBg(r.definition);
 			const argb = tailwindToExcelArgb(fillColor);
@@ -2121,6 +2122,8 @@
 		parties_prenantes: string;
 		reglementaire: string;
 		bgColor?: string;
+		/** Valeurs par critère d'impact (un par impactDefinitionsRows) – synchronisé à l'ajout/suppression de critères */
+		criteres?: string[];
 	};
 
 	let impactRows: ImpactRow[] = [
@@ -2382,6 +2385,7 @@
 		if (state.impactRows && Array.isArray(state.impactRows) && state.impactRows.length > 0) {
 			const rows = state.impactRows as ImpactRow[];
 			impactRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getImpactDefBg(r.definition) }));
+			syncImpactRowsCriteres();
 		}
 		if (state.frequenceRisqueRows && Array.isArray(state.frequenceRisqueRows) && state.frequenceRisqueRows.length > 0) {
 			const rows = state.frequenceRisqueRows as (Row & { bgColor?: string })[];
@@ -2462,6 +2466,39 @@
 	}
 	function getImpactRowBg(row: ImpactRow): string {
 		return row.bgColor ?? getImpactDefBg(row.definition);
+	}
+
+	/** Retourne le tableau des valeurs par critère pour une ligne du Tableau 2 (longueur = impactDefinitionsRows.length). Utilise criteres si présent, sinon dérive des champs fixes (financier, reputation, etc.) selon le libellé. */
+	function getImpactRowCriteres(row: ImpactRow): string[] {
+		const n = impactDefinitionsRows.length;
+		const legacyByKey: Record<string, string> = {
+			financier: row.financier ?? '',
+			reputation: row.reputation ?? '',
+			parties_prenantes: row.parties_prenantes ?? '',
+			reglementaire: row.reglementaire ?? ''
+		};
+		const libelleToKey = (lib: string): keyof typeof legacyByKey | null => {
+			const l = (lib || '').toLowerCase();
+			if (l.includes('financier')) return 'financier';
+			if (l.includes('réputation') || l.includes('reputation')) return 'reputation';
+			if (l.includes('parties prenantes') || l.includes('parties prenante')) return 'parties_prenantes';
+			if (l.includes('réglementaire') || l.includes('reglementaire')) return 'reglementaire';
+			return null;
+		};
+		let arr: string[] =
+			row.criteres && row.criteres.length >= n
+				? row.criteres.slice(0, n)
+				: impactDefinitionsRows.map((def) => {
+						const k = libelleToKey(def.libelle);
+						return k ? legacyByKey[k] ?? '' : '';
+					});
+		while (arr.length < n) arr.push('À déterminer');
+		return arr;
+	}
+
+	/** Synchronise les colonnes critères du Tableau 2 avec impactDefinitionsRows (ajout = 'À déterminer', suppression = trim). */
+	function syncImpactRowsCriteres() {
+		impactRows = impactRows.map((r) => ({ ...r, criteres: getImpactRowCriteres(r) }));
 	}
 
 	function getFrequenceDefBg(definition: string): string {
@@ -2635,7 +2672,9 @@
 	}
 
 	function defaultImpactRow(): ImpactRow {
-		return { echelle: '', definition: '', financier: '', reputation: '', parties_prenantes: '', reglementaire: '', bgColor: 'bg-white text-black' };
+		const n = impactDefinitionsRows.length;
+		const criteres = Array(n).fill('À déterminer');
+		return { echelle: '', definition: '', financier: '', reputation: '', parties_prenantes: '', reglementaire: '', criteres, bgColor: 'bg-white text-black' };
 	}
 	function insererImpactAvant(index: number) {
 		impactRows = insererLigneAvant(impactRows, index, defaultImpactRow());
@@ -2726,6 +2765,7 @@
 	function ajouterDefinitionImpact() {
 		impactDefinitionsRows = [...impactDefinitionsRows, { libelle: 'Nouvel impact', definition: '' }];
 		syncCartoRowsImpacts();
+		syncImpactRowsCriteres();
 		saveCustomMethodState();
 	}
 
@@ -2733,6 +2773,7 @@
 		if (impactDefinitionsRows.length <= 1) return;
 		impactDefinitionsRows = impactDefinitionsRows.filter((_, i) => i !== index);
 		syncCartoRowsImpacts();
+		syncImpactRowsCriteres();
 		saveCustomMethodState();
 	}
 
@@ -5414,19 +5455,21 @@
 				{/if}
 			</section>
 
-			<!-- Tableau 2 – Échelle d'impact -->
+			<!-- Tableau 2 – Échelle d'impact (colonnes = critères d'impact, synchronisées avec le tableau 2.1) -->
 			<section class="space-y-3">
 				<h3 class="text-lg font-semibold text-gray-900">Tableau 2&nbsp;: Échelle d'impact</h3>
+				<p class="text-xs text-gray-600">
+					Les colonnes d'impact sont synchronisées avec le tableau «&nbsp;Critères d'impact&nbsp;»&nbsp;: ajouter un critère ci‑dessous ajoute une colonne ici (données par niveau à renseigner ou «&nbsp;À déterminer&nbsp;»).
+				</p>
 				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
 					<table class="min-w-full text-sm border-collapse border border-black">
 						<thead>
 							<tr>
 								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Échelle</th>
 								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Définition</th>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Financier</th>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Réputation</th>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Parties prenantes</th>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Réglementaire</th>
+								{#each impactDefinitionsRows as def}
+									<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">{def.libelle || 'Critère'}</th>
+								{/each}
 								{#if editModeAideRisque}
 									<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Couleur</th>
 									<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Actions</th>
@@ -5435,6 +5478,7 @@
 						</thead>
 						<tbody>
 							{#each impactRows as row, i}
+								{@const criteres = getImpactRowCriteres(row)}
 								<tr class="border border-black">
 									<td class="px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={impactRows[i].echelle} />
@@ -5442,18 +5486,22 @@
 									<td class={`px-4 py-2 border border-black ${getImpactRowBg(row)}`}>
 										<input class="w-full border border-transparent bg-transparent font-semibold" type="text" bind:value={impactRows[i].definition} />
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white align-top">
-										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]" bind:value={impactRows[i].financier}></textarea>
-									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white align-top">
-										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]" bind:value={impactRows[i].reputation}></textarea>
-									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white align-top">
-										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]" bind:value={impactRows[i].parties_prenantes}></textarea>
-									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white align-top">
-										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]" bind:value={impactRows[i].reglementaire}></textarea>
-									</td>
+									{#each impactDefinitionsRows as def, idx}
+										<td class="px-4 py-2 text-black border border-black bg-white align-top">
+											<textarea
+												class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]"
+												value={criteres[idx]}
+												on:input={(e) => {
+													const v = (e.target as HTMLTextAreaElement).value;
+													const r = impactRows[i];
+													if (!r.criteres || r.criteres.length !== impactDefinitionsRows.length) r.criteres = getImpactRowCriteres(r).slice();
+													r.criteres[idx] = v;
+													impactRows = impactRows;
+													saveCustomMethodState();
+												}}
+											></textarea>
+										</td>
+									{/each}
 									{#if editModeAideRisque}
 										<td class="px-2 py-2 border border-black bg-gray-100">
 											<select class="w-full text-xs rounded border border-gray-300 px-1 py-1" bind:value={impactRows[i].bgColor} on:change={() => saveCustomMethodState()}>
@@ -5484,15 +5532,13 @@
 					</div>
 				{/if}
 				<p class="text-xs text-gray-600">
-					Les mots‑clés <strong>Financier</strong>, <strong>Réputation</strong>,
-					<strong>Parties prenantes</strong> et <strong>Réglementaire</strong>  etc.. doivent être
-					considérés comme des axes d'analyse principaux.
+					Les libellés des colonnes (Financier, Réputation, Parties prenantes, Réglementaire, etc.) sont des axes d'analyse principaux à adapter dans «&nbsp;Critères d'impact&nbsp;».
 				</p>
 			</section>
 
-			<!-- Tableau 2.1 – Définition des impacts (Évaluation de la Criticité du Risque Brut) -->
+			<!-- Tableau 2.1 – Critères d'impact (Évaluation de la Criticité du Risque Brut) -->
 			<section class="space-y-3">
-				<h3 class="text-lg font-semibold text-gray-900">Définition des impacts</h3>
+				<h3 class="text-lg font-semibold text-gray-900">Critères d'impact</h3>
 				<p class="text-sm text-gray-600">
 					Ce tableau définit les types d'impacts utilisés dans l'évaluation de la criticité du risque brut. Les libellés et définitions sont repris dans la cartographie des risques (colonnes Impact). Modifier ce tableau ajoute ou supprime des colonnes dans la cartographie.
 				</p>
@@ -5519,8 +5565,8 @@
 									{#if editModeAideRisque}
 										<td class="px-4 py-2 border border-black bg-gray-100 text-center">
 											<div class="flex gap-1 justify-center flex-wrap">
-												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => { impactDefinitionsRows = insererLigneAvant(impactDefinitionsRows, i, { libelle: '', definition: '' }); syncCartoRowsImpacts(); saveCustomMethodState(); }} title="Ajouter avant">↑+</button>
-												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => { impactDefinitionsRows = insererLigneApres(impactDefinitionsRows, i, { libelle: '', definition: '' }); syncCartoRowsImpacts(); saveCustomMethodState(); }} title="Ajouter après">↓+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => { impactDefinitionsRows = insererLigneAvant(impactDefinitionsRows, i, { libelle: '', definition: '' }); syncCartoRowsImpacts(); syncImpactRowsCriteres(); saveCustomMethodState(); }} title="Ajouter avant">↑+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => { impactDefinitionsRows = insererLigneApres(impactDefinitionsRows, i, { libelle: '', definition: '' }); syncCartoRowsImpacts(); syncImpactRowsCriteres(); saveCustomMethodState(); }} title="Ajouter après">↓+</button>
 												<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerDefinitionImpact(i)} title="Supprimer" disabled={impactDefinitionsRows.length <= 1}>✕</button>
 											</div>
 										</td>
