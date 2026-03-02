@@ -4423,137 +4423,134 @@
 				{/if}
 			</section>
 
-			<!-- Tableau 2 – Catégories d'actifs -->
-			<section class="space-y-3">
-				<div class="flex items-center justify-between gap-4 flex-wrap">
-					<h3 class="text-lg font-semibold text-gray-900">Tableau 2 – Catégories d'actifs</h3>
-					<button
-						type="button"
-						class="px-3 py-1.5 text-sm rounded {editModeTable2Categories
-							? 'bg-gray-600 text-white hover:bg-gray-700'
-							: 'bg-sky-600 text-white hover:bg-sky-700'}"
-						on:click={() => (editModeTable2Categories = !editModeTable2Categories)}
-					>
-						{editModeTable2Categories ? 'Terminer la modification' : 'Modifier'}
-					</button>
-				</div>
-				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
-					<table class="min-w-full text-sm border-collapse border border-black">
-						<thead>
-							<tr>
-								<th class="px-4 py-3 text-left font-semibold text-black bg-sky-200 border border-black">
-									Catégories d'actifs
-								</th>
-								<th class="px-4 py-3 text-left font-semibold text-black bg-sky-200 border border-black">
-									Type d'actif
-								</th>
-								{#if editModeTable2Categories}
-								<th class="px-4 py-3 text-left font-semibold text-black bg-sky-200 border border-black">Actions</th>
-								{/if}
-							</tr>
-						</thead>
-						<tbody>
-							{#each categoriesActifsRows as categorie, i}
-								<tr class="border border-black">
-									<td class="px-4 py-2 text-black border border-black bg-white text-center">
-										<input
-											class="w-full border border-gray-300 rounded px-2 py-1 text-sm text-center"
-											type="text"
-											bind:value={categoriesActifsRows[i].libelle}
-											on:blur={() => saveCustomMethodState()}
-										/>
-									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white text-center">
-										<select
-											class="w-full border border-gray-300 rounded px-2 py-1 text-sm"
-											value={categoriesActifsRows[i].type_actif}
-											on:change={(e) => {
-												const v = (e.target as HTMLSelectElement).value;
-												categoriesActifsRows[i].type_actif = v;
-												syncRegistreTypeActifPourCategorie(categoriesActifsRows[i].libelle, v);
-												saveCustomMethodState();
-											}}
-										>
-											<option value="Actif primaire">Actif primaire</option>
-											<option value="Actif support">Actif support</option>
-										</select>
-									</td>
-									{#if editModeTable2Categories}
-									<td class="px-4 py-2 border border-black bg-gray-100">
-										<div class="flex gap-1 justify-center">
-											<button
-												type="button"
-												class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
-												on:click={() => insererCategorieActifAvant(i)}
-												title="Ajouter avant"
-											>
-												↑+
-											</button>
-											<button
-												type="button"
-												class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
-												on:click={() => insererCategorieActifApres(i)}
-												title="Ajouter après"
-											>
-												↓+
-											</button>
-											<button
-												type="button"
-												class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700"
-												on:click={() => supprimerCategorieActif(i)}
-												title="Supprimer"
-											>
-												✕
-											</button>
-										</div>
-									</td>
-									{/if}
-								</tr>
-							{/each}
-						</tbody>
-					</table>
-				</div>
-				{#if editModeTable2Categories}
-				<div class="flex gap-2">
-					<button
-						type="button"
-						class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700"
-						on:click={ajouterCategorieActif}
-					>
-						+ Ajouter une ligne
-					</button>
-					{#if categoriesActifsRows.length > 1}
+			<!-- Tableau 2 – Catégories d'actifs | Tableau 3 – Propriétaires des actifs (côte à côte) -->
+			<div class="flex flex-col lg:flex-row gap-6 items-stretch">
+				<!-- Tableau 2 – Catégories d'actifs (largeur en % du conteneur) -->
+				<section class="space-y-3 flex-shrink-0 w-full lg:w-[55%] lg:max-w-[55%]">
+					<div class="flex items-center justify-between gap-4 flex-wrap">
+						<h3 class="text-lg font-semibold text-gray-900">Tableau 2 – Catégories d'actifs</h3>
 						<button
 							type="button"
-							class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700"
-							on:click={() => supprimerCategorieActif(categoriesActifsRows.length - 1)}
+							class="px-3 py-1.5 text-sm rounded {editModeTable2Categories
+								? 'bg-gray-600 text-white hover:bg-gray-700'
+								: 'bg-sky-600 text-white hover:bg-sky-700'}"
+							on:click={() => (editModeTable2Categories = !editModeTable2Categories)}
 						>
-							- Supprimer la dernière ligne
+							{editModeTable2Categories ? 'Terminer la modification' : 'Modifier'}
 						</button>
+					</div>
+					<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+						<table class="w-full text-sm border-collapse border border-black table-fixed">
+							<thead>
+								<tr>
+									<th class="px-2 py-3 text-left font-semibold text-black bg-sky-200 border border-black" style="width: 50%;">
+										Catégories d'actifs
+									</th>
+									<th class="px-2 py-3 text-left font-semibold text-black bg-sky-200 border border-black" style="width: 40%;">
+										Type d'actif
+									</th>
+									{#if editModeTable2Categories}
+									<th class="px-2 py-3 text-left font-semibold text-black bg-sky-200 border border-black" style="width: 10%;">Actions</th>
+									{/if}
+								</tr>
+							</thead>
+							<tbody>
+								{#each categoriesActifsRows as categorie, i}
+									<tr class="border border-black">
+										<td class="px-2 py-2 text-black border border-black bg-white text-center">
+											<input
+												class="w-full border border-gray-300 rounded px-1.5 py-1 text-sm text-center"
+												type="text"
+												bind:value={categoriesActifsRows[i].libelle}
+												on:blur={() => saveCustomMethodState()}
+											/>
+										</td>
+										<td class="px-2 py-2 text-black border border-black bg-white text-center">
+											<select
+												class="w-full border border-gray-300 rounded px-1.5 py-1 text-sm"
+												value={categoriesActifsRows[i].type_actif}
+												on:change={(e) => {
+													const v = (e.target as HTMLSelectElement).value;
+													categoriesActifsRows[i].type_actif = v;
+													syncRegistreTypeActifPourCategorie(categoriesActifsRows[i].libelle, v);
+													saveCustomMethodState();
+												}}
+											>
+												<option value="Actif primaire">Actif primaire</option>
+												<option value="Actif support">Actif support</option>
+											</select>
+										</td>
+										{#if editModeTable2Categories}
+										<td class="px-2 py-2 border border-black bg-gray-100">
+											<div class="flex gap-1 justify-center">
+												<button
+													type="button"
+													class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+													on:click={() => insererCategorieActifAvant(i)}
+													title="Ajouter avant"
+												>
+													↑+
+												</button>
+												<button
+													type="button"
+													class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+													on:click={() => insererCategorieActifApres(i)}
+													title="Ajouter après"
+												>
+													↓+
+												</button>
+												<button
+													type="button"
+													class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700"
+													on:click={() => supprimerCategorieActif(i)}
+													title="Supprimer"
+												>
+													✕
+												</button>
+											</div>
+										</td>
+										{/if}
+									</tr>
+								{/each}
+							</tbody>
+						</table>
+					</div>
+					{#if editModeTable2Categories}
+					<div class="flex gap-2">
+						<button
+							type="button"
+							class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700"
+							on:click={ajouterCategorieActif}
+						>
+							+ Ajouter une ligne
+						</button>
+						{#if categoriesActifsRows.length > 1}
+							<button
+								type="button"
+								class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700"
+								on:click={() => supprimerCategorieActif(categoriesActifsRows.length - 1)}
+							>
+								- Supprimer la dernière ligne
+							</button>
+						{/if}
+					</div>
 					{/if}
-				</div>
-				{/if}
-			</section>
+				</section>
 
-			<!-- Tableau 3 – Propriétaires des actifs -->
-			<section class="space-y-3">
-				<h3 class="text-lg font-semibold text-gray-900">Tableau 3 – Propriétaires des actifs</h3>
-				<div
-					class="rounded-lg border-2 border-green-600 bg-green-50 p-4 shadow-sm flex gap-4 items-start"
-				>
-					<div class="bg-white px-4 py-2 rounded border border-green-400 flex-shrink-0">
-						<p class="font-semibold text-gray-900">Propriétaires des actifs</p>
+				<!-- Tableau 3 – Propriétaires des actifs (à droite, design type carte) -->
+				<section class="flex-shrink-0 w-full lg:max-w-[28%] min-w-0">
+					<div class="rounded-xl border border-green-200 bg-gradient-to-br from-green-50 to-emerald-50/50 shadow-sm overflow-hidden">
+						<div class="px-3 py-2 border-b border-green-200 bg-green-100/80">
+							<h3 class="text-sm font-semibold text-green-900">Propriétaires des actifs</h3>
+						</div>
+						<div class="p-3">
+							<p class="text-xs text-gray-700 leading-relaxed">
+								Chaque actif informationnel doit être attribué formellement à un <strong class="text-gray-800">propriétaire</strong> qui a la responsabilité de la gestion des actifs (inventaire, classification, protection, destruction, réforme …) tout au long de leurs cycles de vie.
+							</p>
+						</div>
 					</div>
-					<div class="flex-1">
-						<p class="text-sm text-gray-800">
-							Chaque actif informationnel doit être attribué formellement à un propriétaire qui a
-							la responsabilité de la gestion des actifs informationnels qui lui sont attribués
-							(inventaire, classification, protection, destruction, réforme …) tout au long de
-							leurs cycles de vie.
-						</p>
-					</div>
-				</div>
-			</section>
+				</section>
+			</div>
 
 			<!-- Classification selon la loi n° 05-20 -->
 			<section class="space-y-8">
