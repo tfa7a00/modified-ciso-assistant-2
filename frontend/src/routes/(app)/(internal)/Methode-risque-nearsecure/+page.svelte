@@ -5,6 +5,7 @@
 	import { onMount, afterUpdate } from 'svelte';
 	import { beforeNavigate } from '$app/navigation';
 	import ExcelJS from 'exceljs';
+	import DonutChart from '$lib/components/Chart/DonutChart.svelte';
 
 	const METHODE_RISQUE_NEARSECURE_STORAGE_KEY = 'ciso-assistant-methode-risque-nearsecure';
 	const METHODE_RISQUE_NEARSECURE_BACKUP_KEY = 'ciso-assistant-methode-risque-nearsecure-backup';
@@ -3135,6 +3136,35 @@
 		}
 	];
 
+	/** Répartition des actions PTR par état d'avancement (pour le graphique circulaire) */
+	const ETATS_AVANCEMENT_PTR = ['Non démarrée', 'En cours', 'Terminée', 'En retard'] as const;
+	$: ptrAvancementStats = (() => {
+		const counts: Record<string, number> = { 'Non démarrée': 0, 'En cours': 0, 'Terminée': 0, 'En retard': 0 };
+		for (const row of ptrData) {
+			const etat = (row.etatAvancement || '').trim();
+			if (ETATS_AVANCEMENT_PTR.includes(etat as (typeof ETATS_AVANCEMENT_PTR)[number])) {
+				counts[etat] = (counts[etat] ?? 0) + 1;
+			} else if (etat) {
+				// Autre valeur non standard : on compte dans "Non démarrée" pour garder 4 segments
+				counts['Non démarrée'] += 1;
+			} else {
+				counts['Non démarrée'] += 1;
+			}
+		}
+		/** Couleurs fixes par état (ECharts utilise itemStyle par slice pour garder le bon ordre) */
+		const colorMap: Record<string, string> = {
+			'Non démarrée': '#9ca3af',
+			'En cours': '#3b82f6',
+			'Terminée': '#22c55e',
+			'En retard': '#ef4444'
+		};
+		return ETATS_AVANCEMENT_PTR.map((name) => ({
+			name,
+			value: counts[name] ?? 0,
+			itemStyle: { color: colorMap[name] }
+		}));
+	})();
+
 	// Function to add a new row
 	function addRow() {
 		const newRow = {
@@ -5741,6 +5771,24 @@
 			<p class="text-gray-700 mb-4">
 				Plan de traitement des risques (PTR)
 			</p>
+
+			<!-- Graphique circulaire : répartition des actions par état d'avancement (centré, couleurs fixes par état) -->
+			<div class="mb-6 p-4 bg-white rounded-lg border border-gray-200 shadow-sm flex flex-col items-center justify-center">
+				<h3 class="text-sm font-semibold text-gray-800 mb-3">Répartition des actions par état d'avancement</h3>
+				{#key ptrAvancementStats}
+					<div class="w-full max-w-md h-64 mx-auto">
+						<DonutChart
+							name="ptr-avancement-donut"
+							s_label="État d'avancement"
+							title=""
+							values={ptrAvancementStats}
+							showPercentage={true}
+							width="w-full"
+							height="h-64"
+						/>
+					</div>
+				{/key}
+			</div>
 
 			<div class="overflow-x-auto border border-gray-300 rounded-lg">
 				<table class="ptr-table min-w-full bg-white">
