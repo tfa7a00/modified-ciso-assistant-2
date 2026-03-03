@@ -830,7 +830,7 @@
 		}
 	];
 
-	// --- Multi-projets : mêmes tableaux/échelles partagés, données métier par projet ---
+	// --- Multi-projets : données métier + réglages de méthode par projet ---
 	type ProjectData = {
 		name: string;
 		redactionRows: RedactionRow[];
@@ -843,6 +843,20 @@
 		activeSection: SectionId;
 		cartoView: 'all' | 'identification' | 'brut' | 'net' | 'ptr';
 		cartoVersion: 'A' | 'B';
+		// Tables d'aide / échelle PTR / échelles de risque, propres à chaque projet
+		periodiciteRows?: Row[];
+		complexiteRows?: (Row & { bgColor?: string })[];
+		typeActionRows?: (Row & { bgColor?: string })[];
+		prioriteRows?: (Row & { bgColor?: string })[];
+		dicCriteriaRows?: DICCriteriaRow[];
+		dicNiveauxRows?: DICNiveauRow[];
+		categoriesActifsRows?: CategorieActifRow[];
+		probaRows?: ProbaRow[];
+		impactRows?: ImpactRow[];
+		impactDefinitionsRows?: ImpactDefinition[];
+		frequenceRisqueRows?: (Row & { bgColor?: string })[];
+		matriceRisqueRows?: MatriceRow[];
+		efficaciteRows?: EfficaciteRow[];
 	};
 	let activeProjectId = DEFAULT_PROJECT_ID;
 	let projects: Record<string, ProjectData> = {};
@@ -996,11 +1010,13 @@
 		}, 1500);
 	}
 
-	// When leaving cartographie section, save immediately so bind:value mutations are persisted
+	// When leaving cartographie or controle-document section, save immediately so bind:value mutations are persisted
 	let _prevSection: SectionId = activeSection;
 	$: {
-		if (typeof window !== 'undefined' && _prevSection === 'cartographie-risques' && activeSection !== 'cartographie-risques') {
-			saveCustomMethodState();
+		if (typeof window !== 'undefined' && _prevSection !== activeSection) {
+			if (_prevSection === 'cartographie-risques' || _prevSection === 'controle-document') {
+				saveCustomMethodState();
+			}
 		}
 		_prevSection = activeSection;
 	}
@@ -2407,7 +2423,22 @@
 			ptrData,
 			activeSection,
 			cartoView,
-			cartoVersion
+			cartoVersion,
+			// Échelle PTR
+			periodiciteRows,
+			complexiteRows,
+			typeActionRows,
+			prioriteRows,
+			// Aides / échelles de risque
+			dicCriteriaRows,
+			dicNiveauxRows,
+			categoriesActifsRows,
+			probaRows,
+			impactRows,
+			impactDefinitionsRows,
+			frequenceRisqueRows,
+			matriceRisqueRows,
+			efficaciteRows
 		};
 	}
 
@@ -2556,6 +2587,67 @@
 			}));
 		} else {
 			syncPtrFromCartographie();
+		}
+		// Échelle PTR propre au projet
+		if (data.periodiciteRows && Array.isArray(data.periodiciteRows) && data.periodiciteRows.length > 0) {
+			const rows = data.periodiciteRows as Row[];
+			periodiciteRows = rows.map((r) => ({ ...r, bgColor: r.bgColor || getPeriodiciteBgDefault(r.periodicite) }));
+		}
+		if (data.complexiteRows && Array.isArray(data.complexiteRows) && data.complexiteRows.length > 0) {
+			const rows = data.complexiteRows as (Row & { bgColor?: string })[];
+			complexiteRows = rows.map((r) => ({ ...r, bgColor: r.bgColor || getComplexiteBgDefault(r.complexite) }));
+		}
+		if (data.typeActionRows && Array.isArray(data.typeActionRows) && data.typeActionRows.length > 0) {
+			const rows = data.typeActionRows as (Row & { bgColor?: string })[];
+			typeActionRows = rows.map((r) => ({ ...r, bgColor: r.bgColor || getTypeActionBgDefault(r.type_action) }));
+		}
+		if (data.prioriteRows && Array.isArray(data.prioriteRows) && data.prioriteRows.length > 0) {
+			const rows = data.prioriteRows as (Row & { bgColor?: string })[];
+			prioriteRows = rows.map((r) => ({ ...r, bgColor: r.bgColor || getPrioriteDefinitionBgDefault(r.echelle) }));
+		}
+		// Aides classification / risque propres au projet
+		if (data.dicCriteriaRows && Array.isArray(data.dicCriteriaRows) && data.dicCriteriaRows.length > 0) {
+			dicCriteriaRows = data.dicCriteriaRows as DICCriteriaRow[];
+		}
+		if (data.dicNiveauxRows && Array.isArray(data.dicNiveauxRows) && data.dicNiveauxRows.length > 0) {
+			const rows = data.dicNiveauxRows as DICNiveauRow[];
+			dicNiveauxRows = rows.map((r) => ({ ...r, bgColor: r.bgColor || getValeurBgDefault(r.valeur) }));
+		}
+		if (data.categoriesActifsRows && Array.isArray(data.categoriesActifsRows) && data.categoriesActifsRows.length > 0) {
+			const rawCats = data.categoriesActifsRows as CategorieActifRow[];
+			categoriesActifsRows = rawCats.map((row) => {
+				const lib = row.libelle ?? '';
+				const t = (row.type_actif || '').trim();
+				const typeOk = t === 'Actif primaire' || t === 'Actif support' ? t : defaultCategorieActifRow(lib).type_actif;
+				return { libelle: lib, type_actif: typeOk };
+			});
+		}
+		if (data.probaRows && Array.isArray(data.probaRows) && data.probaRows.length > 0) {
+			const rows = data.probaRows as ProbaRow[];
+			probaRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getProbaDefBg(r.definition) }));
+		}
+		if (data.impactRows && Array.isArray(data.impactRows) && data.impactRows.length > 0) {
+			const rows = data.impactRows as ImpactRow[];
+			impactRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getImpactDefBg(r.definition) }));
+			syncImpactRowsCriteres();
+		}
+		if (data.impactDefinitionsRows && Array.isArray(data.impactDefinitionsRows) && data.impactDefinitionsRows.length > 0) {
+			impactDefinitionsRows = data.impactDefinitionsRows as ImpactDefinition[];
+			syncImpactRowsCriteres();
+		}
+		if (data.frequenceRisqueRows && Array.isArray(data.frequenceRisqueRows) && data.frequenceRisqueRows.length > 0) {
+			const rows = data.frequenceRisqueRows as (Row & { bgColor?: string })[];
+			frequenceRisqueRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getFrequenceDefBg(r.definition ?? '') }));
+		}
+		if (data.matriceRisqueRows && Array.isArray(data.matriceRisqueRows) && data.matriceRisqueRows.length > 0) {
+			const rows = data.matriceRisqueRows as MatriceRow[];
+			if (rows.every((r) => r && typeof r.libelle === 'string' && Array.isArray(r.valeurs))) {
+				matriceRisqueRows = rows.map((r) => ({ libelle: r.libelle, valeurs: [...r.valeurs] }));
+			}
+		}
+		if (data.efficaciteRows && Array.isArray(data.efficaciteRows) && data.efficaciteRows.length > 0) {
+			const rows = data.efficaciteRows as EfficaciteRow[];
+			efficaciteRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getEfficaciteDefBg(r.signification) }));
 		}
 	}
 
@@ -2882,51 +2974,63 @@
 
 	function ajouterLigneDiffusion() {
 		diffusionRows = [...diffusionRows, { nom: '', entite_fonction: '', date: '' }];
+		saveCustomMethodState();
 	}
 
 	function supprimerLigneDiffusion(index: number) {
 		diffusionRows = diffusionRows.filter((_, i) => i !== index);
+		saveCustomMethodState();
 	}
 
 	function insererLigneDiffusionAvant(index: number) {
 		diffusionRows = insererLigneAvant(diffusionRows, index, { nom: '', entite_fonction: '', date: '' });
+		saveCustomMethodState();
 	}
 
 	function insererLigneDiffusionApres(index: number) {
 		diffusionRows = insererLigneApres(diffusionRows, index, { nom: '', entite_fonction: '', date: '' });
+		saveCustomMethodState();
 	}
 
 	function ajouterLigneVersion() {
 		versionRows = [...versionRows, { version: '', date: '', modification: '' }];
+		saveCustomMethodState();
 	}
 
 	function supprimerLigneVersion(index: number) {
 		versionRows = versionRows.filter((_, i) => i !== index);
+		saveCustomMethodState();
 	}
 
 	function insererLigneVersionAvant(index: number) {
 		versionRows = insererLigneAvant(versionRows, index, { version: '', date: '', modification: '' });
+		saveCustomMethodState();
 	}
 
 	function insererLigneVersionApres(index: number) {
 		versionRows = insererLigneApres(versionRows, index, { version: '', date: '', modification: '' });
+		saveCustomMethodState();
 	}
 
 	// Fonctions pour tableau Rédaction (Contrôle du document)
 	function ajouterLigneRedaction() {
 		redactionRows = [...redactionRows, { role: '', nom: '', fonction: '', date: '' }];
+		saveCustomMethodState();
 	}
 
 	function supprimerLigneRedaction(index: number) {
 		redactionRows = redactionRows.filter((_, i) => i !== index);
+		saveCustomMethodState();
 	}
 
 	function insererLigneRedactionAvant(index: number) {
 		redactionRows = insererLigneAvant(redactionRows, index, { role: '', nom: '', fonction: '', date: '' });
+		saveCustomMethodState();
 	}
 
 	function insererLigneRedactionApres(index: number) {
 		redactionRows = insererLigneApres(redactionRows, index, { role: '', nom: '', fonction: '', date: '' });
+		saveCustomMethodState();
 	}
 
 	function ajouterCategorieActif() {
@@ -3345,7 +3449,24 @@
 			ptrData: [],
 			activeSection: 'controle-document',
 			cartoView: 'identification',
-			cartoVersion: 'A'
+			cartoVersion: 'A',
+			// Par défaut, un nouveau projet reprend les tableaux/échelles actuellement chargés
+			periodiciteRows: periodiciteRows.map((r) => ({ ...r })),
+			complexiteRows: complexiteRows.map((r) => ({ ...r })),
+			typeActionRows: typeActionRows.map((r) => ({ ...r })),
+			prioriteRows: prioriteRows.map((r) => ({ ...r })),
+			dicCriteriaRows: dicCriteriaRows.map((r) => ({ ...r })),
+			dicNiveauxRows: dicNiveauxRows.map((r) => ({ ...r })),
+			categoriesActifsRows: categoriesActifsRows.map((r) => ({ ...r })),
+			probaRows: probaRows.map((r) => ({ ...r })),
+			impactRows: impactRows.map((r) => ({ ...r })),
+			impactDefinitionsRows: impactDefinitionsRows.map((r) => ({ ...r })),
+			frequenceRisqueRows: frequenceRisqueRows.map((r) => ({ ...r })),
+			matriceRisqueRows: matriceRisqueRows.map((r) => ({
+				libelle: r.libelle,
+				valeurs: [...r.valeurs]
+			})),
+			efficaciteRows: efficaciteRows.map((r) => ({ ...r }))
 		};
 	}
 
@@ -3989,11 +4110,7 @@
 			{/if}
 		</div>
 		<p class="text-gray-600 max-w-3xl">
-			Cette page regroupe les éléments de La méthode NearSecure (contrôle du document, registre de classification,
-			aides, cartographie des risques, PTR et échelle PTR). Vous pouvez créer plusieurs projets : ils partagent
-			les mêmes tableaux de référence et échelles (Aide-Classification, Aide-Risque, PTR, etc.) ; seules les données
-			métier (contrôle du document, registre, cartographie) diffèrent par projet. Les sections ci-dessous ne modifient
-			pas le moteur de scoring standard de CISO Assistant, mais servent de guide pour la méthode NearSecure.
+			Cette page regroupe les éléments de La méthode NearSecure (contrôle du document, registre de classification, aides, cartographie des risques, PTR et échelle PTR). Vous pouvez créer plusieurs projets : ils partagent les mêmes tableaux de référence et échelles (Aide-Classification, Aide-Risque, PTR, etc.) ; seules les données	métier (contrôle du document, registre, cartographie) diffèrent par projet. Les sections ci-dessous ne modifient pas le moteur de scoring standard de CISO Assistant, mais servent de guide pour la méthode NearSecure.
 		</p>
 	</section>
 
@@ -4157,7 +4274,10 @@
 					class="px-3 py-1.5 text-sm rounded {editModeControleDocument
 						? 'bg-gray-600 text-white hover:bg-gray-700'
 						: 'bg-sky-600 text-white hover:bg-sky-700'}"
-					on:click={() => (editModeControleDocument = !editModeControleDocument)}
+					on:click={() => {
+						editModeControleDocument = !editModeControleDocument;
+						if (!editModeControleDocument) saveCustomMethodState();
+					}}
 				>
 					{editModeControleDocument ? 'Terminer la modification' : 'Modifier'}
 				</button>
