@@ -2655,8 +2655,81 @@
 		if (!state || typeof state !== 'object') return;
 		// Format multi-projets (version 2)
 		if (state.version === MULTIPROJECT_STATE_VERSION && state.reference && state.projects && typeof state.projects === 'object' && state.activeProjectId) {
+			// 1) Charger la référence (ancienne logique : tableaux/échelles partagés)
 			applyReferenceState(state.reference as Record<string, unknown>);
-			projects = state.projects as Record<string, ProjectData>;
+
+			// 2) Migration : si les projets ne contiennent pas encore leurs propres aides/échelles,
+			//    on leur crée une copie indépendante à partir de la référence actuelle.
+			const loadedProjects = state.projects as Record<string, ProjectData>;
+			const hasPerProjectScales = Object.values(loadedProjects).some((p) => {
+				return (
+					(Array.isArray(p.periodiciteRows) && p.periodiciteRows.length > 0) ||
+					(Array.isArray(p.complexiteRows) && p.complexiteRows.length > 0) ||
+					(Array.isArray(p.typeActionRows) && p.typeActionRows.length > 0) ||
+					(Array.isArray(p.prioriteRows) && p.prioriteRows.length > 0) ||
+					(Array.isArray(p.dicCriteriaRows) && p.dicCriteriaRows.length > 0) ||
+					(Array.isArray(p.dicNiveauxRows) && p.dicNiveauxRows.length > 0) ||
+					(Array.isArray(p.categoriesActifsRows) && p.categoriesActifsRows.length > 0) ||
+					(Array.isArray(p.probaRows) && p.probaRows.length > 0) ||
+					(Array.isArray(p.impactRows) && p.impactRows.length > 0) ||
+					(Array.isArray(p.impactDefinitionsRows) && p.impactDefinitionsRows.length > 0) ||
+					(Array.isArray(p.frequenceRisqueRows) && p.frequenceRisqueRows.length > 0) ||
+					(Array.isArray(p.matriceRisqueRows) && p.matriceRisqueRows.length > 0) ||
+					(Array.isArray(p.efficaciteRows) && p.efficaciteRows.length > 0)
+				);
+			});
+
+			if (!hasPerProjectScales) {
+				// Aucune donnée "par projet" encore présente : on distribue la référence comme point de départ
+				const ref = getReferenceState();
+				for (const [id, p] of Object.entries(loadedProjects)) {
+					if (!Array.isArray(p.periodiciteRows) || p.periodiciteRows.length === 0) {
+						p.periodiciteRows = (ref.periodiciteRows ?? []).map((r) => ({ ...r }));
+					}
+					if (!Array.isArray(p.complexiteRows) || p.complexiteRows.length === 0) {
+						p.complexiteRows = (ref.complexiteRows ?? []).map((r) => ({ ...r }));
+					}
+					if (!Array.isArray(p.typeActionRows) || p.typeActionRows.length === 0) {
+						p.typeActionRows = (ref.typeActionRows ?? []).map((r) => ({ ...r }));
+					}
+					if (!Array.isArray(p.prioriteRows) || p.prioriteRows.length === 0) {
+						p.prioriteRows = (ref.prioriteRows ?? []).map((r) => ({ ...r }));
+					}
+					if (!Array.isArray(p.dicCriteriaRows) || p.dicCriteriaRows.length === 0) {
+						p.dicCriteriaRows = (ref.dicCriteriaRows ?? []).map((r) => ({ ...r }));
+					}
+					if (!Array.isArray(p.dicNiveauxRows) || p.dicNiveauxRows.length === 0) {
+						p.dicNiveauxRows = (ref.dicNiveauxRows ?? []).map((r) => ({ ...r }));
+					}
+					if (!Array.isArray(p.categoriesActifsRows) || p.categoriesActifsRows.length === 0) {
+						p.categoriesActifsRows = (ref.categoriesActifsRows ?? []).map((r) => ({ ...r }));
+					}
+					if (!Array.isArray(p.probaRows) || p.probaRows.length === 0) {
+						p.probaRows = (ref.probaRows ?? []).map((r) => ({ ...r }));
+					}
+					if (!Array.isArray(p.impactRows) || p.impactRows.length === 0) {
+						p.impactRows = (ref.impactRows ?? []).map((r) => ({ ...r }));
+					}
+					if (!Array.isArray(p.impactDefinitionsRows) || p.impactDefinitionsRows.length === 0) {
+						p.impactDefinitionsRows = (ref.impactDefinitionsRows ?? []).map((r) => ({ ...r }));
+					}
+					if (!Array.isArray(p.frequenceRisqueRows) || p.frequenceRisqueRows.length === 0) {
+						p.frequenceRisqueRows = (ref.frequenceRisqueRows ?? []).map((r) => ({ ...r }));
+					}
+					if (!Array.isArray(p.matriceRisqueRows) || p.matriceRisqueRows.length === 0) {
+						p.matriceRisqueRows = (ref.matriceRisqueRows ?? []).map((r) => ({
+							libelle: r.libelle,
+							valeurs: [...r.valeurs]
+						}));
+					}
+					if (!Array.isArray(p.efficaciteRows) || p.efficaciteRows.length === 0) {
+						p.efficaciteRows = (ref.efficaciteRows ?? []).map((r) => ({ ...r }));
+					}
+					loadedProjects[id] = p;
+				}
+			}
+
+			projects = loadedProjects;
 			activeProjectId = String(state.activeProjectId);
 			const proj = projects[activeProjectId];
 			if (proj) {
