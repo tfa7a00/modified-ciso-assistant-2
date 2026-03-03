@@ -4146,6 +4146,12 @@
         background: #f3f4f6 !important;
         cursor: default;
     }
+    /* Échelle PTR en lecture seule : même rendu que Paramétrage (pas de fond gris, couleurs des cellules visibles) */
+    .echelle-ptr-tables.readonly-scales-section input,
+    .echelle-ptr-tables.readonly-scales-section textarea,
+    .echelle-ptr-tables.readonly-scales-section select {
+        background: transparent !important;
+    }
 
     /* Échelle PTR : pas de contour gris (spécificité élevée pour annuler les règles table input/textarea) */
     .methode-risque-nearsecure-page .echelle-ptr-tables table input,
@@ -7458,10 +7464,10 @@
 			{/if}
 		</section>
 	{:else if activeSection === 'echelle-ptr'}
-		<!-- Échelle PTR : affichage seul sauf si ouverture depuis Paramétrage -->
-		<section class="echelle-ptr-tables space-y-6 {readOnlyEchellePtr ? 'readonly-scales-section' : ''}">
+		<!-- Échelle PTR : même design que dans Paramétrage (cadre vert, pas de fond gris en lecture seule) -->
+		<section class="echelle-ptr-tables space-y-6 border border-emerald-200 rounded-xl p-6 bg-emerald-50/30 mt-8 {readOnlyEchellePtr ? 'readonly-scales-section' : ''}">
 			<div class="flex items-center justify-between gap-4 flex-wrap">
-				<h2 class="text-xl font-semibold text-gray-900">Échelle-PTR</h2>
+				<h3 class="text-lg font-semibold text-gray-900">Échelle PTR</h3>
 				{#if readOnlyEchellePtr}
 					<p class="text-sm text-gray-500">Affichage des échelles. Pour modifier, utilisez l'onglet <strong>Paramétrage</strong>.</p>
 				{:else}
