@@ -1023,9 +1023,13 @@
 
 	/** Export en fichier Excel — même présentation et couleurs qu'à l'écran. N'inclut que les feuilles sélectionnées dans exportExcelSheets. */
 	async function exportToExcel() {
+		const selectedSheets = new Set(EXPORT_EXCEL_SHEET_IDS.filter((id) => exportExcelSheets[id]));
+		if (selectedSheets.size === 0) {
+			alert('Veuillez sélectionner au moins une feuille à exporter.');
+			return;
+		}
 		const wb = new ExcelJS.Workbook();
 		wb.creator = 'CISO Assistant - La méthode NearSecure';
-		const selectedSheets = new Set(EXPORT_EXCEL_SHEET_IDS.filter((id) => exportExcelSheets[id]));
 
 		// --- Feuille 1 : Contrôle du document (structure identique à la page) ---
 		if (selectedSheets.has('controle-document')) {
@@ -1600,6 +1604,7 @@
 
 		// --- Feuille 5 : Aide-Risque (probabilité, impact, fréquence, efficacité avec couleurs) ---
 		if (selectedSheets.has('aide-risque')) {
+		const impactLabelsAideRisque = impactDefinitionsRows.map((d) => d.libelle);
 		const wsAideRisque = wb.addWorksheet('Aide-Risque', { views: [{ showGridLines: true }] });
 		wsAideRisque.addRow(['Aide-Risque']).font = { bold: true, size: 14 };
 		wsAideRisque.addRow([]);
@@ -1615,7 +1620,7 @@
 		});
 		wsAideRisque.addRow([]);
 		wsAideRisque.addRow(['Impact']).font = { bold: true };
-		const rowImpactHeader = wsAideRisque.addRow(['Échelle', 'Définition', ...impactLabels]);
+		const rowImpactHeader = wsAideRisque.addRow(['Échelle', 'Définition', ...impactLabelsAideRisque]);
 		applyHeaderRow(wsAideRisque, rowImpactHeader);
 		(impactRows as ImpactRow[]).forEach((r) => {
 			const criteres = getImpactRowCriteres(r);
@@ -1655,14 +1660,16 @@
 		});
 		wsAideRisque.addRow([]);
 		wsAideRisque.addRow(['Matrice risque']).font = { bold: true };
-		const matriceHeaders = ['Libellé', ...(matriceRisqueRows[0]?.valeurs.map((_, i) => `Col${i + 1}`) ?? [])];
+		const valeurs0 = matriceRisqueRows[0]?.valeurs ?? [];
+		const matriceHeaders = ['Libellé', ...valeurs0.map((_, i) => `Col${i + 1}`)];
 		const rowMatHeader = wsAideRisque.addRow(matriceHeaders);
 		applyHeaderRow(wsAideRisque, rowMatHeader);
-		matriceRisqueRows.forEach((r) => {
-			const row = wsAideRisque.addRow([r.libelle, ...r.valeurs]);
+		(matriceRisqueRows ?? []).forEach((r) => {
+			const valeurs = r.valeurs ?? [];
+			const row = wsAideRisque.addRow([r.libelle ?? '', ...valeurs]);
 			applyDataRowBorder(wsAideRisque, row);
 			// Couleurs des cellules de la matrice (selon intervalles Fréquence risque)
-			r.valeurs.forEach((v, idx) => {
+			valeurs.forEach((v, idx) => {
 				const tw = getMatriceCellBgFromFrequence(v);
 				const argb = tailwindToExcelArgb(tw);
 				if (argb) {
@@ -1805,14 +1812,48 @@
 		});
 
 		const fileName = `La-methode-NearSecure-${new Date().toISOString().slice(0, 10)}.xlsx`;
-		const buffer = await wb.xlsx.writeBuffer();
+		let buffer: ArrayBuffer;
+		try {
+			buffer = await wb.xlsx.writeBuffer();
+		} catch (err) {
+			console.error('Export Excel writeBuffer:', err);
+			alert('Erreur lors de la génération du fichier Excel. Consultez la console pour plus de détails.');
+			return;
+		}
 		const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+		// Méthode 1 : File System Access API (fiable en contexte asynchrone, Chrome/Edge)
+		if (typeof window !== 'undefined' && 'showSaveFilePicker' in window) {
+			try {
+				const handle = await (window as unknown as { showSaveFilePicker: (opts: { suggestedName: string; types?: { description: string; accept: Record<string, string[]> }[] }) => Promise<FileSystemFileHandle> }).showSaveFilePicker({
+					suggestedName: fileName,
+					types: [{ description: 'Fichier Excel', accept: { 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'] } }]
+				});
+				const writable = await handle.createWritable();
+				await writable.write(blob);
+				await writable.close();
+				return;
+			} catch (pickerErr: unknown) {
+				// L'utilisateur a annulé la boîte de dialogue ou l'API a échoué → fallback sur le lien
+				if (pickerErr instanceof Error && pickerErr.name === 'AbortError') return;
+				console.warn('showSaveFilePicker non disponible ou annulé, fallback lien:', pickerErr);
+			}
+		}
+
+		// Méthode 2 : lien <a> avec téléchargement (fallback)
 		const url = URL.createObjectURL(blob);
 		const a = document.createElement('a');
-		a.href = url;
-		a.download = fileName;
-		a.click();
-		URL.revokeObjectURL(url);
+		a.setAttribute('href', url);
+		a.setAttribute('download', fileName);
+		a.style.display = 'none';
+		a.style.visibility = 'hidden';
+		document.body.appendChild(a);
+		try {
+			a.click();
+		} finally {
+			document.body.removeChild(a);
+			setTimeout(() => URL.revokeObjectURL(url), 1000);
+		}
 	}
 
 	onMount(() => {
@@ -4243,9 +4284,9 @@
 						type="button"
 						class="px-4 py-2 text-sm font-medium rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
 						disabled={!EXPORT_EXCEL_SHEET_IDS.some((id) => exportExcelSheets[id])}
-						on:click={() => {
+						on:click={async () => {
+							await exportToExcel();
 							showExportExcelModal = false;
-							exportToExcel();
 						}}
 					>
 						Exporter
