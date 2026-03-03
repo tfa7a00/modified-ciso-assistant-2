@@ -5815,7 +5815,7 @@
 										<input class="w-full border border-transparent bg-transparent" type="text" bind:value={periodiciteRows[i].periodicite} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={periodiciteRows[i].duree} />
+										<input class="w-full border border-transparent rounded px-2 py-1 text-sm bg-transparent" type="text" bind:value={periodiciteRows[i].duree} />
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
 										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
@@ -5869,7 +5869,7 @@
 										<input class="w-full border border-transparent bg-transparent font-medium" type="text" bind:value={complexiteRows[i].complexite} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[80px]" bind:value={complexiteRows[i].definition}></textarea>
+										<textarea class="w-full border border-transparent rounded px-2 py-1 text-sm min-h-[80px] bg-transparent" bind:value={complexiteRows[i].definition}></textarea>
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
 										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
@@ -5923,7 +5923,7 @@
 										<input class="w-full border border-transparent bg-transparent font-medium" type="text" bind:value={typeActionRows[i].type_action} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[60px]" bind:value={typeActionRows[i].description}></textarea>
+										<textarea class="w-full border border-transparent rounded px-2 py-1 text-sm min-h-[60px] bg-transparent" bind:value={typeActionRows[i].description}></textarea>
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
 										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
@@ -5978,13 +5978,13 @@
 							{#each prioriteRows as row, i}
 								<tr class="border border-black">
 									<td class="px-4 py-2 font-medium text-black border border-black bg-white">
-										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={prioriteRows[i].echelle} />
+										<input class="w-full border border-transparent rounded px-2 py-1 text-sm bg-transparent" type="text" bind:value={prioriteRows[i].echelle} />
 									</td>
 									<td class={`px-4 py-2 border border-black ${getPrioriteDefinitionBg(row.echelle)}`}>
 										<input class="w-full border border-transparent bg-transparent" type="text" bind:value={prioriteRows[i].definition} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={prioriteRows[i].signification} />
+										<input class="w-full border border-transparent rounded px-2 py-1 text-sm bg-transparent" type="text" bind:value={prioriteRows[i].signification} />
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
 										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
@@ -7463,7 +7463,7 @@
 										<input class="w-full border border-transparent bg-transparent" type="text" bind:value={periodiciteRows[i].periodicite} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={periodiciteRows[i].duree} />
+										<input class="w-full border border-transparent rounded px-2 py-1 text-sm bg-transparent" type="text" bind:value={periodiciteRows[i].duree} />
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
 										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
@@ -7517,7 +7517,7 @@
 										<input class="w-full border border-transparent bg-transparent font-medium" type="text" bind:value={complexiteRows[i].complexite} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[80px]" bind:value={complexiteRows[i].definition}></textarea>
+										<textarea class="w-full border border-transparent rounded px-2 py-1 text-sm min-h-[80px] bg-transparent" bind:value={complexiteRows[i].definition}></textarea>
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
 										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
@@ -7571,7 +7571,7 @@
 										<input class="w-full border border-transparent bg-transparent font-medium" type="text" bind:value={typeActionRows[i].type_action} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[60px]" bind:value={typeActionRows[i].description}></textarea>
+										<textarea class="w-full border border-transparent rounded px-2 py-1 text-sm min-h-[60px] bg-transparent" bind:value={typeActionRows[i].description}></textarea>
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
 										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
@@ -7626,13 +7626,13 @@
 							{#each prioriteRows as row, i}
 								<tr class="border border-black">
 									<td class="px-4 py-2 font-medium text-black border border-black bg-white">
-										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={prioriteRows[i].echelle} />
+										<input class="w-full border border-transparent rounded px-2 py-1 text-sm bg-transparent" type="text" bind:value={prioriteRows[i].echelle} />
 									</td>
 									<td class={`px-4 py-2 border border-black ${getPrioriteDefinitionBg(row.echelle)}`}>
 										<input class="w-full border border-transparent bg-transparent" type="text" bind:value={prioriteRows[i].definition} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={prioriteRows[i].signification} />
+										<input class="w-full border border-transparent rounded px-2 py-1 text-sm bg-transparent" type="text" bind:value={prioriteRows[i].signification} />
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
 										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
