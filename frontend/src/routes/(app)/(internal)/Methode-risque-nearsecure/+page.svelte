@@ -4110,7 +4110,7 @@
         box-sizing: border-box;
     }
 
-    /* Modifiable text cells: no visible outline by default, show on hover/focus */
+    /* Modifiable text cells: no visible outline by default, show on hover/focus (sauf Échelle PTR) */
     .methode-risque-nearsecure-page table input:not([type="checkbox"]),
     .methode-risque-nearsecure-page table textarea {
         border: 1px solid transparent !important;
@@ -4128,6 +4128,16 @@
     .methode-risque-nearsecure-page table textarea:focus {
         box-shadow: 0 0 0 1px #d1d5db;
     }
+    /* Ne pas appliquer le contour gris aux tableaux Échelle PTR */
+    .methode-risque-nearsecure-page .echelle-ptr-tables table input:hover,
+    .methode-risque-nearsecure-page .echelle-ptr-tables table input:focus,
+    .methode-risque-nearsecure-page .echelle-ptr-tables table textarea:hover,
+    .methode-risque-nearsecure-page .echelle-ptr-tables table textarea:focus,
+    .methode-risque-nearsecure-page .echelle-ptr-tables table select:hover,
+    .methode-risque-nearsecure-page .echelle-ptr-tables table select:focus {
+        border-color: transparent !important;
+        box-shadow: none !important;
+    }
     /* Sections Aide-Risque / Échelle PTR en affichage seul : champs non modifiables */
     .readonly-scales-section input,
     .readonly-scales-section textarea,
@@ -4137,23 +4147,29 @@
         cursor: default;
     }
 
-    /* Échelle PTR : pas de contour gris sur les zones de texte (annule les règles hover/focus des tableaux) */
-    .echelle-ptr-tables table input,
-    .echelle-ptr-tables table textarea,
-    .echelle-ptr-tables table select {
-        border-color: transparent !important;
+    /* Échelle PTR : pas de contour gris (spécificité élevée pour annuler les règles table input/textarea) */
+    .methode-risque-nearsecure-page .echelle-ptr-tables table input,
+    .methode-risque-nearsecure-page .echelle-ptr-tables table textarea,
+    .methode-risque-nearsecure-page .echelle-ptr-tables table select {
+        border: 1px solid transparent !important;
         outline: none !important;
+        outline-width: 0 !important;
         box-shadow: none !important;
+        --tw-ring-shadow: 0 0 #0000 !important;
+        --tw-ring-width: 0 !important;
     }
-    .echelle-ptr-tables table input:hover,
-    .echelle-ptr-tables table input:focus,
-    .echelle-ptr-tables table textarea:hover,
-    .echelle-ptr-tables table textarea:focus,
-    .echelle-ptr-tables table select:hover,
-    .echelle-ptr-tables table select:focus {
-        border-color: transparent !important;
+    .methode-risque-nearsecure-page .echelle-ptr-tables table input:hover,
+    .methode-risque-nearsecure-page .echelle-ptr-tables table input:focus,
+    .methode-risque-nearsecure-page .echelle-ptr-tables table textarea:hover,
+    .methode-risque-nearsecure-page .echelle-ptr-tables table textarea:focus,
+    .methode-risque-nearsecure-page .echelle-ptr-tables table select:hover,
+    .methode-risque-nearsecure-page .echelle-ptr-tables table select:focus {
+        border: 1px solid transparent !important;
         outline: none !important;
+        outline-width: 0 !important;
         box-shadow: none !important;
+        --tw-ring-shadow: 0 0 #0000 !important;
+        --tw-ring-width: 0 !important;
     }
 </style>
 
