@@ -134,7 +134,8 @@
 		| 'cartographie-risques'
 		| 'aide-risque'
 		| 'ptr'
-		| 'echelle-ptr';
+		| 'echelle-ptr'
+		| 'parametrage';
 
 	let activeSection: SectionId = 'controle-document';
 
@@ -2011,6 +2012,14 @@
 
 	let editModeEchellePtr = false;
 
+	/** En lecture seule dans les onglets Aide-Risque / Échelle PTR sauf si on ouvre depuis Paramétrage */
+	let editingFromParametrage = false;
+	$: readOnlyAideRisque = (activeSection === 'aide-risque' && !editingFromParametrage);
+	$: readOnlyEchellePtr = (activeSection === 'echelle-ptr' && !editingFromParametrage);
+	$: if (activeSection && activeSection !== 'aide-risque' && activeSection !== 'echelle-ptr') {
+		editingFromParametrage = false;
+	}
+
 	// --- Aide-Classification: Tableaux DIC ---
 
 	type DICCriteriaRow = {
@@ -2563,7 +2572,7 @@
 	}
 
 	function applyProjectData(data: ProjectData) {
-		const sectionIds: SectionId[] = ['controle-document', 'registre-classification', 'aide-classification', 'cartographie-risques', 'aide-risque', 'ptr', 'echelle-ptr'];
+		const sectionIds: SectionId[] = ['controle-document', 'registre-classification', 'aide-classification', 'cartographie-risques', 'aide-risque', 'ptr', 'echelle-ptr', 'parametrage'];
 		const cartoViews = ['all', 'identification', 'brut', 'net', 'ptr'] as const;
 		if (data.cartoRows && Array.isArray(data.cartoRows)) {
 			const arr = (data.cartoRows as CartoRow[]).map((r, i) => {
@@ -2785,7 +2794,7 @@
 			return;
 		}
 		// Legacy: état mono-projet (tout dans un seul objet)
-		const sectionIds: SectionId[] = ['controle-document', 'registre-classification', 'aide-classification', 'cartographie-risques', 'aide-risque', 'ptr', 'echelle-ptr'];
+		const sectionIds: SectionId[] = ['controle-document', 'registre-classification', 'aide-classification', 'cartographie-risques', 'aide-risque', 'ptr', 'echelle-ptr', 'parametrage'];
 		const cartoViews = ['all', 'identification', 'brut', 'net', 'ptr'] as const;
 		// Définitions des impacts (avant cartoRows pour sync)
 		if (state.impactDefinitionsRows && Array.isArray(state.impactDefinitionsRows) && (state.impactDefinitionsRows as ImpactDefinition[]).length > 0) {
@@ -4111,6 +4120,14 @@
     .methode-risque-nearsecure-page table textarea:focus {
         box-shadow: 0 0 0 1px #d1d5db;
     }
+    /* Sections Aide-Risque / Échelle PTR en affichage seul : champs non modifiables */
+    .readonly-scales-section input,
+    .readonly-scales-section textarea,
+    .readonly-scales-section select {
+        pointer-events: none !important;
+        background: #f3f4f6 !important;
+        cursor: default;
+    }
 </style>
 
 <svelte:head>
@@ -4375,9 +4392,21 @@
 					? 'bg-sky-600 text-white border-sky-600'
 					: 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
 			}`}
-			on:click={() => (activeSection = 'echelle-ptr')}
+			on:click={() => { activeSection = 'echelle-ptr'; editingFromParametrage = false; }}
 		>
-			Échelle-PTR 
+			Échelle-PTR
+		</button>
+		<button
+			type="button"
+			class={`px-3 py-1.5 text-sm rounded-md border ${
+				activeSection === 'parametrage'
+					? 'bg-sky-600 text-white border-sky-600'
+					: 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+			}`}
+			on:click={() => { activeSection = 'parametrage'; editingFromParametrage = false; }}
+			title="Modifier l'aide classification, l'aide risque et l'échelle PTR pour ce projet"
+		>
+			Paramétrage
 		</button>
 	</nav>
 
@@ -4985,10 +5014,12 @@
 			
 		</section>
 	{:else if activeSection === 'aide-classification'}
+		<!-- Affichage seul des échelles (modification dans l'onglet Paramétrage) -->
 		<section class="space-y-8">
 			<h2 class="text-xl font-semibold text-gray-900">Aide-Classification</h2>
+			<p class="text-sm text-gray-500">Affichage des échelles. Pour modifier, utilisez l'onglet <strong>Paramétrage</strong>.</p>
 
-			<!-- Tableau 1 – Définitions générales D/I/C -->
+			<!-- Tableau 1 – Définitions générales D/I/C (lecture seule) -->
 			<section class="space-y-3">
 				<h3 class="text-lg font-semibold text-gray-900">
 					Tableau 1 – Disponibilité, Intégrité, Confidentialité (définitions générales)
@@ -4998,14 +5029,8 @@
 						<thead>
 							<tr>
 								{#each dicCriteriaRows as criteria, i}
-									<th
-										class="px-4 py-2 text-left font-semibold text-black border border-black bg-sky-200"
-									>
-										<input
-											class="w-full border border-transparent bg-transparent font-semibold"
-											type="text"
-											bind:value={dicCriteriaRows[i].critere}
-										/>
+									<th class="px-4 py-2 text-left font-semibold text-black border border-black bg-sky-200">
+										{dicCriteriaRows[i].critere}
 									</th>
 								{/each}
 							</tr>
@@ -5014,25 +5039,9 @@
 							<tr class="border border-black">
 								{#each dicCriteriaRows as criteria, i}
 									<td class="px-4 py-2 text-black border border-black bg-white align-top min-h-[80px]">
-										{#if isEditing('dicCriteria', 0, String(i))}
-											<textarea
-												use:focusTextareaOnMount
-												class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[80px]"
-												bind:value={dicCriteriaRows[i].definition}
-												on:blur={stopEditing}
-												on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}
-											></textarea>
-										{:else}
-											<div
-												role="button"
-												tabindex="0"
-												class="w-full px-2 py-1 text-sm prose prose-sm max-w-none prose-p:my-1 text-left border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[80px]"
-												on:click={() => startEditing('dicCriteria', 0, String(i))}
-												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('dicCriteria', 0, String(i))) : null}
-											>
-												{@html criteria.definition ?? ''}
-											</div>
-										{/if}
+										<div class="w-full px-2 py-1 text-sm prose prose-sm max-w-none prose-p:my-1 text-left min-h-[80px]">
+											{@html criteria.definition ?? ''}
+										</div>
 									</td>
 								{/each}
 							</tr>
@@ -5041,311 +5050,72 @@
 				</div>
 			</section>
 
-			<!-- Tableau 1.2 – Niveaux de valeur par critère (D / I / C) -->
+			<!-- Tableau 1.2 – Niveaux de valeur par critère (lecture seule) -->
 			<section class="space-y-3">
-				<div class="flex items-center justify-between gap-4 flex-wrap">
-					<h3 class="text-lg font-semibold text-gray-900">
-						Tableau 1.2 – Niveaux de valeur par critère (D / I / C)
-					</h3>
-					<button
-						type="button"
-						class="px-3 py-1.5 text-sm rounded {editModeTable12
-							? 'bg-gray-600 text-white hover:bg-gray-700'
-							: 'bg-sky-600 text-white hover:bg-sky-700'}"
-						on:click={() => (editModeTable12 = !editModeTable12)}
-					>
-						{editModeTable12 ? 'Terminer la modification' : 'Modifier'}
-					</button>
-				</div>
+				<h3 class="text-lg font-semibold text-gray-900">
+					Tableau 1.2 – Niveaux de valeur par critère (D / I / C)
+				</h3>
 				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
 					<table class="min-w-full text-sm border-collapse border border-black">
 						<thead>
 							<tr>
-								<th
-									class="px-4 py-2 text-left font-semibold text-black bg-sky-200 border border-black"
-								>
-									Valeur
-								</th>
-								{#if editModeTable12}
-									<th
-										class="px-2 py-2 text-center font-semibold text-black bg-sky-200 border border-black min-w-[120px]"
-									>
-										Couleur
-									</th>
-								{/if}
-								<th
-									class="px-4 py-2 text-left font-semibold text-black bg-sky-200 border border-black"
-								>
-									Disponibilité (D)
-								</th>
-								<th
-									class="px-4 py-2 text-left font-semibold text-black bg-sky-200 border border-black"
-								>
-									Intégrité (I)
-								</th>
-								<th
-									class="px-4 py-2 text-left font-semibold text-black bg-sky-200 border border-black"
-								>
-									Confidentialité (C)
-								</th>
-								{#if editModeTable12}
-									<th class="px-2 py-2 text-center font-semibold text-black bg-sky-200 border border-black">Actions</th>
-								{/if}
+								<th class="px-4 py-2 text-left font-semibold text-black bg-sky-200 border border-black">Valeur</th>
+								<th class="px-4 py-2 text-left font-semibold text-black bg-sky-200 border border-black">Disponibilité (D)</th>
+								<th class="px-4 py-2 text-left font-semibold text-black bg-sky-200 border border-black">Intégrité (I)</th>
+								<th class="px-4 py-2 text-left font-semibold text-black bg-sky-200 border border-black">Confidentialité (C)</th>
 							</tr>
 						</thead>
 						<tbody>
 							{#each dicNiveauxRows as row, i}
 								<tr class="border border-black">
-									<td
-										class={`px-4 py-2 font-semibold text-white border border-black ${getValeurBg(row.valeur)}`}
-									>
-										<input
-											class="w-full border border-transparent bg-transparent font-semibold text-white placeholder-white/70"
-											type="text"
-											bind:value={dicNiveauxRows[i].valeur}
-											on:change={() => saveCustomMethodState()}
-										/>
-									</td>
-									{#if editModeTable12}
-										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
-											<select
-												class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs"
-												bind:value={dicNiveauxRows[i].bgColor}
-												on:change={() => saveCustomMethodState()}
-											>
-												{#each DIC_NIVEAU_COULEURS as c}
-													<option value={c}>{c}</option>
-												{/each}
-											</select>
-										</td>
-									{/if}
-									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs min-h-[100px]">
-										{#if editModeTable12 || isEditing('dicNiveaux', i, 'disponibilite')}
-											<textarea
-												use:focusTextareaOnMount={!editModeTable12}
-												class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[100px]"
-												bind:value={dicNiveauxRows[i].disponibilite}
-												on:blur={() => { if (!editModeTable12) stopEditing(); else saveCustomMethodState(); }}
-												on:keydown={(e) => e.key === 'Escape' && !editModeTable12 && (editingCell = null)}
-											></textarea>
-										{:else}
-											<div
-												role="button"
-												tabindex="0"
-												class="w-full px-2 py-1 text-xs prose prose-sm max-w-none prose-p:my-1 text-left border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500"
-												on:click={() => startEditing('dicNiveaux', i, 'disponibilite')}
-												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('dicNiveaux', i, 'disponibilite')) : null}
-											>
-												{@html row.disponibilite ?? ''}
-											</div>
-										{/if}
+									<td class={`px-4 py-2 font-semibold text-white border border-black ${getValeurBg(row.valeur)}`}>
+										{row.valeur}
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs min-h-[100px]">
-										{#if editModeTable12 || isEditing('dicNiveaux', i, 'integrite')}
-											<textarea
-												use:focusTextareaOnMount={!editModeTable12}
-												class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[100px]"
-												bind:value={dicNiveauxRows[i].integrite}
-												on:blur={() => { if (!editModeTable12) stopEditing(); else saveCustomMethodState(); }}
-												on:keydown={(e) => e.key === 'Escape' && !editModeTable12 && (editingCell = null)}
-											></textarea>
-										{:else}
-											<div
-												role="button"
-												tabindex="0"
-												class="w-full px-2 py-1 text-xs prose prose-sm max-w-none prose-p:my-1 text-left border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500"
-												on:click={() => startEditing('dicNiveaux', i, 'integrite')}
-												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('dicNiveaux', i, 'integrite')) : null}
-											>
-												{@html row.integrite ?? ''}
-											</div>
-										{/if}
+										<div class="w-full px-2 py-1 text-xs prose prose-sm max-w-none prose-p:my-1 text-left">
+											{@html row.disponibilite ?? ''}
+										</div>
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs min-h-[100px]">
-										{#if editModeTable12 || isEditing('dicNiveaux', i, 'confidentialite')}
-											<textarea
-												use:focusTextareaOnMount={!editModeTable12}
-												class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[100px]"
-												bind:value={dicNiveauxRows[i].confidentialite}
-												on:blur={() => { if (!editModeTable12) stopEditing(); else saveCustomMethodState(); }}
-												on:keydown={(e) => e.key === 'Escape' && !editModeTable12 && (editingCell = null)}
-											></textarea>
-										{:else}
-											<div
-												role="button"
-												tabindex="0"
-												class="w-full px-2 py-1 text-xs prose prose-sm max-w-none prose-p:my-1 text-left border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500"
-												on:click={() => startEditing('dicNiveaux', i, 'confidentialite')}
-												on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('dicNiveaux', i, 'confidentialite')) : null}
-											>
-												{@html row.confidentialite ?? ''}
-											</div>
-										{/if}
+										<div class="w-full px-2 py-1 text-xs prose prose-sm max-w-none prose-p:my-1 text-left">
+											{@html row.integrite ?? ''}
+										</div>
 									</td>
-									{#if editModeTable12}
-										<td class="px-2 py-2 border border-black bg-gray-100">
-											<div class="flex gap-1 justify-center flex-wrap">
-												<button
-													type="button"
-													class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
-													on:click={() => insererNiveauDicAvant(i)}
-													title="Ajouter avant"
-												>
-													↑+
-												</button>
-												<button
-													type="button"
-													class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
-													on:click={() => insererNiveauDicApres(i)}
-													title="Ajouter après"
-												>
-													↓+
-												</button>
-												<button
-													type="button"
-													class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700"
-													on:click={() => supprimerNiveauDic(i)}
-													title="Supprimer"
-													disabled={dicNiveauxRows.length <= 1}
-												>
-													✕
-												</button>
-											</div>
-										</td>
-									{/if}
+									<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs min-h-[100px]">
+										<div class="w-full px-2 py-1 text-xs prose prose-sm max-w-none prose-p:my-1 text-left">
+											{@html row.confidentialite ?? ''}
+										</div>
+									</td>
 								</tr>
 							{/each}
 						</tbody>
 					</table>
 				</div>
-				{#if editModeTable12}
-					<div class="flex gap-2">
-						<button
-							type="button"
-							class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700"
-							on:click={ajouterNiveauDic}
-						>
-							+ Ajouter un niveau
-						</button>
-					</div>
-				{/if}
 			</section>
 
-			<!-- Tableau 2 – Catégories d'actifs | Tableau 3 – Propriétaires des actifs (côte à côte) -->
+			<!-- Tableau 2 – Catégories d'actifs (lecture seule) -->
 			<div class="flex flex-col lg:flex-row gap-6 items-stretch">
-				<!-- Tableau 2 – Catégories d'actifs (largeur en % du conteneur) -->
 				<section class="space-y-3 flex-shrink-0 w-full lg:w-[55%] lg:max-w-[55%]">
-					<div class="flex items-center justify-between gap-4 flex-wrap">
-						<h3 class="text-lg font-semibold text-gray-900">Tableau 2 – Catégories d'actifs</h3>
-						<button
-							type="button"
-							class="px-3 py-1.5 text-sm rounded {editModeTable2Categories
-								? 'bg-gray-600 text-white hover:bg-gray-700'
-								: 'bg-sky-600 text-white hover:bg-sky-700'}"
-							on:click={() => (editModeTable2Categories = !editModeTable2Categories)}
-						>
-							{editModeTable2Categories ? 'Terminer la modification' : 'Modifier'}
-						</button>
-					</div>
+					<h3 class="text-lg font-semibold text-gray-900">Tableau 2 – Catégories d'actifs</h3>
 					<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
 						<table class="w-full text-sm border-collapse border border-black table-fixed">
 							<thead>
 								<tr>
-									<th class="px-2 py-3 text-left font-semibold text-black bg-sky-200 border border-black" style="width: 50%;">
-										Catégories d'actifs
-									</th>
-									<th class="px-2 py-3 text-left font-semibold text-black bg-sky-200 border border-black" style="width: 40%;">
-										Type d'actif
-									</th>
-									{#if editModeTable2Categories}
-									<th class="px-2 py-3 text-left font-semibold text-black bg-sky-200 border border-black" style="width: 10%;">Actions</th>
-									{/if}
+									<th class="px-2 py-3 text-left font-semibold text-black bg-sky-200 border border-black" style="width: 50%;">Catégories d'actifs</th>
+									<th class="px-2 py-3 text-left font-semibold text-black bg-sky-200 border border-black" style="width: 50%;">Type d'actif</th>
 								</tr>
 							</thead>
 							<tbody>
-								{#each categoriesActifsRows as categorie, i}
+								{#each categoriesActifsRows as categorie}
 									<tr class="border border-black">
-										<td class="px-2 py-2 text-black border border-black bg-white text-center">
-											<input
-												class="w-full border border-gray-300 rounded px-1.5 py-1 text-sm text-center"
-												type="text"
-												bind:value={categoriesActifsRows[i].libelle}
-												on:blur={() => saveCustomMethodState()}
-											/>
-										</td>
-										<td class="px-2 py-2 text-black border border-black bg-white text-center">
-											<select
-												class="w-full border border-gray-300 rounded px-1.5 py-1 text-sm"
-												value={categoriesActifsRows[i].type_actif}
-												on:change={(e) => {
-													const v = (e.target as HTMLSelectElement).value;
-													categoriesActifsRows[i].type_actif = v;
-													syncRegistreTypeActifPourCategorie(categoriesActifsRows[i].libelle, v);
-													saveCustomMethodState();
-												}}
-											>
-												<option value="Actif primaire">Actif primaire</option>
-												<option value="Actif support">Actif support</option>
-											</select>
-										</td>
-										{#if editModeTable2Categories}
-										<td class="px-2 py-2 border border-black bg-gray-100">
-											<div class="flex gap-1 justify-center">
-												<button
-													type="button"
-													class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
-													on:click={() => insererCategorieActifAvant(i)}
-													title="Ajouter avant"
-												>
-													↑+
-												</button>
-												<button
-													type="button"
-													class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
-													on:click={() => insererCategorieActifApres(i)}
-													title="Ajouter après"
-												>
-													↓+
-												</button>
-												<button
-													type="button"
-													class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700"
-													on:click={() => supprimerCategorieActif(i)}
-													title="Supprimer"
-												>
-													✕
-												</button>
-											</div>
-										</td>
-										{/if}
+										<td class="px-2 py-2 text-black border border-black bg-white text-center">{categorie.libelle}</td>
+										<td class="px-2 py-2 text-black border border-black bg-white text-center">{categorie.type_actif}</td>
 									</tr>
 								{/each}
 							</tbody>
 						</table>
 					</div>
-					{#if editModeTable2Categories}
-					<div class="flex gap-2">
-						<button
-							type="button"
-							class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700"
-							on:click={ajouterCategorieActif}
-						>
-							+ Ajouter une ligne
-						</button>
-						{#if categoriesActifsRows.length > 1}
-							<button
-								type="button"
-								class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700"
-								on:click={() => supprimerCategorieActif(categoriesActifsRows.length - 1)}
-							>
-								- Supprimer la dernière ligne
-							</button>
-						{/if}
-					</div>
-					{/if}
 				</section>
-
-				<!-- Tableau 3 – Propriétaires des actifs (à droite, design type carte) -->
 				<section class="flex-shrink-0 w-full lg:max-w-[28%] min-w-0">
 					<div class="rounded-xl border border-green-200 bg-gradient-to-br from-green-50 to-emerald-50/50 shadow-sm overflow-hidden">
 						<div class="px-3 py-2 border-b border-green-200 bg-green-100/80">
@@ -5360,10 +5130,9 @@
 				</section>
 			</div>
 
-			<!-- Classification selon la loi n° 05-20 -->
+			<!-- Classification selon la loi n° 05-20 (statique, inchangé) -->
 			<section class="space-y-8">
 				<h3 class="text-lg font-semibold text-gray-900">Classification selon la loi n° 05-20</h3>
-
 				<!-- Tableau 1 — Échelle qualitative -->
 				<section class="space-y-3">
 					<h4 class="text-lg font-semibold text-gray-900">Tableau 1 — Échelle qualitative</h4>
@@ -5424,7 +5193,6 @@
 						</table>
 					</div>
 				</section>
-
 				<!-- Tableau 2 — Échelle numérique avec code couleur -->
 				<section class="space-y-3">
 					<h4 class="text-lg font-semibold text-gray-900">Tableau 2 — Échelle numérique avec code couleur</h4>
@@ -5458,8 +5226,168 @@
 				</section>
 			</section>
 		</section>
+	{:else if activeSection === 'parametrage'}
+		<!-- Paramétrage du projet : modification Aide-Classification, Aide-Risque, Échelle PTR -->
+		<section class="space-y-10 pb-24">
+			<div>
+				<h2 class="text-xl font-semibold text-gray-900">Paramétrage du projet</h2>
+				<p class="text-sm text-gray-600 mt-1">Modifiez l'aide à la classification, l'aide risque et l'échelle PTR pour le projet <strong>{projects[activeProjectId]?.name ?? 'Projet par défaut'}</strong>. Les sections Aide-Classification, Aide-Risque et Échelle-PTR restent en affichage seul.</p>
+			</div>
 
+			<!-- === Paramétrage : Aide-Classification (édition) === -->
+			<section class="space-y-6 border border-sky-200 rounded-xl p-6 bg-sky-50/30">
+				<h3 class="text-lg font-semibold text-gray-900">Aide-Classification</h3>
+				<!-- Tableau 1 DIC -->
+				<section class="space-y-3">
+					<h4 class="text-base font-semibold text-gray-900">Tableau 1 – Définitions générales D/I/C</h4>
+					<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+						<table class="min-w-full text-sm border-collapse border border-black">
+							<thead>
+								<tr>
+									{#each dicCriteriaRows as criteria, i}
+										<th class="px-4 py-2 text-left font-semibold text-black border border-black bg-sky-200">
+											<input class="w-full border border-gray-300 rounded px-2 py-1 font-semibold" type="text" bind:value={dicCriteriaRows[i].critere} on:blur={() => saveCustomMethodState()} />
+										</th>
+									{/each}
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="border border-black">
+									{#each dicCriteriaRows as criteria, i}
+										<td class="px-4 py-2 text-black border border-black bg-white align-top min-h-[80px]">
+											{#if isEditing('dicCriteriaParam', 0, String(i))}
+												<textarea use:focusTextareaOnMount class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[80px]" bind:value={dicCriteriaRows[i].definition} on:blur={stopEditing} on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}></textarea>
+											{:else}
+												<div role="button" tabindex="0" class="w-full px-2 py-1 text-sm prose prose-sm max-w-none prose-p:my-1 text-left border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[80px]" on:click={() => startEditing('dicCriteriaParam', 0, String(i))} on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('dicCriteriaParam', 0, String(i))) : null}>
+													{@html criteria.definition ?? ''}
+												</div>
+											{/if}
+										</td>
+									{/each}
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+				<!-- Tableau 1.2 Niveaux DIC -->
+				<section class="space-y-3">
+					<h4 class="text-base font-semibold text-gray-900">Tableau 1.2 – Niveaux de valeur par critère (D / I / C)</h4>
+					<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+						<table class="min-w-full text-sm border-collapse border border-black">
+							<thead>
+								<tr>
+									<th class="px-4 py-2 text-left font-semibold text-black bg-sky-200 border border-black">Valeur</th>
+									<th class="px-2 py-2 text-center font-semibold text-black bg-sky-200 border border-black min-w-[120px]">Couleur</th>
+									<th class="px-4 py-2 text-left font-semibold text-black bg-sky-200 border border-black">Disponibilité (D)</th>
+									<th class="px-4 py-2 text-left font-semibold text-black bg-sky-200 border border-black">Intégrité (I)</th>
+									<th class="px-4 py-2 text-left font-semibold text-black bg-sky-200 border border-black">Confidentialité (C)</th>
+									<th class="px-2 py-2 text-center font-semibold text-black bg-sky-200 border border-black">Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								{#each dicNiveauxRows as row, i}
+									<tr class="border border-black">
+										<td class={`px-4 py-2 font-semibold text-white border border-black ${getValeurBg(row.valeur)}`}>
+											<input class="w-full border border-transparent bg-transparent font-semibold text-white placeholder-white/70" type="text" bind:value={dicNiveauxRows[i].valeur} on:change={() => saveCustomMethodState()} />
+										</td>
+										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
+											<select class="w-full border border-gray-300 rounded px-1 py-0.5 text-xs" bind:value={dicNiveauxRows[i].bgColor} on:change={() => saveCustomMethodState()}>
+												{#each DIC_NIVEAU_COULEURS as c}
+													<option value={c}>{c}</option>
+												{/each}
+											</select>
+										</td>
+										<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs min-h-[100px]">
+											<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[100px]" bind:value={dicNiveauxRows[i].disponibilite} on:blur={() => saveCustomMethodState()}></textarea>
+										</td>
+										<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs min-h-[100px]">
+											<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[100px]" bind:value={dicNiveauxRows[i].integrite} on:blur={() => saveCustomMethodState()}></textarea>
+										</td>
+										<td class="px-4 py-2 text-black border border-black bg-white align-top text-xs min-h-[100px]">
+											<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[100px]" bind:value={dicNiveauxRows[i].confidentialite} on:blur={() => saveCustomMethodState()}></textarea>
+										</td>
+										<td class="px-2 py-2 border border-black bg-gray-100">
+											<div class="flex gap-1 justify-center flex-wrap">
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererNiveauDicAvant(i)} title="Ajouter avant">↑+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererNiveauDicApres(i)} title="Ajouter après">↓+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerNiveauDic(i)} title="Supprimer" disabled={dicNiveauxRows.length <= 1}>✕</button>
+											</div>
+										</td>
+									</tr>
+								{/each}
+							</tbody>
+						</table>
+					</div>
+					<div class="flex gap-2">
+						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterNiveauDic}>+ Ajouter un niveau</button>
+						{#if dicNiveauxRows.length > 1}
+							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerNiveauDic(dicNiveauxRows.length - 1)}>- Supprimer la dernière ligne</button>
+						{/if}
+					</div>
+				</section>
+				<!-- Tableau 2 Catégories d'actifs -->
+				<section class="space-y-3">
+					<h4 class="text-base font-semibold text-gray-900">Tableau 2 – Catégories d'actifs</h4>
+					<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
+						<table class="w-full text-sm border-collapse border border-black table-fixed">
+							<thead>
+								<tr>
+									<th class="px-2 py-3 text-left font-semibold text-black bg-sky-200 border border-black" style="width: 50%;">Catégories d'actifs</th>
+									<th class="px-2 py-3 text-left font-semibold text-black bg-sky-200 border border-black" style="width: 40%;">Type d'actif</th>
+									<th class="px-2 py-3 text-left font-semibold text-black bg-sky-200 border border-black" style="width: 10%;">Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								{#each categoriesActifsRows as categorie, i}
+									<tr class="border border-black">
+										<td class="px-2 py-2 text-black border border-black bg-white text-center">
+											<input class="w-full border border-gray-300 rounded px-1.5 py-1 text-sm text-center" type="text" bind:value={categoriesActifsRows[i].libelle} on:blur={() => saveCustomMethodState()} />
+										</td>
+										<td class="px-2 py-2 text-black border border-black bg-white text-center">
+											<select class="w-full border border-gray-300 rounded px-1.5 py-1 text-sm" value={categoriesActifsRows[i].type_actif} on:change={(e) => { const v = (e.target as HTMLSelectElement).value; categoriesActifsRows[i].type_actif = v; syncRegistreTypeActifPourCategorie(categoriesActifsRows[i].libelle, v); saveCustomMethodState(); }}>
+												<option value="Actif primaire">Actif primaire</option>
+												<option value="Actif support">Actif support</option>
+											</select>
+										</td>
+										<td class="px-2 py-2 border border-black bg-gray-100">
+											<div class="flex gap-1 justify-center">
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererCategorieActifAvant(i)} title="Ajouter avant">↑+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => insererCategorieActifApres(i)} title="Ajouter après">↓+</button>
+												<button type="button" class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerCategorieActif(i)} title="Supprimer">✕</button>
+											</div>
+										</td>
+									</tr>
+								{/each}
+							</tbody>
+						</table>
+					</div>
+					<div class="flex gap-2">
+						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterCategorieActif}>+ Ajouter une ligne</button>
+						{#if categoriesActifsRows.length > 1}
+							<button type="button" class="px-3 py-1.5 text-sm bg-red-600 text-white rounded hover:bg-red-700" on:click={() => supprimerCategorieActif(categoriesActifsRows.length - 1)}>- Supprimer la dernière ligne</button>
+						{/if}
+					</div>
+				</section>
+			</section>
 
+			<p class="text-sm text-gray-600">Modifiez ici l'Aide-Classification (ci-dessus), l'Aide-Risque et l'Échelle PTR pour ce projet. Les onglets <strong>Aide-Classification</strong>, <strong>Aide-Risque</strong> et <strong>Échelle-PTR</strong> servent uniquement à l'affichage des échelles.</p>
+			<div class="flex flex-wrap gap-3 mt-4">
+				<button
+					type="button"
+					class="px-4 py-2 text-sm font-medium rounded-lg border border-amber-500 bg-amber-50 text-amber-800 hover:bg-amber-100"
+					on:click={() => { activeSection = 'aide-risque'; editingFromParametrage = true; editModeAideRisque = true; }}
+				>
+					Modifier l'Aide-Risque →
+				</button>
+				<button
+					type="button"
+					class="px-4 py-2 text-sm font-medium rounded-lg border border-emerald-600 bg-emerald-50 text-emerald-800 hover:bg-emerald-100"
+					on:click={() => { activeSection = 'echelle-ptr'; editingFromParametrage = true; editModeEchellePtr = true; }}
+				>
+					Modifier l'Échelle PTR →
+				</button>
+			</div>
+		</section>
 
 
 
@@ -6140,7 +6068,7 @@
 								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Définition</th>
 								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Fréquence</th>
 								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Désignation de la probabilité</th>
-								{#if editModeAideRisque}
+								{#if editModeAideRisque && !readOnlyAideRisque}
 									<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Couleur</th>
 									<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Actions</th>
 								{/if}
@@ -6161,7 +6089,7 @@
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
 										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]" bind:value={probaRows[i].historique}></textarea>
 									</td>
-									{#if editModeAideRisque}
+									{#if editModeAideRisque && !readOnlyAideRisque}
 										<td class="px-2 py-2 border border-black bg-gray-100">
 											<select class="w-full text-xs rounded border border-gray-300 px-1 py-1" bind:value={probaRows[i].bgColor} on:change={() => saveCustomMethodState()}>
 												{#each AIDE_RISQUE_COULEURS as c}
@@ -6182,7 +6110,7 @@
 						</tbody>
 					</table>
 				</div>
-				{#if editModeAideRisque}
+				{#if editModeAideRisque && !readOnlyAideRisque}
 					<div class="flex gap-2 mt-2">
 						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterProba}>+ Ajouter une ligne</button>
 						{#if probaRows.length > 1}
@@ -6204,7 +6132,7 @@
 							<tr>
 								<th class="px-4 py-2 text-left font-semibold text-white bg-orange-600 border border-black">Libellé (Impact)</th>
 								<th class="px-4 py-2 text-left font-semibold text-white bg-orange-600 border border-black">Définition</th>
-								{#if editModeAideRisque}
+								{#if editModeAideRisque && !readOnlyAideRisque}
 									<th class="px-4 py-2 text-center font-semibold text-white bg-orange-600 border border-black">Actions</th>
 								{/if}
 							</tr>
@@ -6218,7 +6146,7 @@
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
 										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]" bind:value={impactDefinitionsRows[i].definition} placeholder="Explication de l'impact..." on:blur={() => saveCustomMethodState()}></textarea>
 									</td>
-									{#if editModeAideRisque}
+									{#if editModeAideRisque && !readOnlyAideRisque}
 										<td class="px-4 py-2 border border-black bg-gray-100 text-center">
 											<div class="flex gap-1 justify-center flex-wrap">
 												<button type="button" class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" on:click={() => { impactDefinitionsRows = insererLigneAvant(impactDefinitionsRows, i, { libelle: '', definition: '' }); syncCartoRowsImpacts(); syncImpactRowsCriteres(); saveCustomMethodState(); }} title="Ajouter avant">↑+</button>
@@ -6232,7 +6160,7 @@
 						</tbody>
 					</table>
 				</div>
-				{#if editModeAideRisque}
+				{#if editModeAideRisque && !readOnlyAideRisque}
 					<div class="flex gap-2 mt-2">
 						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterDefinitionImpact}>+ Ajouter une ligne</button>
 						{#if impactDefinitionsRows.length > 1}
@@ -6257,7 +6185,7 @@
 								{#each impactDefinitionsRows as def}
 									<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">{def.libelle || 'Critère'}</th>
 								{/each}
-								{#if editModeAideRisque}
+								{#if editModeAideRisque && !readOnlyAideRisque}
 									<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Couleur</th>
 									<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Actions</th>
 								{/if}
@@ -6289,7 +6217,7 @@
 											></textarea>
 										</td>
 									{/each}
-									{#if editModeAideRisque}
+									{#if editModeAideRisque && !readOnlyAideRisque}
 										<td class="px-2 py-2 border border-black bg-gray-100">
 											<select class="w-full text-xs rounded border border-gray-300 px-1 py-1" bind:value={impactRows[i].bgColor} on:change={() => saveCustomMethodState()}>
 												{#each AIDE_RISQUE_COULEURS as c}
@@ -6310,7 +6238,7 @@
 						</tbody>
 					</table>
 				</div>
-				{#if editModeAideRisque}
+				{#if editModeAideRisque && !readOnlyAideRisque}
 					<div class="flex gap-2 mt-2">
 						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterImpact}>+ Ajouter une ligne</button>
 						{#if impactRows.length > 1}
@@ -6340,7 +6268,7 @@
 								<th class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black">Échelle</th>
 								<th class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black">Définition</th>
 								<th class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black">Signification</th>
-								{#if editModeAideRisque}
+								{#if editModeAideRisque && !readOnlyAideRisque}
 									<th class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black">Couleur</th>
 									<th class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black">Actions</th>
 								{/if}
@@ -6358,7 +6286,7 @@
 									<td class="px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={frequenceRisqueRows[i].signification} />
 									</td>
-									{#if editModeAideRisque}
+									{#if editModeAideRisque && !readOnlyAideRisque}
 										<td class="px-2 py-2 border border-black bg-gray-100">
 											<select class="w-full text-xs rounded border border-gray-300 px-1 py-1" bind:value={(frequenceRisqueRows[i] as Row & { bgColor?: string }).bgColor} on:change={() => saveCustomMethodState()}>
 												{#each AIDE_RISQUE_COULEURS as c}
@@ -6379,7 +6307,7 @@
 						</tbody>
 					</table>
 				</div>
-				{#if editModeAideRisque}
+				{#if editModeAideRisque && !readOnlyAideRisque}
 					<div class="flex gap-2 mt-2">
 						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterFrequence}>+ Ajouter une ligne</button>
 						{#if frequenceRisqueRows.length > 1}
@@ -6405,7 +6333,7 @@
 								{#each Array.from({ length: getMatriceColumnCount() }, (_, i) => i) as colIndex}
 									<th class="px-4 py-2 text-sm font-semibold border border-black bg-gray-100 relative">
 										{colIndex + 1}
-										{#if editModeAideRisque && getMatriceColumnCount() > 1}
+										{#if (editModeAideRisque && !readOnlyAideRisque) && getMatriceColumnCount() > 1}
 											<button type="button" class="absolute -top-0.5 -right-0.5 w-5 h-5 text-[10px] bg-red-600 text-white rounded-full hover:bg-red-700 leading-none" title="Supprimer cette colonne" on:click={() => supprimerColonneMatrice(colIndex)}>✕</button>
 										{/if}
 									</th>
@@ -6428,7 +6356,7 @@
 						</tbody>
 					</table>
 				</div>
-				{#if editModeAideRisque}
+				{#if editModeAideRisque && !readOnlyAideRisque}
 					<div class="flex gap-2 mt-2 flex-wrap">
 						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterMatrice}>+ Ajouter une ligne</button>
 						{#if matriceRisqueRows.length > 1}
@@ -6460,7 +6388,7 @@
 							<col style="width: 38px;" />
 							<col style="width: 8rem;" />
 							<col style="width: 4rem;" />
-							{#if editModeAideRisque}
+							{#if editModeAideRisque && !readOnlyAideRisque}
 								<col style="width: 6rem;" />
 								<col style="width: 5rem;" />
 							{/if}
@@ -6482,7 +6410,7 @@
 								<th class="px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black whitespace-nowrap" style="background-color: #263c18;">
 									Valeur correspondante
 								</th>
-								{#if editModeAideRisque}
+								{#if editModeAideRisque && !readOnlyAideRisque}
 									<th class="px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black whitespace-nowrap" style="background-color: #263c18;">Couleur</th>
 									<th class="px-3 py-2.5 text-center text-[11px] font-bold text-white border border-black whitespace-nowrap" style="background-color: #263c18;">Actions</th>
 								{/if}
@@ -6505,7 +6433,7 @@
 									<td class="px-3 py-2 text-center border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm text-center" type="text" inputmode="decimal" bind:value={efficaciteRows[i].valeur} placeholder="0.15" />
 									</td>
-									{#if editModeAideRisque}
+									{#if editModeAideRisque && !readOnlyAideRisque}
 										<td class="px-2 py-2 border border-black bg-gray-100">
 											<select class="w-full text-xs rounded border border-gray-300 px-1 py-1" bind:value={efficaciteRows[i].bgColor} on:change={() => saveCustomMethodState()}>
 												{#each AIDE_RISQUE_COULEURS as c}
@@ -6526,7 +6454,7 @@
 						</tbody>
 					</table>
 				</div>
-				{#if editModeAideRisque}
+				{#if editModeAideRisque && !readOnlyAideRisque}
 					<div class="flex gap-2 mt-2">
 						<button type="button" class="px-3 py-1.5 text-sm bg-green-600 text-white rounded hover:bg-green-700" on:click={ajouterEfficacite}>+ Ajouter une ligne</button>
 						{#if efficaciteRows.length > 1}
@@ -6861,19 +6789,23 @@
 			{/if}
 		</section>
 	{:else if activeSection === 'echelle-ptr'}
-		<!-- Échelle PTR : les 4 tables déjà définies -->
-		<section class="space-y-6">
+		<!-- Échelle PTR : affichage seul sauf si ouverture depuis Paramétrage -->
+		<section class="space-y-6 {readOnlyEchellePtr ? 'readonly-scales-section' : ''}">
 			<div class="flex items-center justify-between gap-4 flex-wrap">
-				<h2 class="text-xl font-semibold text-gray-900">Échelle-PTR&nbsp;: </h2>
-				<button
-					type="button"
-					class="px-3 py-1.5 text-sm rounded {editModeEchellePtr
-						? 'bg-gray-600 text-white hover:bg-gray-700'
-						: 'bg-sky-600 text-white hover:bg-sky-700'}"
-					on:click={() => (editModeEchellePtr = !editModeEchellePtr)}
-				>
-					{editModeEchellePtr ? 'Terminer la modification' : 'Modifier'}
-				</button>
+				<h2 class="text-xl font-semibold text-gray-900">Échelle-PTR</h2>
+				{#if readOnlyEchellePtr}
+					<p class="text-sm text-gray-500">Affichage des échelles. Pour modifier, utilisez l'onglet <strong>Paramétrage</strong>.</p>
+				{:else}
+					<button
+						type="button"
+						class="px-3 py-1.5 text-sm rounded {editModeEchellePtr
+							? 'bg-gray-600 text-white hover:bg-gray-700'
+							: 'bg-sky-600 text-white hover:bg-sky-700'}"
+						on:click={() => (editModeEchellePtr = !editModeEchellePtr)}
+					>
+						{editModeEchellePtr ? 'Terminer la modification' : 'Modifier'}
+					</button>
+				{/if}
 			</div>
 
 			<section class="space-y-4">
@@ -7044,7 +6976,7 @@
 					<table class="min-w-full text-sm border-collapse border border-black">
 						<thead>
 							<tr>
-								<th colspan={editModeEchellePtr ? 5 : 3} class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Priorité de l'action</th>
+								<th colspan={(editModeEchellePtr && !readOnlyEchellePtr) ? 5 : 3} class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Priorité de l'action</th>
 							</tr>
 							<tr>
 								<th class="px-4 py-2 text-left font-semibold text-white bg-slate-900 border border-black">Échelle</th>
