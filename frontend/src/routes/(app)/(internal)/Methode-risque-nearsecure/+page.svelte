@@ -1,6 +1,5 @@
 <script lang="ts">
-	// Page simple pour afficher La méthode NearSecure
-	// avec des tableaux statiques basés sur tes définitions en français.
+	
 
 	import { onMount, afterUpdate } from 'svelte';
 	import { beforeNavigate } from '$app/navigation';
@@ -4192,6 +4191,7 @@
 					</svg>
 					Télécharger en Excel
 				</button>
+				<!-- Backup JSON masqué
 				<button
 					type="button"
 					class="px-3 py-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2"
@@ -4203,6 +4203,8 @@
 					</svg>
 					Backup JSON
 				</button>
+				-->
+				<!-- Restaurer la version précédente masqué
 				<button
 					type="button"
 					class="px-3 py-2 text-sm font-medium rounded-lg border border-amber-300 bg-amber-50 text-amber-800 hover:bg-amber-100 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -4215,6 +4217,7 @@
 					</svg>
 					{saveFeedback === 'restored' ? 'Restauré ✓' : 'Restaurer la version précédente'}
 				</button>
+				-->
 			</div>
 		</div>
 		<div class="flex flex-wrap items-center gap-4 text-sm text-gray-500">
