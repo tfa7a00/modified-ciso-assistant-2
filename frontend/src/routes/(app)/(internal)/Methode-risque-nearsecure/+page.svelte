@@ -2547,16 +2547,16 @@
 		}
 		if (state.probaRows && Array.isArray(state.probaRows) && state.probaRows.length > 0) {
 			const rows = state.probaRows as ProbaRow[];
-			probaRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getProbaDefBg(r.definition) }));
+			probaRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getProbaDefBg(r.definition ?? '') }));
 		}
 		if (state.impactRows && Array.isArray(state.impactRows) && state.impactRows.length > 0) {
 			const rows = state.impactRows as ImpactRow[];
-			impactRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getImpactDefBg(r.definition) }));
+			impactRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getImpactDefBg(r.definition ?? '') }));
 			syncImpactRowsCriteres();
 		}
 		if (state.frequenceRisqueRows && Array.isArray(state.frequenceRisqueRows) && state.frequenceRisqueRows.length > 0) {
 			const rows = state.frequenceRisqueRows as (Row & { bgColor?: string })[];
-			frequenceRisqueRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getFrequenceDefBg(r.definition ?? '') }));
+			frequenceRisqueRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getFrequenceDefBg(r.definition ?? '') }));
 		}
 		if (state.matriceRisqueRows && Array.isArray(state.matriceRisqueRows) && state.matriceRisqueRows.length > 0) {
 			const rows = state.matriceRisqueRows as MatriceRow[];
@@ -2566,7 +2566,7 @@
 		}
 		if (state.efficaciteRows && Array.isArray(state.efficaciteRows) && state.efficaciteRows.length > 0) {
 			const rows = state.efficaciteRows as EfficaciteRow[];
-			efficaciteRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getEfficaciteDefBg(r.signification) }));
+			efficaciteRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getEfficaciteDefBg(r.signification ?? '') }));
 		}
 	}
 
@@ -2673,11 +2673,11 @@
 		}
 		if (data.probaRows && Array.isArray(data.probaRows) && data.probaRows.length > 0) {
 			const rows = data.probaRows as ProbaRow[];
-			probaRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getProbaDefBg(r.definition) }));
+			probaRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getProbaDefBg(r.definition ?? '') }));
 		}
 		if (data.impactRows && Array.isArray(data.impactRows) && data.impactRows.length > 0) {
 			const rows = data.impactRows as ImpactRow[];
-			impactRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getImpactDefBg(r.definition) }));
+			impactRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getImpactDefBg(r.definition ?? '') }));
 			syncImpactRowsCriteres();
 		}
 		if (data.impactDefinitionsRows && Array.isArray(data.impactDefinitionsRows) && data.impactDefinitionsRows.length > 0) {
@@ -2686,7 +2686,7 @@
 		}
 		if (data.frequenceRisqueRows && Array.isArray(data.frequenceRisqueRows) && data.frequenceRisqueRows.length > 0) {
 			const rows = data.frequenceRisqueRows as (Row & { bgColor?: string })[];
-			frequenceRisqueRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getFrequenceDefBg(r.definition ?? '') }));
+			frequenceRisqueRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getFrequenceDefBg(r.definition ?? '') }));
 		}
 		if (data.matriceRisqueRows && Array.isArray(data.matriceRisqueRows) && data.matriceRisqueRows.length > 0) {
 			const rows = data.matriceRisqueRows as MatriceRow[];
@@ -2696,7 +2696,7 @@
 		}
 		if (data.efficaciteRows && Array.isArray(data.efficaciteRows) && data.efficaciteRows.length > 0) {
 			const rows = data.efficaciteRows as EfficaciteRow[];
-			efficaciteRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getEfficaciteDefBg(r.signification) }));
+			efficaciteRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getEfficaciteDefBg(r.signification ?? '') }));
 		}
 	}
 
@@ -2883,16 +2883,16 @@
 		}
 		if (state.probaRows && Array.isArray(state.probaRows) && state.probaRows.length > 0) {
 			const rows = state.probaRows as ProbaRow[];
-			probaRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getProbaDefBg(r.definition) }));
+			probaRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getProbaDefBg(r.definition ?? '') }));
 		}
 		if (state.impactRows && Array.isArray(state.impactRows) && state.impactRows.length > 0) {
 			const rows = state.impactRows as ImpactRow[];
-			impactRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getImpactDefBg(r.definition) }));
+			impactRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getImpactDefBg(r.definition ?? '') }));
 			syncImpactRowsCriteres();
 		}
 		if (state.frequenceRisqueRows && Array.isArray(state.frequenceRisqueRows) && state.frequenceRisqueRows.length > 0) {
 			const rows = state.frequenceRisqueRows as (Row & { bgColor?: string })[];
-			frequenceRisqueRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getFrequenceDefBg(r.definition ?? '') }));
+			frequenceRisqueRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getFrequenceDefBg(r.definition ?? '') }));
 		}
 		if (state.matriceRisqueRows && Array.isArray(state.matriceRisqueRows) && state.matriceRisqueRows.length > 0) {
 			const rows = state.matriceRisqueRows as MatriceRow[];
@@ -2902,7 +2902,7 @@
 		}
 		if (state.efficaciteRows && Array.isArray(state.efficaciteRows) && state.efficaciteRows.length > 0) {
 			const rows = state.efficaciteRows as EfficaciteRow[];
-			efficaciteRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getEfficaciteDefBg(r.signification) }));
+			efficaciteRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getEfficaciteDefBg(r.signification ?? '') }));
 		}
 		// Tableau PTR (Plan de Traitement des Risques)
 		if (state.ptrData && Array.isArray(state.ptrData) && state.ptrData.length > 0) {
@@ -2933,7 +2933,8 @@
 	}
 
 	function getProbaDefBg(definition: string): string {
-		switch (definition) {
+		const d = (definition ?? '').trim();
+		switch (d) {
 			case 'Très faible':
 				return 'bg-green-400 text-black';
 			case 'Faible':
@@ -2949,11 +2950,13 @@
 		}
 	}
 	function getProbaRowBg(row: ProbaRow): string {
-		return row.bgColor ?? getProbaDefBg(row.definition);
+		const c = (row.bgColor ?? '').trim();
+		return c ? c : getProbaDefBg(row.definition ?? '');
 	}
 
 	function getImpactDefBg(definition: string): string {
-		switch (definition) {
+		const d = (definition ?? '').trim();
+		switch (d) {
 			case 'Très faible':
 				return 'bg-green-400 text-black';
 			case 'Faible':
@@ -2971,7 +2974,8 @@
 		}
 	}
 	function getImpactRowBg(row: ImpactRow): string {
-		return row.bgColor ?? getImpactDefBg(row.definition);
+		const c = (row.bgColor ?? '').trim();
+		return c ? c : getImpactDefBg(row.definition ?? '');
 	}
 
 	/** Retourne le tableau des valeurs par critère pour une ligne du Tableau 2 (longueur = impactDefinitionsRows.length). Utilise criteres si présent, sinon dérive des champs fixes (financier, reputation, etc.) selon le libellé. */
@@ -3008,12 +3012,14 @@
 	}
 
 	function getFrequenceDefBg(definition: string): string {
-		switch (definition) {
+		const d = (definition ?? '').trim();
+		switch (d) {
 			case 'Risque Faible':
 				return 'bg-green-400 text-black';
 			case 'Risque Modéré':
 				return 'bg-yellow-300 text-black';
 			case 'Risque Elevé':
+			case 'Risque Élevé':
 				return 'bg-orange-400 text-black';
 			case 'Risque Extrême':
 				return 'bg-red-500 text-black';
@@ -3022,11 +3028,13 @@
 		}
 	}
 	function getFrequenceRowBg(row: Row): string {
-		return (row as Row & { bgColor?: string }).bgColor ?? getFrequenceDefBg(row.definition ?? '');
+		const c = ((row as Row & { bgColor?: string }).bgColor ?? '').trim();
+		return c ? c : getFrequenceDefBg(row.definition ?? '');
 	}
 
 	function getEfficaciteDefBg(signification: string): string {
-		switch (signification) {
+		const s = (signification ?? '').trim();
+		switch (s) {
 			case 'Insuffisant':
 				return 'bg-[#ff0000] text-black';
 			case 'Faible':
@@ -3042,7 +3050,8 @@
 		}
 	}
 	function getEfficaciteRowBg(row: EfficaciteRow): string {
-		return row.bgColor ?? getEfficaciteDefBg(row.signification);
+		const c = (row.bgColor ?? '').trim();
+		return c ? c : getEfficaciteDefBg(row.signification ?? '');
 	}
 
 	/** Parse "signification" (ex: "[1 – 20[" or "[64 – 120]") into min, max and whether max is inclusive. */
@@ -6667,10 +6676,10 @@
 							: 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'}"
 						on:click={() => {
 							if (!editModeAideRisque) {
-								probaRows = probaRows.map((r) => ({ ...r, bgColor: r.bgColor ?? getProbaDefBg(r.definition) }));
-								impactRows = impactRows.map((r) => ({ ...r, bgColor: r.bgColor ?? getImpactDefBg(r.definition) }));
-								frequenceRisqueRows = frequenceRisqueRows.map((r) => ({ ...r, bgColor: (r as Row & { bgColor?: string }).bgColor ?? getFrequenceDefBg(r.definition ?? '') }));
-								efficaciteRows = efficaciteRows.map((r) => ({ ...r, bgColor: r.bgColor ?? getEfficaciteDefBg(r.signification) }));
+								probaRows = probaRows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getProbaDefBg(r.definition ?? '') }));
+								impactRows = impactRows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getImpactDefBg(r.definition ?? '') }));
+								frequenceRisqueRows = frequenceRisqueRows.map((r) => { const rr = r as Row & { bgColor?: string }; return { ...r, bgColor: (rr.bgColor && rr.bgColor.trim()) ? rr.bgColor : getFrequenceDefBg(r.definition ?? '') }; });
+								efficaciteRows = efficaciteRows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getEfficaciteDefBg(r.signification ?? '') }));
 							}
 							editModeAideRisque = !editModeAideRisque;
 						}}
