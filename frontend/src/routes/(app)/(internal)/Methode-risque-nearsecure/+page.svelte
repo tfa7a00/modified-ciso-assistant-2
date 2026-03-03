@@ -4152,6 +4152,44 @@
     .echelle-ptr-tables.readonly-scales-section select {
         background: transparent !important;
     }
+    /* Aide-Risque : même chose (pas de contour gris, même rendu en lecture seule) */
+    .methode-risque-nearsecure-page .aide-risque-tables table input:hover,
+    .methode-risque-nearsecure-page .aide-risque-tables table input:focus,
+    .methode-risque-nearsecure-page .aide-risque-tables table textarea:hover,
+    .methode-risque-nearsecure-page .aide-risque-tables table textarea:focus,
+    .methode-risque-nearsecure-page .aide-risque-tables table select:hover,
+    .methode-risque-nearsecure-page .aide-risque-tables table select:focus {
+        border-color: transparent !important;
+        box-shadow: none !important;
+    }
+    .methode-risque-nearsecure-page .aide-risque-tables table input,
+    .methode-risque-nearsecure-page .aide-risque-tables table textarea,
+    .methode-risque-nearsecure-page .aide-risque-tables table select {
+        border: 1px solid transparent !important;
+        outline: none !important;
+        outline-width: 0 !important;
+        box-shadow: none !important;
+        --tw-ring-shadow: 0 0 #0000 !important;
+        --tw-ring-width: 0 !important;
+    }
+    .methode-risque-nearsecure-page .aide-risque-tables table input:hover,
+    .methode-risque-nearsecure-page .aide-risque-tables table input:focus,
+    .methode-risque-nearsecure-page .aide-risque-tables table textarea:hover,
+    .methode-risque-nearsecure-page .aide-risque-tables table textarea:focus,
+    .methode-risque-nearsecure-page .aide-risque-tables table select:hover,
+    .methode-risque-nearsecure-page .aide-risque-tables table select:focus {
+        border: 1px solid transparent !important;
+        outline: none !important;
+        outline-width: 0 !important;
+        box-shadow: none !important;
+        --tw-ring-shadow: 0 0 #0000 !important;
+        --tw-ring-width: 0 !important;
+    }
+    .aide-risque-tables.readonly-scales-section input,
+    .aide-risque-tables.readonly-scales-section textarea,
+    .aide-risque-tables.readonly-scales-section select {
+        background: transparent !important;
+    }
 
     /* Échelle PTR : pas de contour gris (spécificité élevée pour annuler les règles table input/textarea) */
     .methode-risque-nearsecure-page .echelle-ptr-tables table input,
@@ -5420,7 +5458,7 @@
 			</section>
 
 			<!-- === Aide-Risque (édition) === -->
-			<section class="space-y-6 border border-amber-200 rounded-xl p-6 bg-amber-50/30 mt-8">
+			<section class="aide-risque-tables space-y-6 border border-amber-200 rounded-xl p-6 bg-amber-50/30 mt-8">
 				<h3 class="text-lg font-semibold text-gray-900">Aide-Risque</h3>
 			<!-- Tableau 1 – Échelle de probabilité / fréquence -->
 			<section class="space-y-3">
@@ -6704,9 +6742,10 @@
 				{/if}
 		</section>
 	{:else if activeSection === 'aide-risque'}
-		<section class="space-y-8 pb-24 overflow-visible {readOnlyAideRisque ? 'readonly-scales-section' : ''}">
+		<!-- Aide-Risque : même design que dans Paramétrage (cadre ambre, pas de fond gris en lecture seule) -->
+		<section class="aide-risque-tables space-y-6 border border-amber-200 rounded-xl p-6 bg-amber-50/30 mt-8 pb-24 overflow-visible {readOnlyAideRisque ? 'readonly-scales-section' : ''}">
 			<div class="flex items-center justify-between gap-4 flex-wrap">
-				<h2 class="text-xl font-semibold text-gray-900">Aide-Risque</h2>
+				<h3 class="text-lg font-semibold text-gray-900">Aide-Risque</h3>
 				{#if readOnlyAideRisque}
 					<p class="text-sm text-gray-500">Affichage des échelles. Pour modifier, utilisez l'onglet <strong>Paramétrage</strong>.</p>
 				{:else}
