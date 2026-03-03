@@ -1912,9 +1912,10 @@
 			}
 		};
 	}
-	afterUpdate(() => {
+	// Ne redimensionner tous les textareas qu'au changement de section pour éviter de réinitialiser le scroll à chaque update
+	$: if (typeof window !== 'undefined' && activeSection) {
 		requestAnimationFrame(() => resizeAllTextareasInPage());
-	});
+	}
 
 	/** Édition au clic : quelle cellule est en cours d'édition (tous tableaux) */
 	let editingCell: { table: string; row: number; field: string } | null = null;
@@ -4118,7 +4119,7 @@
 	{@html `<style id="methode-risque-nearsecure-flexible-cells">.methode-risque-nearsecure-page table,.methode-risque-nearsecure-page table thead,.methode-risque-nearsecure-page table tbody,.methode-risque-nearsecure-page table tr{height:auto!important}.methode-risque-nearsecure-page table td,.methode-risque-nearsecure-page table th{height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;white-space:normal!important;word-wrap:break-word;overflow-wrap:break-word;vertical-align:top}.methode-risque-nearsecure-page table textarea{min-height:2.5rem;overflow-y:hidden;resize:none}</style>`}
 </svelte:head>
 
-<main class="methode-risque-nearsecure-page p-6 space-y-8" use:autoResizeTextareas>
+<main class="methode-risque-nearsecure-page p-6 space-y-8 overflow-visible" use:autoResizeTextareas>
 	<section class="space-y-2">
 		<div class="flex flex-wrap items-center justify-between gap-4">
 			<h1 class="text-2xl font-bold text-gray-900">La méthode NearSecure</h1>
@@ -6101,7 +6102,7 @@
 				{/if}
 		</section>
 	{:else if activeSection === 'aide-risque'}
-		<section class="space-y-8">
+		<section class="space-y-8 pb-24 overflow-visible">
 			<div class="flex items-center justify-between gap-4 flex-wrap">
 				<h2 class="text-xl font-semibold text-gray-900">Aide-Risque</h2>
 				<button

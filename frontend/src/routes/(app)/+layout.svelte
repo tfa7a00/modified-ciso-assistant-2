@@ -159,11 +159,11 @@
 	<title>CISO Assistant | {safeTranslate(displayTitle)}</title>
 </svelte:head>
 
-<!-- App Shell -->
-<div class="overflow-x-hidden">
+<!-- App Shell: flex column so main can be the scroll container with flex-1 min-h-0 -->
+<div class="flex flex-col h-screen overflow-x-hidden">
 	<SideBar bind:open={sidebarOpen} {sideBarVisibleItems} />
 	<AppBar
-		base="relative transition-all duration-300 {classesSidebarOpen(sidebarOpen)}"
+		base="relative flex-shrink-0 transition-all duration-300 {classesSidebarOpen(sidebarOpen)}"
 		background="bg-white"
 		padding="pb-2 px-4"
 	>
@@ -202,7 +202,7 @@
 	<!-- Router Slot -->
 	<CommandPalette />
 	<main
-		class="min-h-screen p-8 bg-linear-to-br from-violet-100 to-slate-200 transition-all duration-300 {classesSidebarOpen(
+		class="flex-1 min-h-0 overflow-y-auto p-8 bg-linear-to-br from-violet-100 to-slate-200 transition-all duration-300 {classesSidebarOpen(
 			sidebarOpen
 		)}"
 	>
