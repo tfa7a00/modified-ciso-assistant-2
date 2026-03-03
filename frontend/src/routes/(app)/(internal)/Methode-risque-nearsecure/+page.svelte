@@ -4136,6 +4136,25 @@
         background: #f3f4f6 !important;
         cursor: default;
     }
+
+    /* Échelle PTR : pas de contour gris sur les zones de texte (annule les règles hover/focus des tableaux) */
+    .echelle-ptr-tables table input,
+    .echelle-ptr-tables table textarea,
+    .echelle-ptr-tables table select {
+        border-color: transparent !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+    .echelle-ptr-tables table input:hover,
+    .echelle-ptr-tables table input:focus,
+    .echelle-ptr-tables table textarea:hover,
+    .echelle-ptr-tables table textarea:focus,
+    .echelle-ptr-tables table select:hover,
+    .echelle-ptr-tables table select:focus {
+        border-color: transparent !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
 </style>
 
 <svelte:head>
@@ -5792,7 +5811,7 @@
 			</section>
 		</section>
 			<!-- === Échelle PTR (édition) === -->
-			<section class="space-y-6 border border-emerald-200 rounded-xl p-6 bg-emerald-50/30 mt-8">
+			<section class="echelle-ptr-tables space-y-6 border border-emerald-200 rounded-xl p-6 bg-emerald-50/30 mt-8">
 				<h3 class="text-lg font-semibold text-gray-900">Échelle PTR</h3>
 			<section class="space-y-4">
 				<h3 class="text-lg font-semibold text-gray-900">Table 1&nbsp;: Périodicité / Durée</h3>
@@ -7424,7 +7443,7 @@
 		</section>
 	{:else if activeSection === 'echelle-ptr'}
 		<!-- Échelle PTR : affichage seul sauf si ouverture depuis Paramétrage -->
-		<section class="space-y-6 {readOnlyEchellePtr ? 'readonly-scales-section' : ''}">
+		<section class="echelle-ptr-tables space-y-6 {readOnlyEchellePtr ? 'readonly-scales-section' : ''}">
 			<div class="flex items-center justify-between gap-4 flex-wrap">
 				<h2 class="text-xl font-semibold text-gray-900">Échelle-PTR</h2>
 				{#if readOnlyEchellePtr}
