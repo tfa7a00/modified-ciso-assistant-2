@@ -9,6 +9,8 @@
 
 	const METHODE_RISQUE_NEARSECURE_STORAGE_KEY = 'ciso-assistant-methode-risque-nearsecure';
 	const METHODE_RISQUE_NEARSECURE_BACKUP_KEY = 'ciso-assistant-methode-risque-nearsecure-backup';
+	const DEFAULT_PROJECT_ID = 'default';
+	const MULTIPROJECT_STATE_VERSION = 2; // 1 = ancien format mono-projet, 2 = reference + projects
 
 	/** Retire les balises HTML pour l'export Excel */
 	function stripHtml(html: string): string {
@@ -828,6 +830,23 @@
 		}
 	];
 
+	// --- Multi-projets : mêmes tableaux/échelles partagés, données métier par projet ---
+	type ProjectData = {
+		name: string;
+		redactionRows: RedactionRow[];
+		diffusionRows: DiffusionRow[];
+		versionRows: VersionRow[];
+		registreRows: RegistreRow[];
+		showRegistreLoi0520: boolean;
+		cartoRows: CartoRow[];
+		ptrData: Array<Record<string, unknown>>;
+		activeSection: SectionId;
+		cartoView: 'all' | 'identification' | 'brut' | 'net' | 'ptr';
+		cartoVersion: 'A' | 'B';
+	};
+	let activeProjectId = DEFAULT_PROJECT_ID;
+	let projects: Record<string, ProjectData> = {};
+
 	// --- Persistence: localStorage (toujours, pour survivre à l’arrêt backend/frontend) + server (partagé) ---
 	let lastSavedAt: Date | null = null;
 	let saveFeedback: 'idle' | 'saved' | 'restored' = 'idle';
@@ -936,6 +955,10 @@
 		// Fallback localStorage (toujours utilisé si le serveur échoue ou renvoie vide)
 		loadCustomMethodStateFromStorage();
 		// Re-sync : pousser l’état local vers le serveur s’il est de nouveau disponible
+		if (Object.keys(projects).length === 0) {
+			projects = { [DEFAULT_PROJECT_ID]: getCurrentProjectData() };
+			activeProjectId = DEFAULT_PROJECT_ID;
+		}
 		saveCustomMethodState();
 	}
 
@@ -2352,18 +2375,9 @@
 		'bg-[#00b050] text-white'
 	];
 
-	/** Full state for server/localStorage: all table rows + UI state */
-	function getFullState() {
+	/** État partagé : tableaux et échelles (référence commune à tous les projets) */
+	function getReferenceState() {
 		return {
-			cartoRows,
-			redactionRows,
-			diffusionRows,
-			versionRows,
-			registreRows,
-			showRegistreLoi0520,
-			activeSection,
-			cartoView,
-			cartoVersion,
 			periodiciteRows,
 			complexiteRows,
 			typeActionRows,
@@ -2376,13 +2390,195 @@
 			impactDefinitionsRows,
 			frequenceRisqueRows,
 			matriceRisqueRows,
-			efficaciteRows,
-			ptrData
+			efficaciteRows
 		};
+	}
+
+	/** Données métier du projet actuel (à sauvegarder dans projects[id]) */
+	function getCurrentProjectData(): ProjectData {
+		return {
+			name: projects[activeProjectId]?.name ?? 'Projet par défaut',
+			redactionRows,
+			diffusionRows,
+			versionRows,
+			registreRows,
+			showRegistreLoi0520,
+			cartoRows,
+			ptrData,
+			activeSection,
+			cartoView,
+			cartoVersion
+		};
+	}
+
+	/** Full state for server/localStorage: format multi-projets (version 2) ou legacy (version 1) */
+	function getFullState() {
+		// Toujours sauvegarder le projet actuel dans la map avant de sérialiser
+		const projectsToSave = { ...projects };
+		projectsToSave[activeProjectId] = getCurrentProjectData();
+		return {
+			version: MULTIPROJECT_STATE_VERSION,
+			reference: getReferenceState(),
+			projects: projectsToSave,
+			activeProjectId
+		};
+	}
+
+	function applyReferenceState(state: Record<string, unknown>) {
+		if (!state || typeof state !== 'object') return;
+		if (state.impactDefinitionsRows && Array.isArray(state.impactDefinitionsRows) && (state.impactDefinitionsRows as ImpactDefinition[]).length > 0) {
+			impactDefinitionsRows = state.impactDefinitionsRows as ImpactDefinition[];
+		}
+		if (state.periodiciteRows && Array.isArray(state.periodiciteRows) && state.periodiciteRows.length > 0) {
+			const rows = state.periodiciteRows as Row[];
+			periodiciteRows = rows.map((r) => ({ ...r, bgColor: r.bgColor || getPeriodiciteBgDefault(r.periodicite) }));
+		}
+		if (state.complexiteRows && Array.isArray(state.complexiteRows) && state.complexiteRows.length > 0) {
+			const rows = state.complexiteRows as Row[];
+			complexiteRows = rows.map((r) => ({ ...r, bgColor: r.bgColor || getComplexiteBgDefault(r.complexite) }));
+		}
+		if (state.typeActionRows && Array.isArray(state.typeActionRows) && state.typeActionRows.length > 0) {
+			const rows = state.typeActionRows as Row[];
+			typeActionRows = rows.map((r) => ({ ...r, bgColor: r.bgColor || getTypeActionBgDefault(r.type_action) }));
+		}
+		if (state.prioriteRows && Array.isArray(state.prioriteRows) && state.prioriteRows.length > 0) {
+			const rows = state.prioriteRows as Row[];
+			prioriteRows = rows.map((r) => ({ ...r, bgColor: r.bgColor || getPrioriteDefinitionBgDefault(r.echelle) }));
+		}
+		if (state.dicCriteriaRows && Array.isArray(state.dicCriteriaRows) && state.dicCriteriaRows.length > 0) {
+			dicCriteriaRows = state.dicCriteriaRows as DICCriteriaRow[];
+		}
+		if (state.dicNiveauxRows && Array.isArray(state.dicNiveauxRows) && state.dicNiveauxRows.length > 0) {
+			const rows = state.dicNiveauxRows as DICNiveauRow[];
+			dicNiveauxRows = rows.map((r) => ({ ...r, bgColor: r.bgColor || getValeurBgDefault(r.valeur) }));
+		}
+		if (state.categoriesActifsRows && Array.isArray(state.categoriesActifsRows)) {
+			const raw = state.categoriesActifsRows as (string | CategorieActifRow)[];
+			categoriesActifsRows = raw.map((c) => {
+				if (typeof c === 'object' && c !== null && 'libelle' in c) {
+					const row = c as CategorieActifRow;
+					const lib = row.libelle ?? '';
+					const t = (row.type_actif || '').trim();
+					const typeOk = t === 'Actif primaire' || t === 'Actif support' ? t : defaultCategorieActifRow(lib).type_actif;
+					return { libelle: lib, type_actif: typeOk };
+				}
+				return defaultCategorieActifRow(typeof c === 'string' ? c : '');
+			});
+		}
+		if (state.probaRows && Array.isArray(state.probaRows) && state.probaRows.length > 0) {
+			const rows = state.probaRows as ProbaRow[];
+			probaRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getProbaDefBg(r.definition) }));
+		}
+		if (state.impactRows && Array.isArray(state.impactRows) && state.impactRows.length > 0) {
+			const rows = state.impactRows as ImpactRow[];
+			impactRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getImpactDefBg(r.definition) }));
+			syncImpactRowsCriteres();
+		}
+		if (state.frequenceRisqueRows && Array.isArray(state.frequenceRisqueRows) && state.frequenceRisqueRows.length > 0) {
+			const rows = state.frequenceRisqueRows as (Row & { bgColor?: string })[];
+			frequenceRisqueRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getFrequenceDefBg(r.definition ?? '') }));
+		}
+		if (state.matriceRisqueRows && Array.isArray(state.matriceRisqueRows) && state.matriceRisqueRows.length > 0) {
+			const rows = state.matriceRisqueRows as MatriceRow[];
+			if (rows.every((r) => r && typeof r.libelle === 'string' && Array.isArray(r.valeurs))) {
+				matriceRisqueRows = rows.map((r) => ({ libelle: r.libelle, valeurs: [...r.valeurs] }));
+			}
+		}
+		if (state.efficaciteRows && Array.isArray(state.efficaciteRows) && state.efficaciteRows.length > 0) {
+			const rows = state.efficaciteRows as EfficaciteRow[];
+			efficaciteRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getEfficaciteDefBg(r.signification) }));
+		}
+	}
+
+	function applyProjectData(data: ProjectData) {
+		const sectionIds: SectionId[] = ['controle-document', 'registre-classification', 'aide-classification', 'cartographie-risques', 'aide-risque', 'ptr', 'echelle-ptr'];
+		const cartoViews = ['all', 'identification', 'brut', 'net', 'ptr'] as const;
+		if (data.cartoRows && Array.isArray(data.cartoRows)) {
+			const arr = (data.cartoRows as CartoRow[]).map((r, i) => {
+				const merged = { ...defaultCartoRow(), ...r } as CartoRow;
+				const def = cartoRowDefaults[i];
+				if (def) {
+					for (const k of Object.keys(def) as (keyof CartoRow)[]) {
+						const val = def[k];
+						if (val === undefined) continue;
+						const current = merged[k];
+						if (current === undefined || current === '') merged[k] = val as CartoRow[keyof CartoRow];
+					}
+				}
+				merged.impacts = getRowImpacts(merged);
+				return merged;
+			});
+			cartoRows = arr.length > 0 ? arr : [defaultCartoRow()];
+		}
+		if (data.redactionRows && Array.isArray(data.redactionRows) && data.redactionRows.length > 0) {
+			redactionRows = data.redactionRows as RedactionRow[];
+		}
+		if (data.diffusionRows && Array.isArray(data.diffusionRows) && data.diffusionRows.length > 0) {
+			diffusionRows = data.diffusionRows as DiffusionRow[];
+		}
+		if (data.versionRows && Array.isArray(data.versionRows) && data.versionRows.length > 0) {
+			versionRows = data.versionRows as VersionRow[];
+		}
+		if (data.registreRows && Array.isArray(data.registreRows) && data.registreRows.length > 0) {
+			const raw = data.registreRows as Record<string, unknown>[];
+			registreRows = raw.map((r) => ({ ...defaultRegistreRow(), ...r })) as RegistreRow[];
+		}
+		if (typeof data.showRegistreLoi0520 === 'boolean') {
+			showRegistreLoi0520 = data.showRegistreLoi0520;
+		}
+		if (data.activeSection && sectionIds.includes(data.activeSection as SectionId)) {
+			activeSection = data.activeSection as SectionId;
+		}
+		if (data.cartoView && cartoViews.includes(data.cartoView as typeof cartoView)) {
+			cartoView = data.cartoView as typeof cartoView;
+		}
+		if (data.cartoVersion === 'A' || data.cartoVersion === 'B') {
+			cartoVersion = data.cartoVersion;
+		}
+		if (data.ptrData && Array.isArray(data.ptrData) && data.ptrData.length > 0) {
+			const rows = data.ptrData as Array<Record<string, unknown>>;
+			ptrData = rows.map((r, i) => ({
+				id: typeof r.id === 'number' ? r.id : i + 1,
+				refRisque: String(r.refRisque ?? ''),
+				correspISO: String(r.correspISO ?? ''),
+				proprietaire: String(r.proprietaire ?? ''),
+				niveauRisque: String(r.niveauRisque ?? ''),
+				decision: String(r.decision ?? ''),
+				idPTR: String(r.idPTR ?? ''),
+				action: String(r.action ?? ''),
+				typeAction: String(r.typeAction ?? ''),
+				porteur: String(r.porteur ?? ''),
+				priorite: String(r.priorite ?? ''),
+				periodicite: String(r.periodicite ?? ''),
+				complexite: String(r.complexite ?? ''),
+				echeance: String(r.echeance ?? ''),
+				etatAvancement: String(r.etatAvancement ?? '')
+			}));
+		} else {
+			syncPtrFromCartographie();
+		}
 	}
 
 	function applyFullState(state: Record<string, unknown>) {
 		if (!state || typeof state !== 'object') return;
+		// Format multi-projets (version 2)
+		if (state.version === MULTIPROJECT_STATE_VERSION && state.reference && state.projects && typeof state.projects === 'object' && state.activeProjectId) {
+			applyReferenceState(state.reference as Record<string, unknown>);
+			projects = state.projects as Record<string, ProjectData>;
+			activeProjectId = String(state.activeProjectId);
+			const proj = projects[activeProjectId];
+			if (proj) {
+				applyProjectData(proj);
+			} else {
+				// Projet actif manquant : créer un projet par défaut avec les données vides
+				const empty = getDefaultProjectData();
+				projects[activeProjectId] = { ...empty, name: 'Projet par défaut' };
+				applyProjectData(projects[activeProjectId]);
+			}
+			syncPtrFromCartographie();
+			return;
+		}
+		// Legacy: état mono-projet (tout dans un seul objet)
 		const sectionIds: SectionId[] = ['controle-document', 'registre-classification', 'aide-classification', 'cartographie-risques', 'aide-risque', 'ptr', 'echelle-ptr'];
 		const cartoViews = ['all', 'identification', 'brut', 'net', 'ptr'] as const;
 		// Définitions des impacts (avant cartoRows pour sync)
@@ -2517,6 +2713,9 @@
 		}
 		// Reconstruire le PTR à partir de la cartographie (une ligne PTR par ligne dans "Action à mettre en place")
 		syncPtrFromCartographie();
+		// Migration vers format multi-projets : au prochain save, l'état sera en version 2
+		activeProjectId = DEFAULT_PROJECT_ID;
+		projects = { [DEFAULT_PROJECT_ID]: getCurrentProjectData() };
 	}
 
 	function getProbaDefBg(definition: string): string {
@@ -3115,6 +3314,96 @@
 		commentaire: ''
 	});
 
+	/** Données par défaut pour un nouveau projet (même structure, contenu vide) */
+	function getDefaultProjectData(): ProjectData {
+		return {
+			name: 'Nouveau projet',
+			redactionRows: [
+				{ role: 'Écrit par :', nom: 'Consultants SSI', fonction: 'NEARSECURE', date: '' },
+				{ role: 'Relu par :', nom: '', fonction: '', date: '' },
+				{ role: 'Approuvé par :', nom: '', fonction: '', date: '' }
+			],
+			diffusionRows: [
+				{ nom: '', entite_fonction: '', date: '' },
+				{ nom: '', entite_fonction: '', date: '' },
+				{ nom: '', entite_fonction: '', date: '' },
+				{ nom: '', entite_fonction: '', date: '' }
+			],
+			versionRows: [
+				{ version: '', date: '', modification: '' },
+				{ version: '', date: '', modification: '' },
+				{ version: '', date: '', modification: '' },
+				{ version: '', date: '', modification: '' }
+			],
+			registreRows: [defaultRegistreRow()],
+			showRegistreLoi0520: false,
+			cartoRows: Array.from({ length: 45 }, (_, i) => {
+				const merged = (cartoRowDefaults[i] ? { ...defaultCartoRow(), ...cartoRowDefaults[i] } : defaultCartoRow()) as CartoRow;
+				merged.impacts = getRowImpacts(merged);
+				return merged;
+			}),
+			ptrData: [],
+			activeSection: 'controle-document',
+			cartoView: 'identification',
+			cartoVersion: 'A'
+		};
+	}
+
+	function switchToProject(projectId: string) {
+		if (projectId === activeProjectId) return;
+		// Sauvegarder le projet actuel dans la map
+		projects = { ...projects, [activeProjectId]: getCurrentProjectData() };
+		activeProjectId = projectId;
+		const proj = projects[projectId];
+		if (proj) {
+			applyProjectData(proj);
+		} else {
+			const empty = getDefaultProjectData();
+			empty.name = projects[activeProjectId]?.name ?? 'Nouveau projet';
+			projects[projectId] = empty;
+			applyProjectData(empty);
+		}
+		syncPtrFromCartographie();
+		saveCustomMethodState();
+	}
+
+	function addNewProject() {
+		const id = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `projet-${Date.now()}`;
+		const count = Object.keys(projects).length + 1;
+		const newProj = getDefaultProjectData();
+		newProj.name = `Projet ${count}`;
+		projects[id] = newProj;
+		projects = projects;
+		switchToProject(id);
+	}
+
+	function renameProject(projectId: string, newName: string) {
+		const p = projects[projectId];
+		if (p && newName.trim()) {
+			projects = { ...projects, [projectId]: { ...p, name: newName.trim() } };
+			saveCustomMethodState();
+		}
+	}
+
+	function deleteProject(projectId: string) {
+		const ids = Object.keys(projects);
+		if (ids.length <= 1) return;
+		const nextId = ids.find((k) => k !== projectId) ?? DEFAULT_PROJECT_ID;
+		// Si on supprime le projet actif, basculer d'abord sur l'autre sans ré-enregistrer le projet supprimé
+		if (activeProjectId === projectId) {
+			activeProjectId = nextId;
+			const proj = projects[nextId];
+			if (proj) {
+				applyProjectData(proj);
+			}
+			syncPtrFromCartographie();
+		}
+		const next = { ...projects };
+		delete next[projectId];
+		projects = next;
+		saveCustomMethodState();
+	}
+
 	function ajouterLigneRegistre() {
 		registreRows = [...registreRows, defaultRegistreRow()];
 	}
@@ -3599,6 +3888,53 @@
 		<div class="flex flex-wrap items-center justify-between gap-4">
 			<h1 class="text-2xl font-bold text-gray-900">La méthode NearSecure</h1>
 			<div class="flex flex-wrap items-center gap-2">
+				<!-- Sélecteur de projet : mêmes tableaux/échelles, données par projet -->
+				<div class="flex flex-wrap items-center gap-2 mr-2 border-r border-gray-200 pr-4">
+					<label for="project-select" class="text-sm font-medium text-gray-700">Projet :</label>
+					<select
+						id="project-select"
+						value={activeProjectId}
+						on:change={(e) => switchToProject((e.currentTarget as HTMLSelectElement).value)}
+						class="min-w-[180px] text-sm rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-800 focus:border-sky-500 focus:ring-sky-500"
+					>
+						{#each Object.entries(projects).length ? Object.entries(projects) : [[activeProjectId, { name: 'Projet par défaut' }]] as [id, proj]}
+							<option value={id}>{proj.name}</option>
+						{/each}
+					</select>
+					<button
+						type="button"
+						class="px-3 py-2 text-sm font-medium rounded-lg border border-sky-600 text-sky-600 bg-white hover:bg-sky-50 transition-colors"
+						on:click={addNewProject}
+						title="Créer un nouveau projet (mêmes tableaux et échelles)"
+					>
+						Nouveau projet
+					</button>
+					<button
+						type="button"
+						class="px-2 py-2 text-sm rounded-lg border border-gray-300 bg-white text-gray-600 hover:bg-gray-50"
+						title="Renommer le projet"
+						on:click={() => {
+							const proj = projects[activeProjectId];
+							if (!proj) return;
+							const n = prompt('Nom du projet :', proj.name);
+							if (n != null && n.trim()) renameProject(activeProjectId, n.trim());
+						}}
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+					</button>
+					<button
+						type="button"
+						class="px-2 py-2 text-sm rounded-lg border border-gray-300 bg-white text-red-600 hover:bg-red-50 disabled:opacity-40 disabled:cursor-not-allowed"
+						title="Supprimer le projet (au moins un doit rester)"
+						disabled={Object.keys(projects).length <= 1}
+						on:click={() => {
+							if (Object.keys(projects).length <= 1) return;
+							if (confirm('Supprimer ce projet ? Les données du projet seront perdues.')) deleteProject(activeProjectId);
+						}}
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+					</button>
+				</div>
 				<button
 					type="button"
 					class="px-3 py-2 text-sm font-medium rounded-lg bg-sky-600 text-white hover:bg-sky-700 transition-colors flex items-center gap-2"
@@ -3654,7 +3990,9 @@
 		</div>
 		<p class="text-gray-600 max-w-3xl">
 			Cette page regroupe les éléments de La méthode NearSecure (contrôle du document, registre de classification,
-			aides, cartographie des risques, PTR et échelle PTR). Les sections ci-dessous ne modifient
+			aides, cartographie des risques, PTR et échelle PTR). Vous pouvez créer plusieurs projets : ils partagent
+			les mêmes tableaux de référence et échelles (Aide-Classification, Aide-Risque, PTR, etc.) ; seules les données
+			métier (contrôle du document, registre, cartographie) diffèrent par projet. Les sections ci-dessous ne modifient
 			pas le moteur de scoring standard de CISO Assistant, mais servent de guide pour la méthode NearSecure.
 		</p>
 	</section>
