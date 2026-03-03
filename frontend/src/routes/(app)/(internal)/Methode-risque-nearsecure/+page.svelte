@@ -5339,7 +5339,7 @@
 			</div>
 
 			<!-- === Paramétrage : Aide-Classification (édition) === -->
-			<section class="space-y-6 border border-sky-200 rounded-xl p-6 bg-sky-50/30">
+			<section class="space-y-6 rounded-xl p-6 bg-sky-50/30">
 				<h3 class="text-lg font-semibold text-gray-900">Aide-Classification</h3>
 				<!-- Tableau 1 DIC – même design que l'affichage Aide-Classification -->
 				<section class="aide-classification-dic-definitions space-y-3">
@@ -5475,7 +5475,7 @@
 			</section>
 
 			<!-- === Aide-Risque (édition) === -->
-			<section class="aide-risque-tables space-y-6 border border-amber-200 rounded-xl p-6 bg-amber-50/30 mt-8">
+			<section class="aide-risque-tables space-y-6 rounded-xl p-6 bg-amber-50/30 mt-8">
 				<h3 class="text-lg font-semibold text-gray-900">Aide-Risque</h3>
 			<!-- Tableau 1 – Échelle de probabilité / fréquence -->
 			<section class="space-y-3">
@@ -5888,7 +5888,7 @@
 			</section>
 		</section>
 			<!-- === Échelle PTR (édition) === -->
-			<section class="echelle-ptr-tables space-y-6 border border-emerald-200 rounded-xl p-6 bg-emerald-50/30 mt-8">
+			<section class="echelle-ptr-tables space-y-6  rounded-xl p-6 bg-emerald-50/30 mt-8">
 				<h3 class="text-lg font-semibold text-gray-900">Échelle PTR</h3>
 			<section class="space-y-4">
 				<h3 class="text-lg font-semibold text-gray-900">Table 1&nbsp;: Périodicité / Durée</h3>
@@ -6760,7 +6760,7 @@
 		</section>
 	{:else if activeSection === 'aide-risque'}
 		<!-- Aide-Risque : même design que dans Paramétrage (cadre ambre, pas de fond gris en lecture seule) -->
-		<section class="aide-risque-tables space-y-6 border border-amber-200 rounded-xl p-6 bg-amber-50/30 mt-8 pb-24 overflow-visible {readOnlyAideRisque ? 'readonly-scales-section' : ''}">
+		<section class="aide-risque-tables space-y-6  rounded-xl p-6 bg-amber-50/30 mt-8 pb-24 overflow-visible {readOnlyAideRisque ? 'readonly-scales-section' : ''}">
 			<div class="flex items-center justify-between gap-4 flex-wrap">
 				<h3 class="text-lg font-semibold text-gray-900">Aide-Risque</h3>
 				{#if readOnlyAideRisque}
@@ -7521,7 +7521,7 @@
 		</section>
 	{:else if activeSection === 'echelle-ptr'}
 		<!-- Échelle PTR : même design que dans Paramétrage (cadre vert, pas de fond gris en lecture seule) -->
-		<section class="echelle-ptr-tables space-y-6 border border-emerald-200 rounded-xl p-6 bg-emerald-50/30 mt-8 {readOnlyEchellePtr ? 'readonly-scales-section' : ''}">
+		<section class="echelle-ptr-tables space-y-6 rounded-xl p-6 bg-emerald-50/30 mt-8 {readOnlyEchellePtr ? 'readonly-scales-section' : ''}">
 			<div class="flex items-center justify-between gap-4 flex-wrap">
 				<h3 class="text-lg font-semibold text-gray-900">Échelle PTR</h3>
 				{#if readOnlyEchellePtr}
