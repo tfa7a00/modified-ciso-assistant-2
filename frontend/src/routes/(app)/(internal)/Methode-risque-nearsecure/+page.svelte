@@ -4215,6 +4215,23 @@
         --tw-ring-shadow: 0 0 #0000 !important;
         --tw-ring-width: 0 !important;
     }
+    /* Tableau 1 D/I/C (définitions générales) en Paramétrage : même rendu qu'en affichage Aide-Classification (pas de contour gris) */
+    .methode-risque-nearsecure-page .aide-classification-dic-definitions input,
+    .methode-risque-nearsecure-page .aide-classification-dic-definitions textarea {
+        border: 1px solid transparent !important;
+        outline: none !important;
+        box-shadow: none !important;
+        --tw-ring-shadow: 0 0 #0000 !important;
+        --tw-ring-width: 0 !important;
+    }
+    .methode-risque-nearsecure-page .aide-classification-dic-definitions input:hover,
+    .methode-risque-nearsecure-page .aide-classification-dic-definitions input:focus,
+    .methode-risque-nearsecure-page .aide-classification-dic-definitions textarea:hover,
+    .methode-risque-nearsecure-page .aide-classification-dic-definitions textarea:focus {
+        border: 1px solid transparent !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
 </style>
 
 <svelte:head>
@@ -5324,16 +5341,16 @@
 			<!-- === Paramétrage : Aide-Classification (édition) === -->
 			<section class="space-y-6 border border-sky-200 rounded-xl p-6 bg-sky-50/30">
 				<h3 class="text-lg font-semibold text-gray-900">Aide-Classification</h3>
-				<!-- Tableau 1 DIC -->
-				<section class="space-y-3">
-					<h4 class="text-base font-semibold text-gray-900">Tableau 1 – Définitions générales D/I/C</h4>
+				<!-- Tableau 1 DIC – même design que l'affichage Aide-Classification -->
+				<section class="aide-classification-dic-definitions space-y-3">
+					<h3 class="text-lg font-semibold text-gray-900">Tableau 1 – Disponibilité, Intégrité, Confidentialité (définitions générales)</h3>
 					<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
 						<table class="min-w-full text-sm border-collapse border border-black">
 							<thead>
 								<tr>
 									{#each dicCriteriaRows as criteria, i}
 										<th class="px-4 py-2 text-left font-semibold text-black border border-black bg-sky-200">
-											<input class="w-full border border-gray-300 rounded px-2 py-1 font-semibold" type="text" bind:value={dicCriteriaRows[i].critere} on:blur={() => saveCustomMethodState()} />
+											<input class="w-full border border-transparent bg-transparent rounded px-2 py-1 font-semibold" type="text" bind:value={dicCriteriaRows[i].critere} on:blur={() => saveCustomMethodState()} />
 										</th>
 									{/each}
 								</tr>
@@ -5343,9 +5360,9 @@
 									{#each dicCriteriaRows as criteria, i}
 										<td class="px-4 py-2 text-black border border-black bg-white align-top min-h-[80px]">
 											{#if isEditing('dicCriteriaParam', 0, String(i))}
-												<textarea use:focusTextareaOnMount class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[80px]" bind:value={dicCriteriaRows[i].definition} on:blur={stopEditing} on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}></textarea>
+												<textarea use:focusTextareaOnMount class="w-full border border-transparent bg-transparent rounded px-2 py-1 text-sm min-h-[80px]" bind:value={dicCriteriaRows[i].definition} on:blur={stopEditing} on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}></textarea>
 											{:else}
-												<div role="button" tabindex="0" class="w-full px-2 py-1 text-sm prose prose-sm max-w-none prose-p:my-1 text-left border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[80px]" on:click={() => startEditing('dicCriteriaParam', 0, String(i))} on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('dicCriteriaParam', 0, String(i))) : null}>
+												<div role="button" tabindex="0" class="w-full px-2 py-1 text-sm prose prose-sm max-w-none prose-p:my-1 text-left min-h-[80px] cursor-text focus:outline-none" on:click={() => startEditing('dicCriteriaParam', 0, String(i))} on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('dicCriteriaParam', 0, String(i))) : null}>
 													{@html criteria.definition ?? ''}
 												</div>
 											{/if}
