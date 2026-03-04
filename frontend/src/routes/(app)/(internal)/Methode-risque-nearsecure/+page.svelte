@@ -58,7 +58,11 @@
 
 	function tailwindToExcelArgb(bgColor: string | undefined): string | null {
 		if (!bgColor) return null;
-		const key = bgColor.replace(/ text-black| text-white/gi, '').trim();
+		// Extraire uniquement la classe bg-* (Aide-Risque utilise "bg-xxx border border-xxx text-black")
+		const key = bgColor
+			.replace(/ text-black| text-white/gi, '')
+			.replace(/\s+border\s+border-\S+/g, '')
+			.trim();
 		return TAILWIND_TO_ARGB[key] ?? (key.startsWith('bg-[#') ? 'FF' + key.replace(/^bg-\[#|\]$/g, '') : null);
 	}
 
