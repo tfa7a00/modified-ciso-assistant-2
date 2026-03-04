@@ -3807,6 +3807,16 @@
 		}
 	];
 
+	/** Couleur de fond (tableau PTR) selon l'état d'avancement : Non démarrée=gris, En cours=bleu, Terminée=vert, En retard=rouge */
+	function getPtrEtatAvancementBg(etat: string): string {
+		const e = (etat || '').trim();
+		if (e === 'Non démarrée') return 'bg-gray-400 text-white';
+		if (e === 'En cours') return 'bg-blue-500 text-white';
+		if (e === 'Terminée') return 'bg-green-500 text-white';
+		if (e === 'En retard') return 'bg-red-500 text-white';
+		return 'bg-gray-100 text-gray-700';
+	}
+
 	/** Répartition des actions PTR par état d'avancement (pour le graphique circulaire) */
 	const ETATS_AVANCEMENT_PTR = ['Non démarrée', 'En cours', 'Terminée', 'En retard'] as const;
 	$: ptrAvancementStats = (() => {
@@ -7364,11 +7374,11 @@
 										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
 									/>
 								</td>
-								<td class="px-2 py-2 border border-gray-300">
+								<td class="px-2 py-2 border border-gray-300 {getPtrEtatAvancementBg(row.etatAvancement)}">
 									<select
 										value={row.etatAvancement}
 										on:change={(e) => updateCell(index, 'etatAvancement', e)}
-										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded"
+										class="w-full px-2 py-1 text-sm border-0 bg-transparent focus:ring-2 focus:ring-blue-500 rounded [color:inherit]"
 									>
 										<option value="">-</option>
 										<option value="Non démarrée">Non démarrée</option>
