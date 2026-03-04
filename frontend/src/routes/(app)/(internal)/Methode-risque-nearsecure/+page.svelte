@@ -7296,13 +7296,9 @@
 										class="w-full px-2 py-1 text-sm border-0 focus:ring-2 focus:ring-blue-500 rounded bg-transparent"
 									>
 										<option value="">-</option>
-										<option value="Très faible">Très faible</option>
-										<option value="Faible">Faible</option>
-										<option value="Modéré">Modéré</option>
-										<option value="Moyen">Moyen</option>
-										<option value="Élevé">Élevé</option>
-										<option value="Extrême">Extrême</option>
-										<option value="Très élevé">Très élevé</option>
+										{#each frequenceRisqueRows as fr}
+											<option value={fr.definition}>{fr.definition || '(vide)'}</option>
+										{/each}
 									</select>
 								</td>
 								<td class="px-2 py-2 border border-gray-300">
