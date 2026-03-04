@@ -2547,16 +2547,16 @@
 		}
 		if (state.probaRows && Array.isArray(state.probaRows) && state.probaRows.length > 0) {
 			const rows = state.probaRows as ProbaRow[];
-			probaRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getProbaDefBg(r.definition ?? '') }));
+			probaRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getProbaDefBg(r.definition) }));
 		}
 		if (state.impactRows && Array.isArray(state.impactRows) && state.impactRows.length > 0) {
 			const rows = state.impactRows as ImpactRow[];
-			impactRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getImpactDefBg(r.definition ?? '') }));
+			impactRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getImpactDefBg(r.definition) }));
 			syncImpactRowsCriteres();
 		}
 		if (state.frequenceRisqueRows && Array.isArray(state.frequenceRisqueRows) && state.frequenceRisqueRows.length > 0) {
 			const rows = state.frequenceRisqueRows as (Row & { bgColor?: string })[];
-			frequenceRisqueRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getFrequenceDefBg(r.definition ?? '') }));
+			frequenceRisqueRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getFrequenceDefBg(r.definition ?? '') }));
 		}
 		if (state.matriceRisqueRows && Array.isArray(state.matriceRisqueRows) && state.matriceRisqueRows.length > 0) {
 			const rows = state.matriceRisqueRows as MatriceRow[];
@@ -2566,7 +2566,7 @@
 		}
 		if (state.efficaciteRows && Array.isArray(state.efficaciteRows) && state.efficaciteRows.length > 0) {
 			const rows = state.efficaciteRows as EfficaciteRow[];
-			efficaciteRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getEfficaciteDefBg(r.signification ?? '') }));
+			efficaciteRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getEfficaciteDefBg(r.signification) }));
 		}
 	}
 
@@ -2673,11 +2673,11 @@
 		}
 		if (data.probaRows && Array.isArray(data.probaRows) && data.probaRows.length > 0) {
 			const rows = data.probaRows as ProbaRow[];
-			probaRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getProbaDefBg(r.definition ?? '') }));
+			probaRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getProbaDefBg(r.definition) }));
 		}
 		if (data.impactRows && Array.isArray(data.impactRows) && data.impactRows.length > 0) {
 			const rows = data.impactRows as ImpactRow[];
-			impactRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getImpactDefBg(r.definition ?? '') }));
+			impactRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getImpactDefBg(r.definition) }));
 			syncImpactRowsCriteres();
 		}
 		if (data.impactDefinitionsRows && Array.isArray(data.impactDefinitionsRows) && data.impactDefinitionsRows.length > 0) {
@@ -2686,7 +2686,7 @@
 		}
 		if (data.frequenceRisqueRows && Array.isArray(data.frequenceRisqueRows) && data.frequenceRisqueRows.length > 0) {
 			const rows = data.frequenceRisqueRows as (Row & { bgColor?: string })[];
-			frequenceRisqueRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getFrequenceDefBg(r.definition ?? '') }));
+			frequenceRisqueRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getFrequenceDefBg(r.definition ?? '') }));
 		}
 		if (data.matriceRisqueRows && Array.isArray(data.matriceRisqueRows) && data.matriceRisqueRows.length > 0) {
 			const rows = data.matriceRisqueRows as MatriceRow[];
@@ -2696,7 +2696,7 @@
 		}
 		if (data.efficaciteRows && Array.isArray(data.efficaciteRows) && data.efficaciteRows.length > 0) {
 			const rows = data.efficaciteRows as EfficaciteRow[];
-			efficaciteRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getEfficaciteDefBg(r.signification ?? '') }));
+			efficaciteRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getEfficaciteDefBg(r.signification) }));
 		}
 	}
 
@@ -2883,16 +2883,16 @@
 		}
 		if (state.probaRows && Array.isArray(state.probaRows) && state.probaRows.length > 0) {
 			const rows = state.probaRows as ProbaRow[];
-			probaRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getProbaDefBg(r.definition ?? '') }));
+			probaRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getProbaDefBg(r.definition) }));
 		}
 		if (state.impactRows && Array.isArray(state.impactRows) && state.impactRows.length > 0) {
 			const rows = state.impactRows as ImpactRow[];
-			impactRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getImpactDefBg(r.definition ?? '') }));
+			impactRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getImpactDefBg(r.definition) }));
 			syncImpactRowsCriteres();
 		}
 		if (state.frequenceRisqueRows && Array.isArray(state.frequenceRisqueRows) && state.frequenceRisqueRows.length > 0) {
 			const rows = state.frequenceRisqueRows as (Row & { bgColor?: string })[];
-			frequenceRisqueRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getFrequenceDefBg(r.definition ?? '') }));
+			frequenceRisqueRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getFrequenceDefBg(r.definition ?? '') }));
 		}
 		if (state.matriceRisqueRows && Array.isArray(state.matriceRisqueRows) && state.matriceRisqueRows.length > 0) {
 			const rows = state.matriceRisqueRows as MatriceRow[];
@@ -2902,7 +2902,7 @@
 		}
 		if (state.efficaciteRows && Array.isArray(state.efficaciteRows) && state.efficaciteRows.length > 0) {
 			const rows = state.efficaciteRows as EfficaciteRow[];
-			efficaciteRows = rows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getEfficaciteDefBg(r.signification ?? '') }));
+			efficaciteRows = rows.map((r) => ({ ...r, bgColor: r.bgColor ?? getEfficaciteDefBg(r.signification) }));
 		}
 		// Tableau PTR (Plan de Traitement des Risques)
 		if (state.ptrData && Array.isArray(state.ptrData) && state.ptrData.length > 0) {
@@ -2933,8 +2933,7 @@
 	}
 
 	function getProbaDefBg(definition: string): string {
-		const d = (definition ?? '').trim();
-		switch (d) {
+		switch (definition) {
 			case 'Très faible':
 				return 'bg-green-400 text-black';
 			case 'Faible':
@@ -2950,13 +2949,11 @@
 		}
 	}
 	function getProbaRowBg(row: ProbaRow): string {
-		const c = (row.bgColor ?? '').trim();
-		return c ? c : getProbaDefBg(row.definition ?? '');
+		return row.bgColor ?? getProbaDefBg(row.definition);
 	}
 
 	function getImpactDefBg(definition: string): string {
-		const d = (definition ?? '').trim();
-		switch (d) {
+		switch (definition) {
 			case 'Très faible':
 				return 'bg-green-400 text-black';
 			case 'Faible':
@@ -2974,8 +2971,7 @@
 		}
 	}
 	function getImpactRowBg(row: ImpactRow): string {
-		const c = (row.bgColor ?? '').trim();
-		return c ? c : getImpactDefBg(row.definition ?? '');
+		return row.bgColor ?? getImpactDefBg(row.definition);
 	}
 
 	/** Retourne le tableau des valeurs par critère pour une ligne du Tableau 2 (longueur = impactDefinitionsRows.length). Utilise criteres si présent, sinon dérive des champs fixes (financier, reputation, etc.) selon le libellé. */
@@ -3012,14 +3008,12 @@
 	}
 
 	function getFrequenceDefBg(definition: string): string {
-		const d = (definition ?? '').trim();
-		switch (d) {
+		switch (definition) {
 			case 'Risque Faible':
 				return 'bg-green-400 text-black';
 			case 'Risque Modéré':
 				return 'bg-yellow-300 text-black';
 			case 'Risque Elevé':
-			case 'Risque Élevé':
 				return 'bg-orange-400 text-black';
 			case 'Risque Extrême':
 				return 'bg-red-500 text-black';
@@ -3028,13 +3022,11 @@
 		}
 	}
 	function getFrequenceRowBg(row: Row): string {
-		const c = ((row as Row & { bgColor?: string }).bgColor ?? '').trim();
-		return c ? c : getFrequenceDefBg(row.definition ?? '');
+		return (row as Row & { bgColor?: string }).bgColor ?? getFrequenceDefBg(row.definition ?? '');
 	}
 
 	function getEfficaciteDefBg(signification: string): string {
-		const s = (signification ?? '').trim();
-		switch (s) {
+		switch (signification) {
 			case 'Insuffisant':
 				return 'bg-[#ff0000] text-black';
 			case 'Faible':
@@ -3050,8 +3042,7 @@
 		}
 	}
 	function getEfficaciteRowBg(row: EfficaciteRow): string {
-		const c = (row.bgColor ?? '').trim();
-		return c ? c : getEfficaciteDefBg(row.signification ?? '');
+		return row.bgColor ?? getEfficaciteDefBg(row.signification);
 	}
 
 	/** Parse "signification" (ex: "[1 – 20[" or "[64 – 120]") into min, max and whether max is inclusive. */
@@ -4110,7 +4101,7 @@
         box-sizing: border-box;
     }
 
-    /* Modifiable text cells: no visible outline by default, show on hover/focus (sauf Échelle PTR) */
+    /* Modifiable text cells: no visible outline by default, show on hover/focus */
     .methode-risque-nearsecure-page table input:not([type="checkbox"]),
     .methode-risque-nearsecure-page table textarea {
         border: 1px solid transparent !important;
@@ -4128,16 +4119,6 @@
     .methode-risque-nearsecure-page table textarea:focus {
         box-shadow: 0 0 0 1px #d1d5db;
     }
-    /* Ne pas appliquer le contour gris aux tableaux Échelle PTR */
-    .methode-risque-nearsecure-page .echelle-ptr-tables table input:hover,
-    .methode-risque-nearsecure-page .echelle-ptr-tables table input:focus,
-    .methode-risque-nearsecure-page .echelle-ptr-tables table textarea:hover,
-    .methode-risque-nearsecure-page .echelle-ptr-tables table textarea:focus,
-    .methode-risque-nearsecure-page .echelle-ptr-tables table select:hover,
-    .methode-risque-nearsecure-page .echelle-ptr-tables table select:focus {
-        border-color: transparent !important;
-        box-shadow: none !important;
-    }
     /* Sections Aide-Risque / Échelle PTR en affichage seul : champs non modifiables */
     .readonly-scales-section input,
     .readonly-scales-section textarea,
@@ -4145,92 +4126,6 @@
         pointer-events: none !important;
         background: #f3f4f6 !important;
         cursor: default;
-    }
-    /* Échelle PTR en lecture seule : même rendu que Paramétrage (pas de fond gris, couleurs des cellules visibles) */
-    .echelle-ptr-tables.readonly-scales-section input,
-    .echelle-ptr-tables.readonly-scales-section textarea,
-    .echelle-ptr-tables.readonly-scales-section select {
-        background: transparent !important;
-    }
-    /* Aide-Risque : même chose (pas de contour gris, même rendu en lecture seule) */
-    .methode-risque-nearsecure-page .aide-risque-tables table input:hover,
-    .methode-risque-nearsecure-page .aide-risque-tables table input:focus,
-    .methode-risque-nearsecure-page .aide-risque-tables table textarea:hover,
-    .methode-risque-nearsecure-page .aide-risque-tables table textarea:focus,
-    .methode-risque-nearsecure-page .aide-risque-tables table select:hover,
-    .methode-risque-nearsecure-page .aide-risque-tables table select:focus {
-        border-color: transparent !important;
-        box-shadow: none !important;
-    }
-    .methode-risque-nearsecure-page .aide-risque-tables table input,
-    .methode-risque-nearsecure-page .aide-risque-tables table textarea,
-    .methode-risque-nearsecure-page .aide-risque-tables table select {
-        border: 1px solid transparent !important;
-        outline: none !important;
-        outline-width: 0 !important;
-        box-shadow: none !important;
-        --tw-ring-shadow: 0 0 #0000 !important;
-        --tw-ring-width: 0 !important;
-    }
-    .methode-risque-nearsecure-page .aide-risque-tables table input:hover,
-    .methode-risque-nearsecure-page .aide-risque-tables table input:focus,
-    .methode-risque-nearsecure-page .aide-risque-tables table textarea:hover,
-    .methode-risque-nearsecure-page .aide-risque-tables table textarea:focus,
-    .methode-risque-nearsecure-page .aide-risque-tables table select:hover,
-    .methode-risque-nearsecure-page .aide-risque-tables table select:focus {
-        border: 1px solid transparent !important;
-        outline: none !important;
-        outline-width: 0 !important;
-        box-shadow: none !important;
-        --tw-ring-shadow: 0 0 #0000 !important;
-        --tw-ring-width: 0 !important;
-    }
-    .aide-risque-tables.readonly-scales-section input,
-    .aide-risque-tables.readonly-scales-section textarea,
-    .aide-risque-tables.readonly-scales-section select {
-        background: transparent !important;
-    }
-
-    /* Échelle PTR : pas de contour gris (spécificité élevée pour annuler les règles table input/textarea) */
-    .methode-risque-nearsecure-page .echelle-ptr-tables table input,
-    .methode-risque-nearsecure-page .echelle-ptr-tables table textarea,
-    .methode-risque-nearsecure-page .echelle-ptr-tables table select {
-        border: 1px solid transparent !important;
-        outline: none !important;
-        outline-width: 0 !important;
-        box-shadow: none !important;
-        --tw-ring-shadow: 0 0 #0000 !important;
-        --tw-ring-width: 0 !important;
-    }
-    .methode-risque-nearsecure-page .echelle-ptr-tables table input:hover,
-    .methode-risque-nearsecure-page .echelle-ptr-tables table input:focus,
-    .methode-risque-nearsecure-page .echelle-ptr-tables table textarea:hover,
-    .methode-risque-nearsecure-page .echelle-ptr-tables table textarea:focus,
-    .methode-risque-nearsecure-page .echelle-ptr-tables table select:hover,
-    .methode-risque-nearsecure-page .echelle-ptr-tables table select:focus {
-        border: 1px solid transparent !important;
-        outline: none !important;
-        outline-width: 0 !important;
-        box-shadow: none !important;
-        --tw-ring-shadow: 0 0 #0000 !important;
-        --tw-ring-width: 0 !important;
-    }
-    /* Tableau 1 D/I/C (définitions générales) en Paramétrage : même rendu qu'en affichage Aide-Classification (pas de contour gris) */
-    .methode-risque-nearsecure-page .aide-classification-dic-definitions input,
-    .methode-risque-nearsecure-page .aide-classification-dic-definitions textarea {
-        border: 1px solid transparent !important;
-        outline: none !important;
-        box-shadow: none !important;
-        --tw-ring-shadow: 0 0 #0000 !important;
-        --tw-ring-width: 0 !important;
-    }
-    .methode-risque-nearsecure-page .aide-classification-dic-definitions input:hover,
-    .methode-risque-nearsecure-page .aide-classification-dic-definitions input:focus,
-    .methode-risque-nearsecure-page .aide-classification-dic-definitions textarea:hover,
-    .methode-risque-nearsecure-page .aide-classification-dic-definitions textarea:focus {
-        border: 1px solid transparent !important;
-        outline: none !important;
-        box-shadow: none !important;
     }
 </style>
 
@@ -4304,7 +4199,7 @@
 				</button>
 				<button
 					type="button"
-					class="px-4 py-2 text-sm font-medium rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors flex items-center gap-2"
+					class="px-4 py-2 text-sm font-medium rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors flex items-center gap-2"
 					on:click={() => (showExportExcelModal = true)}
 				>
 					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -4407,7 +4302,7 @@
 					</button>
 					<button
 						type="button"
-						class="px-4 py-2 text-sm font-medium rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
+						class="px-4 py-2 text-sm font-medium rounded-lg bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
 						disabled={!EXPORT_EXCEL_SHEET_IDS.some((id) => exportExcelSheets[id])}
 						on:click={async () => {
 							await exportToExcel();
@@ -5221,7 +5116,7 @@
 					</div>
 				</section>
 				<section class="flex-shrink-0 w-full lg:max-w-[28%] min-w-0">
-					<div class="rounded-xl border border-green-200 bg-gradient-to-br from-green-50 to-emerald-50/50 shadow-sm overflow-hidden">
+					<div class="rounded-xl border border-green-200 bg-gradient-to-br from-green-50 to-green-50 shadow-sm overflow-hidden">
 						<div class="px-3 py-2 border-b border-green-200 bg-green-100/80">
 							<h3 class="text-sm font-semibold text-green-900">Propriétaires des actifs</h3>
 						</div>
@@ -5339,18 +5234,18 @@
 			</div>
 
 			<!-- === Paramétrage : Aide-Classification (édition) === -->
-			<section class="space-y-6 rounded-xl p-6 bg-sky-50/30">
+			<section class="space-y-6  rounded-xl p-6 ">
 				<h3 class="text-lg font-semibold text-gray-900">Aide-Classification</h3>
-				<!-- Tableau 1 DIC – même design que l'affichage Aide-Classification -->
-				<section class="aide-classification-dic-definitions space-y-3">
-					<h3 class="text-lg font-semibold text-gray-900">Tableau 1 – Disponibilité, Intégrité, Confidentialité (définitions générales)</h3>
+				<!-- Tableau 1 DIC -->
+				<section class="space-y-3">
+					<h4 class="text-base font-semibold text-gray-900">Tableau 1 – Définitions générales D/I/C</h4>
 					<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
 						<table class="min-w-full text-sm border-collapse border border-black">
 							<thead>
 								<tr>
 									{#each dicCriteriaRows as criteria, i}
 										<th class="px-4 py-2 text-left font-semibold text-black border border-black bg-sky-200">
-											<input class="w-full border border-transparent bg-transparent rounded px-2 py-1 font-semibold" type="text" bind:value={dicCriteriaRows[i].critere} on:blur={() => saveCustomMethodState()} />
+											<input class="w-full bg-transparent border-0 rounded px-2 py-1 font-semibold focus:outline-none focus:ring-0" type="text" bind:value={dicCriteriaRows[i].critere} on:blur={() => saveCustomMethodState()} />
 										</th>
 									{/each}
 								</tr>
@@ -5360,9 +5255,9 @@
 									{#each dicCriteriaRows as criteria, i}
 										<td class="px-4 py-2 text-black border border-black bg-white align-top min-h-[80px]">
 											{#if isEditing('dicCriteriaParam', 0, String(i))}
-												<textarea use:focusTextareaOnMount class="w-full border border-transparent bg-transparent rounded px-2 py-1 text-sm min-h-[80px]" bind:value={dicCriteriaRows[i].definition} on:blur={stopEditing} on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}></textarea>
+												<textarea use:focusTextareaOnMount class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[80px]" bind:value={dicCriteriaRows[i].definition} on:blur={stopEditing} on:keydown={(e) => e.key === 'Escape' && (editingCell = null)}></textarea>
 											{:else}
-												<div role="button" tabindex="0" class="w-full px-2 py-1 text-sm prose prose-sm max-w-none prose-p:my-1 text-left min-h-[80px] cursor-text focus:outline-none" on:click={() => startEditing('dicCriteriaParam', 0, String(i))} on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('dicCriteriaParam', 0, String(i))) : null}>
+												<div role="button" tabindex="0" class="w-full px-2 py-1 text-sm prose prose-sm max-w-none prose-p:my-1 text-left border border-transparent rounded hover:border-gray-300 hover:bg-gray-50 cursor-text focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[80px]" on:click={() => startEditing('dicCriteriaParam', 0, String(i))} on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? (e.preventDefault(), startEditing('dicCriteriaParam', 0, String(i))) : null}>
 													{@html criteria.definition ?? ''}
 												</div>
 											{/if}
@@ -5475,7 +5370,7 @@
 			</section>
 
 			<!-- === Aide-Risque (édition) === -->
-			<section class="aide-risque-tables space-y-6 rounded-xl p-6 bg-amber-50/30 mt-8">
+			<section class="space-y-6  rounded-xl p-6  mt-8">
 				<h3 class="text-lg font-semibold text-gray-900">Aide-Risque</h3>
 			<!-- Tableau 1 – Échelle de probabilité / fréquence -->
 			<section class="space-y-3">
@@ -5888,7 +5783,8 @@
 			</section>
 		</section>
 			<!-- === Échelle PTR (édition) === -->
-			<section class="echelle-ptr-tables space-y-6  rounded-xl p-6 bg-emerald-50/30 mt-8">
+			<!--  <section class="space-y-6  rounded-xl p-6  mt-8">=== -->
+			<section class="space-y-6  rounded-xl p-6  mt-8">
 				<h3 class="text-lg font-semibold text-gray-900">Échelle PTR</h3>
 			<section class="space-y-4">
 				<h3 class="text-lg font-semibold text-gray-900">Table 1&nbsp;: Périodicité / Durée</h3>
@@ -5911,7 +5807,7 @@
 										<input class="w-full border border-transparent bg-transparent" type="text" bind:value={periodiciteRows[i].periodicite} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<input class="w-full border border-transparent rounded px-2 py-1 text-sm bg-transparent" type="text" bind:value={periodiciteRows[i].duree} />
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={periodiciteRows[i].duree} />
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
 										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
@@ -5965,7 +5861,7 @@
 										<input class="w-full border border-transparent bg-transparent font-medium" type="text" bind:value={complexiteRows[i].complexite} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<textarea class="w-full border border-transparent rounded px-2 py-1 text-sm min-h-[80px] bg-transparent" bind:value={complexiteRows[i].definition}></textarea>
+										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[80px]" bind:value={complexiteRows[i].definition}></textarea>
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
 										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
@@ -6019,7 +5915,7 @@
 										<input class="w-full border border-transparent bg-transparent font-medium" type="text" bind:value={typeActionRows[i].type_action} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<textarea class="w-full border border-transparent rounded px-2 py-1 text-sm min-h-[60px] bg-transparent" bind:value={typeActionRows[i].description}></textarea>
+										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[60px]" bind:value={typeActionRows[i].description}></textarea>
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
 										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
@@ -6074,13 +5970,13 @@
 							{#each prioriteRows as row, i}
 								<tr class="border border-black">
 									<td class="px-4 py-2 font-medium text-black border border-black bg-white">
-										<input class="w-full border border-transparent rounded px-2 py-1 text-sm bg-transparent" type="text" bind:value={prioriteRows[i].echelle} />
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={prioriteRows[i].echelle} />
 									</td>
 									<td class={`px-4 py-2 border border-black ${getPrioriteDefinitionBg(row.echelle)}`}>
 										<input class="w-full border border-transparent bg-transparent" type="text" bind:value={prioriteRows[i].definition} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<input class="w-full border border-transparent rounded px-2 py-1 text-sm bg-transparent" type="text" bind:value={prioriteRows[i].signification} />
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={prioriteRows[i].signification} />
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
 										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
@@ -6759,10 +6655,9 @@
 				{/if}
 		</section>
 	{:else if activeSection === 'aide-risque'}
-		<!-- Aide-Risque : même design que dans Paramétrage (cadre ambre, pas de fond gris en lecture seule) -->
-		<section class="aide-risque-tables space-y-6  rounded-xl p-6 bg-amber-50/30 mt-8 pb-24 overflow-visible {readOnlyAideRisque ? 'readonly-scales-section' : ''}">
+		<section class="space-y-8 pb-24 overflow-visible {readOnlyAideRisque ? 'readonly-scales-section' : ''}">
 			<div class="flex items-center justify-between gap-4 flex-wrap">
-				<h3 class="text-lg font-semibold text-gray-900">Aide-Risque</h3>
+				<h2 class="text-xl font-semibold text-gray-900">Aide-Risque</h2>
 				{#if readOnlyAideRisque}
 					<p class="text-sm text-gray-500">Affichage des échelles. Pour modifier, utilisez l'onglet <strong>Paramétrage</strong>.</p>
 				{:else}
@@ -6773,10 +6668,10 @@
 							: 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'}"
 						on:click={() => {
 							if (!editModeAideRisque) {
-								probaRows = probaRows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getProbaDefBg(r.definition ?? '') }));
-								impactRows = impactRows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getImpactDefBg(r.definition ?? '') }));
-								frequenceRisqueRows = frequenceRisqueRows.map((r) => { const rr = r as Row & { bgColor?: string }; return { ...r, bgColor: (rr.bgColor && rr.bgColor.trim()) ? rr.bgColor : getFrequenceDefBg(r.definition ?? '') }; });
-								efficaciteRows = efficaciteRows.map((r) => ({ ...r, bgColor: (r.bgColor && r.bgColor.trim()) ? r.bgColor : getEfficaciteDefBg(r.signification ?? '') }));
+								probaRows = probaRows.map((r) => ({ ...r, bgColor: r.bgColor ?? getProbaDefBg(r.definition) }));
+								impactRows = impactRows.map((r) => ({ ...r, bgColor: r.bgColor ?? getImpactDefBg(r.definition) }));
+								frequenceRisqueRows = frequenceRisqueRows.map((r) => ({ ...r, bgColor: (r as Row & { bgColor?: string }).bgColor ?? getFrequenceDefBg(r.definition ?? '') }));
+								efficaciteRows = efficaciteRows.map((r) => ({ ...r, bgColor: r.bgColor ?? getEfficaciteDefBg(r.signification) }));
 							}
 							editModeAideRisque = !editModeAideRisque;
 						}}
@@ -7520,10 +7415,10 @@
 			{/if}
 		</section>
 	{:else if activeSection === 'echelle-ptr'}
-		<!-- Échelle PTR : même design que dans Paramétrage (cadre vert, pas de fond gris en lecture seule) -->
-		<section class="echelle-ptr-tables space-y-6 rounded-xl p-6 bg-emerald-50/30 mt-8 {readOnlyEchellePtr ? 'readonly-scales-section' : ''}">
+		<!-- Échelle PTR : affichage seul sauf si ouverture depuis Paramétrage -->
+		<section class="space-y-6 {readOnlyEchellePtr ? 'readonly-scales-section' : ''}">
 			<div class="flex items-center justify-between gap-4 flex-wrap">
-				<h3 class="text-lg font-semibold text-gray-900">Échelle PTR</h3>
+				<h2 class="text-xl font-semibold text-gray-900">Échelle-PTR</h2>
 				{#if readOnlyEchellePtr}
 					<p class="text-sm text-gray-500">Affichage des échelles. Pour modifier, utilisez l'onglet <strong>Paramétrage</strong>.</p>
 				{:else}
@@ -7560,7 +7455,7 @@
 										<input class="w-full border border-transparent bg-transparent" type="text" bind:value={periodiciteRows[i].periodicite} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<input class="w-full border border-transparent rounded px-2 py-1 text-sm bg-transparent" type="text" bind:value={periodiciteRows[i].duree} />
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={periodiciteRows[i].duree} />
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
 										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
@@ -7614,7 +7509,7 @@
 										<input class="w-full border border-transparent bg-transparent font-medium" type="text" bind:value={complexiteRows[i].complexite} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<textarea class="w-full border border-transparent rounded px-2 py-1 text-sm min-h-[80px] bg-transparent" bind:value={complexiteRows[i].definition}></textarea>
+										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[80px]" bind:value={complexiteRows[i].definition}></textarea>
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
 										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
@@ -7668,7 +7563,7 @@
 										<input class="w-full border border-transparent bg-transparent font-medium" type="text" bind:value={typeActionRows[i].type_action} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<textarea class="w-full border border-transparent rounded px-2 py-1 text-sm min-h-[60px] bg-transparent" bind:value={typeActionRows[i].description}></textarea>
+										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[60px]" bind:value={typeActionRows[i].description}></textarea>
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
 										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
@@ -7723,13 +7618,13 @@
 							{#each prioriteRows as row, i}
 								<tr class="border border-black">
 									<td class="px-4 py-2 font-medium text-black border border-black bg-white">
-										<input class="w-full border border-transparent rounded px-2 py-1 text-sm bg-transparent" type="text" bind:value={prioriteRows[i].echelle} />
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={prioriteRows[i].echelle} />
 									</td>
 									<td class={`px-4 py-2 border border-black ${getPrioriteDefinitionBg(row.echelle)}`}>
 										<input class="w-full border border-transparent bg-transparent" type="text" bind:value={prioriteRows[i].definition} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
-										<input class="w-full border border-transparent rounded px-2 py-1 text-sm bg-transparent" type="text" bind:value={prioriteRows[i].signification} />
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={prioriteRows[i].signification} />
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
 										<td class="px-2 py-2 border border-black bg-gray-50 align-middle">
