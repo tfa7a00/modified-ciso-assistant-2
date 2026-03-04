@@ -2193,12 +2193,12 @@
 
 	function getPeriodiciteBgDefault(periodicite: string): string {
 		switch (periodicite) {
-			case 'QuickWin': return 'bg-orange-100';
-			case 'Court terme': return 'bg-green-100';
-			case 'Moyen terme': return 'bg-yellow-100';
-			case 'Long terme': return 'bg-gray-100';
-			case 'Périodique': return 'bg-sky-100';
-			default: return 'bg-white';
+			case 'QuickWin': return 'bg-orange-100 border border-orange-200';
+			case 'Court terme': return 'bg-green-100 border border-green-200';
+			case 'Moyen terme': return 'bg-yellow-100 border border-yellow-200';
+			case 'Long terme': return 'bg-gray-100 border border-gray-300';
+			case 'Périodique': return 'bg-sky-100 border border-sky-200';
+			default: return 'bg-white border border-gray-300';
 		}
 	}
 	function getPeriodiciteBg(periodicite: string): string {
@@ -2208,10 +2208,10 @@
 
 	function getComplexiteBgDefault(complexite: string): string {
 		switch (complexite) {
-			case 'Important': return 'bg-red-500 text-black';
-			case 'Moyen': return 'bg-yellow-400 text-black';
-			case 'Faible': return 'bg-green-400 text-black';
-			default: return 'bg-white text-black';
+			case 'Important': return 'bg-red-500 border border-red-600 text-black';
+			case 'Moyen': return 'bg-yellow-400 border border-yellow-500 text-black';
+			case 'Faible': return 'bg-green-400 border border-green-600 text-black';
+			default: return 'bg-white border border-gray-300 text-black';
 		}
 	}
 	function getComplexiteBg(complexite: string): string {
@@ -2221,10 +2221,10 @@
 
 	function getTypeActionBgDefault(typeAction: string): string {
 		switch (typeAction) {
-			case 'Action Organisationnelle': return 'bg-sky-100';
-			case 'Action Technique': return 'bg-green-100';
-			case 'Action Organisationnelle et Technique': return 'bg-amber-100';
-			default: return 'bg-white';
+			case 'Action Organisationnelle': return 'bg-sky-100 border border-sky-200';
+			case 'Action Technique': return 'bg-green-100 border border-green-200';
+			case 'Action Organisationnelle et Technique': return 'bg-amber-100 border border-amber-200';
+			default: return 'bg-white border border-gray-300';
 		}
 	}
 	function getTypeActionBg(typeAction: string): string {
@@ -2234,11 +2234,11 @@
 
 	function getPrioriteDefinitionBgDefault(echelle: string): string {
 		switch (echelle) {
-			case 'Priorité 4': return 'bg-green-400 text-black';
-			case 'Priorité 3': return 'bg-yellow-300 text-black';
-			case 'Priorité 2': return 'bg-orange-400 text-black';
-			case 'Priorité 1': return 'bg-red-500 text-black';
-			default: return 'bg-white text-black';
+			case 'Priorité 4': return 'bg-green-400 border border-green-600 text-black';
+			case 'Priorité 3': return 'bg-yellow-300 border border-yellow-500 text-black';
+			case 'Priorité 2': return 'bg-orange-400 border border-orange-600 text-black';
+			case 'Priorité 1': return 'bg-red-500 border border-red-600 text-black';
+			default: return 'bg-white border border-gray-300 text-black';
 		}
 	}
 	function getPrioriteDefinitionBg(echelle: string): string {
@@ -5841,10 +5841,10 @@
 						<tbody>
 							{#each periodiciteRows as row, i}
 								<tr class="border border-black">
-									<td class={`px-4 py-2 text-black border border-black ${getPeriodiciteBg(row.periodicite)}`}>
+									<td class={`px-4 py-2 text-black cell-colored-definition ${getPeriodiciteBg(row.periodicite)}`}>
 										<input class="w-full border border-transparent bg-transparent" type="text" bind:value={periodiciteRows[i].periodicite} />
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={periodiciteRows[i].duree} />
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
@@ -5895,10 +5895,10 @@
 						<tbody>
 							{#each complexiteRows as row, i}
 								<tr class="border border-black">
-									<td class={`px-4 py-2 font-medium border border-black ${getComplexiteBg(row.complexite)}`}>
+									<td class={`px-4 py-2 font-medium cell-colored-definition ${getComplexiteBg(row.complexite)}`}>
 										<input class="w-full border border-transparent bg-transparent font-medium" type="text" bind:value={complexiteRows[i].complexite} />
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white">
 										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[80px]" bind:value={complexiteRows[i].definition}></textarea>
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
@@ -5949,10 +5949,10 @@
 						<tbody>
 							{#each typeActionRows as row, i}
 								<tr class="border border-black">
-									<td class={`px-4 py-2 font-medium border border-black ${getTypeActionBg(row.type_action)}`}>
+									<td class={`px-4 py-2 font-medium cell-colored-definition ${getTypeActionBg(row.type_action)}`}>
 										<input class="w-full border border-transparent bg-transparent font-medium" type="text" bind:value={typeActionRows[i].type_action} />
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white">
 										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[60px]" bind:value={typeActionRows[i].description}></textarea>
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
@@ -6007,13 +6007,13 @@
 						<tbody>
 							{#each prioriteRows as row, i}
 								<tr class="border border-black">
-									<td class="px-4 py-2 font-medium text-black border border-black bg-white">
+									<td class="cell-bg-white px-4 py-2 font-medium text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={prioriteRows[i].echelle} />
 									</td>
-									<td class={`px-4 py-2 border border-black ${getPrioriteDefinitionBg(row.echelle)}`}>
+									<td class={`px-4 py-2 cell-colored-definition ${getPrioriteDefinitionBg(row.echelle)}`}>
 										<input class="w-full border border-transparent bg-transparent" type="text" bind:value={prioriteRows[i].definition} />
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={prioriteRows[i].signification} />
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
@@ -7493,10 +7493,10 @@
 						<tbody>
 							{#each periodiciteRows as row, i}
 								<tr class="border border-black">
-									<td class={`px-4 py-2 text-black border border-black ${getPeriodiciteBg(row.periodicite)}`}>
+									<td class={`px-4 py-2 text-black cell-colored-definition ${getPeriodiciteBg(row.periodicite)}`}>
 										<input class="w-full border border-transparent bg-transparent" type="text" bind:value={periodiciteRows[i].periodicite} />
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={periodiciteRows[i].duree} />
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
@@ -7547,10 +7547,10 @@
 						<tbody>
 							{#each complexiteRows as row, i}
 								<tr class="border border-black">
-									<td class={`px-4 py-2 font-medium border border-black ${getComplexiteBg(row.complexite)}`}>
+									<td class={`px-4 py-2 font-medium cell-colored-definition ${getComplexiteBg(row.complexite)}`}>
 										<input class="w-full border border-transparent bg-transparent font-medium" type="text" bind:value={complexiteRows[i].complexite} />
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white">
 										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[80px]" bind:value={complexiteRows[i].definition}></textarea>
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
@@ -7601,10 +7601,10 @@
 						<tbody>
 							{#each typeActionRows as row, i}
 								<tr class="border border-black">
-									<td class={`px-4 py-2 font-medium border border-black ${getTypeActionBg(row.type_action)}`}>
+									<td class={`px-4 py-2 font-medium cell-colored-definition ${getTypeActionBg(row.type_action)}`}>
 										<input class="w-full border border-transparent bg-transparent font-medium" type="text" bind:value={typeActionRows[i].type_action} />
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white">
 										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-sm min-h-[60px]" bind:value={typeActionRows[i].description}></textarea>
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
@@ -7659,13 +7659,13 @@
 						<tbody>
 							{#each prioriteRows as row, i}
 								<tr class="border border-black">
-									<td class="px-4 py-2 font-medium text-black border border-black bg-white">
+									<td class="cell-bg-white px-4 py-2 font-medium text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={prioriteRows[i].echelle} />
 									</td>
-									<td class={`px-4 py-2 border border-black ${getPrioriteDefinitionBg(row.echelle)}`}>
+									<td class={`px-4 py-2 cell-colored-definition ${getPrioriteDefinitionBg(row.echelle)}`}>
 										<input class="w-full border border-transparent bg-transparent" type="text" bind:value={prioriteRows[i].definition} />
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={prioriteRows[i].signification} />
 									</td>
 									{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
