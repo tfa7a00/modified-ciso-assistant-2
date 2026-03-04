@@ -431,17 +431,40 @@
 		return g * p * c;
 	}
 
-	/** Niveau: Faible (≤20), Modéré ]20-36], Élevé ]36-60], Extrême >60 — aligné carto_efficacite.xlsx */
-	function getNiveauFromIpc(ipc: number | null): string {
+	/** Signification du risque depuis le tableau 3.1 (Fréquence / probabilité d'occurrence) : valeur dans l'intervalle => définition correspondante. Retourne '-' si tableau vide ou valeur hors intervalles. */
+	function getSignificationFromFrequenceTable(ipc: number | null): string {
 		if (ipc === null) return '-';
-		if (ipc <= 20) return 'Faible';
-		if (ipc <= 36) return 'Modéré';
-		if (ipc <= 60) return 'Élevé';
-		return 'Extrême';
+		const rows = frequenceRisqueRows as (Row & { bgColor?: string })[];
+		if (rows.length === 0) return '-';
+		const intervals = rows
+			.map((r) => {
+				const parsed = parseInterval(r.signification ?? '');
+				return parsed ? { ...parsed, row: r } : null;
+			})
+			.filter(Boolean) as { min: number; max: number; maxInclusive: boolean; row: Row & { bgColor?: string } }[];
+		intervals.sort((a, b) => a.min - b.min);
+		for (const it of intervals) {
+			const inRange = it.maxInclusive
+				? ipc >= it.min && ipc <= it.max
+				: ipc >= it.min && ipc < it.max;
+			if (inRange) return (it.row.definition ?? '').trim() || '-';
+		}
+		return '-';
 	}
 
-	/** Couleurs des niveaux de risque (alignées sur les échelles PTR / Fréquence risque) */
+	/** Niveau / signification : uniquement depuis le tableau 3.1 (intervalle => définition). */
+	function getNiveauFromIpc(ipc: number | null): string {
+		if (ipc === null) return '-';
+		return getSignificationFromFrequenceTable(ipc);
+	}
+
+	/** Couleurs des niveaux de risque : d'abord depuis le tableau 3.1 (définition => couleur), sinon palier par défaut. */
 	function getNiveauRisqueBg(niveau: string): string {
+		const n = (niveau || '').trim();
+		const row = (frequenceRisqueRows as (Row & { bgColor?: string })[]).find(
+			(r) => (r.definition ?? '').trim() === n
+		);
+		if (row) return getFrequenceRowBg(row);
 		switch (niveau) {
 			case 'Faible':
 				return 'bg-green-400 text-black';
