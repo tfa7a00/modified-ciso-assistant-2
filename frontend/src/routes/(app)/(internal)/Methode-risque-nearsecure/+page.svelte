@@ -192,16 +192,19 @@
 	$: cartoColEndNet = cartoColEndDMR + (cartoVersion === 'B' ? 4 : 5);
 	$: cartoColEndPTR = cartoColEndNet + 2;
 	$: cartoColEndRes = cartoColEndPTR + (cartoVersion === 'B' ? 4 : 5);
+	/** Dernière colonne de données (sans la colonne Actions) : permet d'afficher la colonne Actions dans toutes les vues quand editModeCarto est actif */
+	$: cartoLastDataCol = cartoTotalCols - (editModeCarto ? 1 : 0);
 	$: cartoViewDynamicCss =
-		`.view-brut tbody tr:not(.carto-part-header) td:nth-child(n+1):nth-child(-n+3),
+		`.view-identification tbody tr:not(.carto-part-header) td:nth-child(n+21):nth-child(-n+${cartoLastDataCol}){display:none}
+.view-brut tbody tr:not(.carto-part-header) td:nth-child(n+1):nth-child(-n+3),
 .view-brut tbody tr:not(.carto-part-header) td:nth-child(n+6):nth-child(-n+${cartoColEndId}),
-.view-brut tbody tr:not(.carto-part-header) td:nth-child(n+${cartoColEndBrut + 1}):nth-child(-n+${cartoTotalCols}){display:none}
+.view-brut tbody tr:not(.carto-part-header) td:nth-child(n+${cartoColEndBrut + 1}):nth-child(-n+${cartoLastDataCol}){display:none}
 .view-net tbody tr:not(.carto-part-header) td:nth-child(n+1):nth-child(-n+3),
 .view-net tbody tr:not(.carto-part-header) td:nth-child(n+6):nth-child(-n+${cartoColEndBrut}),
-.view-net tbody tr:not(.carto-part-header) td:nth-child(n+${cartoColEndNet + 1}):nth-child(-n+${cartoTotalCols}){display:none}
+.view-net tbody tr:not(.carto-part-header) td:nth-child(n+${cartoColEndNet + 1}):nth-child(-n+${cartoLastDataCol}){display:none}
 .view-ptr tbody tr:not(.carto-part-header) td:nth-child(n+1):nth-child(-n+3),
 .view-ptr tbody tr:not(.carto-part-header) td:nth-child(n+6):nth-child(-n+${cartoColEndNet}),
-.view-ptr tbody tr:not(.carto-part-header) td:nth-child(n+${cartoColEndRes + 1}):nth-child(-n+${cartoTotalCols}){display:none}`;
+.view-ptr tbody tr:not(.carto-part-header) td:nth-child(n+${cartoColEndRes + 1}):nth-child(-n+${cartoLastDataCol}){display:none}`;
 
 	// Données et formules pour la cartographie des risques (une ligne = un objet)
 	type CartoRow = {
@@ -4061,12 +4064,9 @@
        Views: identification (1-20 + 46), brut (21-32 + 46), net (33-38 + 46), ptr (39-45 + 46).
     */
 
-    /* Identification view: hide data columns 21-45, keep 1-20 and 46 (Actions). Keep part header row visible. */
-    .view-identification tbody tr:not(.carto-part-header) td:nth-child(n+21):nth-child(-n+50) {
-        display: none;
-    }
+    /* Identification view: plage 21–dernière colonne données masquée (règle détaillée dans cartoViewDynamicCss pour exclure la colonne Actions en mode modification). */
 
-    /* Vues filtrées (brut / net / ptr) : règles dynamiques injectées via cartoViewDynamicCss (svelte:head) pour respecter le nombre variable de colonnes d'impact */
+    /* Vues filtrées (brut / net / ptr) : règles dynamiques injectées via cartoViewDynamicCss (svelte:head) pour respecter le nombre variable de colonnes d'impact et afficher la colonne Actions dans toutes les vues */
 
     /* Keep table layout predictable */
     table {
