@@ -4144,6 +4144,12 @@
     .readonly-scales-section .cell-colored-definition textarea {
         background: transparent !important;
     }
+    /* Colonnes qui doivent rester 100 % blanches (Échelle, Fréquence, etc.) : fond blanc forcé en lecture seule */
+    .readonly-scales-section .cell-bg-white,
+    .readonly-scales-section .cell-bg-white input,
+    .readonly-scales-section .cell-bg-white textarea {
+        background: #ffffff !important;
+    }
 </style>
 
 <svelte:head>
@@ -5411,16 +5417,16 @@
 						<tbody>
 							{#each probaRows as row, i}
 								<tr class="border border-black">
-									<td class="px-4 py-2 text-black border border-black bg-white">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={probaRows[i].echelle} />
 									</td>
 									<td class={`px-4 py-2 cell-colored-definition ${getProbaRowBg(row)}`}>
 										<input class="w-full border border-transparent bg-transparent font-semibold" type="text" bind:value={probaRows[i].definition} />
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white align-top">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white align-top">
 										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]" bind:value={probaRows[i].frequence}></textarea>
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white align-top">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white align-top">
 										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]" bind:value={probaRows[i].historique}></textarea>
 									</td>
 									{#if true}
@@ -5474,10 +5480,10 @@
 						<tbody>
 							{#each impactDefinitionsRows as def, i}
 								<tr class="border border-black">
-									<td class="px-4 py-2 text-black border border-black bg-white">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={impactDefinitionsRows[i].libelle} placeholder="Ex. Impact Financier" on:change={() => saveCustomMethodState()} />
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white align-top">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white align-top">
 										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]" bind:value={impactDefinitionsRows[i].definition} placeholder="Explication de l'impact..." on:blur={() => saveCustomMethodState()}></textarea>
 									</td>
 									{#if true}
@@ -5529,14 +5535,14 @@
 							{#each impactRows as row, i}
 								{@const criteres = getImpactRowCriteres(row)}
 								<tr class="border border-black">
-									<td class="px-4 py-2 text-black border border-black bg-white">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={impactRows[i].echelle} />
 									</td>
 									<td class={`px-4 py-2 cell-colored-definition ${getImpactRowBg(row)}`}>
 										<input class="w-full border border-transparent bg-transparent font-semibold" type="text" bind:value={impactRows[i].definition} />
 									</td>
 									{#each impactDefinitionsRows as def, idx}
-										<td class="px-4 py-2 text-black border border-black bg-white align-top">
+										<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white align-top">
 											<textarea
 												class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]"
 												value={criteres[idx]}
@@ -5611,13 +5617,13 @@
 						<tbody>
 							{#each frequenceRisqueRows as row, i}
 								<tr class="border border-black">
-									<td class="px-4 py-2 text-black border border-black bg-white">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={frequenceRisqueRows[i].echelle} />
 									</td>
 									<td class={`px-4 py-2 cell-colored-definition ${getFrequenceRowBg(row)}`}>
 										<input class="w-full border border-transparent bg-transparent font-semibold" type="text" bind:value={frequenceRisqueRows[i].definition} />
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={frequenceRisqueRows[i].signification} />
 									</td>
 									{#if true}
@@ -5677,7 +5683,7 @@
 						<tbody>
 							{#each matriceRisqueRows as row, i}
 								<tr class="border border-black">
-									<td class="px-2 py-2 text-sm border border-black bg-white">
+									<td class="cell-bg-white px-2 py-2 text-sm border border-black bg-white">
 										<input class="w-20 border border-gray-300 rounded px-1 py-0.5 text-sm" type="text" bind:value={matriceRisqueRows[i].libelle} />
 									</td>
 									{#each row.valeurs as v, j}
@@ -5753,18 +5759,18 @@
 						<tbody>
 							{#each efficaciteRows as row, i}
 								<tr class="border border-black">
-									<td class="px-3 py-2 text-center border border-black bg-white">
+									<td class="cell-bg-white px-3 py-2 text-center border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold text-center" type="text" bind:value={efficaciteRows[i].niveau} />
 									</td>
 									<td class={`px-3 py-2 text-center font-bold cell-colored-definition ${getEfficaciteRowBg(row)}`}>
 										<input class="w-full border border-transparent bg-transparent font-semibold text-center" type="text" bind:value={efficaciteRows[i].signification} />
 									</td>
-									<td colspan="3" class="px-3 py-3 text-left align-middle border border-black bg-white align-top">
+									<td colspan="3" class="cell-bg-white px-3 py-3 text-left align-middle border border-black bg-white align-top">
 										<textarea class="w-full min-h-[120px] min-w-0 border border-gray-300 rounded px-2 py-1.5 text-base whitespace-pre-wrap" bind:value={efficaciteRows[i].descriptif} placeholder="Descriptif du niveau…"></textarea>									</td>
-									<td class="px-3 py-2 text-center border border-black bg-white">
+									<td class="cell-bg-white px-3 py-2 text-center border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold text-center" type="text" bind:value={efficaciteRows[i].intervalle} placeholder="0 % – 30 %" />
 									</td>
-									<td class="px-3 py-2 text-center border border-black bg-white">
+									<td class="cell-bg-white px-3 py-2 text-center border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm text-center" type="text" inputmode="decimal" bind:value={efficaciteRows[i].valeur} placeholder="0.15" />
 									</td>
 									{#if true}
@@ -6720,16 +6726,16 @@
 						<tbody>
 							{#each probaRows as row, i}
 								<tr class="border border-black">
-									<td class="px-4 py-2 text-black border border-black bg-white">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={probaRows[i].echelle} />
 									</td>
 									<td class={`px-4 py-2 cell-colored-definition ${getProbaRowBg(row)}`}>
 										<input class="w-full border border-transparent bg-transparent font-semibold" type="text" bind:value={probaRows[i].definition} />
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white align-top">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white align-top">
 										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]" bind:value={probaRows[i].frequence}></textarea>
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white align-top">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white align-top">
 										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]" bind:value={probaRows[i].historique}></textarea>
 									</td>
 									{#if editModeAideRisque && !readOnlyAideRisque}
@@ -6783,10 +6789,10 @@
 						<tbody>
 							{#each impactDefinitionsRows as def, i}
 								<tr class="border border-black">
-									<td class="px-4 py-2 text-black border border-black bg-white">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={impactDefinitionsRows[i].libelle} placeholder="Ex. Impact Financier" on:change={() => saveCustomMethodState()} />
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white align-top">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white align-top">
 										<textarea class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]" bind:value={impactDefinitionsRows[i].definition} placeholder="Explication de l'impact..." on:blur={() => saveCustomMethodState()}></textarea>
 									</td>
 									{#if editModeAideRisque && !readOnlyAideRisque}
@@ -6838,14 +6844,14 @@
 							{#each impactRows as row, i}
 								{@const criteres = getImpactRowCriteres(row)}
 								<tr class="border border-black">
-									<td class="px-4 py-2 text-black border border-black bg-white">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={impactRows[i].echelle} />
 									</td>
 									<td class={`px-4 py-2 cell-colored-definition ${getImpactRowBg(row)}`}>
 										<input class="w-full border border-transparent bg-transparent font-semibold" type="text" bind:value={impactRows[i].definition} />
 									</td>
 									{#each impactDefinitionsRows as def, idx}
-										<td class="px-4 py-2 text-black border border-black bg-white align-top">
+										<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white align-top">
 											<textarea
 												class="w-full border border-gray-300 rounded px-2 py-1 text-xs min-h-[60px]"
 												value={criteres[idx]}
@@ -6920,13 +6926,13 @@
 						<tbody>
 							{#each frequenceRisqueRows as row, i}
 								<tr class="border border-black">
-									<td class="px-4 py-2 text-black border border-black bg-white">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={frequenceRisqueRows[i].echelle} />
 									</td>
 									<td class={`px-4 py-2 cell-colored-definition ${getFrequenceRowBg(row)}`}>
 										<input class="w-full border border-transparent bg-transparent font-semibold" type="text" bind:value={frequenceRisqueRows[i].definition} />
 									</td>
-									<td class="px-4 py-2 text-black border border-black bg-white">
+									<td class="cell-bg-white px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={frequenceRisqueRows[i].signification} />
 									</td>
 									{#if editModeAideRisque && !readOnlyAideRisque}
@@ -6986,7 +6992,7 @@
 						<tbody>
 							{#each matriceRisqueRows as row, i}
 								<tr class="border border-black">
-									<td class="px-2 py-2 text-sm border border-black bg-white">
+									<td class="cell-bg-white px-2 py-2 text-sm border border-black bg-white">
 										<input class="w-20 border border-gray-300 rounded px-1 py-0.5 text-sm" type="text" bind:value={matriceRisqueRows[i].libelle} />
 									</td>
 									{#each row.valeurs as v, j}
@@ -7062,18 +7068,18 @@
 						<tbody>
 							{#each efficaciteRows as row, i}
 								<tr class="border border-black">
-									<td class="px-3 py-2 text-center border border-black bg-white">
+									<td class="cell-bg-white px-3 py-2 text-center border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold text-center" type="text" bind:value={efficaciteRows[i].niveau} />
 									</td>
 									<td class={`px-3 py-2 text-center font-bold cell-colored-definition ${getEfficaciteRowBg(row)}`}>
 										<input class="w-full border border-transparent bg-transparent font-semibold text-center" type="text" bind:value={efficaciteRows[i].signification} />
 									</td>
-									<td colspan="3" class="px-3 py-3 text-left align-middle border border-black bg-white align-top">
+									<td colspan="3" class="cell-bg-white px-3 py-3 text-left align-middle border border-black bg-white align-top">
 										<textarea class="w-full min-h-[120px] min-w-0 border border-gray-300 rounded px-2 py-1.5 text-base whitespace-pre-wrap" bind:value={efficaciteRows[i].descriptif} placeholder="Descriptif du niveau…"></textarea>									</td>
-									<td class="px-3 py-2 text-center border border-black bg-white">
+									<td class="cell-bg-white px-3 py-2 text-center border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold text-center" type="text" bind:value={efficaciteRows[i].intervalle} placeholder="0 % – 30 %" />
 									</td>
-									<td class="px-3 py-2 text-center border border-black bg-white">
+									<td class="cell-bg-white px-3 py-2 text-center border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm text-center" type="text" inputmode="decimal" bind:value={efficaciteRows[i].valeur} placeholder="0.15" />
 									</td>
 									{#if editModeAideRisque && !readOnlyAideRisque}
