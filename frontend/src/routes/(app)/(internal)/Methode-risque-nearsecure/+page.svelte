@@ -2792,7 +2792,8 @@
 				projects[activeProjectId] = { ...empty, name: 'Projet par défaut' };
 				applyProjectData(projects[activeProjectId]);
 			}
-			syncPtrFromCartographie();
+			// Ne pas appeler syncPtrFromCartographie() après chargement : le PTR a déjà été restauré
+			// par applyProjectData (y compris les lignes ajoutées manuellement dans le PTR).
 			return;
 		}
 		// Legacy: état mono-projet (tout dans un seul objet)
@@ -2927,9 +2928,10 @@
 				echeance: String(r.echeance ?? ''),
 				etatAvancement: String(r.etatAvancement ?? '')
 			}));
+		} else {
+			// Pas de PTR sauvegardé : reconstruire à partir de la cartographie
+			syncPtrFromCartographie();
 		}
-		// Reconstruire le PTR à partir de la cartographie (une ligne PTR par ligne dans "Action à mettre en place")
-		syncPtrFromCartographie();
 		// Migration vers format multi-projets : au prochain save, l'état sera en version 2
 		activeProjectId = DEFAULT_PROJECT_ID;
 		projects = { [DEFAULT_PROJECT_ID]: getCurrentProjectData() };
