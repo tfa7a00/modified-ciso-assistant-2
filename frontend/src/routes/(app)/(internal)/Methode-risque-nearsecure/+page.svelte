@@ -4150,6 +4150,17 @@
     .readonly-scales-section .cell-bg-white textarea {
         background: #ffffff !important;
     }
+    /* Matrice 3.2 en mode affichage : cellules 1, 2, 3… fond 100 % couleur (intervalles 3.1), valeur numérique uniquement */
+    .readonly-scales-section .cell-colored-matrice input {
+        border-color: transparent !important;
+        background: transparent !important;
+    }
+    .readonly-scales-section .cell-colored-matrice input:hover,
+    .readonly-scales-section .cell-colored-matrice input:focus {
+        border-color: transparent !important;
+        box-shadow: none !important;
+        background: transparent !important;
+    }
 </style>
 
 <svelte:head>
@@ -5687,8 +5698,12 @@
 										<input class="w-20 border border-gray-300 rounded px-1 py-0.5 text-sm" type="text" bind:value={matriceRisqueRows[i].libelle} />
 									</td>
 									{#each row.valeurs as v, j}
-										<td class={`px-2 py-2 text-xs text-center border border-black ${getMatriceCellBgFromFrequence(v)}`}>
-											<input class="w-16 text-center border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent" type="number" bind:value={matriceRisqueRows[i].valeurs[j]} />
+										<td class={`px-2 py-2 text-xs text-center border border-black cell-colored-matrice ${getMatriceCellBgFromFrequence(v)}`}>
+											{#if readOnlyAideRisque}
+												<span class="inline-block w-full text-center font-medium tabular-nums">{matriceRisqueRows[i].valeurs[j]}</span>
+											{:else}
+												<input class="w-16 text-center border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent" type="number" bind:value={matriceRisqueRows[i].valeurs[j]} />
+											{/if}
 										</td>
 									{/each}
 								</tr>
@@ -6996,8 +7011,12 @@
 										<input class="w-20 border border-gray-300 rounded px-1 py-0.5 text-sm" type="text" bind:value={matriceRisqueRows[i].libelle} />
 									</td>
 									{#each row.valeurs as v, j}
-										<td class={`px-2 py-2 text-xs text-center border border-black ${getMatriceCellBgFromFrequence(v)}`}>
-											<input class="w-16 text-center border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent" type="number" bind:value={matriceRisqueRows[i].valeurs[j]} />
+										<td class={`px-2 py-2 text-xs text-center border border-black cell-colored-matrice ${getMatriceCellBgFromFrequence(v)}`}>
+											{#if readOnlyAideRisque}
+												<span class="inline-block w-full text-center font-medium tabular-nums">{matriceRisqueRows[i].valeurs[j]}</span>
+											{:else}
+												<input class="w-16 text-center border border-gray-300 rounded px-1 py-0.5 text-xs bg-transparent" type="number" bind:value={matriceRisqueRows[i].valeurs[j]} />
+											{/if}
 										</td>
 									{/each}
 								</tr>
