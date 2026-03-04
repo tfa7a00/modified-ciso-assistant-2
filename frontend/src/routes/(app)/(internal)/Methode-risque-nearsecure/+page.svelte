@@ -5623,7 +5623,7 @@
 					<table class="min-w-full text-sm border-collapse border border-black">
 						<thead>
 							<tr>
-								<th colspan={editModeAideRisque ? 5 : 3} class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">
+								<th colspan="5" class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">
 									Fréquence / Probabilité d'occurrence
 								</th>
 							</tr>
@@ -6936,7 +6936,7 @@
 					<table class="min-w-full text-sm border-collapse border border-black">
 						<thead>
 							<tr>
-								<th colspan={editModeAideRisque ? 5 : 3} class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">
+								<th colspan={editModeAideRisque && !readOnlyAideRisque ? 5 : 3} class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">
 									Fréquence / Probabilité d'occurrence
 								</th>
 							</tr>
