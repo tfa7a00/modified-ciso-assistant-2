@@ -2935,17 +2935,17 @@
 	function getProbaDefBg(definition: string): string {
 		switch (definition) {
 			case 'Très faible':
-				return 'bg-green-400 text-black';
+				return 'bg-green-400 border border-green-600 text-black';
 			case 'Faible':
-				return 'bg-yellow-300 text-black';
+				return 'bg-yellow-300 border border-yellow-500 text-black';
 			case 'Moyen':
-				return 'bg-orange-400 text-black';
+				return 'bg-orange-400 border border-orange-600 text-black';
 			case 'Forte':
-				return 'bg-red-500 text-black';
+				return 'bg-red-500 border border-red-600 text-black';
 			case 'Très forte':
-				return 'bg-red-700 text-black';
+				return 'bg-red-700 border border-red-800 text-black';
 			default:
-				return 'bg-white text-black';
+				return 'bg-white border border-gray-300 text-black';
 		}
 	}
 	function getProbaRowBg(row: ProbaRow): string {
@@ -2955,19 +2955,19 @@
 	function getImpactDefBg(definition: string): string {
 		switch (definition) {
 			case 'Très faible':
-				return 'bg-green-400 text-black';
+				return 'bg-green-400 border border-green-600 text-black';
 			case 'Faible':
-				return 'bg-yellow-300 text-black';
+				return 'bg-yellow-300 border border-yellow-500 text-black';
 			case 'Moyen':
-				return 'bg-orange-400 text-black';
+				return 'bg-orange-400 border border-orange-600 text-black';
 			case 'Fort':
-				return 'bg-red-500 text-black';
+				return 'bg-red-500 border border-red-600 text-black';
 			case 'Très fort':
-				return 'bg-red-700 text-black';
+				return 'bg-red-700 border border-red-800 text-black';
 			case 'Critique':
-				return 'bg-red-900 text-white';
+				return 'bg-red-900 border border-red-950 text-white';
 			default:
-				return 'bg-white text-black';
+				return 'bg-white border border-gray-300 text-black';
 		}
 	}
 	function getImpactRowBg(row: ImpactRow): string {
@@ -3010,15 +3010,15 @@
 	function getFrequenceDefBg(definition: string): string {
 		switch (definition) {
 			case 'Risque Faible':
-				return 'bg-green-400 text-black';
+				return 'bg-green-400 border border-green-600 text-black';
 			case 'Risque Modéré':
-				return 'bg-yellow-300 text-black';
+				return 'bg-yellow-300 border border-yellow-500 text-black';
 			case 'Risque Elevé':
-				return 'bg-orange-400 text-black';
+				return 'bg-orange-400 border border-orange-600 text-black';
 			case 'Risque Extrême':
-				return 'bg-red-500 text-black';
+				return 'bg-red-500 border border-red-600 text-black';
 			default:
-				return 'bg-white text-black';
+				return 'bg-white border border-gray-300 text-black';
 		}
 	}
 	function getFrequenceRowBg(row: Row): string {
@@ -3028,17 +3028,17 @@
 	function getEfficaciteDefBg(signification: string): string {
 		switch (signification) {
 			case 'Insuffisant':
-				return 'bg-[#ff0000] text-black';
+				return 'bg-[#ff0000] border border-[#cc0000] text-black';
 			case 'Faible':
-				return 'bg-[#ffc000] text-black';
+				return 'bg-[#ffc000] border border-[#e0a800] text-black';
 			case 'Acceptable':
-				return 'bg-[#ffff00] text-black';
+				return 'bg-[#ffff00] border border-[#d4d400] text-black';
 			case 'Efficace':
-				return 'bg-[#92d050] text-black';
+				return 'bg-[#92d050] border border-[#7ab83e] text-black';
 			case 'Exemplaire':
-				return 'bg-[#00b050] text-white';
+				return 'bg-[#00b050] border border-[#009040] text-white';
 			default:
-				return 'bg-white text-black';
+				return 'bg-white border border-gray-300 text-black';
 		}
 	}
 	function getEfficaciteRowBg(row: EfficaciteRow): string {
@@ -4119,6 +4119,18 @@
     .methode-risque-nearsecure-page table textarea:focus {
         box-shadow: 0 0 0 1px #d1d5db;
     }
+    /* Cellules colorées (ex. Définition Tableau 1 Aide-Risque) : pas de bordure/ombre grise pour garder la case entièrement colorée */
+    .methode-risque-nearsecure-page table .cell-colored-definition input,
+    .methode-risque-nearsecure-page table .cell-colored-definition textarea {
+        border-color: transparent !important;
+    }
+    .methode-risque-nearsecure-page table .cell-colored-definition input:hover,
+    .methode-risque-nearsecure-page table .cell-colored-definition input:focus,
+    .methode-risque-nearsecure-page table .cell-colored-definition textarea:hover,
+    .methode-risque-nearsecure-page table .cell-colored-definition textarea:focus {
+        border-color: transparent !important;
+        box-shadow: none !important;
+    }
     /* Sections Aide-Risque / Échelle PTR en affichage seul : champs non modifiables */
     .readonly-scales-section input,
     .readonly-scales-section textarea,
@@ -4126,6 +4138,11 @@
         pointer-events: none !important;
         background: #f3f4f6 !important;
         cursor: default;
+    }
+    /* En lecture seule, les inputs des cellules colorées gardent le fond de la cellule (transparent) */
+    .readonly-scales-section .cell-colored-definition input,
+    .readonly-scales-section .cell-colored-definition textarea {
+        background: transparent !important;
     }
 </style>
 
@@ -5397,7 +5414,7 @@
 									<td class="px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={probaRows[i].echelle} />
 									</td>
-									<td class={`px-4 py-2 border border-black ${getProbaRowBg(row)}`}>
+									<td class={`px-4 py-2 cell-colored-definition ${getProbaRowBg(row)}`}>
 										<input class="w-full border border-transparent bg-transparent font-semibold" type="text" bind:value={probaRows[i].definition} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
@@ -5515,7 +5532,7 @@
 									<td class="px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={impactRows[i].echelle} />
 									</td>
-									<td class={`px-4 py-2 border border-black ${getImpactRowBg(row)}`}>
+									<td class={`px-4 py-2 cell-colored-definition ${getImpactRowBg(row)}`}>
 										<input class="w-full border border-transparent bg-transparent font-semibold" type="text" bind:value={impactRows[i].definition} />
 									</td>
 									{#each impactDefinitionsRows as def, idx}
@@ -5597,7 +5614,7 @@
 									<td class="px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={frequenceRisqueRows[i].echelle} />
 									</td>
-									<td class={`px-4 py-2 border border-black ${getFrequenceRowBg(row)}`}>
+									<td class={`px-4 py-2 cell-colored-definition ${getFrequenceRowBg(row)}`}>
 										<input class="w-full border border-transparent bg-transparent font-semibold" type="text" bind:value={frequenceRisqueRows[i].definition} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
@@ -5739,7 +5756,7 @@
 									<td class="px-3 py-2 text-center border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold text-center" type="text" bind:value={efficaciteRows[i].niveau} />
 									</td>
-									<td class={`px-3 py-2 text-center font-bold border border-black ${getEfficaciteRowBg(row)}`}>
+									<td class={`px-3 py-2 text-center font-bold cell-colored-definition ${getEfficaciteRowBg(row)}`}>
 										<input class="w-full border border-transparent bg-transparent font-semibold text-center" type="text" bind:value={efficaciteRows[i].signification} />
 									</td>
 									<td colspan="3" class="px-3 py-3 text-left align-middle border border-black bg-white align-top">
@@ -6706,7 +6723,7 @@
 									<td class="px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={probaRows[i].echelle} />
 									</td>
-									<td class={`px-4 py-2 border border-black ${getProbaRowBg(row)}`}>
+									<td class={`px-4 py-2 cell-colored-definition ${getProbaRowBg(row)}`}>
 										<input class="w-full border border-transparent bg-transparent font-semibold" type="text" bind:value={probaRows[i].definition} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white align-top">
@@ -6824,7 +6841,7 @@
 									<td class="px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={impactRows[i].echelle} />
 									</td>
-									<td class={`px-4 py-2 border border-black ${getImpactRowBg(row)}`}>
+									<td class={`px-4 py-2 cell-colored-definition ${getImpactRowBg(row)}`}>
 										<input class="w-full border border-transparent bg-transparent font-semibold" type="text" bind:value={impactRows[i].definition} />
 									</td>
 									{#each impactDefinitionsRows as def, idx}
@@ -6906,7 +6923,7 @@
 									<td class="px-4 py-2 text-black border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm" type="text" bind:value={frequenceRisqueRows[i].echelle} />
 									</td>
-									<td class={`px-4 py-2 border border-black ${getFrequenceRowBg(row)}`}>
+									<td class={`px-4 py-2 cell-colored-definition ${getFrequenceRowBg(row)}`}>
 										<input class="w-full border border-transparent bg-transparent font-semibold" type="text" bind:value={frequenceRisqueRows[i].definition} />
 									</td>
 									<td class="px-4 py-2 text-black border border-black bg-white">
@@ -7048,7 +7065,7 @@
 									<td class="px-3 py-2 text-center border border-black bg-white">
 										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold text-center" type="text" bind:value={efficaciteRows[i].niveau} />
 									</td>
-									<td class={`px-3 py-2 text-center font-bold border border-black ${getEfficaciteRowBg(row)}`}>
+									<td class={`px-3 py-2 text-center font-bold cell-colored-definition ${getEfficaciteRowBg(row)}`}>
 										<input class="w-full border border-transparent bg-transparent font-semibold text-center" type="text" bind:value={efficaciteRows[i].signification} />
 									</td>
 									<td colspan="3" class="px-3 py-3 text-left align-middle border border-black bg-white align-top">
