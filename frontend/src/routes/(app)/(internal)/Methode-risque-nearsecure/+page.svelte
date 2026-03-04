@@ -3446,14 +3446,14 @@
 	function getPartFromCodeRisque(code: string): number {
 		const c = (code || '').trim().toUpperCase().replace(/O/g, '0');
 		if (!c) return 0;
-		if (c.includes('DSI-R-PSE')) return 2;
-		if (c.includes('DSI-R-SP')) return 1;
-		if (c.includes('DSI-R-CI')) return 3;
-		if (c.includes('DSI-R-CF')) return 4;
-		if (c.includes('DSI-R-AI')) return 5;
-		if (c.includes('DSI-R-MP')) return 6;
-		if (c.includes('DSI-R-CL')) return 7;
-		if (c.includes('DSI-R-TIER')) return 8;
+		if (c.includes('R-PSE')) return 2;
+		if (c.includes('R-SP')) return 1;
+		if (c.includes('R-CI')) return 3;
+		if (c.includes('R-CF')) return 4;
+		if (c.includes('R-AI')) return 5;
+		if (c.includes('R-MP')) return 6;
+		if (c.includes('R-CL')) return 7;
+		if (c.includes('R-TIER')) return 8;
 		return 0;
 	}
 
