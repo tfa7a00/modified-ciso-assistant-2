@@ -1720,7 +1720,7 @@
 		if (selectedSheets.has('ptr')) {
 		const ptrHeaders = [
 			'REF Risque', 'Corresp. ISO27001, annexe A', 'Propriétaire du risque', 'Niveau du risque net', 'Décision', 'ID PTR', 'Action à mettre en place',
-			'Type de l\'action', 'Porteur de l\'action', 'Priorité', 'Périodicité', 'Complexité', 'Echéance', 'Etat d\'avancement'
+			'Type de l\'action', 'Porteur de l\'action', 'Priorité', 'Durée de mise en oeuvre', 'Complexité', 'Echéance', 'Etat d\'avancement'
 		];
 		const wsPTR = wb.addWorksheet('PTR', { views: [{ showGridLines: true }] });
 		wsPTR.addRow(['PTR - Plan de traitement des risques']).font = { bold: true, size: 14 };
@@ -1753,7 +1753,7 @@
 				const cell = row.getCell(10);
 				applyCellStyle(cell, { fill: argbPriorite, border: true });
 			}
-			// Couleur périodicité (col 11)
+			// Couleur Durée de mise en oeuvre (col 11)
 			const perRow = periodiciteRows.find((p) => p.periodicite === r.periodicite);
 			const argbPer = perRow ? tailwindToExcelArgb(perRow.bgColor) : null;
 			if (argbPer) {
@@ -1776,8 +1776,8 @@
 		wsEchelle.addRow(['Échelle-PTR ']).font = { bold: true, size: 14 };
 		wsEchelle.addRow([]);
 		const YELLOW_500_HEADER = 'FFEAB308'; // bg-yellow-500, texte blanc comme à l'écran
-		wsEchelle.addRow(['Table 1 : Périodicité / Durée']).font = { bold: true };
-		const rowPerHeader = wsEchelle.addRow(['Périodicité', 'Durée']);
+		wsEchelle.addRow(['Table 1 : Durée de mise en oeuvre ']).font = { bold: true };
+		const rowPerHeader = wsEchelle.addRow(['Durée de mise en oeuvre', 'Description']);
 		rowPerHeader.eachCell((cell) => {
 			cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: YELLOW_500_HEADER } };
 			cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
@@ -5887,13 +5887,13 @@
 			<section class="space-y-6  rounded-xl p-6  mt-8">
 				<h3 class="text-lg font-semibold text-gray-900">Échelle PTR</h3>
 			<section class="space-y-4">
-				<h3 class="text-lg font-semibold text-gray-900">Table 1&nbsp;: Périodicité / Durée</h3>
+				<h3 class="text-lg font-semibold text-gray-900">Table 1&nbsp;: Durée de mise en oeuvre </h3>
 				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
 					<table class="min-w-full text-sm border-collapse border border-black">
 						<thead>
 							<tr>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Périodicité</th>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Durée</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Durée de mise en oeuvre</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Description</th>
 								{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
 									<th class="px-2 py-2 text-center font-semibold text-white bg-yellow-500 border border-black min-w-[120px]">Couleur</th>
 									<th class="px-2 py-2 text-center font-semibold text-white bg-yellow-500 border border-black">Actions</th>
@@ -7266,7 +7266,7 @@
 								Priorité
 							</th>
 							<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
-								Périodicité
+								Durée de mise en oeuvre
 							</th>
 							<th class="px-4 py-3 text-left text-sm font-bold text-gray-900 border border-gray-300">
 								Complexité
@@ -7535,13 +7535,13 @@
 			</div>
 
 			<section class="space-y-4">
-				<h3 class="text-lg font-semibold text-gray-900">Table 1&nbsp;: Périodicité / Durée</h3>
+				<h3 class="text-lg font-semibold text-gray-900">Table 1&nbsp;: Durée de mise en oeuvre </h3>
 				<div class="overflow-hidden rounded-lg border border-black bg-white shadow-sm">
 					<table class="min-w-full text-sm border-collapse border border-black">
 						<thead>
 							<tr>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Périodicité</th>
-								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Durée</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Durée de mise en oeuvre</th>
+								<th class="px-4 py-2 text-left font-semibold text-white bg-yellow-500 border border-black">Description</th>
 								{#if (editModeEchellePtr && !readOnlyEchellePtr) || parametrageEditPtr}
 									<th class="px-2 py-2 text-center font-semibold text-white bg-yellow-500 border border-black min-w-[120px]">Couleur</th>
 									<th class="px-2 py-2 text-center font-semibold text-white bg-yellow-500 border border-black">Actions</th>
