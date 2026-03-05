@@ -4340,7 +4340,7 @@
 			{/if}
 		</div>
 		<p class="text-gray-600 max-w-3xl">
-			Cette page regroupe les éléments de La méthode NearSecure (contrôle du document, registre de classification, aides, cartographie des risques, PTR et échelle PTR). Vous pouvez créer plusieurs projets : ils partagent les mêmes tableaux de référence et échelles (Aide-Classification, Aide-Risque, PTR, etc.) ; seules les données	métier (contrôle du document, registre, cartographie) diffèrent par projet. Les sections ci-dessous ne modifient pas le moteur de scoring standard de CISO Assistant, mais servent de guide pour la méthode NearSecure.
+			Cette page regroupe les éléments de La méthode NearSecure (contrôle du document, registre de classification, aides, cartographie des risques, PTR et échelle PTR).  Les sections ci-dessous ne modifient pas le moteur de scoring standard de CISO Assistant, mais servent de guide pour la méthode NearSecure.
 		</p>
 	</section>
 
