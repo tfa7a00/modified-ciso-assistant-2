@@ -137,6 +137,7 @@
 		| 'aide-classification'
 		| 'cartographie-risques'
 		| 'aide-risque'
+		| 'synthese'
 		| 'ptr'
 		| 'echelle-ptr'
 		| 'parametrage';
@@ -155,6 +156,7 @@
 		'aide-classification',
 		'cartographie-risques',
 		'aide-risque',
+		'synthese',
 		'ptr',
 		'echelle-ptr'
 	];
@@ -164,6 +166,7 @@
 		'aide-classification': 'Aide-Classification',
 		'cartographie-risques': 'Cartographie des risques',
 		'aide-risque': 'Aide-Risque',
+		'synthese': 'Synthèse',
 		'ptr': 'PTR',
 		'echelle-ptr': 'Échelle-PTR'
 	};
@@ -1716,6 +1719,12 @@
 		});
 		}
 
+		// --- Feuille Synthèse (vide pour l’instant) ---
+		if (selectedSheets.has('synthese')) {
+		const wsSynthese = wb.addWorksheet('Synthese', { views: [{ showGridLines: true }] });
+		wsSynthese.addRow(['Synthèse - Cartographie des risques']).font = { bold: true, size: 14 };
+		}
+
 		// --- Feuille 6 : PTR (libellés et couleur d'en-tête comme à l'écran : #FFC000) ---
 		if (selectedSheets.has('ptr')) {
 		const ptrHeaders = [
@@ -2608,7 +2617,7 @@
 	}
 
 	function applyProjectData(data: ProjectData) {
-		const sectionIds: SectionId[] = ['controle-document', 'registre-classification', 'aide-classification', 'cartographie-risques', 'aide-risque', 'ptr', 'echelle-ptr', 'parametrage'];
+		const sectionIds: SectionId[] = ['controle-document', 'registre-classification', 'aide-classification', 'cartographie-risques', 'aide-risque', 'synthese', 'ptr', 'echelle-ptr', 'parametrage'];
 		const cartoViews = ['all', 'identification', 'brut', 'net', 'ptr'] as const;
 		if (data.cartoRows && Array.isArray(data.cartoRows)) {
 			const arr = (data.cartoRows as CartoRow[]).map((r, i) => {
@@ -2831,7 +2840,7 @@
 			return;
 		}
 		// Legacy: état mono-projet (tout dans un seul objet)
-		const sectionIds: SectionId[] = ['controle-document', 'registre-classification', 'aide-classification', 'cartographie-risques', 'aide-risque', 'ptr', 'echelle-ptr', 'parametrage'];
+		const sectionIds: SectionId[] = ['controle-document', 'registre-classification', 'aide-classification', 'cartographie-risques', 'aide-risque', 'synthese', 'ptr', 'echelle-ptr', 'parametrage'];
 		const cartoViews = ['all', 'identification', 'brut', 'net', 'ptr'] as const;
 		// Définitions des impacts (avant cartoRows pour sync)
 		if (state.impactDefinitionsRows && Array.isArray(state.impactDefinitionsRows) && (state.impactDefinitionsRows as ImpactDefinition[]).length > 0) {
@@ -4468,6 +4477,17 @@
 			on:click={() => (activeSection = 'aide-risque')}
 		>
 			Aide-Risque
+		</button>
+		<button
+			type="button"
+			class={`px-3 py-1.5 text-sm rounded-md border ${
+				activeSection === 'synthese'
+					? 'bg-sky-600 text-white border-sky-600'
+					: 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+			}`}
+			on:click={() => (activeSection = 'synthese')}
+		>
+			Synthèse
 		</button>
 		<button
 			type="button"
@@ -7194,6 +7214,12 @@
 				{/if}
 				
 			</section>
+		</section>
+	{:else if activeSection === 'synthese'}
+		<section class="space-y-8 pb-24">
+			<div class="flex items-center justify-between gap-4 flex-wrap">
+				<h2 class="text-xl font-semibold text-gray-900">Synthèse</h2>
+			</div>
 		</section>
 	{:else if activeSection === 'ptr'}
 		<section class="space-y-4">
