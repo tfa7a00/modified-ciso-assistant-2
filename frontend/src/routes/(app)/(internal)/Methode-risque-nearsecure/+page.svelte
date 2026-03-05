@@ -514,18 +514,25 @@
 		return getNiveauFromIpc(getIpcResiduel(row));
 	}
 
-	/** Taux de réduction DMR/PTR (0-1) pour score 1-5 — barème carto_efficacite.xlsx : 1→15%, 2→45%, 3→70%, 4→90%, 5→98% */
+	/** Taux de réduction DMR (0-1) depuis Aide-Risque → "Niveau d'efficacité" (efficaciteRows.valeur) */
 	function getTauxReductionEfficacite(score: string | number | null | undefined): number | null {
-		const n = typeof score === 'number' ? (Number.isFinite(score) ? score : null) : parseNum(score as string);
-		if (n === null || n < 1 || n > 5) return null;
-		const taux: Record<number, number> = { 1: 0.15, 2: 0.45, 3: 0.7, 4: 0.9, 5: 0.98 };
-		return taux[Math.round(n)] ?? null;
+		if (score === null || score === undefined || String(score).trim() === '') return null;
+		// Les niveaux étant éditables (ajout/suppression), on fait un lookup sur la table plutôt que sur un barème fixe
+		return getEfficaciteValeurByNiveau(String(score).trim());
 	}
 
-	/** Niveau d'efficacité (AK/AQ) : 1→Insuffisant, 2→Faible, 3→Acceptable, 4→Efficace, 5→Exemplaire */
+	/** Niveau d'efficacité (AK/AQ) : libellé depuis Aide-Risque → efficaciteRows.signification (niveaux éditables) */
 	function getNiveauEfficaciteLabel(score: string | number | null | undefined): string {
+		if (score === null || score === undefined || String(score).trim() === '') return '';
+		const key = String(score).trim();
+
+		// 1) Source de vérité : tableau Aide-Risque (éditable)
+		const row = efficaciteRows.find((r) => String(r.niveau).trim() === key);
+		if (row && row.signification) return String(row.signification).trim();
+
+		// 2) Fallback legacy : si score numérique 1-5
 		const n = typeof score === 'number' ? (Number.isFinite(score) ? score : null) : parseNum(score as string);
-		if (n === null || n < 1 || n > 5) return '';
+		if (n === null) return '';
 		const labels: Record<number, string> = { 1: 'Insuffisant', 2: 'Faible', 3: 'Acceptable', 4: 'Efficace', 5: 'Exemplaire' };
 		return labels[Math.round(n)] ?? '';
 	}
@@ -3347,15 +3354,31 @@
 	}
 	function insererEfficaciteAvant(index: number) {
 		efficaciteRows = insererLigneAvant(efficaciteRows, index, defaultEfficaciteRow());
+		saveCustomMethodState();
 	}
 	function insererEfficaciteApres(index: number) {
 		efficaciteRows = insererLigneApres(efficaciteRows, index, defaultEfficaciteRow());
+		saveCustomMethodState();
 	}
 	function ajouterEfficacite() {
 		efficaciteRows = [...efficaciteRows, defaultEfficaciteRow()];
+		saveCustomMethodState();
 	}
 	function supprimerEfficacite(index: number) {
 		efficaciteRows = supprimerLigneAt(efficaciteRows, index);
+		saveCustomMethodState();
+	}
+
+	/**
+	 * Les binds sur efficaciteRows[i].x sont des mutations profondes : on force l'invalidation
+	 * pour que la cartographie recalcule immédiatement, et on sauvegarde sur validation.
+	 */
+	function invalidateEfficaciteRows() {
+		efficaciteRows = [...efficaciteRows];
+	}
+	function commitEfficaciteRows() {
+		invalidateEfficaciteRows();
+		saveCustomMethodState();
 	}
 	function getMatriceColumnCount(): number {
 		return matriceRisqueRows[0]?.valeurs?.length ?? 5;
@@ -5814,18 +5837,18 @@
 							{#each efficaciteRows as row, i}
 								<tr class="border border-black">
 									<td class="cell-bg-white px-3 py-2 text-center border border-black bg-white">
-										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold text-center" type="text" bind:value={efficaciteRows[i].niveau} />
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold text-center" type="text" bind:value={efficaciteRows[i].niveau} on:input={invalidateEfficaciteRows} on:blur={commitEfficaciteRows} />
 									</td>
 									<td class={`px-3 py-2 text-center font-bold cell-colored-definition ${getEfficaciteRowBg(row)}`}>
-										<input class="w-full border border-transparent bg-transparent font-semibold text-center" type="text" bind:value={efficaciteRows[i].signification} />
+										<input class="w-full border border-transparent bg-transparent font-semibold text-center" type="text" bind:value={efficaciteRows[i].signification} on:input={invalidateEfficaciteRows} on:blur={commitEfficaciteRows} />
 									</td>
 									<td colspan="3" class="cell-bg-white px-3 py-3 text-left align-middle border border-black bg-white align-top">
-										<textarea class="w-full min-h-[120px] min-w-0 border border-gray-300 rounded px-2 py-1.5 text-base whitespace-pre-wrap" bind:value={efficaciteRows[i].descriptif} placeholder="Descriptif du niveau…"></textarea>									</td>
+										<textarea class="w-full min-h-[120px] min-w-0 border border-gray-300 rounded px-2 py-1.5 text-base whitespace-pre-wrap" bind:value={efficaciteRows[i].descriptif} on:input={invalidateEfficaciteRows} on:blur={commitEfficaciteRows} placeholder="Descriptif du niveau…"></textarea>									</td>
 									<td class="cell-bg-white px-3 py-2 text-center border border-black bg-white">
-										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold text-center" type="text" bind:value={efficaciteRows[i].intervalle} placeholder="0 % – 30 %" />
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold text-center" type="text" bind:value={efficaciteRows[i].intervalle} on:input={invalidateEfficaciteRows} on:blur={commitEfficaciteRows} placeholder="0 % – 30 %" />
 									</td>
 									<td class="cell-bg-white px-3 py-2 text-center border border-black bg-white">
-										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm text-center" type="text" inputmode="decimal" bind:value={efficaciteRows[i].valeur} placeholder="0.15" />
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm text-center" type="text" inputmode="decimal" bind:value={efficaciteRows[i].valeur} on:input={invalidateEfficaciteRows} on:blur={commitEfficaciteRows} placeholder="0.15" />
 									</td>
 									{#if true}
 										<td class="px-2 py-2 border border-black bg-gray-100">
@@ -7127,18 +7150,18 @@
 							{#each efficaciteRows as row, i}
 								<tr class="border border-black">
 									<td class="cell-bg-white px-3 py-2 text-center border border-black bg-white">
-										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold text-center" type="text" bind:value={efficaciteRows[i].niveau} />
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold text-center" type="text" bind:value={efficaciteRows[i].niveau} on:input={invalidateEfficaciteRows} on:blur={commitEfficaciteRows} />
 									</td>
 									<td class={`px-3 py-2 text-center font-bold cell-colored-definition ${getEfficaciteRowBg(row)}`}>
-										<input class="w-full border border-transparent bg-transparent font-semibold text-center" type="text" bind:value={efficaciteRows[i].signification} />
+										<input class="w-full border border-transparent bg-transparent font-semibold text-center" type="text" bind:value={efficaciteRows[i].signification} on:input={invalidateEfficaciteRows} on:blur={commitEfficaciteRows} />
 									</td>
 									<td colspan="3" class="cell-bg-white px-3 py-3 text-left align-middle border border-black bg-white align-top">
-										<textarea class="w-full min-h-[120px] min-w-0 border border-gray-300 rounded px-2 py-1.5 text-base whitespace-pre-wrap" bind:value={efficaciteRows[i].descriptif} placeholder="Descriptif du niveau…"></textarea>									</td>
+										<textarea class="w-full min-h-[120px] min-w-0 border border-gray-300 rounded px-2 py-1.5 text-base whitespace-pre-wrap" bind:value={efficaciteRows[i].descriptif} on:input={invalidateEfficaciteRows} on:blur={commitEfficaciteRows} placeholder="Descriptif du niveau…"></textarea>									</td>
 									<td class="cell-bg-white px-3 py-2 text-center border border-black bg-white">
-										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold text-center" type="text" bind:value={efficaciteRows[i].intervalle} placeholder="0 % – 30 %" />
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-bold text-center" type="text" bind:value={efficaciteRows[i].intervalle} on:input={invalidateEfficaciteRows} on:blur={commitEfficaciteRows} placeholder="0 % – 30 %" />
 									</td>
 									<td class="cell-bg-white px-3 py-2 text-center border border-black bg-white">
-										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm text-center" type="text" inputmode="decimal" bind:value={efficaciteRows[i].valeur} placeholder="0.15" />
+										<input class="w-full border border-gray-300 rounded px-2 py-1 text-sm text-center" type="text" inputmode="decimal" bind:value={efficaciteRows[i].valeur} on:input={invalidateEfficaciteRows} on:blur={commitEfficaciteRows} placeholder="0.15" />
 									</td>
 									{#if editModeAideRisque && !readOnlyAideRisque}
 										<td class="px-2 py-2 border border-black bg-gray-100">
