@@ -5,6 +5,7 @@
 	import { beforeNavigate } from '$app/navigation';
 	import ExcelJS from 'exceljs';
 	import DonutChart from '$lib/components/Chart/DonutChart.svelte';
+	import GroupedBarChart from '$lib/components/Chart/GroupedBarChart.svelte';
 
 	const METHODE_RISQUE_NEARSECURE_STORAGE_KEY = 'ciso-assistant-methode-risque-nearsecure';
 	const METHODE_RISQUE_NEARSECURE_BACKUP_KEY = 'ciso-assistant-methode-risque-nearsecure-backup';
@@ -3981,6 +3982,28 @@
 		});
 	})();
 
+	/** Données pour le bar chart de synthèse : x = libellés familles (sans préfixe "1 - "), y = valeur (I×P×C / niveau), 3 barres par famille. Première famille avec retours à la ligne pour lisibilité. */
+	$: syntheseBarChartCategories = syntheseSignificationParFamille.map((f, i) => {
+		const label = f.label.replace(/^\d+\s*-\s*/, '').trim();
+		// Première catégorie : "Sinistres physiques / Evènements naturels / Perturbations..." → 3 lignes
+		if (i === 0) return label.replace(/\s*\/\s*/g, '\n');
+		return label;
+	});
+	$: syntheseBarChartSeries = (() => {
+		const familles = syntheseSignificationParFamille;
+		return [
+			{ name: 'Risque Brut', data: familles.map((f) => f.maxBrutIpc ?? 0) },
+			{
+				name: 'Risque Net',
+				data: cartoVersion === 'A' ? familles.map((f) => f.maxNetIpc ?? 0) : familles.map((f) => f.maxNetIpcB ?? 0)
+			},
+			{
+				name: 'Risque Résiduel',
+				data: cartoVersion === 'A' ? familles.map((f) => f.maxResiduelIpc ?? 0) : familles.map((f) => f.maxResiduelIpcB ?? 0)
+			}
+		];
+	})();
+
 	// Function to add a new row
 	function addRow() {
 		const newRow = {
@@ -7339,6 +7362,29 @@
 						</tbody>
 					</table>
 				</div>
+			</section>
+
+			<!-- Bar chart : Signification du risque (y) par Famille de risques (x), 3 barres par famille -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">Graphique – Signification du risque par famille</h3>
+				<p class="text-sm text-gray-600">
+					Axe vertical : valeur du risque (I×P×C ou niveau). Axe horizontal : familles de risques. Trois barres par famille : Risque Brut, Risque Net, Risque Résiduel.
+				</p>
+				{#key `${cartoVersion}-${syntheseBarChartCategories.length}-${syntheseBarChartSeries.map((s) => s.data.join(',')).join('|')}`}
+					<div class="w-full min-h-[320px] rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+						<GroupedBarChart
+							name="synthese-signification-risque"
+							title=""
+							categories={syntheseBarChartCategories}
+							series={syntheseBarChartSeries}
+							colors={['#ef4444', '#f97316', '#22c55e']}
+							barCategoryGap="45%"
+							width="w-full"
+							height="h-80"
+							classesContainer="min-h-[20rem]"
+						/>
+					</div>
+				{/key}
 			</section>
 		</section>
 	{:else if activeSection === 'ptr'}

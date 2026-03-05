@@ -11,6 +11,10 @@
 		title?: string;
 		categories: string[];
 		series: Series[];
+		/** Couleurs par série (ordre : première série = index 0). Ex. ['#ef4444', '#f97316', '#22c55e'] */
+		colors?: string[];
+		/** Espace entre les catégories (ex. '40%' pour plus d'écart entre les groupes de barres). */
+		barCategoryGap?: string;
 		width?: string;
 		height?: string;
 		classesContainer?: string;
@@ -21,6 +25,8 @@
 		title = '',
 		categories,
 		series,
+		colors = [],
+		barCategoryGap,
 		width = 'w-auto',
 		height = 'h-full',
 		classesContainer = ''
@@ -73,10 +79,12 @@
 				allowDecimals: false,
 				minInterval: 1
 			},
-			series: series.map((s) => ({
+			series: series.map((s, i) => ({
 				name: s.name,
 				type: 'bar',
 				data: s.data,
+				...(barCategoryGap && { barCategoryGap }),
+				itemStyle: colors[i] ? { color: colors[i] } : undefined,
 				emphasis: {
 					focus: 'series'
 				}
