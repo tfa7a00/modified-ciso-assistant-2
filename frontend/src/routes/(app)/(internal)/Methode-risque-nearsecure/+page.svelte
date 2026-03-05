@@ -3905,6 +3905,82 @@
 		}));
 	})();
 
+	/** Ordre des significations du risque pour calcul du max (Faible < Modéré < Élevé < Extrême) */
+	const SIGNIFICATION_ORDER: string[] = ['Risque Faible', 'Risque Modéré', 'Risque Élevé', 'Risque Elevé', 'Risque Extrême'];
+	function getSignificationOrder(niveau: string): number {
+		const n = (niveau || '').trim();
+		if (!n || n === '-') return -1;
+		const idx = SIGNIFICATION_ORDER.indexOf(n);
+		if (idx >= 0) {
+			// Faible=0, Modéré=1, Élevé/Elevé=2, Extrême=3
+			if (idx <= 1) return idx;
+			if (n === 'Risque Extrême') return 3;
+			return 2; // Élevé ou Elevé
+		}
+		// Fallback: chercher dans les définitions du tableau fréquence
+		const defs = (frequenceRisqueRows as Row[]).map((r) => (r.definition ?? '').trim()).filter(Boolean);
+		const i = defs.indexOf(n);
+		if (i >= 0) return i;
+		return -1;
+	}
+	function getSignificationMax(niveaux: string[]): string {
+		let maxOrder = -1;
+		let maxNiveau = '-';
+		for (const n of niveaux) {
+			const o = getSignificationOrder(n);
+			if (o > maxOrder) {
+				maxOrder = o;
+				maxNiveau = n;
+			}
+		}
+		return maxOrder >= 0 ? maxNiveau : '-';
+	}
+
+	/** 8 familles de risques pour le tableau de synthèse (label affiché + clé(s) de rapprochement avec familleRisque) */
+	const SYNTHESE_FAMILLES_RISQUES: { label: string; matchKeys: string[] }[] = [
+		{ label: '1 - Sinistres physiques / Evènements naturels / Perturbations dues aux rayonnements', matchKeys: ['Sinistres physiques', 'Evènements naturels', 'Perturbations dues aux rayonnements'] },
+		{ label: '2 - Perte de services essentiels', matchKeys: ['Perte de services essentiels'] },
+		{ label: '3 - Compromission des informations', matchKeys: ['Compromission des informations'] },
+		{ label: '4 - Compromission des fonctions', matchKeys: ['Compromission des fonctions'] },
+		{ label: '5 - Acte illicite', matchKeys: ['Acte illicite'] },
+		{ label: '6 - Mise en production non maitrisée', matchKeys: ['Mise en production non maitrisée'] },
+		{ label: '7 - Conformité légale et réglementaire', matchKeys: ['Conformité légale et réglementaire'] },
+		{ label: '8 - Tiers', matchKeys: ['Tiers'] }
+	];
+	function rowBelongsToFamille(row: CartoRow, matchKeys: string[]): boolean {
+		const f = (row.familleRisque || '').trim();
+		return matchKeys.some((key) => f.includes(key) || (f && key.includes(f)));
+	}
+
+	/** Max d'une liste de nombres (null ignorés) ; null si aucun défini */
+	function maxNullable(values: (number | null)[]): number | null {
+		const defined = values.filter((v): v is number => v !== null && Number.isFinite(v));
+		return defined.length === 0 ? null : Math.max(...defined);
+	}
+
+	/** Synthèse par famille : valeurs numériques I*P*C (Sans Efficacité) ou niveaux numériques (Avec Efficacité) */
+	$: syntheseSignificationParFamille = (() => {
+		return SYNTHESE_FAMILLES_RISQUES.map(({ label, matchKeys }) => {
+			const rows = cartoRows.filter((r) => rowBelongsToFamille(r, matchKeys));
+			// Risque Brut : toujours I*P*C (numérique)
+			const maxBrutIpc = maxNullable(rows.map((r) => getIpcBrut(r)));
+			// Sans Efficacité (A) : Risque Net et Résiduel = I*P*C numériques
+			const maxNetIpc = maxNullable(rows.map((r) => getIpcNet(r)));
+			const maxResiduelIpc = maxNullable(rows.map((r) => getIpcResiduel(r)));
+			// Avec Efficacité (B) : Risque Net et Résiduel = valeurs numériques (niveau de risque net B, niveau résiduel B)
+			const maxNetIpcB = maxNullable(rows.map((r) => getIpcNetB(r)));
+			const maxResiduelIpcB = maxNullable(rows.map((r) => getNiveauRisqueResiduelB(r)));
+			return {
+				label,
+				maxBrutIpc,
+				maxNetIpc,
+				maxResiduelIpc,
+				maxNetIpcB,
+				maxResiduelIpcB
+			};
+		});
+	})();
+
 	// Function to add a new row
 	function addRow() {
 		const newRow = {
@@ -7220,6 +7296,50 @@
 			<div class="flex items-center justify-between gap-4 flex-wrap">
 				<h2 class="text-xl font-semibold text-gray-900">Synthèse</h2>
 			</div>
+
+			<!-- Tableau de synthèse de Signification du risque par famille (I*P*C ou Niveau selon version) -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">Tableau de synthèse de Signification du risque</h3>
+				<p class="text-sm text-gray-600">
+					{cartoVersion === 'A' ? 'Sans Efficacité : valeurs I×P×C (risque brut, net, résiduel).' : 'Avec Efficacité : valeurs numériques I×P×C (risque brut) et niveaux de risque numériques (net, résiduel).'}
+				</p>
+				<div class="overflow-x-auto rounded-lg border border-gray-300 shadow-sm">
+					<table class="min-w-full border-collapse bg-white text-sm">
+						<thead>
+							<tr class="bg-slate-700 text-white">
+								<th class="px-4 py-3 text-left font-semibold border border-gray-300">Famille de risques</th>
+								<th class="px-4 py-3 text-center font-semibold border border-gray-300">Risque Brut</th>
+								<th class="px-4 py-3 text-center font-semibold border border-gray-300">Risque Net</th>
+								<th class="px-4 py-3 text-center font-semibold border border-gray-300">Risque Résiduel</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each syntheseSignificationParFamille as { label, maxBrutIpc, maxNetIpc, maxResiduelIpc, maxNetIpcB, maxResiduelIpcB }}
+								<tr class="border border-gray-200 hover:bg-gray-50">
+									<td class="px-4 py-2 border border-gray-200 align-top">{label}</td>
+									<td class="px-4 py-2 text-center border border-gray-200">
+										{maxBrutIpc != null ? Number(maxBrutIpc).toFixed(1) : '–'}
+									</td>
+									<td class="px-4 py-2 text-center border border-gray-200">
+										{#if cartoVersion === 'A'}
+											{maxNetIpc != null ? Number(maxNetIpc).toFixed(1) : '–'}
+										{:else}
+											{maxNetIpcB != null ? Number(maxNetIpcB).toFixed(1) : '–'}
+										{/if}
+									</td>
+									<td class="px-4 py-2 text-center border border-gray-200">
+										{#if cartoVersion === 'A'}
+											{maxResiduelIpc != null ? Number(maxResiduelIpc).toFixed(1) : '–'}
+										{:else}
+											{maxResiduelIpcB != null ? Number(maxResiduelIpcB).toFixed(2) : '–'}
+										{/if}
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+			</section>
 		</section>
 	{:else if activeSection === 'ptr'}
 		<section class="space-y-4">
