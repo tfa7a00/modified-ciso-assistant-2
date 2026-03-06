@@ -12,6 +12,8 @@
 		values: any[]; // Set the types for these variables later on
 		colors?: string[];
 		showPercentage?: boolean;
+		/** When true, include items with value 0 in the chart (legend + data). Default false. */
+		includeZeroValues?: boolean;
 	}
 
 	let {
@@ -24,7 +26,8 @@
 		orientation = 'vertical',
 		values = $bindable(),
 		colors = [],
-		showPercentage = false
+		showPercentage = false,
+		includeZeroValues = false
 	}: Props = $props();
 	for (const index in values) {
 		if (values[index].localName) {
@@ -44,7 +47,7 @@
 	onMount(async () => {
 		const echarts = await import('echarts');
 		let chart = echarts.init(document.getElementById(chart_id), null, { renderer: 'svg' });
-		const filteredValues = values.filter((item) => item.value > 0);
+		const filteredValues = includeZeroValues ? values : values.filter((item) => item.value > 0);
 		// specify chart configuration item and data
 		let option = {
 			tooltip: {

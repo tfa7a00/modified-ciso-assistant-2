@@ -3057,6 +3057,25 @@
 		return (row as Row & { bgColor?: string }).bgColor ?? getFrequenceDefBg(row.definition ?? '');
 	}
 
+	/** Convertit une classe Tailwind bg-* (Tableau 3.1) en couleur hex pour ECharts (pie/donut). */
+	function frequenceBgToHex(tailwindBg: string): string {
+		const m = tailwindBg.match(/#([0-9a-fA-F]{6})/);
+		if (m) return '#' + m[1];
+		const map: Record<string, string> = {
+			'green-400': '#4ade80',
+			'yellow-300': '#fde047',
+			'orange-400': '#fb923c',
+			'red-500': '#ef4444',
+			'red-700': '#b91c1c',
+			'red-900': '#7f1d1d',
+			'white': '#ffffff'
+		};
+		for (const [key, hex] of Object.entries(map)) {
+			if (tailwindBg.includes(key)) return hex;
+		}
+		return '#9ca3af';
+	}
+
 	function getEfficaciteDefBg(signification: string): string {
 		switch (signification) {
 			case 'Insuffisant':
@@ -4110,6 +4129,33 @@
 			return { label, counts };
 		});
 	})();
+
+	/** Couleur pour « – » (hors niveau) dans les pie charts : indigo, jamais proposée dans le Tableau 3.1 (niveaux = vert/jaune/orange/rouge/blanc). */
+	const SYNTHESE_PIE_COLOR_HORS_NIVEAU = '#6366f1';
+
+	/** Données pour les pie charts (Total par niveau) : valeurs + couleurs alignées sur le Tableau 3.1 */
+	function buildSynthesePieData(
+		countsList: { counts: Record<string, number> }[],
+		niveaux: string[]
+	): { values: { name: string; value: number }[]; colors: string[] } {
+		const freqRows = frequenceRisqueRows as (Row & { bgColor?: string })[];
+		const items: { name: string; value: number; color: string }[] = [];
+		niveaux.forEach((niveau, i) => {
+			const value = countsList.reduce((s, { counts }) => s + (counts[niveau] ?? 0), 0);
+			const row = freqRows[i];
+			const color = row ? frequenceBgToHex(getFrequenceRowBg(row)) : SYNTHESE_PIE_COLOR_HORS_NIVEAU;
+			items.push({ name: niveau, value, color });
+		});
+		const dashTotal = countsList.reduce((s, { counts }) => s + (counts['–'] ?? 0), 0);
+		items.push({ name: '–', value: dashTotal, color: SYNTHESE_PIE_COLOR_HORS_NIVEAU });
+		return {
+			values: items.map(({ name, value }) => ({ name, value })),
+			colors: items.map((x) => x.color)
+		};
+	}
+	$: synthesePieBrut = buildSynthesePieData(syntheseCountsBrut, syntheseNiveauxRisque);
+	$: synthesePieNet = buildSynthesePieData(syntheseCountsNet, syntheseNiveauxRisque);
+	$: synthesePieResiduel = buildSynthesePieData(syntheseCountsResiduel, syntheseNiveauxRisque);
 
 	// Function to add a new row
 	function addRow() {
@@ -7564,6 +7610,25 @@
 						</tfoot>
 					</table>
 				</div>
+				<div class="mt-4 w-full max-w-4xl mx-auto">
+					<h4 class="text-sm font-semibold text-gray-800 mb-2 text-center">Répartition par niveau (Risque Brut)</h4>
+					{#key `brut-${synthesePieBrut.values.map((v) => v.name + v.value).join('-')}`}
+						<div class="w-full min-h-[28rem] h-[32rem]">
+							<DonutChart
+								name="synthese-pie-brut"
+								s_label="Niveau de risque"
+								title=""
+								values={synthesePieBrut.values}
+								colors={synthesePieBrut.colors}
+								showPercentage={true}
+								includeZeroValues={true}
+								width="w-full"
+								height="h-full"
+								classesContainer="min-h-[28rem]"
+							/>
+						</div>
+					{/key}
+				</div>
 			</section>
 
 			<!-- Tableau 2 : Risque Net – Nombre de scénarios par famille et par niveau -->
@@ -7605,6 +7670,25 @@
 						</tfoot>
 					</table>
 				</div>
+				<div class="mt-4 w-full max-w-4xl mx-auto">
+					<h4 class="text-sm font-semibold text-gray-800 mb-2 text-center">Répartition par niveau (Risque Net)</h4>
+					{#key `net-${synthesePieNet.values.map((v) => v.name + v.value).join('-')}`}
+						<div class="w-full min-h-[28rem] h-[32rem]">
+							<DonutChart
+								name="synthese-pie-net"
+								s_label="Niveau de risque"
+								title=""
+								values={synthesePieNet.values}
+								colors={synthesePieNet.colors}
+								showPercentage={true}
+								includeZeroValues={true}
+								width="w-full"
+								height="h-full"
+								classesContainer="min-h-[28rem]"
+							/>
+						</div>
+					{/key}
+				</div>
 			</section>
 
 			<!-- Tableau 3 : Risque Résiduel – Nombre de scénarios par famille et par niveau -->
@@ -7645,6 +7729,25 @@
 							</tr>
 						</tfoot>
 					</table>
+				</div>
+				<div class="mt-4 w-full max-w-4xl mx-auto">
+					<h4 class="text-sm font-semibold text-gray-800 mb-2 text-center">Répartition par niveau (Risque Résiduel)</h4>
+					{#key `residuel-${synthesePieResiduel.values.map((v) => v.name + v.value).join('-')}`}
+						<div class="w-full min-h-[28rem] h-[32rem]">
+							<DonutChart
+								name="synthese-pie-residuel"
+								s_label="Niveau de risque"
+								title=""
+								values={synthesePieResiduel.values}
+								colors={synthesePieResiduel.colors}
+								showPercentage={true}
+								includeZeroValues={true}
+								width="w-full"
+								height="h-full"
+								classesContainer="min-h-[28rem]"
+							/>
+						</div>
+					{/key}
 				</div>
 			</section>
 		</section>
