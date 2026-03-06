@@ -6,6 +6,7 @@
 	import ExcelJS from 'exceljs';
 	import DonutChart from '$lib/components/Chart/DonutChart.svelte';
 	import GroupedBarChart from '$lib/components/Chart/GroupedBarChart.svelte';
+	import MultiSeriesRadarChart from '$lib/components/Chart/MultiSeriesRadarChart.svelte';
 
 	const METHODE_RISQUE_NEARSECURE_STORAGE_KEY = 'ciso-assistant-methode-risque-nearsecure';
 	const METHODE_RISQUE_NEARSECURE_BACKUP_KEY = 'ciso-assistant-methode-risque-nearsecure-backup';
@@ -3953,16 +3954,23 @@
 		return matchKeys.some((key) => f.includes(key) || (f && key.includes(f)));
 	}
 
+	/** Indique si une ligne de carto appartient à la famille d’index 0-7. Utilise d’abord le code risque (getPartFromCodeRisque), sinon le champ familleRisque. */
+	function rowBelongsToFamilleIndex(row: CartoRow, familyIndex: number): boolean {
+		const part = getPartFromCodeRisque(row.codeRisque ?? '');
+		if (part >= 1 && part <= 8) return part === familyIndex + 1;
+		return rowBelongsToFamille(row, SYNTHESE_FAMILLES_RISQUES[familyIndex].matchKeys);
+	}
+
 	/** Max d'une liste de nombres (null ignorés) ; null si aucun défini */
 	function maxNullable(values: (number | null)[]): number | null {
 		const defined = values.filter((v): v is number => v !== null && Number.isFinite(v));
 		return defined.length === 0 ? null : Math.max(...defined);
 	}
 
-	/** Synthèse par famille : valeurs numériques I*P*C (Sans Efficacité) ou niveaux numériques (Avec Efficacité) */
+	/** Synthèse par famille : valeurs numériques I*P*C (Sans Efficacité) ou niveaux numériques (Avec Efficacité). Les lignes sont rattachées à une famille par code risque (getPartFromCodeRisque) ou à défaut par familleRisque. */
 	$: syntheseSignificationParFamille = (() => {
-		return SYNTHESE_FAMILLES_RISQUES.map(({ label, matchKeys }) => {
-			const rows = cartoRows.filter((r) => rowBelongsToFamille(r, matchKeys));
+		return SYNTHESE_FAMILLES_RISQUES.map(({ label, matchKeys }, familyIndex) => {
+			const rows = cartoRows.filter((r) => rowBelongsToFamilleIndex(r, familyIndex));
 			// Risque Brut : toujours I*P*C (numérique)
 			const maxBrutIpc = maxNullable(rows.map((r) => getIpcBrut(r)));
 			// Sans Efficacité (A) : Risque Net et Résiduel = I*P*C numériques
@@ -4003,6 +4011,12 @@
 			}
 		];
 	})();
+
+	/** Catégories pour le radar : libellés sur une seule ligne (sans \n) pour les axes */
+	$: syntheseRadarCategories = syntheseSignificationParFamille.map((f, i) => {
+		const label = f.label.replace(/^\d+\s*-\s*/, '').trim();
+		return label.replace(/\s*\/\s*/g, ' / ');
+	});
 
 	// Function to add a new row
 	function addRow() {
@@ -7382,6 +7396,28 @@
 							width="w-full"
 							height="h-80"
 							classesContainer="min-h-[20rem]"
+						/>
+					</div>
+				{/key}
+			</section>
+
+			<!-- Radar chart : mêmes données (familles × Risque Brut / Net / Résiduel) -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">Graphique radar – Signification du risque par famille</h3>
+				<p class="text-sm text-gray-600">
+					Chaque axe = une famille de risques. Trois courbes : Risque Brut (rouge), Risque Net (orange), Risque Résiduel (vert).
+				</p>
+				{#key `${cartoVersion}-${syntheseRadarCategories.length}-${syntheseBarChartSeries.map((s) => s.data.join(',')).join('|')}`}
+					<div class="w-full rounded-lg border border-gray-200 bg-white p-4 shadow-sm flex flex-col" style="height: min(70vh, 640px); min-height: 420px;">
+						<MultiSeriesRadarChart
+							name="synthese-signification-risque-radar"
+							title=""
+							categories={syntheseRadarCategories}
+							series={syntheseBarChartSeries}
+							colors={['#ef4444', '#f97316', '#22c55e']}
+							width="w-full"
+							height="h-full"
+							classesContainer="flex-1 w-full min-h-[min(60vh,520px)]"
 						/>
 					</div>
 				{/key}
