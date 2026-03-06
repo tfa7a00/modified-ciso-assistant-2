@@ -4057,6 +4057,60 @@
 		return label.replace(/\s*\/\s*/g, ' / ');
 	});
 
+	/** Niveaux de risque (Tableau 3.1) pour les en-têtes des tableaux Famille × Niveau (définition) */
+	$: syntheseNiveauxRisque = (frequenceRisqueRows as Row[]).map((r) => (r.definition ?? '').trim()).filter(Boolean);
+
+	/** Comptage scénarios par famille et par niveau pour Risque Brut (niveau = getNiveauBrut) */
+	$: syntheseCountsBrut = (() => {
+		const niveaux = syntheseNiveauxRisque;
+		return SYNTHESE_FAMILLES_RISQUES.map(({ label }, familyIndex) => {
+			const rows = cartoRows.filter((r) => rowBelongsToFamilleIndex(r, familyIndex));
+			const counts: Record<string, number> = {};
+			niveaux.forEach((n) => (counts[n] = 0));
+			counts['–'] = 0;
+			rows.forEach((r) => {
+				const n = getNiveauBrut(r).trim() || '–';
+				if (counts[n] !== undefined) counts[n]++;
+				else counts['–']++;
+			});
+			return { label, counts };
+		});
+	})();
+
+	/** Comptage scénarios par famille et par niveau pour Risque Net (A: getNiveauNet, B: getSignificationRisqueNetB) */
+	$: syntheseCountsNet = (() => {
+		const niveaux = syntheseNiveauxRisque;
+		return SYNTHESE_FAMILLES_RISQUES.map(({ label }, familyIndex) => {
+			const rows = cartoRows.filter((r) => rowBelongsToFamilleIndex(r, familyIndex));
+			const counts: Record<string, number> = {};
+			niveaux.forEach((n) => (counts[n] = 0));
+			counts['–'] = 0;
+			rows.forEach((r) => {
+				const n = (cartoVersion === 'A' ? getNiveauNet(r) : getSignificationRisqueNetB(r)).trim() || '–';
+				if (counts[n] !== undefined) counts[n]++;
+				else counts['–']++;
+			});
+			return { label, counts };
+		});
+	})();
+
+	/** Comptage scénarios par famille et par niveau pour Risque Résiduel (A: getNiveauResiduel, B: getNiveauFromIpc(getNiveauRisqueResiduelB)) */
+	$: syntheseCountsResiduel = (() => {
+		const niveaux = syntheseNiveauxRisque;
+		return SYNTHESE_FAMILLES_RISQUES.map(({ label }, familyIndex) => {
+			const rows = cartoRows.filter((r) => rowBelongsToFamilleIndex(r, familyIndex));
+			const counts: Record<string, number> = {};
+			niveaux.forEach((n) => (counts[n] = 0));
+			counts['–'] = 0;
+			rows.forEach((r) => {
+				const n = (cartoVersion === 'A' ? getNiveauResiduel(r) : getNiveauFromIpc(getNiveauRisqueResiduelB(r))).trim() || '–';
+				if (counts[n] !== undefined) counts[n]++;
+				else counts['–']++;
+			});
+			return { label, counts };
+		});
+	})();
+
 	// Function to add a new row
 	function addRow() {
 		const newRow = {
@@ -7469,6 +7523,129 @@
 						/>
 					</div>
 				{/key}
+			</section>
+
+			<!-- Tableau 1 : Risque Brut – Nombre de scénarios par famille et par niveau (Tableau 3.1) -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">Tableau 1 : Risque Brut</h3>
+				<p class="text-sm text-gray-600">
+					Nombre de scénarios de risque par famille et par niveau de risque (échelle du Tableau 3.1 – Fréquence / probabilité d'occurrence). Les colonnes de niveaux s'adaptent aux lignes du Tableau 3.1.
+				</p>
+				<div class="overflow-x-auto rounded-lg border border-gray-300 shadow-sm">
+					<table class="min-w-full border-collapse bg-white text-sm">
+						<thead>
+							<tr class="bg-slate-700 text-white">
+								<th class="px-4 py-3 text-left font-semibold border border-gray-300 whitespace-nowrap">Famille de risques</th>
+								{#each syntheseNiveauxRisque as niveau}
+									<th class="px-3 py-3 text-center font-semibold border border-gray-300">{niveau}</th>
+								{/each}
+								<th class="px-3 py-3 text-center font-semibold border border-gray-300">–</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each syntheseCountsBrut as { label, counts }}
+								<tr class="border border-gray-200 hover:bg-gray-50">
+									<td class="px-4 py-2 border border-gray-200 align-top">{label}</td>
+									{#each syntheseNiveauxRisque as niveau}
+										<td class="px-3 py-2 text-center border border-gray-200 tabular-nums">{counts[niveau] ?? 0}</td>
+									{/each}
+									<td class="px-3 py-2 text-center border border-gray-200 tabular-nums">{counts['–'] ?? 0}</td>
+								</tr>
+							{/each}
+						</tbody>
+						<tfoot>
+							<tr class="border border-gray-200 bg-slate-100 font-semibold">
+								<td class="px-4 py-2 border border-gray-200">Total</td>
+								{#each syntheseNiveauxRisque as niveau}
+									<td class="px-3 py-2 text-center border border-gray-200 tabular-nums">{syntheseCountsBrut.reduce((s, { counts }) => s + (counts[niveau] ?? 0), 0)}</td>
+								{/each}
+								<td class="px-3 py-2 text-center border border-gray-200 tabular-nums">{syntheseCountsBrut.reduce((s, { counts }) => s + (counts['–'] ?? 0), 0)}</td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</section>
+
+			<!-- Tableau 2 : Risque Net – Nombre de scénarios par famille et par niveau -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">Tableau 2 : Risque Net</h3>
+				<p class="text-sm text-gray-600">
+					Nombre de scénarios par famille et par niveau de risque net (échelle du Tableau 3.1).
+				</p>
+				<div class="overflow-x-auto rounded-lg border border-gray-300 shadow-sm">
+					<table class="min-w-full border-collapse bg-white text-sm">
+						<thead>
+							<tr class="bg-slate-700 text-white">
+								<th class="px-4 py-3 text-left font-semibold border border-gray-300 whitespace-nowrap">Famille de risques</th>
+								{#each syntheseNiveauxRisque as niveau}
+									<th class="px-3 py-3 text-center font-semibold border border-gray-300">{niveau}</th>
+								{/each}
+								<th class="px-3 py-3 text-center font-semibold border border-gray-300">–</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each syntheseCountsNet as { label, counts }}
+								<tr class="border border-gray-200 hover:bg-gray-50">
+									<td class="px-4 py-2 border border-gray-200 align-top">{label}</td>
+									{#each syntheseNiveauxRisque as niveau}
+										<td class="px-3 py-2 text-center border border-gray-200 tabular-nums">{counts[niveau] ?? 0}</td>
+									{/each}
+									<td class="px-3 py-2 text-center border border-gray-200 tabular-nums">{counts['–'] ?? 0}</td>
+								</tr>
+							{/each}
+						</tbody>
+						<tfoot>
+							<tr class="border border-gray-200 bg-slate-100 font-semibold">
+								<td class="px-4 py-2 border border-gray-200">Total</td>
+								{#each syntheseNiveauxRisque as niveau}
+									<td class="px-3 py-2 text-center border border-gray-200 tabular-nums">{syntheseCountsNet.reduce((s, { counts }) => s + (counts[niveau] ?? 0), 0)}</td>
+								{/each}
+								<td class="px-3 py-2 text-center border border-gray-200 tabular-nums">{syntheseCountsNet.reduce((s, { counts }) => s + (counts['–'] ?? 0), 0)}</td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</section>
+
+			<!-- Tableau 3 : Risque Résiduel – Nombre de scénarios par famille et par niveau -->
+			<section class="space-y-3">
+				<h3 class="text-lg font-semibold text-gray-900">Tableau 3 : Risque Résiduel</h3>
+				<p class="text-sm text-gray-600">
+					Nombre de scénarios par famille et par niveau de risque résiduel (échelle du Tableau 3.1).
+				</p>
+				<div class="overflow-x-auto rounded-lg border border-gray-300 shadow-sm">
+					<table class="min-w-full border-collapse bg-white text-sm">
+						<thead>
+							<tr class="bg-slate-700 text-white">
+								<th class="px-4 py-3 text-left font-semibold border border-gray-300 whitespace-nowrap">Famille de risques</th>
+								{#each syntheseNiveauxRisque as niveau}
+									<th class="px-3 py-3 text-center font-semibold border border-gray-300">{niveau}</th>
+								{/each}
+								<th class="px-3 py-3 text-center font-semibold border border-gray-300">–</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each syntheseCountsResiduel as { label, counts }}
+								<tr class="border border-gray-200 hover:bg-gray-50">
+									<td class="px-4 py-2 border border-gray-200 align-top">{label}</td>
+									{#each syntheseNiveauxRisque as niveau}
+										<td class="px-3 py-2 text-center border border-gray-200 tabular-nums">{counts[niveau] ?? 0}</td>
+									{/each}
+									<td class="px-3 py-2 text-center border border-gray-200 tabular-nums">{counts['–'] ?? 0}</td>
+								</tr>
+							{/each}
+						</tbody>
+						<tfoot>
+							<tr class="border border-gray-200 bg-slate-100 font-semibold">
+								<td class="px-4 py-2 border border-gray-200">Total</td>
+								{#each syntheseNiveauxRisque as niveau}
+									<td class="px-3 py-2 text-center border border-gray-200 tabular-nums">{syntheseCountsResiduel.reduce((s, { counts }) => s + (counts[niveau] ?? 0), 0)}</td>
+								{/each}
+								<td class="px-3 py-2 text-center border border-gray-200 tabular-nums">{syntheseCountsResiduel.reduce((s, { counts }) => s + (counts['–'] ?? 0), 0)}</td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
 			</section>
 		</section>
 	{:else if activeSection === 'ptr'}
