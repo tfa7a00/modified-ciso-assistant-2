@@ -1721,10 +1721,133 @@
 		});
 		}
 
-		// --- Feuille Synthèse (vide pour l’instant) ---
+		// --- Feuille Synthèse (tableaux + données des graphiques) ---
 		if (selectedSheets.has('synthese')) {
 		const wsSynthese = wb.addWorksheet('Synthese', { views: [{ showGridLines: true }] });
 		wsSynthese.addRow(['Synthèse - Cartographie des risques']).font = { bold: true, size: 14 };
+		wsSynthese.addRow([]);
+
+		// Tableau de synthèse de Signification du risque (Famille, Risque Brut, Risque Net, Risque Résiduel)
+		wsSynthese.addRow(['Tableau de synthèse de Signification du risque']).font = { bold: true };
+		const rowSignifHeader = wsSynthese.addRow(['Famille de risques', 'Risque Brut', 'Risque Net', 'Risque Résiduel']);
+		rowSignifHeader.eachCell((cell) => {
+			cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF334155' } };
+			cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+			cell.border = EXCEL_BORDER_THIN;
+			cell.alignment = { vertical: 'middle', wrapText: true };
+		});
+		syntheseSignificationParFamille.forEach(({ label, maxBrutIpc, maxNetIpc, maxResiduelIpc, maxNetIpcB, maxResiduelIpcB }) => {
+			const netVal = cartoVersion === 'A' ? maxNetIpc : maxNetIpcB;
+			const resVal = cartoVersion === 'A' ? maxResiduelIpc : maxResiduelIpcB;
+			const row = wsSynthese.addRow([
+				label,
+				maxBrutIpc != null ? Number(maxBrutIpc).toFixed(1) : '–',
+				netVal != null ? Number(netVal).toFixed(cartoVersion === 'A' ? 1 : 2) : '–',
+				resVal != null ? Number(resVal).toFixed(cartoVersion === 'A' ? 1 : 2) : '–'
+			]);
+			applyDataRowBorder(wsSynthese, row);
+		});
+		wsSynthese.addRow([]);
+
+		// Tableau 1 : Risque Brut (Famille + colonnes par niveau + –)
+		wsSynthese.addRow(['Tableau 1 : Risque Brut']).font = { bold: true };
+		const headerBrut = ['Famille de risques', ...syntheseNiveauxRisque, '–'];
+		const rowBrutHeader = wsSynthese.addRow(headerBrut);
+		rowBrutHeader.eachCell((cell) => {
+			cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF334155' } };
+			cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+			cell.border = EXCEL_BORDER_THIN;
+			cell.alignment = { vertical: 'middle', wrapText: true };
+		});
+		syntheseCountsBrut.forEach(({ label, counts }) => {
+			const row = wsSynthese.addRow([label, ...syntheseNiveauxRisque.map((n) => counts[n] ?? 0), counts['–'] ?? 0]);
+			applyDataRowBorder(wsSynthese, row);
+		});
+		const rowBrutTotal = wsSynthese.addRow([
+			'Total',
+			...syntheseNiveauxRisque.map((n) => syntheseCountsBrut.reduce((s, { counts }) => s + (counts[n] ?? 0), 0)),
+			syntheseCountsBrut.reduce((s, { counts }) => s + (counts['–'] ?? 0), 0)
+		]);
+		applyDataRowBorder(wsSynthese, rowBrutTotal);
+		rowBrutTotal.font = { bold: true };
+		rowBrutTotal.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE2E8F0' } };
+		wsSynthese.addRow([]);
+
+		// Données graphique – Répartition par niveau (Risque Brut) pour recréer un graphique dans Excel
+		wsSynthese.addRow(['Données graphique – Répartition par niveau (Risque Brut)']).font = { bold: true };
+		const totalBrut = synthesePieBrut.values.reduce((s, v) => s + v.value, 0);
+		const rowPieBrutHeader = wsSynthese.addRow(['Niveau de risque', 'Effectif', '%']);
+		rowPieBrutHeader.eachCell((c) => { c.border = EXCEL_BORDER_THIN; c.font = { bold: true }; c.alignment = { vertical: 'middle' }; });
+		synthesePieBrut.values.forEach(({ name, value }) => {
+			const row = wsSynthese.addRow([name, value, totalBrut > 0 ? ((value / totalBrut) * 100).toFixed(1) + '%' : '0%']);
+			applyDataRowBorder(wsSynthese, row);
+		});
+		wsSynthese.addRow([]);
+
+		// Tableau 2 : Risque Net
+		wsSynthese.addRow(['Tableau 2 : Risque Net']).font = { bold: true };
+		const rowNetHeader = wsSynthese.addRow(headerBrut);
+		rowNetHeader.eachCell((cell) => {
+			cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF334155' } };
+			cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+			cell.border = EXCEL_BORDER_THIN;
+			cell.alignment = { vertical: 'middle', wrapText: true };
+		});
+		syntheseCountsNet.forEach(({ label, counts }) => {
+			const row = wsSynthese.addRow([label, ...syntheseNiveauxRisque.map((n) => counts[n] ?? 0), counts['–'] ?? 0]);
+			applyDataRowBorder(wsSynthese, row);
+		});
+		const rowNetTotal = wsSynthese.addRow([
+			'Total',
+			...syntheseNiveauxRisque.map((n) => syntheseCountsNet.reduce((s, { counts }) => s + (counts[n] ?? 0), 0)),
+			syntheseCountsNet.reduce((s, { counts }) => s + (counts['–'] ?? 0), 0)
+		]);
+		applyDataRowBorder(wsSynthese, rowNetTotal);
+		rowNetTotal.font = { bold: true };
+		rowNetTotal.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE2E8F0' } };
+		wsSynthese.addRow([]);
+
+		wsSynthese.addRow(['Données graphique – Répartition par niveau (Risque Net)']).font = { bold: true };
+		const totalNet = synthesePieNet.values.reduce((s, v) => s + v.value, 0);
+		const rowPieNetHeader = wsSynthese.addRow(['Niveau de risque', 'Effectif', '%']);
+		rowPieNetHeader.eachCell((c) => { c.border = EXCEL_BORDER_THIN; c.font = { bold: true }; c.alignment = { vertical: 'middle' }; });
+		synthesePieNet.values.forEach(({ name, value }) => {
+			const row = wsSynthese.addRow([name, value, totalNet > 0 ? ((value / totalNet) * 100).toFixed(1) + '%' : '0%']);
+			applyDataRowBorder(wsSynthese, row);
+		});
+		wsSynthese.addRow([]);
+
+		// Tableau 3 : Risque Résiduel
+		wsSynthese.addRow(['Tableau 3 : Risque Résiduel']).font = { bold: true };
+		const rowResHeader = wsSynthese.addRow(headerBrut);
+		rowResHeader.eachCell((cell) => {
+			cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF334155' } };
+			cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+			cell.border = EXCEL_BORDER_THIN;
+			cell.alignment = { vertical: 'middle', wrapText: true };
+		});
+		syntheseCountsResiduel.forEach(({ label, counts }) => {
+			const row = wsSynthese.addRow([label, ...syntheseNiveauxRisque.map((n) => counts[n] ?? 0), counts['–'] ?? 0]);
+			applyDataRowBorder(wsSynthese, row);
+		});
+		const rowResTotal = wsSynthese.addRow([
+			'Total',
+			...syntheseNiveauxRisque.map((n) => syntheseCountsResiduel.reduce((s, { counts }) => s + (counts[n] ?? 0), 0)),
+			syntheseCountsResiduel.reduce((s, { counts }) => s + (counts['–'] ?? 0), 0)
+		]);
+		applyDataRowBorder(wsSynthese, rowResTotal);
+		rowResTotal.font = { bold: true };
+		rowResTotal.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE2E8F0' } };
+		wsSynthese.addRow([]);
+
+		wsSynthese.addRow(['Données graphique – Répartition par niveau (Risque Résiduel)']).font = { bold: true };
+		const totalRes = synthesePieResiduel.values.reduce((s, v) => s + v.value, 0);
+		const rowPieResHeader = wsSynthese.addRow(['Niveau de risque', 'Effectif', '%']);
+		rowPieResHeader.eachCell((c) => { c.border = EXCEL_BORDER_THIN; c.font = { bold: true }; c.alignment = { vertical: 'middle' }; });
+		synthesePieResiduel.values.forEach(({ name, value }) => {
+			const row = wsSynthese.addRow([name, value, totalRes > 0 ? ((value / totalRes) * 100).toFixed(1) + '%' : '0%']);
+			applyDataRowBorder(wsSynthese, row);
+		});
 		}
 
 		// --- Feuille 6 : PTR (libellés et couleur d'en-tête comme à l'écran : #FFC000) ---
