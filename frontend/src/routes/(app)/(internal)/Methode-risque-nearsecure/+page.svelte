@@ -2624,15 +2624,6 @@
 		if (data.cartoRows && Array.isArray(data.cartoRows)) {
 			const arr = (data.cartoRows as CartoRow[]).map((r, i) => {
 				const merged = { ...defaultCartoRow(), ...r } as CartoRow;
-				const def = cartoRowDefaults[i];
-				if (def) {
-					for (const k of Object.keys(def) as (keyof CartoRow)[]) {
-						const val = def[k];
-						if (val === undefined) continue;
-						const current = merged[k];
-						if (current === undefined || current === '') merged[k] = val as CartoRow[keyof CartoRow];
-					}
-				}
 				merged.impacts = getRowImpacts(merged);
 				return merged;
 			});
@@ -2852,15 +2843,6 @@
 		if (state.cartoRows && Array.isArray(state.cartoRows)) {
 			const arr = (state.cartoRows as CartoRow[]).map((r, i) => {
 				const merged = { ...defaultCartoRow(), ...r } as CartoRow;
-				const def = cartoRowDefaults[i];
-				if (def) {
-					for (const k of Object.keys(def) as (keyof CartoRow)[]) {
-						const val = def[k];
-						if (val === undefined) continue;
-						const current = merged[k];
-						if (current === undefined || current === '') merged[k] = val as CartoRow[keyof CartoRow];
-					}
-				}
 				merged.impacts = getRowImpacts(merged);
 				return merged;
 			});
