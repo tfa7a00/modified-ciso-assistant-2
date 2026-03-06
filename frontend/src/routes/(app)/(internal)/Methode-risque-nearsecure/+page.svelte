@@ -3497,12 +3497,69 @@
 
 	// Fonctions pour la cartographie des risques (tableau modifiable : ajout/suppression de lignes, toujours sauvegardé)
 	// Les lignes ajoutées sont vides ; l'insertion avant/après garde la nouvelle ligne dans la même partie que la ligne cible.
+	function parseCodeRisqueFamilyAndNumber(code: string): { family: string; num: number; digits: number } | null {
+		const c = (code || '').trim().toUpperCase().replace(/O/g, '0');
+		if (!c) return null;
+		const m = c.match(/R-(SP|PSE|CI|CF|AI|MP|CL|TIER)-(\d+)/);
+		if (!m) return null;
+		const family = m[1];
+		const digits = m[2]?.length ?? 3;
+		const num = Number.parseInt(m[2], 10);
+		return Number.isFinite(num) ? { family, num, digits } : null;
+	}
+
+	function buildCodeRisqueFrom(entite: string, family: string, num: number, digits = 3): string {
+		const e = (entite || '').trim().toUpperCase();
+		const n = String(num).padStart(Math.max(1, digits), '0');
+		// Si entité vide : on garde la forme "-R-XXX-001"
+		return `${e}-R-${family}-${n}`;
+	}
+
+	function getMaxNumeroForFamily(family: string): number {
+		let maxN = 0;
+		for (const row of cartoRows) {
+			const parsed = parseCodeRisqueFamilyAndNumber(row.codeRisque || '');
+			if (!parsed || parsed.family !== family) continue;
+			maxN = Math.max(maxN, parsed.num);
+		}
+		return maxN;
+	}
+
+	function buildNextCodeRisqueForFamily(family: string, entite: string): string {
+		const next = getMaxNumeroForFamily(family) + 1;
+		return buildCodeRisqueFrom(entite, family, next, 3);
+	}
+
+	function syncCodeRisqueFromEntite(index: number) {
+		const row = cartoRows[index];
+		if (!row) return;
+		const parsed = parseCodeRisqueFamilyAndNumber(row.codeRisque || '');
+		if (!parsed) return;
+		const nextCode = buildCodeRisqueFrom(row.entite || '', parsed.family, parsed.num, parsed.digits);
+		const current = (row.codeRisque || '').trim();
+		if (current === nextCode) return;
+		cartoRows = cartoRows.map((r, i) => (i === index ? { ...r, codeRisque: nextCode } : r));
+	}
+
+	function buildNewCartoRowLike(index: number): CartoRow {
+		const base = defaultCartoRow();
+		const ref = cartoRows[index];
+		if (!ref) return base;
+		const code = (ref.codeRisque || '').trim();
+		const parsed = parseCodeRisqueFamilyAndNumber(code);
+		const family = parsed?.family ?? null;
+		if (family) {
+			// Même famille, avec entité vide -> "-R-XXX-00N"
+			base.codeRisque = buildNextCodeRisqueForFamily(family, base.entite);
+		}
+		return base;
+	}
 	function insererLigneCartoAvant(index: number) {
-		cartoRows = insererLigneAvant(cartoRows, index, defaultCartoRow());
+		cartoRows = insererLigneAvant(cartoRows, index, buildNewCartoRowLike(index));
 		saveCustomMethodState();
 	}
 	function insererLigneCartoApres(index: number) {
-		cartoRows = insererLigneApres(cartoRows, index, defaultCartoRow());
+		cartoRows = insererLigneApres(cartoRows, index, buildNewCartoRowLike(index));
 		saveCustomMethodState();
 	}
 	function supprimerLigneCarto(index: number) {
@@ -6693,7 +6750,16 @@
 						{/if}
 					<tr class="hover:bg-gray-50">
 						<td class="px-2 py-2 border border-black bg-white align-top">
-							<textarea class="w-full text-xs p-1 resize-none" rows="4" bind:value={row.entite} on:blur={() => saveCustomMethodState()}></textarea>
+							<textarea
+								class="w-full text-xs p-1 resize-none"
+								rows="4"
+								bind:value={row.entite}
+								on:input={() => syncCodeRisqueFromEntite(i)}
+								on:blur={() => {
+									syncCodeRisqueFromEntite(i);
+									saveCustomMethodState();
+								}}
+							></textarea>
 						</td>
 						<td class="px-2 py-2 border border-black bg-white align-top">
 							<textarea class="w-full text-xs p-1 resize-none" rows="4" bind:value={row.domaineProcessus} on:blur={() => saveCustomMethodState()}></textarea>
